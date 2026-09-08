@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تنظیمات | جاسوس مافیا</title>
+  <title>تنظیمات | جاسوس مافیایی</title>
   <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
@@ -154,14 +154,10 @@
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 2px 2px 0 #000000;
       overflow: hidden;
-      padding: 2px;
-      border: 1px solid #000000;
+      border: none;
+      box-shadow: none;
+      flex-shrink: 0;
     }
 
     .header-logo img {
@@ -244,6 +240,17 @@
       color: var(--primary);
     }
 
+    .coming-soon-badge {
+      font-size: 7px;
+      font-weight: 700;
+      background: var(--bg2);
+      border: var(--border);
+      border-radius: 10px;
+      padding: 2px 8px;
+      color: var(--text-light);
+      margin-right: 4px;
+    }
+
     .toggle-switch {
       width: 40px;
       height: 22px;
@@ -253,6 +260,7 @@
       position: relative;
       transition: all 0.3s ease;
       border: 1px solid #000000;
+      flex-shrink: 0;
     }
 
     .toggle-switch::after {
@@ -491,10 +499,10 @@
     <div class="header-inner">
       <div class="header-right">
         <div class="header-logo">
-          <img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="جاسوس مافیا">
+          <img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="جاسوس مافیایی">
         </div>
         <div>
-          <div class="header-title">جاسوس مافیا</div>
+          <div class="header-title">جاسوس مافیایی</div>
           <div class="header-subtitle">تنظیمات بازی</div>
         </div>
       </div>
@@ -573,18 +581,18 @@
     </div>
 
     <div class="setting-section">
-      <div class="setting-section-header"><i class="fa-solid fa-wand-magic-sparkles"></i> انیمیشن</div>
+      <div class="setting-section-header"><i class="fa-solid fa-sliders"></i> تنظیمات بیشتر</div>
       <div class="option-row">
         <span class="option-label"><i class="fa-solid fa-film"></i> انیمیشن ها</span>
         <div class="toggle-switch" id="animationToggle"></div>
       </div>
-    </div>
-
-    <div class="setting-section">
-      <div class="setting-section-header"><i class="fa-solid fa-hand-pointer"></i> لرزش</div>
       <div class="option-row">
         <span class="option-label"><i class="fa-solid fa-mobile-screen"></i> لرزش لمسی</span>
         <div class="toggle-switch" id="hapticToggle"></div>
+      </div>
+      <div class="option-row">
+        <span class="option-label"><i class="fa-solid fa-bell"></i> دریافت پیام <span class="coming-soon-badge">بزودی</span></span>
+        <div class="toggle-switch" id="notificationToggle" style="opacity:0.5;pointer-events:none;"></div>
       </div>
     </div>
 
