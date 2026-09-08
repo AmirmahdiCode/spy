@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جاسوس مافیایی</title>
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg2: #f5f5f5;
+            --bg3: #e0e0e0;
+            --primary: #000000;
+            --primary-dark: #333333;
+            --primary-light: #666666;
+            --primary-rgb: 0, 0, 0;
+            --dark: #000000;
+            --text: #333333;
+            --text-light: #999999;
+            --white: #ffffff;
+            --card-bg: #ffffff;
+            --shadow: 3px 3px 0 #000000;
+            --radius: 12px;
+            --border: 1px solid #000000;
+            --font: 'Samim', Tahoma, sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #000000;
+            --bg2: #1a1a1a;
+            --bg3: #333333;
+            --primary: #666666;
+            --primary-dark: #999999;
+            --primary-light: #444444;
+            --primary-rgb: 102, 102, 102;
+            --dark: #ffffff;
+            --text: #cccccc;
+            --text-light: #888888;
+            --white: #1a1a1a;
+            --card-bg: #1a1a1a;
+            --shadow: 3px 3px 0 #000000;
+            --border: 1px solid #666666;
+        }
+
+        [data-special-theme="crime"] {
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --primary-light: #fca5a5;
+            --primary-rgb: 220, 38, 38;
+            --border: 1px solid #dc2626;
+        }
+
+        [data-theme="dark"][data-special-theme="crime"] {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #fca5a5;
+            --primary-rgb: 239, 68, 68;
+            --border: 1px solid #ef4444;
+        }
+
+        [data-animation="off"] * { animation: none !important; transition: none !important; }
+
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+            -webkit-user-drag: none; user-drag: none;
+        }
+        img { pointer-events: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; user-drag: none; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: font-family 0.3s ease;
+        }
+
+        .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .header-inner { display: flex; align-items: center; justify-content: center; max-width: 600px; margin: 0 auto; }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+
+        .header-logo {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: none;
+            box-shadow: none;
+            flex-shrink: 0;
+        }
+        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
+
+        .main-container {
+            position: relative; z-index: 5;
+            flex: 1;
+            max-width: 600px; width: 100%;
+            margin: 0 auto;
+            padding: 0 12px 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .message-card {
+            background: var(--card-bg); border: var(--border); border-radius: var(--radius);
+            padding: 20px 24px; box-shadow: var(--shadow); text-align: center;
+            max-width: 400px; width: 100%;
+            min-height: 100px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;
+        }
+        .message-icon { font-size: 30px; color: var(--primary); }
+        .message-text { font-size: 12px; font-weight: 700; color: var(--dark); line-height: 1.8; }
+        .message-sub { font-size: 9px; color: var(--text-light); }
+
+        .bottom-progress {
+            position: fixed; bottom: 8px; right: 5%; left: 5%; width: 90%; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 25px;
+            padding: 10px 16px;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+        [data-theme="dark"] .bottom-progress {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+        }
+        .progress-bar-container {
+            background: var(--bg3);
+            border: var(--border);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .progress-status {
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-right">
+                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="Mafia Spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
+                <div>
+                    <div class="header-title" id="headerTitle">جاسوس مافیایی</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="message-card">
+            <div class="message-icon" id="messageIcon"><i class="bi bi-people"></i></div>
+            <div class="message-text" id="messageText">در حال آماده‌سازی...</div>
+            <div class="message-sub" id="messageSub">لطفاً صبر کنید</div>
+        </div>
+    </main>
+
+    <div class="bottom-progress">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-status" id="progressStatus">در حال آماده‌سازی...</div>
+    </div>
+
+    <script>
+        (function() {
+            var webApp = window.Eitaa?.WebApp;
+            var API_URL = 'https://script.google.com/macros/s/AKfycbwbp4ByhYBno6v5HKgGu2COkbu7zcmkyaRZ_eLKRJBn7JEHtcJ378O46ruUFPjogpFT/exec';
+
+            var progressBar = document.getElementById('progressBar');
+            var progressStatus = document.getElementById('progressStatus');
+            var messageText = document.getElementById('messageText');
+            var messageSub = document.getElementById('messageSub');
+            var messageIcon = document.getElementById('messageIcon');
+
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+            document.addEventListener('copy', function(e) { e.preventDefault(); });
+            document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+            var fontMap = {
+                'Samim': "'Samim', Tahoma, sans-serif",
+                'Sahel': "'Sahel', Tahoma, sans-serif",
+                'IRANSans': "'IRANSans', Tahoma, sans-serif",
+                'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
+                'Estedad': "'Estedad', Tahoma, sans-serif"
+            };
+
+            function getSettings() {
+                try {
+                    var raw = localStorage.getItem('mafiaSettings');
+                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                    var p = JSON.parse(raw);
+                    if (!p.theme) p.theme = 'light';
+                    if (!p.specialTheme) p.specialTheme = 'none';
+                    if (p.animation === undefined) p.animation = true;
+                    if (p.haptic === undefined) p.haptic = true;
+                    if (!p.font) p.font = 'Samim';
+                    if (!p.language) p.language = 'fa';
+                    return p;
+                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+            }
+
+            function updateHeaderTitle(lang) {
+                var titleEl = document.getElementById('headerTitle');
+                if (lang === 'en') {
+                    titleEl.textContent = 'Mafia Spy';
+                } else {
+                    titleEl.textContent = 'جاسوس مافیایی';
+                }
+            }
+
+            function applyTheme() {
+                var s = getSettings();
+                var t = s.theme || 'light';
+                var st = s.specialTheme || 'none';
+                var f = s.font || 'Samim';
+                document.documentElement.setAttribute('data-theme', t);
+                document.documentElement.setAttribute('data-special-theme', st);
+                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
+                else { document.documentElement.removeAttribute('data-animation'); }
+                var fontFamily = fontMap[f] || fontMap['Samim'];
+                document.documentElement.style.setProperty('--font', fontFamily);
+                document.body.style.fontFamily = fontFamily;
+                updateHeaderTitle(s.language || 'fa');
+            }
+
+            var messages = [
+                { icon: 'bi-people', text: 'یک نفر میان شما جاسوس هست، پیداش کن!', sub: 'جاسوس کیست؟' },
+                { icon: 'bi-search', text: 'بپرس و جاسوس رو بشناس', sub: 'سوال بپرس' },
+                { icon: 'bi-shield', text: 'از شهر دفاع کن', sub: 'مافیا در کمین است' },
+                { icon: 'bi-eye', text: 'تحقیق کن و شهر رو نجات بده', sub: 'حقیقت را پیدا کن' }
+            ];
+
+            var messageInterval = null;
+
+            function setProgress(pct, status) {
+                progressBar.style.width = pct + '%';
+                if (status) progressStatus.textContent = status;
+            }
+
+            function showRandomMessage() {
+                var msg = messages[Math.floor(Math.random() * messages.length)];
+                messageIcon.innerHTML = '<i class="bi ' + msg.icon + '"></i>';
+                messageText.textContent = msg.text;
+                messageSub.textContent = msg.sub;
+            }
+
+            function startMessageRotation() {
+                showRandomMessage();
+                messageInterval = setInterval(showRandomMessage, 4000);
+            }
+
+            function getEitaaUser() {
+                if (webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user) {
+                    return webApp.initDataUnsafe.user;
+                }
+                return null;
+            }
+
+            function getUserId() {
+                var user = getEitaaUser();
+                if (!user) return '';
+                if (typeof user.id === 'number') return user.id.toString();
+                return String(user.id || '');
+            }
+
+            function getStartParam() {
+                if (webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.start_param) {
+                    return webApp.initDataUnsafe.start_param;
+                }
+                return '';
+            }
+
+            async function fetchData(action, params) {
+                var payload = {
+                    action: action,
+                    username: getUserId()
+                };
+                if (params) {
+                    for (var key in params) { payload[key] = params[key]; }
+                }
+                var response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+                return await response.json();
+            }
+
+            async function init() {
+                applyTheme();
+                startMessageRotation();
+
+                if (webApp) {
+                    webApp.ready();
+                    webApp.expand();
+                    webApp.BackButton.hide();
+                }
+
+                var startParam = getStartParam();
+                var user = getEitaaUser();
+                var username = getUserId();
+
+                if (!user || !username) {
+                    setProgress(0, 'لطفاً از داخل ایتا وارد شوید');
+                    messageText.textContent = 'لطفاً از داخل ایتا وارد شوید';
+                    messageSub.textContent = '';
+                    return;
+                }
+
+                var fullName = (user.first_name || '') + ' ' + (user.last_name || '');
+
+                setProgress(20, 'در حال بررسی اطلاعات...');
+
+                var check = await fetchData('getUser', {});
+
+                if (check.ok && check.data) {
+                    setProgress(50, 'به‌روزرسانی نام...');
+                    var currentName = check.data.name || '';
+                    var newName = fullName.trim() || 'کاربر';
+                    if (currentName !== newName) {
+                        await fetchData('updateUser', { name: newName });
+                    }
+                } else {
+                    setProgress(50, 'در حال ساخت حساب...');
+                    await fetchData('registerUser', {
+                        name: fullName.trim() || 'کاربر'
+                    });
+                }
+
+                setProgress(80, 'آماده‌سازی کامل شد');
+
+                setTimeout(function() {
+                    setProgress(100, 'خوش آمدید!');
+                    
+                    setTimeout(function() {
+                        clearInterval(messageInterval);
+                        if (startParam) {
+                            localStorage.setItem('mafiaRoomCode', startParam);
+                            window.location.href = './game/';
+                        } else {
+                            window.location.href = './dashboard/';
+                        }
+                    }, 400);
+                }, 500);
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>
