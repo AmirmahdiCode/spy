@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پروفایل | کوییزیکو</title>
+    <title>پروفایل | جاسوس مافیایی</title>
     <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -14,16 +14,16 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #faf5ff;
-            --bg2: #f3e8ff;
-            --bg3: #e9d5ff;
-            --primary: #a855f7;
-            --primary-dark: #9333ea;
-            --primary-light: #c084fc;
-            --primary-rgb: 168, 85, 247;
-            --dark: #1e1b2e;
-            --text: #4a4458;
-            --text-light: #6b7280;
+            --bg: #ffffff;
+            --bg2: #f5f5f5;
+            --bg3: #e0e0e0;
+            --primary: #000000;
+            --primary-dark: #333333;
+            --primary-light: #666666;
+            --primary-rgb: 0, 0, 0;
+            --dark: #000000;
+            --text: #333333;
+            --text-light: #999999;
             --white: #ffffff;
             --card-bg: #ffffff;
             --shadow: 3px 3px 0 #000000;
@@ -34,20 +34,36 @@
         }
 
         [data-theme="dark"] {
-            --bg: #1e1b2e;
-            --bg2: #2d2a3e;
-            --bg3: #3d3a4e;
-            --primary: #c084fc;
-            --primary-dark: #a855f7;
-            --primary-light: #d8b4fe;
-            --primary-rgb: 192, 132, 252;
-            --dark: #f1f5f9;
-            --text: #e2e8f0;
-            --text-light: #94a3b8;
-            --white: #2d2a3e;
-            --card-bg: #2d2a3e;
+            --bg: #000000;
+            --bg2: #1a1a1a;
+            --bg3: #333333;
+            --primary: #666666;
+            --primary-dark: #999999;
+            --primary-light: #444444;
+            --primary-rgb: 102, 102, 102;
+            --dark: #ffffff;
+            --text: #cccccc;
+            --text-light: #888888;
+            --white: #1a1a1a;
+            --card-bg: #1a1a1a;
             --shadow: 3px 3px 0 #000000;
-            --border: 1px solid #475569;
+            --border: 1px solid #666666;
+        }
+
+        [data-special-theme="crime"] {
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --primary-light: #fca5a5;
+            --primary-rgb: 220, 38, 38;
+            --border: 1px solid #dc2626;
+        }
+
+        [data-theme="dark"][data-special-theme="crime"] {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #fca5a5;
+            --primary-rgb: 239, 68, 68;
+            --border: 1px solid #ef4444;
         }
 
         [data-animation="off"] * { animation: none !important; transition: none !important; }
@@ -58,7 +74,6 @@
             -webkit-user-drag: none; user-drag: none;
         }
         img { pointer-events: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; user-drag: none; }
-        input, textarea { -webkit-user-select: text !important; user-select: text !important; -webkit-touch-callout: default !important; }
 
         body {
             font-family: var(--font);
@@ -86,27 +101,25 @@
         }
 
         [data-theme="dark"] .header {
-            background: rgba(45, 42, 62, 0.5);
+            background: rgba(26, 26, 26, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--primary);
         }
 
-        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
+        .header-inner { display: flex; align-items: center; justify-content: flex-start; max-width: 600px; margin: 0 auto; }
         .header-right { display: flex; align-items: center; gap: 10px; }
 
         .header-logo {
             width: 44px; height: 44px;
             border-radius: 50%;
-            background: var(--primary);
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow: hidden; padding: 2px;
-            border: 1px solid var(--primary);
+            overflow: hidden;
+            border: none;
+            box-shadow: none;
+            flex-shrink: 0;
         }
-        .header-logo img { width: 100%; height: 100%; object-fit: contain; }
+        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
-        .header-title .t-accent { color: var(--primary); }
 
         .main-container {
             position: relative; z-index: 5;
@@ -181,43 +194,6 @@
         .stat-value { font-size: 16px; font-weight: 800; color: var(--dark); }
         .stat-label { font-size: 8px; color: var(--text-light); }
 
-        .rank-progress-card { background: var(--card-bg); border: var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
-        .rank-progress-title {
-            font-size: 13px; font-weight: 800; color: var(--dark); margin-bottom: 12px;
-            display: flex; align-items: center; gap: 8px;
-            border-bottom: 1px dashed var(--text-light); padding-bottom: 8px;
-        }
-        .rank-progress-title i { color: var(--primary); }
-        .rank-progress-bar-container {
-            background: var(--bg3); border: var(--border); border-radius: 8px;
-            height: 10px; overflow: hidden; margin-bottom: 8px;
-        }
-        .rank-progress-bar {
-            height: 100%; background: var(--primary); border-radius: 8px; transition: width 0.5s ease;
-        }
-        .rank-progress-info {
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 8px; font-weight: 700; color: var(--text-light);
-        }
-
-        .league-card { background: var(--card-bg); border: var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
-        .league-title {
-            font-size: 13px; font-weight: 800; color: var(--dark); margin-bottom: 12px;
-            display: flex; align-items: center; gap: 8px;
-            border-bottom: 1px dashed var(--text-light); padding-bottom: 8px;
-        }
-        .league-title i { color: var(--primary); }
-        .league-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .league-item {
-            text-align: center; padding: 12px; border-radius: 8px;
-            border: var(--border); background: var(--bg2); box-shadow: 2px 2px 0 #000;
-        }
-        .league-item.champion { background: #f59e0b; color: #fff; }
-        .league-item.runnerup { background: #94a3b8; color: #fff; }
-        .league-item.loss { background: #ef4444; color: #fff; }
-        .league-item-value { font-size: 16px; font-weight: 800; display: block; }
-        .league-item-label { font-size: 8px; }
-
         .achievements-card { background: var(--card-bg); border: var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
         .achievements-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .achievement-item {
@@ -229,6 +205,12 @@
         .achievement-item.locked { opacity: .3; filter: grayscale(1); }
 
         .games-history-card { background: var(--card-bg); border: var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+        .card-title {
+            font-size: 13px; font-weight: 800; color: var(--dark); margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
+            border-bottom: 1px dashed var(--text-light); padding-bottom: 8px;
+        }
+        .card-title i { color: var(--primary); }
         .games-list { 
             display: flex; flex-direction: column; gap: 8px; max-height: 300px;
             overflow-y: auto; overflow-x: hidden; padding: 4px; margin: 0 -4px;
@@ -249,7 +231,6 @@
         .game-score { font-size: 9px; font-weight: 800; padding: 3px 10px; border-radius: 8px; border: var(--border); }
         .game-score.win { background: #10b981; color: #fff; }
         .game-score.loss { background: #ef4444; color: #fff; }
-        .game-score.draw { background: #f59e0b; color: #fff; }
 
         .empty-state { text-align: center; padding: 16px; color: var(--text-light); font-size: 10px; }
         .empty-state i { font-size: 40px; color: var(--primary); margin-bottom: 8px; display: block; }
@@ -317,7 +298,7 @@
             cursor: pointer;
         }
         [data-theme="dark"] .support-notification {
-            background: rgba(45, 42, 62, 0.5);
+            background: rgba(26, 26, 26, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--primary);
@@ -343,7 +324,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         }
         [data-theme="dark"] .bottom-nav {
-            background: rgba(45, 42, 62, 0.5);
+            background: rgba(26, 26, 26, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--primary);
@@ -377,9 +358,9 @@
     <header class="header">
         <div class="header-inner">
             <div class="header-right">
-                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/f30974_InShot_20260821_174101103.png" alt="کوییزیکو" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
+                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="Mafia Spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
                 <div>
-                    <div class="header-title" id="headerTitle">کوییز<span class="t-accent">یکو</span></div>
+                    <div class="header-title" id="headerTitle">جاسوس مافیایی</div>
                 </div>
             </div>
         </div>
@@ -402,8 +383,7 @@
                 </div>
                 <div class="profile-actions-row">
                     <button class="change-avatar-btn" onclick="openAvatarModal()"><i class="bi bi-camera"></i> <span data-i18n="change_avatar">تغییر آواتار</span></button>
-                    <span class="badge"><i class="bi bi-coin"></i> <span class="badge-value" id="coinsValue">0</span></span>
-                    <span class="badge"><i class="bi bi-gem"></i> <span class="badge-value" id="diamondsValue">0</span></span>
+                    <span class="badge"><i class="bi bi-star"></i> <span class="badge-value" id="scoreValue">0</span></span>
                 </div>
             </div>
 
@@ -424,49 +404,9 @@
                     <div class="stat-label" data-i18n="total_games">تعداد بازی</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-graph-up-arrow"></i></div>
-                    <div class="stat-value" id="winRate">0%</div>
-                    <div class="stat-label" data-i18n="win_rate">درصد برد</div>
-                </div>
-            </div>
-
-            <div class="section-loader" id="rankLoader" style="display:none;">
-                <div class="section-loader-spinner"></div>
-                <div class="section-loader-text" data-i18n="loading_rank">در حال دریافت رتبه...</div>
-            </div>
-
-            <div class="rank-progress-card" id="rankProgressCard" style="display:none;">
-                <div class="rank-progress-title"><i class="bi bi-graph-up-arrow"></i> <span data-i18n="distance_to_next">فاصله تا رتبه بعدی</span></div>
-                <div class="rank-progress-bar-container">
-                    <div class="rank-progress-bar" id="rankProgressBar" style="width:0%;"></div>
-                </div>
-                <div class="rank-progress-info">
-                    <span id="rankCurrentScore">0</span>
-                    <span id="rankProgressPercent" style="color:var(--gold);font-weight:800;">0%</span>
-                    <span id="rankNextScore" style="color:var(--primary);font-weight:800;">0</span>
-                </div>
-            </div>
-
-            <div class="section-loader" id="leagueLoader" style="display:none;">
-                <div class="section-loader-spinner"></div>
-                <div class="section-loader-text" data-i18n="loading_league">در حال دریافت لیگ...</div>
-            </div>
-
-            <div class="league-card" id="leagueCard" style="display:none;">
-                <div class="league-title"><i class="bi bi-trophy"></i> <span data-i18n="league_stats">آمار لیگ</span></div>
-                <div class="league-stats">
-                    <div class="league-item champion">
-                        <span class="league-item-value" id="championCount">0</span>
-                        <span class="league-item-label" data-i18n="champion">قهرمانی</span>
-                    </div>
-                    <div class="league-item runnerup">
-                        <span class="league-item-value" id="runnerupCount">0</span>
-                        <span class="league-item-label" data-i18n="runner_up">نایب قهرمانی</span>
-                    </div>
-                    <div class="league-item loss">
-                        <span class="league-item-value" id="leagueLosses">0</span>
-                        <span class="league-item-label" data-i18n="losses">باخت</span>
-                    </div>
+                    <div class="stat-icon"><i class="bi bi-trophy"></i></div>
+                    <div class="stat-value" id="totalWins">0</div>
+                    <div class="stat-label" data-i18n="total_wins">تعداد برد</div>
                 </div>
             </div>
 
@@ -476,7 +416,7 @@
             </div>
 
             <div class="achievements-card" id="achievementsCard" style="display:none;">
-                <div class="league-title"><i class="bi bi-award"></i> <span data-i18n="achievements">افتخارات</span></div>
+                <div class="card-title"><i class="bi bi-award"></i> <span data-i18n="achievements">افتخارات</span></div>
                 <div class="achievements-grid" id="achievementsGrid"></div>
             </div>
 
@@ -486,7 +426,7 @@
             </div>
 
             <div class="games-history-card" id="historyCard" style="display:none;">
-                <div class="league-title"><i class="bi bi-clock-history"></i> <span data-i18n="game_history">تاریخچه بازی‌ها</span></div>
+                <div class="card-title"><i class="bi bi-clock-history"></i> <span data-i18n="game_history">تاریخچه بازی‌ها</span></div>
                 <div class="games-list" id="gamesList"></div>
             </div>
         </div>
@@ -530,13 +470,13 @@
     <script>
         (function() {
             var webApp = window.Eitaa?.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbyHQXQ0TffhGyW1MdtI-_sWlZMhLSPDCR3Az5dDkuwv9TJt1o6-f_aCOg_aHJnty_8P/exec';
-            var userDiamonds = 0, currentAvatar = 'default', currentLang = 'fa';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbwbp4ByhYBno6v5HKgGu2COkbu7zcmkyaRZ_eLKRJBn7JEHtcJ378O46ruUFPjogpFT/exec';
+            var currentAvatar = 'default', currentLang = 'fa';
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
-            document.addEventListener('copy', function(e) { if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') e.preventDefault(); });
-            document.addEventListener('cut', function(e) { if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') e.preventDefault(); });
+            document.addEventListener('copy', function(e) { e.preventDefault(); });
+            document.addEventListener('cut', function(e) { e.preventDefault(); });
 
             var fontMap = {
                 'Samim': "'Samim', Tahoma, sans-serif",
@@ -550,19 +490,12 @@
                 fa: {
                     loading: 'در حال دریافت اطلاعات...',
                     loading_stats: 'در حال دریافت آمار...',
-                    loading_rank: 'در حال دریافت رتبه...',
-                    loading_league: 'در حال دریافت لیگ...',
                     loading_achievements: 'در حال دریافت افتخارات...',
                     loading_history: 'در حال دریافت تاریخچه...',
                     change_avatar: 'تغییر آواتار',
                     total_score: 'امتیاز کل',
                     total_games: 'تعداد بازی',
-                    win_rate: 'درصد برد',
-                    distance_to_next: 'فاصله تا رتبه بعدی',
-                    league_stats: 'آمار لیگ',
-                    champion: 'قهرمانی',
-                    runner_up: 'نایب قهرمانی',
-                    losses: 'باخت',
+                    total_wins: 'تعداد برد',
                     achievements: 'افتخارات',
                     game_history: 'تاریخچه بازی‌ها',
                     select_avatar: 'انتخاب آواتار',
@@ -571,47 +504,29 @@
                     profile: 'پروفایل',
                     settings_nav: 'تنظیمات',
                     icons: 'آیکون‌ها',
-                    boys: 'پسرها',
-                    girls: 'دخترها',
                     free: 'رایگان',
                     owned: 'خریداری شده',
-                    diamonds: 'الماس',
                     first_game: 'اولین بازی',
                     '10_games': '۱۰ بازی',
-                    '100_games': '۱۰۰ بازی',
-                    '1000_games': '۱۰۰۰ بازی',
+                    '50_games': '۵۰ بازی',
                     first_win: 'اولین برد',
                     '10_wins': '۱۰ برد',
-                    '100_wins': '۱۰۰ برد',
-                    '1000_wins': '۱۰۰۰ برد',
-                    '100_score': '۱۰۰ امتیاز',
-                    '1000_score': '۱۰۰۰ امتیاز',
-                    '10000_score': '۱۰۰۰۰ امتیاز',
-                    '100000_score': '۱۰۰۰۰۰ امتیاز',
-                    draw: 'مساوی',
+                    '50_wins': '۵۰ برد',
+                    spy_win: 'برد جاسوس',
+                    citizen_win: 'برد شهروند',
                     win: 'برد',
                     lose: 'باخت',
-                    you: 'تو',
-                    first_place: 'نفر اول',
-                    no_games: 'مسابقه‌ای یافت نشد',
-                    bot: 'ربات'
+                    no_games: 'بازی‌ای یافت نشد'
                 },
                 en: {
                     loading: 'Loading...',
                     loading_stats: 'Loading stats...',
-                    loading_rank: 'Loading rank...',
-                    loading_league: 'Loading league...',
                     loading_achievements: 'Loading achievements...',
                     loading_history: 'Loading history...',
                     change_avatar: 'Change Avatar',
                     total_score: 'Total Score',
                     total_games: 'Total Games',
-                    win_rate: 'Win Rate',
-                    distance_to_next: 'Distance to Next Rank',
-                    league_stats: 'League Stats',
-                    champion: 'Champion',
-                    runner_up: 'Runner-up',
-                    losses: 'Losses',
+                    total_wins: 'Total Wins',
                     achievements: 'Achievements',
                     game_history: 'Game History',
                     select_avatar: 'Select Avatar',
@@ -620,47 +535,29 @@
                     profile: 'Profile',
                     settings_nav: 'Settings',
                     icons: 'Icons',
-                    boys: 'Boys',
-                    girls: 'Girls',
                     free: 'Free',
                     owned: 'Owned',
-                    diamonds: 'Diamonds',
                     first_game: 'First Game',
                     '10_games': '10 Games',
-                    '100_games': '100 Games',
-                    '1000_games': '1000 Games',
+                    '50_games': '50 Games',
                     first_win: 'First Win',
                     '10_wins': '10 Wins',
-                    '100_wins': '100 Wins',
-                    '1000_wins': '1000 Wins',
-                    '100_score': '100 Score',
-                    '1000_score': '1000 Score',
-                    '10000_score': '10000 Score',
-                    '100000_score': '100000 Score',
-                    draw: 'Draw',
+                    '50_wins': '50 Wins',
+                    spy_win: 'Spy Win',
+                    citizen_win: 'Citizen Win',
                     win: 'Win',
                     lose: 'Loss',
-                    you: 'You',
-                    first_place: 'First Place',
-                    no_games: 'No games found',
-                    bot: 'Bot'
+                    no_games: 'No games found'
                 },
                 ar: {
                     loading: 'جار التحميل...',
                     loading_stats: 'جار تحميل الإحصائيات...',
-                    loading_rank: 'جار تحميل الترتيب...',
-                    loading_league: 'جار تحميل الدوري...',
                     loading_achievements: 'جار تحميل الإنجازات...',
                     loading_history: 'جار تحميل السجل...',
                     change_avatar: 'تغيير الصورة',
                     total_score: 'مجموع النقاط',
                     total_games: 'عدد المباريات',
-                    win_rate: 'نسبة الفوز',
-                    distance_to_next: 'المسافة إلى الترتيب التالي',
-                    league_stats: 'إحصائيات الدوري',
-                    champion: 'البطل',
-                    runner_up: 'الوصيف',
-                    losses: 'خسائر',
+                    total_wins: 'عدد الانتصارات',
                     achievements: 'الإنجازات',
                     game_history: 'سجل المباريات',
                     select_avatar: 'اختر الصورة',
@@ -669,30 +566,19 @@
                     profile: 'الملف',
                     settings_nav: 'الإعدادات',
                     icons: 'أيقونات',
-                    boys: 'أولاد',
-                    girls: 'بنات',
                     free: 'مجاني',
                     owned: 'مملوك',
-                    diamonds: 'الماس',
                     first_game: 'أول مباراة',
                     '10_games': '۱۰ مباريات',
-                    '100_games': '۱۰۰ مباراة',
-                    '1000_games': '۱۰۰۰ مباراة',
+                    '50_games': '۵۰ مباراة',
                     first_win: 'أول فوز',
                     '10_wins': '۱۰ انتصارات',
-                    '100_wins': '۱۰۰ انتصار',
-                    '1000_wins': '۱۰۰۰ انتصار',
-                    '100_score': '۱۰۰ نقطة',
-                    '1000_score': '۱۰۰۰ نقطة',
-                    '10000_score': '۱۰۰۰۰ نقطة',
-                    '100000_score': '۱۰۰۰۰۰ نقطة',
-                    draw: 'تعادل',
+                    '50_wins': '۵۰ انتصار',
+                    spy_win: 'فوز الجاسوس',
+                    citizen_win: 'فوز المواطن',
                     win: 'فوز',
                     lose: 'خسارة',
-                    you: 'أنت',
-                    first_place: 'المركز الأول',
-                    no_games: 'لا توجد مباريات',
-                    bot: 'روبوت'
+                    no_games: 'لا توجد مباريات'
                 }
             };
 
@@ -706,70 +592,45 @@
                     {id:'icon_game', icon:'fa-gamepad'}, {id:'icon_trophy', icon:'fa-trophy'},
                     {id:'icon_star', icon:'fa-star'}, {id:'icon_bolt', icon:'fa-bolt'},
                     {id:'icon_fire', icon:'fa-fire'}, {id:'icon_crown', icon:'fa-crown'},
-                    {id:'icon_medal', icon:'fa-medal'}, {id:'icon_rocket', icon:'fa-rocket'},
-                    {id:'icon_ghost', icon:'fa-ghost'}, {id:'icon_dragon', icon:'fa-dragon'},
-                    {id:'icon_wand', icon:'fa-wand-magic-sparkles'}, {id:'icon_hat', icon:'fa-hat-wizard'},
-                    {id:'icon_helmet', icon:'fa-helmet-safety'}, {id:'icon_shield', icon:'fa-shield-halved'},
-                    {id:'icon_sword', icon:'fa-hand-fist'}
-                ]},
-                {id:'boys', label:'boys', price:20, items:[
-                    {id:'boy_1', url:'https://cdn.imgurl.ir/uploads/l17100_QkCRHe00vl64Bngk74ayYmWMyWA-NjfsC7SoRbGgrkm1mS-bpQ.png'},
-                    {id:'boy_2', url:'https://cdn.imgurl.ir/uploads/g87708_nYSMEcudjDVvsMsfO4B6nrWGmFI-J3OzSBMOSwKo6Mt48wolyg.png'},
-                    {id:'boy_3', url:'https://cdn.imgurl.ir/uploads/q01044_VWzDtI4NYQ660EGTVD_xToLVOvw-DkODf3dzQq2kbk2i1b-cIQ.png'},
-                    {id:'boy_4', url:'https://cdn.imgurl.ir/uploads/w428496_0RBfnEt77slNmis2YlNfIjtELkE-_nTEsqjVSQafpoCS0X1pXg.png'},
-                    {id:'boy_5', url:'https://cdn.imgurl.ir/uploads/h099226_Kaahld11_fKS5dcGDsq-5IvBiC0-olahkKmOTsSjohG4mMsVUw.png'},
-                    {id:'boy_6', url:'https://cdn.imgurl.ir/uploads/k778258_pd9TZqS3DHKaaJQOygY-3WFHMAE-NzGEJ7R1Sv-r5Dfc6Zi3Ig.png'},
-                    {id:'boy_7', url:'https://cdn.imgurl.ir/uploads/w221825_-1Xu8BzjzGa1I7ZIBVaYpoez4BM-zdVRFGLaRJGymjrVOu_yBA.png'},
-                    {id:'boy_8', url:'https://cdn.imgurl.ir/uploads/o12072_rsMh7nSKjcODxjSPFWwfrlpYFe4-RHju528wRf-FCo_v2tJX7w.png'},
-                    {id:'boy_9', url:'https://cdn.imgurl.ir/uploads/m007403_MNhHAeXQ-_-nEMVuihCtgYXUS90-5LFmX4D7T2-1RaoN058vnw.png'},
-                    {id:'boy_10', url:'https://cdn.imgurl.ir/uploads/h976855_MLDYzJITIyaUkB6efcWGamXK39M-yfLRI0_7RrCmky6p-jgXFw.png'}
-                ]},
-                {id:'girls', label:'girls', price:20, items:[
-                    {id:'girl_1', url:'https://cdn.imgurl.ir/uploads/h993569_G_wzhIk2ocoOPFhmmQHpUuS1mQc-IXeKOSBFSx6jn_y9tpVazg.png'},
-                    {id:'girl_2', url:'https://cdn.imgurl.ir/uploads/u2553__Yb1fK6xw6Di1SX-7xB5v2J7e-g-IYBMcl_wSmqXNTkmAQMGnA.png'},
-                    {id:'girl_3', url:'https://cdn.imgurl.ir/uploads/w03550__MlKSY3NXQ9cWkwVioa7hUpr6aI-2MRPg-L3QNOpRTm1oZTHtQ.png'},
-                    {id:'girl_4', url:'https://cdn.imgurl.ir/uploads/r074193_q1uxpQIZsrzslDhI1W69Su-XvbY-x5jd5EZ1SyKggCCSjbbxrg.png'},
-                    {id:'girl_5', url:'https://cdn.imgurl.ir/uploads/w035688_E2FfMOkE8ZGtuOZqU2q_VGTE6Yw-IU1JraRkSTub6ymIVXQuxA.png'},
-                    {id:'girl_6', url:'https://cdn.imgurl.ir/uploads/c895184_bt1drvChqXnDjtGhNgxJ9M2Ho4I-n1KpcnSiSXSboB5rKfBwCg.png'},
-                    {id:'girl_7', url:'https://cdn.imgurl.ir/uploads/u246883_b3j_B2NgyZNITErHK5c9A3dWFRA-5bV5bdzHSGi4neWTa9881A.png'},
-                    {id:'girl_8', url:'https://cdn.imgurl.ir/uploads/o0025_B1BkJ9n5GL25bnqG-YNn79Qvsds-Erx3uqovQtex6125wXCD7g.png'},
-                    {id:'girl_9', url:'https://cdn.imgurl.ir/uploads/t14047_NR8hWSzjLbSm2cXNrBnA2mEh43o-XhY5hyhBSU6s-9c4Fv5wRA.png'},
-                    {id:'girl_10', url:'https://cdn.imgurl.ir/uploads/v96829_FouVxzw8xOmCFvf0IEri962BmHQ-LxKzSWS_aj8dcNI5EWVw.png'}
+                    {id:'icon_medal', icon:'fa-medal'}, {id:'icon_ghost', icon:'fa-ghost'},
+                    {id:'icon_hat', icon:'fa-hat-wizard'}, {id:'icon_shield', icon:'fa-shield-halved'}
                 ]}
             ];
 
             var allAchievements = [
                 {id:'first_game', name:'first_game', icon:'🕹️'},
                 {id:'10_games', name:'10_games', icon:'🎮'},
-                {id:'100_games', name:'100_games', icon:'💻'},
-                {id:'1000_games', name:'1000_games', icon:'🔬'},
+                {id:'50_games', name:'50_games', icon:'💻'},
                 {id:'first_win', name:'first_win', icon:'🎉'},
                 {id:'10_wins', name:'10_wins', icon:'🎈'},
-                {id:'100_wins', name:'100_wins', icon:'🎁'},
-                {id:'1000_wins', name:'1000_wins', icon:'🍰'},
-                {id:'100_score', name:'100_score', icon:'✨'},
-                {id:'1000_score', name:'1000_score', icon:'⭐'},
-                {id:'10000_score', name:'10000_score', icon:'💫'},
-                {id:'100000_score', name:'100000_score', icon:'☄️'}
+                {id:'50_wins', name:'50_wins', icon:'🎁'},
+                {id:'spy_win', name:'spy_win', icon:'🕵️'},
+                {id:'citizen_win', name:'citizen_win', icon:'👥'}
             ];
 
             function getSettings() {
                 try {
-                    var raw = localStorage.getItem('quizicoSettings');
-                    if (!raw) return { theme: 'light', primaryColor: '#a855f7', animation: true, haptic: true, language: 'fa', font: 'Samim' };
+                    var raw = localStorage.getItem('mafiaSettings');
+                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
                     var p = JSON.parse(raw);
                     if (!p.theme) p.theme = 'light';
-                    if (!p.primaryColor) p.primaryColor = '#a855f7';
+                    if (!p.specialTheme) p.specialTheme = 'none';
                     if (p.animation === undefined) p.animation = true;
                     if (p.haptic === undefined) p.haptic = true;
-                    if (!p.language) p.language = 'fa';
                     if (!p.font) p.font = 'Samim';
+                    if (!p.language) p.language = 'fa';
                     return p;
-                } catch(e) { return { theme: 'light', primaryColor: '#a855f7', animation: true, haptic: true, language: 'fa', font: 'Samim' }; }
+                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
             }
 
-            function hexToRgb(h) { var r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h); return r ? { r:parseInt(r[1],16), g:parseInt(r[2],16), b:parseInt(r[3],16) } : { r:168,g:85,b:247 }; }
-            function shadeColor(c,p){var r=hexToRgb(c);var rr=Math.max(0,Math.min(255,r.r+p));var gg=Math.max(0,Math.min(255,r.g+p));var bb=Math.max(0,Math.min(255,r.b+p));return '#'+((1<<24)+(rr<<16)+(gg<<8)+bb).toString(16).slice(1);}
+            function updateHeaderTitle(lang) {
+                var titleEl = document.getElementById('headerTitle');
+                if (lang === 'en') {
+                    titleEl.textContent = 'Mafia Spy';
+                } else {
+                    titleEl.textContent = 'جاسوس مافیایی';
+                }
+            }
 
             function applyLanguage(lang) {
                 var t = translations[lang] || translations.fa;
@@ -782,36 +643,31 @@
                 } else {
                     document.documentElement.setAttribute('dir', 'rtl');
                 }
+                updateHeaderTitle(lang);
             }
 
             function applyTheme() {
                 var s = getSettings();
                 currentLang = s.language || 'fa';
                 var t = s.theme || 'light';
-                var p = s.primaryColor || '#a855f7';
+                var st = s.specialTheme || 'none';
                 var f = s.font || 'Samim';
                 document.documentElement.setAttribute('data-theme', t);
-                if (t === 'dark') {
-                    var lightP = shadeColor(p, 40);
-                    document.documentElement.style.setProperty('--primary', lightP);
-                    document.documentElement.style.setProperty('--primary-dark', p);
-                    document.documentElement.style.setProperty('--primary-light', shadeColor(p, 80));
-                    document.documentElement.style.setProperty('--primary-rgb', hexToRgb(lightP).r + ',' + hexToRgb(lightP).g + ',' + hexToRgb(lightP).b);
-                } else {
-                    document.documentElement.style.setProperty('--primary', p);
-                    document.documentElement.style.setProperty('--primary-dark', shadeColor(p, -30));
-                    document.documentElement.style.setProperty('--primary-light', shadeColor(p, 50));
-                    document.documentElement.style.setProperty('--primary-rgb', hexToRgb(p).r + ',' + hexToRgb(p).g + ',' + hexToRgb(p).b);
-                }
+                document.documentElement.setAttribute('data-special-theme', st);
                 if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
                 else { document.documentElement.removeAttribute('data-animation'); }
                 var fontFamily = fontMap[f] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
-                var titleEl = document.getElementById('headerTitle');
-                if (currentLang === 'en') titleEl.innerHTML = 'Quiz<span class="t-accent">ico</span>';
-                else titleEl.innerHTML = 'کوییز<span class="t-accent">یکو</span>';
                 applyLanguage(currentLang);
+            }
+
+            function triggerHaptic(style) {
+                var s = getSettings();
+                if (s.haptic === false) return;
+                if (webApp && webApp.HapticFeedback && webApp.HapticFeedback.impactOccurred) {
+                    try { webApp.HapticFeedback.impactOccurred(style || 'light'); } catch(e) {}
+                }
             }
 
             function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
@@ -831,7 +687,6 @@
 
             function getAvatarHtml(avatarId) {
                 if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user"></i>';
-                if (avatarId === 'bot') return '<i class="fa-solid fa-robot"></i>';
                 var found = null;
                 avatarCategories.forEach(function(cat) {
                     cat.items.forEach(function(item) {
@@ -845,23 +700,6 @@
                 return '<i class="fa-solid fa-user"></i>';
             }
 
-            async function getPlayerInfo(userId) {
-                if (userId === 'bot') return {name: getTranslation('bot'), avatar: 'bot'};
-                if (!userId || userId === '') return {name: '---', avatar: 'default'};
-                var result = await fetchData('getUser', {username: String(userId)});
-                if (result.ok && result.data) {
-                    return {name: result.data.name || userId, avatar: result.data.avatar || 'default'};
-                }
-                return {name: String(userId), avatar: 'default'};
-            }
-
-            function isAvatarOwned(itemId) {
-                try {
-                    var owned = JSON.parse(localStorage.getItem('ownedAvatars') || '[]');
-                    return owned.indexOf(itemId) !== -1;
-                } catch(e) { return false; }
-            }
-
             function renderAvatarModal() {
                 var html = '';
                 avatarCategories.forEach(function(cat) {
@@ -870,10 +708,9 @@
                     html += '<div class="avatar-category"><div class="avatar-category-title">' + catLabel + ' <span class="price-tag' + (cat.price === 0 ? ' free' : '') + '">' + priceText + '</span></div><div class="avatar-grid">';
                     cat.items.forEach(function(item) {
                         var isActive = currentAvatar === item.id;
-                        var isOwned = isAvatarOwned(item.id);
                         var imgHtml = item.icon ? '<i class="fa-solid ' + item.icon + '"></i>' : '<img src="' + item.url + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
-                        var priceHtml = (cat.price === 0 || isOwned) ? '<span class="avatar-item-price ' + (cat.price === 0 ? 'free' : 'owned') + '">' + (cat.price === 0 ? getTranslation('free') : getTranslation('owned')) + '</span>' : '<span class="avatar-item-price">' + cat.price + ' 💎</span>';
-                        html += '<div class="avatar-item' + (isActive ? ' active' : '') + (isOwned ? ' owned' : '') + '" onclick="selectAvatar(\'' + item.id + '\',' + cat.price + ')">';
+                        var priceHtml = '<span class="avatar-item-price free">' + getTranslation('free') + '</span>';
+                        html += '<div class="avatar-item' + (isActive ? ' active' : '') + '" onclick="selectAvatar(\'' + item.id + '\')">';
                         html += '<div class="avatar-item-img">' + imgHtml + '</div>' + priceHtml + '</div>';
                     });
                     html += '</div></div>';
@@ -889,33 +726,12 @@
             window.openAvatarModal = openAvatarModal;
             window.closeAvatarModal = closeAvatarModal;
 
-            window.selectAvatar = function(itemId, price) {
-                var owned = isAvatarOwned(itemId);
-                if (price === 0 || owned) {
-                    currentAvatar = itemId;
-                    fetchData('updateUser', {avatar: itemId});
-                    updateProfileAvatar();
-                    closeAvatarModal();
-                    return;
-                }
-                if (userDiamonds < price) {
-                    if (webApp) webApp.showAlert('الماس کافی نداری!');
-                    return;
-                }
-                userDiamonds -= price;
-                document.getElementById('diamondsValue').textContent = userDiamonds;
-                fetchData('updateUser', {diamonds: userDiamonds});
-                var ownedAvatars = [];
-                try { ownedAvatars = JSON.parse(localStorage.getItem('ownedAvatars') || '[]'); } catch(e) {}
-                if (ownedAvatars.indexOf(itemId) === -1) {
-                    ownedAvatars.push(itemId);
-                    localStorage.setItem('ownedAvatars', JSON.stringify(ownedAvatars));
-                }
+            window.selectAvatar = function(itemId) {
                 currentAvatar = itemId;
                 fetchData('updateUser', {avatar: itemId});
                 updateProfileAvatar();
                 closeAvatarModal();
-                if (webApp) webApp.showAlert('آواتار خریداری شد!');
+                triggerHaptic('light');
             };
 
             function updateProfileAvatar() {
@@ -928,83 +744,17 @@
             }
             window.openSupportLink = openSupportLink;
 
-            function calculateGameResult(g, myId) {
-                var isP1 = String(g.player1) === String(myId);
-                
-                if (g.result && (g.result === 'win' || g.result === 'lose' || g.result === 'draw')) {
-                    return g.result;
-                }
-                
-                var myTotalCorrect = 0;
-                var oppTotalCorrect = 0;
-                
-                for (var r = 1; r <= 5; r++) {
-                    var roundData = g['round' + r];
-                    if (roundData) {
-                        try {
-                            var parsed = JSON.parse(roundData);
-                            if (parsed && typeof parsed === 'object') {
-                                if (parsed.yourCorrect !== undefined && parsed.botCorrect !== undefined) {
-                                    myTotalCorrect += parsed.yourCorrect || 0;
-                                    oppTotalCorrect += parsed.botCorrect || 0;
-                                } else if (parsed.p1Correct !== undefined && parsed.p2Correct !== undefined) {
-                                    if (isP1) {
-                                        myTotalCorrect += parsed.p1Correct || 0;
-                                        oppTotalCorrect += parsed.p2Correct || 0;
-                                    } else {
-                                        myTotalCorrect += parsed.p2Correct || 0;
-                                        oppTotalCorrect += parsed.p1Correct || 0;
-                                    }
-                                }
-                            }
-                        } catch(e) {
-                            var parts = String(roundData).split('][');
-                            if (parts.length >= 3) {
-                                var p1Ans = parts[1] ? parts[1].replace('[','').replace(']','').replace(/\s/g,'') : '';
-                                var p2Ans = parts[2] ? parts[2].replace('[','').replace(']','').replace(/\s/g,'') : '';
-                                
-                                var p1Correct = 0;
-                                var p2Correct = 0;
-                                
-                                for (var i = 0; i < p1Ans.length; i++) {
-                                    if (p1Ans[i] === 'T') p1Correct++;
-                                }
-                                for (var j = 0; j < p2Ans.length; j++) {
-                                    if (p2Ans[j] === 'T') p2Correct++;
-                                }
-                                
-                                if (isP1) {
-                                    myTotalCorrect += p1Correct;
-                                    oppTotalCorrect += p2Correct;
-                                } else {
-                                    myTotalCorrect += p2Correct;
-                                    oppTotalCorrect += p1Correct;
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                if (myTotalCorrect > oppTotalCorrect) return 'win';
-                if (myTotalCorrect < oppTotalCorrect) return 'lose';
-                return 'draw';
-            }
-
             function renderAchievements(gamesCount, winsCount, score) {
                 var grid = document.getElementById('achievementsGrid');
                 var earned = [];
                 if (gamesCount >= 1) earned.push('first_game');
                 if (gamesCount >= 10) earned.push('10_games');
-                if (gamesCount >= 100) earned.push('100_games');
-                if (gamesCount >= 1000) earned.push('1000_games');
+                if (gamesCount >= 50) earned.push('50_games');
                 if (winsCount >= 1) earned.push('first_win');
                 if (winsCount >= 10) earned.push('10_wins');
-                if (winsCount >= 100) earned.push('100_wins');
-                if (winsCount >= 1000) earned.push('1000_wins');
-                if (score >= 100) earned.push('100_score');
-                if (score >= 1000) earned.push('1000_score');
-                if (score >= 10000) earned.push('10000_score');
-                if (score >= 100000) earned.push('100000_score');
+                if (winsCount >= 50) earned.push('50_wins');
+                if (winsCount >= 5) earned.push('spy_win');
+                if (winsCount >= 3) earned.push('citizen_win');
                 grid.innerHTML = allAchievements.map(function(a) {
                     var unlocked = earned.indexOf(a.id) !== -1;
                     return '<div class="achievement-item' + (unlocked ? '' : ' locked') + '"><span class="achievement-icon">' + a.icon + '</span><span class="achievement-name">' + getTranslation(a.name) + '</span></div>';
@@ -1012,49 +762,42 @@
             }
 
             async function loadProfile() {
-                document.getElementById('profileContent').classList.add('show');
-                
                 var myId = getUserId();
                 
                 var userData = await fetchData('getUser', {});
                 if (userData.ok && userData.data) {
                     var d = userData.data;
-                    userDiamonds = d.diamonds || 0;
                     currentAvatar = d.avatar || 'default';
                     document.getElementById('profileName').textContent = d.name || 'کاربر';
                     document.getElementById('profileUsername').textContent = 'ID: ' + myId;
                     document.getElementById('totalScore').textContent = d.score || 0;
-                    document.getElementById('coinsValue').textContent = d.coins || 0;
-                    document.getElementById('diamondsValue').textContent = userDiamonds;
+                    document.getElementById('scoreValue').textContent = d.score || 0;
                     updateProfileAvatar();
                     document.getElementById('headerLoader').style.display = 'none';
                     document.getElementById('headerCard').style.display = 'block';
                     document.getElementById('statsLoader').style.display = 'flex';
                 }
 
-                var gamesPromise = fetchData('getGamesByPlayer', {});
-                var boardPromise = fetchData('leaderboard', { limit: 100 });
-
-                var gamesData = await gamesPromise;
+                var gamesData = await fetchData('getGamesByPlayer', {});
                 var totalGames = 0, totalWins = 0;
                 
                 if (gamesData.ok && Array.isArray(gamesData.data)) {
                     var myGames = gamesData.data.filter(function(g) {
-                        return String(g.player1) === String(myId) || String(g.player2) === String(myId);
+                        return g.players && g.players.indexOf(myId) !== -1;
                     });
                     
-                    var finishedGames = myGames.filter(function(g) { return g.status === 'finished'; });
+                    var finishedGames = myGames.filter(function(g) { return g.status === 'finish'; });
                     
                     totalGames = finishedGames.length;
                     totalWins = 0;
                     
                     for (var wi = 0; wi < finishedGames.length; wi++) {
-                        var gr = calculateGameResult(finishedGames[wi], myId);
-                        if (gr === 'win') totalWins++;
+                        var gr = finishedGames[wi].final;
+                        if (gr && gr.indexOf('city_won') !== -1) totalWins++;
                     }
                     
                     document.getElementById('totalGames').textContent = totalGames;
-                    document.getElementById('winRate').textContent = totalGames > 0 ? Math.round((totalWins/totalGames)*100) + '%' : '0%';
+                    document.getElementById('totalWins').textContent = totalWins;
                     
                     var list = document.getElementById('gamesList');
                     
@@ -1066,87 +809,39 @@
                         var gamesHtml = '';
                         for (var gi = 0; gi < recentGames.length; gi++) {
                             var g = recentGames[gi];
-                            var gameResult = calculateGameResult(g, myId);
-                            var cls = 'draw', txt = getTranslation('draw');
+                            var cls = 'loss', txt = getTranslation('lose');
                             
-                            if (gameResult === 'win') {
+                            if (g.final && g.final.indexOf('city_won') !== -1) {
                                 cls = 'win';
                                 txt = getTranslation('win');
-                            } else if (gameResult === 'lose') {
-                                cls = 'loss';
-                                txt = getTranslation('lose');
                             }
                             
-                            gamesHtml += '<div class="game-item"><span class="game-players" id="opp-' + g.id + '"><span class="game-avatar"><i class="fa-solid fa-user"></i></span> ...</span><span class="game-score ' + cls + '">' + txt + '</span></div>';
+                            gamesHtml += '<div class="game-item"><span class="game-players"><span class="game-avatar"><i class="fa-solid fa-users"></i></span> ' + g.id + '</span><span class="game-score ' + cls + '">' + txt + '</span></div>';
                         }
                         list.innerHTML = gamesHtml;
-                        
-                        for (var j = 0; j < recentGames.length; j++) {
-                            (function(g) {
-                                var isP1 = String(g.player1) === String(myId);
-                                var oppId = isP1 ? g.player2 : g.player1;
-                                getPlayerInfo(oppId).then(function(info) {
-                                    var el = document.getElementById('opp-' + g.id);
-                                    if (el) el.innerHTML = '<span class="game-avatar">' + getAvatarHtml(info.avatar) + '</span> ' + info.name;
-                                });
-                            })(recentGames[j]);
-                        }
                     }
                     
                     document.getElementById('statsLoader').style.display = 'none';
                     document.getElementById('statsGrid').style.display = 'grid';
-                    document.getElementById('leagueLoader').style.display = 'flex';
-                }
-
-                var boardData = await boardPromise;
-                if (boardData.ok && Array.isArray(boardData.data)) {
-                    var myScore = userData.ok && userData.data ? userData.data.score || 0 : 0;
-                    var myRank = -1;
-                    for (var i = 0; i < boardData.data.length; i++) {
-                        if (String(boardData.data[i].username) === String(myId)) {
-                            myRank = i;
-                            break;
-                        }
-                    }
-                    document.getElementById('rankLoader').style.display = 'none';
-                    if (myRank === 0) {
-                        document.getElementById('rankProgressCard').style.display = 'block';
-                        document.getElementById('rankProgressBar').style.width = '100%';
-                        document.getElementById('rankCurrentScore').textContent = myScore;
-                        document.getElementById('rankNextScore').textContent = '🏆 ' + getTranslation('first_place');
-                        document.getElementById('rankProgressPercent').textContent = '100%';
-                    } else if (myRank > 0) {
-                        var nextPlayer = boardData.data[myRank - 1];
-                        var pct = Math.min(100, Math.round((myScore / (nextPlayer.score || 1)) * 100));
-                        document.getElementById('rankProgressCard').style.display = 'block';
-                        document.getElementById('rankProgressBar').style.width = pct + '%';
-                        document.getElementById('rankCurrentScore').textContent = myScore + ' (' + getTranslation('you') + ')';
-                        document.getElementById('rankNextScore').textContent = (nextPlayer.score || 0) + ' (' + (nextPlayer.name || '؟') + ')';
-                        document.getElementById('rankProgressPercent').textContent = pct + '%';
-                    }
-                }
-
-                setTimeout(function() {
-                    document.getElementById('leagueLoader').style.display = 'none';
-                    document.getElementById('leagueCard').style.display = 'block';
                     document.getElementById('achievementsLoader').style.display = 'flex';
-                }, 500);
+                }
 
                 setTimeout(function() {
                     document.getElementById('achievementsLoader').style.display = 'none';
                     document.getElementById('achievementsCard').style.display = 'block';
                     renderAchievements(totalGames, totalWins, userData.ok && userData.data ? userData.data.score || 0 : 0);
                     document.getElementById('historyLoader').style.display = 'flex';
-                }, 1000);
+                }, 800);
 
                 setTimeout(function() {
                     document.getElementById('historyLoader').style.display = 'none';
                     document.getElementById('historyCard').style.display = 'block';
-                }, 1500);
+                }, 1200);
             }
 
             if (webApp) {
                 webApp.ready();
+                webApp.expand();
                 webApp.BackButton.show();
                 webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
             }
