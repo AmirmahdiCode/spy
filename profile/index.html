@@ -270,7 +270,6 @@
         }
         .avatar-item:active { transform: scale(.95); }
         .avatar-item.active { border-color: #f59e0b; border-width: 2px; }
-        .avatar-item.owned { border-color: #10b981; }
         .avatar-item-img {
             width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 4px;
             background: #fff; border: var(--border);
@@ -280,7 +279,6 @@
         .avatar-item-img img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-item-price { font-size: 7px; font-weight: 700; color: var(--text-light); }
         .avatar-item-price.free { color: #059669; }
-        .avatar-item-price.owned { color: #10b981; }
 
         .support-notification {
             position: fixed; top: 75px; right: 5%; left: 5%;
@@ -505,15 +503,18 @@
                     settings_nav: 'تنظیمات',
                     icons: 'آیکون‌ها',
                     free: 'رایگان',
-                    owned: 'خریداری شده',
                     first_game: 'اولین بازی',
                     '10_games': '۱۰ بازی',
-                    '50_games': '۵۰ بازی',
+                    '100_games': '۱۰۰ بازی',
+                    '1000_games': '۱۰۰۰ بازی',
                     first_win: 'اولین برد',
                     '10_wins': '۱۰ برد',
-                    '50_wins': '۵۰ برد',
-                    spy_win: 'برد جاسوس',
-                    citizen_win: 'برد شهروند',
+                    '100_wins': '۱۰۰ برد',
+                    '1000_wins': '۱۰۰۰ برد',
+                    '100_score': '۱۰۰ امتیاز',
+                    '1000_score': '۱۰۰۰ امتیاز',
+                    '10000_score': '۱۰۰۰۰ امتیاز',
+                    '100000_score': '۱۰۰۰۰۰ امتیاز',
                     win: 'برد',
                     lose: 'باخت',
                     no_games: 'بازی‌ای یافت نشد'
@@ -536,15 +537,18 @@
                     settings_nav: 'Settings',
                     icons: 'Icons',
                     free: 'Free',
-                    owned: 'Owned',
                     first_game: 'First Game',
                     '10_games': '10 Games',
-                    '50_games': '50 Games',
+                    '100_games': '100 Games',
+                    '1000_games': '1000 Games',
                     first_win: 'First Win',
                     '10_wins': '10 Wins',
-                    '50_wins': '50 Wins',
-                    spy_win: 'Spy Win',
-                    citizen_win: 'Citizen Win',
+                    '100_wins': '100 Wins',
+                    '1000_wins': '1000 Wins',
+                    '100_score': '100 Score',
+                    '1000_score': '1000 Score',
+                    '10000_score': '10000 Score',
+                    '100000_score': '100000 Score',
                     win: 'Win',
                     lose: 'Loss',
                     no_games: 'No games found'
@@ -567,15 +571,18 @@
                     settings_nav: 'الإعدادات',
                     icons: 'أيقونات',
                     free: 'مجاني',
-                    owned: 'مملوك',
                     first_game: 'أول مباراة',
                     '10_games': '۱۰ مباريات',
-                    '50_games': '۵۰ مباراة',
+                    '100_games': '۱۰۰ مباراة',
+                    '1000_games': '۱۰۰۰ مباراة',
                     first_win: 'أول فوز',
                     '10_wins': '۱۰ انتصارات',
-                    '50_wins': '۵۰ انتصار',
-                    spy_win: 'فوز الجاسوس',
-                    citizen_win: 'فوز المواطن',
+                    '100_wins': '۱۰۰ انتصار',
+                    '1000_wins': '۱۰۰۰ انتصار',
+                    '100_score': '۱۰۰ نقطة',
+                    '1000_score': '۱۰۰۰ نقطة',
+                    '10000_score': '۱۰۰۰۰ نقطة',
+                    '100000_score': '۱۰۰۰۰۰ نقطة',
                     win: 'فوز',
                     lose: 'خسارة',
                     no_games: 'لا توجد مباريات'
@@ -600,12 +607,16 @@
             var allAchievements = [
                 {id:'first_game', name:'first_game', icon:'🕹️'},
                 {id:'10_games', name:'10_games', icon:'🎮'},
-                {id:'50_games', name:'50_games', icon:'💻'},
+                {id:'100_games', name:'100_games', icon:'💻'},
+                {id:'1000_games', name:'1000_games', icon:'🔬'},
                 {id:'first_win', name:'first_win', icon:'🎉'},
                 {id:'10_wins', name:'10_wins', icon:'🎈'},
-                {id:'50_wins', name:'50_wins', icon:'🎁'},
-                {id:'spy_win', name:'spy_win', icon:'🕵️'},
-                {id:'citizen_win', name:'citizen_win', icon:'👥'}
+                {id:'100_wins', name:'100_wins', icon:'🎁'},
+                {id:'1000_wins', name:'1000_wins', icon:'🍰'},
+                {id:'100_score', name:'100_score', icon:'✨'},
+                {id:'1000_score', name:'1000_score', icon:'⭐'},
+                {id:'10000_score', name:'10000_score', icon:'💫'},
+                {id:'100000_score', name:'100000_score', icon:'☄️'}
             ];
 
             function getSettings() {
@@ -749,12 +760,16 @@
                 var earned = [];
                 if (gamesCount >= 1) earned.push('first_game');
                 if (gamesCount >= 10) earned.push('10_games');
-                if (gamesCount >= 50) earned.push('50_games');
+                if (gamesCount >= 100) earned.push('100_games');
+                if (gamesCount >= 1000) earned.push('1000_games');
                 if (winsCount >= 1) earned.push('first_win');
                 if (winsCount >= 10) earned.push('10_wins');
-                if (winsCount >= 50) earned.push('50_wins');
-                if (winsCount >= 5) earned.push('spy_win');
-                if (winsCount >= 3) earned.push('citizen_win');
+                if (winsCount >= 100) earned.push('100_wins');
+                if (winsCount >= 1000) earned.push('1000_wins');
+                if (score >= 100) earned.push('100_score');
+                if (score >= 1000) earned.push('1000_score');
+                if (score >= 10000) earned.push('10000_score');
+                if (score >= 100000) earned.push('100000_score');
                 grid.innerHTML = allAchievements.map(function(a) {
                     var unlocked = earned.indexOf(a.id) !== -1;
                     return '<div class="achievement-item' + (unlocked ? '' : ' locked') + '"><span class="achievement-icon">' + a.icon + '</span><span class="achievement-name">' + getTranslation(a.name) + '</span></div>';
