@@ -35,17 +35,17 @@
             --bg: #000000;
             --bg2: #1a1a1a;
             --bg3: #333333;
-            --primary: #ffffff;
-            --primary-dark: #cccccc;
-            --primary-light: #999999;
-            --primary-rgb: 255, 255, 255;
+            --primary: #666666;
+            --primary-dark: #999999;
+            --primary-light: #444444;
+            --primary-rgb: 102, 102, 102;
             --dark: #ffffff;
             --text: #cccccc;
-            --text-light: #666666;
+            --text-light: #888888;
             --white: #1a1a1a;
             --card-bg: #1a1a1a;
-            --shadow: 3px 3px 0 #000000;
-            --border: 1px solid #ffffff;
+            --shadow: 3px 3px 0 #666666;
+            --border: 1px solid #666666;
         }
 
         [data-special-theme="crime"] {
@@ -53,6 +53,8 @@
             --primary-dark: #b91c1c;
             --primary-light: #fca5a5;
             --primary-rgb: 220, 38, 38;
+            --border: 1px solid #dc2626;
+            --shadow: 3px 3px 0 #dc2626;
         }
 
         [data-theme="dark"][data-special-theme="crime"] {
@@ -60,6 +62,8 @@
             --primary-dark: #dc2626;
             --primary-light: #fca5a5;
             --primary-rgb: 239, 68, 68;
+            --border: 1px solid #ef4444;
+            --shadow: 3px 3px 0 #ef4444;
         }
 
         [data-animation="off"] * { animation: none !important; transition: none !important; }
@@ -155,12 +159,6 @@
         .theme-option.active i { color: #fff; }
         .theme-option-label { font-size: 11px; font-weight: 700; color: var(--dark); }
 
-        .color-options { display: flex; gap: 8px; flex-wrap: wrap; }
-        .color-option { width: 40px; height: 40px; border-radius: 50%; border: var(--border); cursor: pointer; box-shadow: 2px 2px 0 #000; transition: all 0.2s ease; }
-        .color-option:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .color-option.active { box-shadow: 0 0 15px var(--primary), 2px 2px 0 #000; transform: scale(1.1); }
-        .color-option .color-preview { width: 100%; height: 100%; border-radius: 50%; }
-
         .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--bg3); }
         .setting-item:last-child { border-bottom: none; }
         .setting-item.disabled { opacity: 0.4; pointer-events: none; }
@@ -181,6 +179,9 @@
             border: var(--border); border-radius: 50%; transition: all 0.3s ease;
         }
         .toggle-switch.active::after { right: 2px; }
+
+        [dir="ltr"] .toggle-switch::after { left: 20px; right: auto; }
+        [dir="ltr"] .toggle-switch.active::after { left: 2px; right: auto; }
 
         .support-notification {
             position: fixed; top: 75px; right: 5%; left: 5%;
@@ -268,7 +269,16 @@
     <main class="main-container">
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-fonts"></i> فونت</div>
+            <div class="settings-title"><i class="bi bi-translate"></i> <span data-i18n="language">زبان</span></div>
+            <div class="font-options">
+                <button class="font-btn" data-lang="fa" onclick="setLanguage('fa')"> فارسی</button>
+                <button class="font-btn" data-lang="ar" onclick="setLanguage('ar')"> العربية</button>
+                <button class="font-btn" data-lang="en" onclick="setLanguage('en')"> English</button>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="settings-title"><i class="bi bi-fonts"></i> <span data-i18n="font">فونت</span></div>
             <div class="font-options">
                 <button class="font-btn" data-font="Samim" style="font-family: 'Samim', Tahoma, sans-serif;" onclick="setFont('Samim')">صمیم</button>
                 <button class="font-btn" data-font="Sahel" style="font-family: 'Sahel', Tahoma, sans-serif;" onclick="setFont('Sahel')">ساحل</button>
@@ -279,46 +289,46 @@
         </div>
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-palette"></i> تم</div>
+            <div class="settings-title"><i class="bi bi-palette"></i> <span data-i18n="theme">تم</span></div>
             <div class="theme-options">
                 <div class="theme-option" data-special-theme="none" onclick="setSpecialTheme('none')">
                     <i class="bi bi-circle"></i>
-                    <div><div class="theme-option-label">کلاسیک</div></div>
+                    <div><div class="theme-option-label" data-i18n="classic">کلاسیک</div></div>
                 </div>
                 <div class="theme-option" data-special-theme="crime" onclick="setSpecialTheme('crime')">
                     <i class="bi bi-droplet"></i>
-                    <div><div class="theme-option-label">جنایی</div></div>
+                    <div><div class="theme-option-label" data-i18n="crime">جنایی</div></div>
                 </div>
             </div>
         </div>
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-moon-stars"></i> حالت نمایش</div>
+            <div class="settings-title"><i class="bi bi-moon-stars"></i> <span data-i18n="display_mode">حالت نمایش</span></div>
             <div class="theme-options">
                 <div class="theme-option" data-theme-mode="light" onclick="setTheme('light')">
                     <i class="bi bi-sun"></i>
-                    <div><div class="theme-option-label">حالت روشن</div></div>
+                    <div><div class="theme-option-label" data-i18n="light">حالت روشن</div></div>
                 </div>
                 <div class="theme-option" data-theme-mode="dark" onclick="setTheme('dark')">
                     <i class="bi bi-moon"></i>
-                    <div><div class="theme-option-label">حالت تاریک</div></div>
+                    <div><div class="theme-option-label" data-i18n="dark">حالت تاریک</div></div>
                 </div>
             </div>
         </div>
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-sliders"></i> سایر</div>
+            <div class="settings-title"><i class="bi bi-sliders"></i> <span data-i18n="other">سایر</span></div>
             <div class="setting-item">
                 <div class="setting-info">
                     <i class="bi bi-lightning-charge"></i>
-                    <div><div class="setting-label">انیمیشن‌ها</div></div>
+                    <div><div class="setting-label" data-i18n="animation">انیمیشن‌ها</div></div>
                 </div>
                 <div class="toggle-switch active" id="animationToggle" onclick="toggleAnimation()"></div>
             </div>
             <div class="setting-item">
                 <div class="setting-info">
                     <i class="bi bi-phone-vibrate"></i>
-                    <div><div class="setting-label">لرزش</div></div>
+                    <div><div class="setting-label" data-i18n="haptic">لرزش</div></div>
                 </div>
                 <div class="toggle-switch active" id="hapticToggle" onclick="toggleHaptic()"></div>
             </div>
@@ -327,8 +337,8 @@
                     <i class="bi bi-envelope"></i>
                     <div>
                         <div class="setting-label">
-                            دریافت پیام دعوت
-                            <span class="coming-soon-badge">به زودی</span>
+                            <span data-i18n="invite_messages">دریافت پیام دعوت</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به زودی</span>
                         </div>
                     </div>
                 </div>
@@ -347,20 +357,81 @@
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='../dashboard/'"><img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span>خانه</span></div>
-        <div class="nav-item" onclick="window.location.href='../ranking/'"><img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span>رتبه</span></div>
-        <div class="nav-item" onclick="window.location.href='../profile/'"><img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span>پروفایل</span></div>
-        <div class="nav-item active" onclick="window.location.href='../setting/'"><img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span>تنظیمات</span></div>
+        <div class="nav-item" onclick="window.location.href='../dashboard/'"><img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="home">خانه</span></div>
+        <div class="nav-item" onclick="window.location.href='../ranking/'"><img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="ranking">رتبه</span></div>
+        <div class="nav-item" onclick="window.location.href='../profile/'"><img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="profile">پروفایل</span></div>
+        <div class="nav-item active" onclick="window.location.href='../setting/'"><img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="settings_nav">تنظیمات</span></div>
     </nav>
 
     <script>
         (function() {
             var webApp = window.Eitaa?.WebApp;
+            var currentLang = 'fa';
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
             document.addEventListener('copy', function(e) { e.preventDefault(); });
             document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+            var translations = {
+                fa: {
+                    language: 'زبان',
+                    font: 'فونت',
+                    theme: 'تم',
+                    classic: 'کلاسیک',
+                    crime: 'جنایی',
+                    display_mode: 'حالت نمایش',
+                    light: 'حالت روشن',
+                    dark: 'حالت تاریک',
+                    other: 'سایر',
+                    animation: 'انیمیشن‌ها',
+                    haptic: 'لرزش',
+                    invite_messages: 'دریافت پیام دعوت',
+                    coming_soon: 'به زودی',
+                    home: 'خانه',
+                    ranking: 'رتبه',
+                    profile: 'پروفایل',
+                    settings_nav: 'تنظیمات'
+                },
+                en: {
+                    language: 'Language',
+                    font: 'Font',
+                    theme: 'Theme',
+                    classic: 'Classic',
+                    crime: 'Crime',
+                    display_mode: 'Display Mode',
+                    light: 'Light Mode',
+                    dark: 'Dark Mode',
+                    other: 'Other',
+                    animation: 'Animations',
+                    haptic: 'Haptic',
+                    invite_messages: 'Receive Invite Messages',
+                    coming_soon: 'Coming Soon',
+                    home: 'Home',
+                    ranking: 'Ranking',
+                    profile: 'Profile',
+                    settings_nav: 'Settings'
+                },
+                ar: {
+                    language: 'اللغة',
+                    font: 'الخط',
+                    theme: 'المظهر',
+                    classic: 'كلاسيكي',
+                    crime: 'جريمة',
+                    display_mode: 'وضع العرض',
+                    light: 'وضع فاتح',
+                    dark: 'وضع داكن',
+                    other: 'أخرى',
+                    animation: 'الحركات',
+                    haptic: 'الاهتزاز',
+                    invite_messages: 'استقبال رسائل الدعوة',
+                    coming_soon: 'قريبًا',
+                    home: 'الرئيسية',
+                    ranking: 'الترتيب',
+                    profile: 'الملف',
+                    settings_nav: 'الإعدادات'
+                }
+            };
 
             var fontMap = {
                 'Samim': "'Samim', Tahoma, sans-serif",
@@ -373,18 +444,21 @@
             function getSettings() {
                 try {
                     var raw = localStorage.getItem('mafiaSettings');
-                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim' };
+                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
                     var p = JSON.parse(raw);
                     if (!p.theme) p.theme = 'light';
                     if (!p.specialTheme) p.specialTheme = 'none';
                     if (p.animation === undefined) p.animation = true;
                     if (p.haptic === undefined) p.haptic = true;
                     if (!p.font) p.font = 'Samim';
+                    if (!p.language) p.language = 'fa';
                     return p;
-                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim' }; }
+                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
             }
 
             function saveSettings(s) { localStorage.setItem('mafiaSettings', JSON.stringify(s)); }
+
+            function getTranslation(k) { var t = translations[currentLang] || translations.fa; return t[k] || translations.fa[k] || k; }
 
             function triggerHaptic(style) {
                 var s = getSettings();
@@ -401,8 +475,22 @@
                 document.querySelectorAll('.font-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.font === font); });
             }
 
+            function applyLanguage(lang) {
+                var t = translations[lang] || translations.fa;
+                document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                    var k = el.getAttribute('data-i18n');
+                    if (t[k]) el.textContent = t[k];
+                });
+                if (lang === 'en') {
+                    document.documentElement.setAttribute('dir', 'ltr');
+                } else {
+                    document.documentElement.setAttribute('dir', 'rtl');
+                }
+            }
+
             function applyTheme() {
                 var s = getSettings();
+                currentLang = s.language || 'fa';
                 var t = s.theme || 'light';
                 var st = s.specialTheme || 'none';
                 var f = s.font || 'Samim';
@@ -413,10 +501,13 @@
                 applyFont(f);
                 document.querySelectorAll('.theme-option[data-theme-mode]').forEach(function(b) { b.classList.toggle('active', b.dataset.themeMode === t); });
                 document.querySelectorAll('.theme-option[data-special-theme]').forEach(function(b) { b.classList.toggle('active', b.dataset.specialTheme === st); });
+                document.querySelectorAll('.font-btn[data-lang]').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === s.language); });
                 document.getElementById('animationToggle').classList.toggle('active', s.animation !== false);
                 document.getElementById('hapticToggle').classList.toggle('active', s.haptic !== false);
+                applyLanguage(s.language);
             }
 
+            window.setLanguage = function(l) { var s = getSettings(); s.language = l; saveSettings(s); applyTheme(); triggerHaptic('light'); };
             window.setFont = function(f) { var s = getSettings(); s.font = f; saveSettings(s); applyTheme(); triggerHaptic('light'); };
             window.setTheme = function(t) { var s = getSettings(); s.theme = t; saveSettings(s); applyTheme(); triggerHaptic('light'); };
             window.setSpecialTheme = function(st) { var s = getSettings(); s.specialTheme = st; saveSettings(s); applyTheme(); triggerHaptic('light'); };
@@ -431,6 +522,7 @@
 
             if (webApp) {
                 webApp.ready();
+                webApp.expand();
                 webApp.BackButton.show();
                 webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
             }
