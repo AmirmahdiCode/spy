@@ -256,9 +256,9 @@
     <header class="header">
         <div class="header-inner">
             <div class="header-right">
-                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="جاسوس مافیایی" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
+                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="Mafia Spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
                 <div>
-                    <div class="header-title">جاسوس مافیایی</div>
+                    <div class="header-title" id="headerTitle">جاسوس مافیایی</div>
                 </div>
             </div>
         </div>
@@ -466,6 +466,15 @@
                 }
             }
 
+            function updateHeaderTitle(lang) {
+                var titleEl = document.getElementById('headerTitle');
+                if (lang === 'en') {
+                    titleEl.textContent = 'Mafia Spy';
+                } else {
+                    titleEl.textContent = 'جاسوس مافیایی';
+                }
+            }
+
             function applyFont(font) {
                 var fontFamily = fontMap[font] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
@@ -484,6 +493,7 @@
                 } else {
                     document.documentElement.setAttribute('dir', 'rtl');
                 }
+                updateHeaderTitle(lang);
             }
 
             function applyTheme() {
