@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رتبه‌بندی | جاسوس مافیایی</title>
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg2: #f5f5f5;
+            --bg3: #e0e0e0;
+            --primary: #000000;
+            --primary-dark: #333333;
+            --primary-light: #666666;
+            --primary-rgb: 0, 0, 0;
+            --dark: #000000;
+            --text: #333333;
+            --text-light: #999999;
+            --white: #ffffff;
+            --card-bg: #ffffff;
+            --shadow: 3px 3px 0 #000000;
+            --radius: 12px;
+            --border: 1px solid #000000;
+            --gold: #f59e0b;
+            --font: 'Samim', Tahoma, sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #000000;
+            --bg2: #1a1a1a;
+            --bg3: #333333;
+            --primary: #666666;
+            --primary-dark: #999999;
+            --primary-light: #444444;
+            --primary-rgb: 102, 102, 102;
+            --dark: #ffffff;
+            --text: #cccccc;
+            --text-light: #888888;
+            --white: #1a1a1a;
+            --card-bg: #1a1a1a;
+            --shadow: 3px 3px 0 #000000;
+            --border: 1px solid #666666;
+        }
+
+        [data-special-theme="crime"] {
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --primary-light: #fca5a5;
+            --primary-rgb: 220, 38, 38;
+            --border: 1px solid #dc2626;
+        }
+
+        [data-theme="dark"][data-special-theme="crime"] {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #fca5a5;
+            --primary-rgb: 239, 68, 68;
+            --border: 1px solid #ef4444;
+        }
+
+        [data-animation="off"] * { animation: none !important; transition: none !important; }
+
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+            -webkit-user-drag: none; user-drag: none;
+        }
+        img { pointer-events: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; user-drag: none; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: font-family 0.3s ease;
+        }
+
+        .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .header-inner { display: flex; align-items: center; justify-content: flex-start; max-width: 600px; margin: 0 auto; }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+
+        .header-logo {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: none;
+            box-shadow: none;
+            flex-shrink: 0;
+        }
+        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
+
+        .main-container {
+            position: relative; z-index: 5;
+            max-width: 600px; width: 100%;
+            margin: 16px auto; padding: 0 12px 160px;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+
+        .search-box { position: relative; }
+        .search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 12px;
+            border: var(--border);
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 11px;
+            box-shadow: var(--shadow);
+            outline: none;
+        }
+        [dir="ltr"] .search-box input { padding: 10px 12px 10px 40px; }
+        .search-box i {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+        [dir="ltr"] .search-box i { right: auto; left: 12px; }
+
+        .rank-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .rank-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .rank-item:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .rank-item.is-me { border-color: var(--primary); border-width: 2px; background: var(--bg2); }
+
+        .rank-number {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-light);
+            min-width: 30px;
+            text-align: center;
+        }
+        .rank-number.gold { color: #f59e0b; font-size: 16px; }
+        .rank-number.silver { color: #94a3b8; font-size: 16px; }
+        .rank-number.bronze { color: #d97706; font-size: 16px; }
+
+        .rank-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--bg2);
+            border: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--primary);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .rank-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .rank-info { flex: 1; min-width: 0; }
+        .rank-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .rank-name .badge-icon {
+            width: 16px; height: 16px; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .rank-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .rank-name .badge-icon i { font-size: 12px; color: #3b82f6; }
+        .rank-score { font-size: 8px; color: var(--text-light); }
+
+        .rank-badge-me {
+            font-size: 7px;
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--bg2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: var(--border);
+        }
+
+        .section-loader {
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-loader-spinner {
+            width: 30px;
+            height: 30px;
+            border: 4px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .section-loader-text {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .my-rank-float {
+            position: fixed;
+            bottom: 60px;
+            right: 5%;
+            left: 5%;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 25px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 500;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            cursor: pointer;
+        }
+        [data-theme="dark"] .my-rank-float {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+        }
+        .my-rank-float .my-rank-number {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            min-width: 25px;
+        }
+        .my-rank-float .my-rank-avatar {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--bg2);
+            border: 1px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .my-rank-float .my-rank-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .my-rank-float .my-rank-name {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--dark);
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .my-rank-float .my-rank-name .badge-icon {
+            width: 14px; height: 14px; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .my-rank-float .my-rank-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .my-rank-float .my-rank-name .badge-icon i { font-size: 10px; color: #3b82f6; }
+        .my-rank-float .my-rank-score {
+            font-size: 9px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+
+        .profile-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .profile-modal-overlay.show { display: flex; }
+        .profile-modal {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 5px 5px 0 #000;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            text-align: center;
+        }
+        .profile-modal-close {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 28px;
+            height: 28px;
+            border: var(--border);
+            border-radius: 50%;
+            background: var(--bg2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .profile-modal-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            background: var(--bg2);
+            border: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary);
+            overflow: hidden;
+        }
+        .profile-modal-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-modal-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .profile-modal-name .badge-icon {
+            width: 18px; height: 18px; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .profile-modal-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .profile-modal-name .badge-icon i { font-size: 14px; color: #3b82f6; }
+        .profile-modal-username { font-size: 9px; color: var(--text-light); direction: ltr; margin-bottom: 10px; }
+        .profile-modal-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .profile-modal-stat {
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: 2px 2px 0 #000;
+        }
+        .profile-modal-stat-value { font-size: 14px; font-weight: 800; color: var(--dark); }
+        .profile-modal-stat-label { font-size: 7px; color: var(--text-light); }
+
+        .modal-loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 20px auto;
+        }
+
+        .support-notification {
+            position: fixed; top: 75px; right: 5%; left: 5%;
+            max-width: 400px; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 10px 14px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 2000;
+            animation: slideDownNotif 0.5s ease forwards, slideUpNotif 0.5s ease 4.5s forwards;
+            cursor: pointer;
+        }
+        [data-theme="dark"] .support-notification {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+        }
+        .support-notification img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary); object-fit: cover; }
+        .support-notification .notif-info { flex: 1; }
+        .support-notification .notif-name { font-size: 10px; font-weight: 800; color: var(--dark); }
+        .support-notification i { color: var(--text-light); font-size: 10px; }
+
+        @keyframes slideDownNotif { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpNotif { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+        .bottom-nav {
+            position: fixed; bottom: 8px; right: 5%; left: 5%; width: 90%; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 25px;
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 4px 0; z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+        [data-theme="dark"] .bottom-nav {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 1px;
+            cursor: pointer; text-decoration: none; color: var(--text-light);
+            padding: 4px 10px; font-family: var(--font); background: none; border: none; font-size: 12px;
+        }
+        .nav-item img {
+            width: 20px; height: 20px;
+            opacity: 0.5;
+            filter: brightness(0);
+        }
+        [data-theme="dark"] .nav-item img {
+            filter: brightness(0) invert(1);
+        }
+        .nav-item.active img {
+            opacity: 1;
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+        .nav-item span { font-size: 7px; font-weight: 600; }
+        .nav-item.active { color: var(--primary); }
+
+        @media(max-width:480px) { .rank-list { gap: 6px; } }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-right">
+                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="Mafia Spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
+                <div>
+                    <div class="header-title" id="headerTitle">جاسوس مافیایی</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="search-box">
+            <i class="bi bi-search"></i>
+            <input type="text" id="searchInput" placeholder="جستجوی کاربر..." data-i18n-placeholder="search_user" oninput="filterRankings()">
+        </div>
+        <div class="section-loader" id="rankLoader">
+            <div class="section-loader-spinner"></div>
+            <div class="section-loader-text" data-i18n="loading_rankings">در حال دریافت رتبه‌ها...</div>
+        </div>
+        <div class="rank-list" id="rankList"></div>
+    </main>
+
+    <div class="my-rank-float" id="myRankFloat" style="display:none;" onclick="scrollToMyRank()">
+        <span class="my-rank-number" id="myRankFloatNumber">-</span>
+        <span class="my-rank-avatar" id="myRankFloatAvatar"><i class="fa-solid fa-user"></i></span>
+        <span class="my-rank-name" id="myRankFloatName">...</span>
+        <span class="my-rank-score" id="myRankFloatScore">0</span>
+    </div>
+
+    <div class="profile-modal-overlay" id="profileModalOverlay">
+        <div class="profile-modal">
+            <div class="profile-modal-close" onclick="closeProfileModal()"><i class="bi bi-x-lg"></i></div>
+            <div id="modalLoader" class="modal-loader"></div>
+            <div id="modalContent" style="display:none;">
+                <div class="profile-modal-avatar" id="modalAvatar"><i class="fa-solid fa-user"></i></div>
+                <div class="profile-modal-name" id="modalName"></div>
+                <div class="profile-modal-username" id="modalUsername"></div>
+                <div class="profile-modal-stats">
+                    <div class="profile-modal-stat"><div class="profile-modal-stat-value" id="modalScore">0</div><div class="profile-modal-stat-label" data-i18n="score">امتیاز</div></div>
+                    <div class="profile-modal-stat"><div class="profile-modal-stat-value" id="modalGames">0</div><div class="profile-modal-stat-label" data-i18n="games">بازی</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="support-notification" id="supportNotification" onclick="openSupportLink()">
+        <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="notif-info">
+            <div class="notif-name">امیرمهدی | Amirmahdi</div>
+        </div>
+        <i class="bi bi-chevron-left"></i>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='../dashboard/'">
+            <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <span data-i18n="home">خانه</span>
+        </div>
+        <div class="nav-item active" onclick="window.location.href='../ranking/'">
+            <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <span data-i18n="ranking">رتبه</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='../profile/'">
+            <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <span data-i18n="profile">پروفایل</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='../setting/'">
+            <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <span data-i18n="settings_nav">تنظیمات</span>
+        </div>
+    </nav>
+
+    <script>
+        (function() {
+            var webApp = window.Eitaa?.WebApp;
+            var API_URL = 'https://script.google.com/macros/s/AKfycbx_mJ5tDkGkwVhyGr5R_POJMBq2Y6AkI7HxJ82csk-NuaeFPl4sYm9COtlCoGFWnF7Y/exec';
+            var allRankings = [];
+            var currentLang = 'fa';
+
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+            document.addEventListener('copy', function(e) { e.preventDefault(); });
+            document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+            var fontMap = {
+                'Samim': "'Samim', Tahoma, sans-serif",
+                'Sahel': "'Sahel', Tahoma, sans-serif",
+                'IRANSans': "'IRANSans', Tahoma, sans-serif",
+                'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
+                'Estedad': "'Estedad', Tahoma, sans-serif"
+            };
+
+            var iconAvatars = {
+                'icon_game': 'fa-gamepad', 'icon_trophy': 'fa-trophy', 'icon_star': 'fa-star',
+                'icon_bolt': 'fa-bolt', 'icon_fire': 'fa-fire', 'icon_crown': 'fa-crown',
+                'icon_medal': 'fa-medal', 'icon_ghost': 'fa-ghost',
+                'icon_hat': 'fa-hat-wizard', 'icon_shield': 'fa-shield-halved'
+            };
+
+            var translations = {
+                fa: {
+                    search_user: 'جستجوی کاربر...',
+                    loading_rankings: 'در حال دریافت رتبه‌ها...',
+                    no_users: 'کاربری یافت نشد',
+                    score: 'امتیاز',
+                    games: 'بازی',
+                    home: 'خانه',
+                    ranking: 'رتبه',
+                    profile: 'پروفایل',
+                    settings_nav: 'تنظیمات',
+                    you: 'شما',
+                    error_loading: 'خطا در دریافت اطلاعات'
+                },
+                en: {
+                    search_user: 'Search user...',
+                    loading_rankings: 'Loading rankings...',
+                    no_users: 'No users found',
+                    score: 'Score',
+                    games: 'Games',
+                    home: 'Home',
+                    ranking: 'Ranking',
+                    profile: 'Profile',
+                    settings_nav: 'Settings',
+                    you: 'You',
+                    error_loading: 'Error loading data'
+                },
+                ar: {
+                    search_user: 'ابحث عن مستخدم...',
+                    loading_rankings: 'جار تحميل الترتيب...',
+                    no_users: 'لا يوجد مستخدمين',
+                    score: 'النقاط',
+                    games: 'مباريات',
+                    home: 'الرئيسية',
+                    ranking: 'الترتيب',
+                    profile: 'الملف',
+                    settings_nav: 'الإعدادات',
+                    you: 'أنت',
+                    error_loading: 'خطأ في تحميل البيانات'
+                }
+            };
+
+            function getTranslation(k) {
+                var t = translations[currentLang] || translations.fa;
+                return t[k] || translations.fa[k] || k;
+            }
+
+            function getSettings() {
+                try {
+                    var raw = localStorage.getItem('mafiaSettings');
+                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                    var p = JSON.parse(raw);
+                    if (!p.theme) p.theme = 'light';
+                    if (!p.specialTheme) p.specialTheme = 'none';
+                    if (p.animation === undefined) p.animation = true;
+                    if (p.haptic === undefined) p.haptic = true;
+                    if (!p.font) p.font = 'Samim';
+                    if (!p.language) p.language = 'fa';
+                    return p;
+                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+            }
+
+            function updateHeaderTitle(lang) {
+                var titleEl = document.getElementById('headerTitle');
+                if (lang === 'en') {
+                    titleEl.textContent = 'Mafia Spy';
+                } else {
+                    titleEl.textContent = 'جاسوس مافیایی';
+                }
+            }
+
+            function applyLanguage(lang) {
+                var t = translations[lang] || translations.fa;
+                document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                    var k = el.getAttribute('data-i18n');
+                    if (t[k]) el.textContent = t[k];
+                });
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+                    var k = el.getAttribute('data-i18n-placeholder');
+                    if (t[k]) el.placeholder = t[k];
+                });
+                if (lang === 'en') {
+                    document.documentElement.setAttribute('dir', 'ltr');
+                } else {
+                    document.documentElement.setAttribute('dir', 'rtl');
+                }
+                updateHeaderTitle(lang);
+            }
+
+            function applyTheme() {
+                var s = getSettings();
+                currentLang = s.language || 'fa';
+                var t = s.theme || 'light';
+                var st = s.specialTheme || 'none';
+                var f = s.font || 'Samim';
+                document.documentElement.setAttribute('data-theme', t);
+                document.documentElement.setAttribute('data-special-theme', st);
+                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
+                else { document.documentElement.removeAttribute('data-animation'); }
+                var fontFamily = fontMap[f] || fontMap['Samim'];
+                document.documentElement.style.setProperty('--font', fontFamily);
+                document.body.style.fontFamily = fontFamily;
+                applyLanguage(currentLang);
+            }
+
+            function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
+            function getUserId(){var u=getEitaaUser();return u?(typeof u.id==='number'?u.id.toString():String(u.id||'')):'';}
+            function fetchData(action,params){
+                var payload={action:action,username:getUserId()};
+                if(params){for(var k in params){if(params.hasOwnProperty(k))payload[k]=params[k];}}
+                return Promise.race([
+                    fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(function(r){return r.json();}),
+                    new Promise(function(_,reject){setTimeout(function(){reject(new Error('timeout'));},10000);})
+                ]).catch(function(){return{ok:false};});
+            }
+
+            function getAvatarHtml(avatarId) {
+                if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user"></i>';
+                if (iconAvatars[avatarId]) return '<i class="fa-solid ' + iconAvatars[avatarId] + '"></i>';
+                return '<i class="fa-solid fa-user"></i>';
+            }
+
+            function getUserTypeBadge(userType) {
+                if (userType === 'سازنده') {
+                    return '<span class="badge-icon"><img src="https://cdn.imgurl.ir/uploads/h95014_InShot_20260909_113952033.png" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
+                } else if (userType === 'توسعه دهنده') {
+                    return '<span class="badge-icon"><i class="fa-solid fa-code"></i></span>';
+                }
+                return '';
+            }
+
+            function getRankIcon(i) {
+                if (i === 0) return '<i class="fa-solid fa-crown" style="color:#f59e0b;"></i>';
+                if (i === 1) return '<i class="fa-solid fa-medal" style="color:#94a3b8;"></i>';
+                if (i === 2) return '<i class="fa-solid fa-medal" style="color:#d97706;"></i>';
+                return '#' + (i + 1);
+            }
+            function getRankClass(i) {
+                if (i === 0) return 'gold';
+                if (i === 1) return 'silver';
+                if (i === 2) return 'bronze';
+                return '';
+            }
+
+            function renderRankItem(item, index, myId) {
+                var isMe = String(item.user_id) === String(myId) || String(item.username) === String(myId);
+                var avatarField = item.avatar || 'default';
+                var userType = item.user_type || '';
+                return '<div class="rank-item' + (isMe ? ' is-me' : '') + '" onclick="viewProfile(\'' + (item.user_id || item.username) + '\')">' +
+                    '<div class="rank-number ' + getRankClass(index) + '">' + getRankIcon(index) + '</div>' +
+                    '<div class="rank-avatar">' + getAvatarHtml(avatarField) + '</div>' +
+                    '<div class="rank-info"><div class="rank-name">' + getUserTypeBadge(userType) + ' ' + (item.name || item.user_id || '؟') + '</div>' +
+                    '<div class="rank-score">' + getTranslation('score') + ': ' + (item.score || 0) + '</div></div>' +
+                    (isMe ? '<span class="rank-badge-me">' + getTranslation('you') + '</span>' : '') +
+                    '</div>';
+            }
+
+            function renderRankList(list, myId) {
+                if (list.length === 0) {
+                    return '<div class="section-loader"><div class="section-loader-text">' + getTranslation('no_users') + '</div></div>';
+                }
+                var html = '';
+                for (var i = 0; i < list.length; i++) {
+                    html += renderRankItem(list[i], i, myId);
+                }
+                return html;
+            }
+
+            async function loadRankings() {
+                var result = await fetchData('getAllUsers', {});
+                if (result.ok && Array.isArray(result.data) && result.data.length > 0) {
+                    allRankings = result.data.sort(function(a, b) { return (b.score || 0) - (a.score || 0); });
+                    document.getElementById('rankLoader').style.display = 'none';
+                    document.getElementById('rankList').innerHTML = renderRankList(allRankings, getUserId());
+                    
+                    var myId = getUserId();
+                    var myRank = -1;
+                    for (var i = 0; i < allRankings.length; i++) {
+                        if (String(allRankings[i].user_id) === String(myId) || String(allRankings[i].username) === String(myId)) {
+                            myRank = i;
+                            break;
+                        }
+                    }
+                    
+                    if (myRank >= 0) {
+                        document.getElementById('myRankFloatNumber').textContent = '#' + (myRank + 1);
+                        document.getElementById('myRankFloatAvatar').innerHTML = getAvatarHtml(allRankings[myRank].avatar || 'default');
+                        document.getElementById('myRankFloatName').innerHTML = getUserTypeBadge(allRankings[myRank].user_type) + ' ' + (allRankings[myRank].name || '؟');
+                        document.getElementById('myRankFloatScore').textContent = allRankings[myRank].score || 0;
+                        document.getElementById('myRankFloat').style.display = 'flex';
+                    }
+                } else {
+                    document.getElementById('rankLoader').style.display = 'none';
+                    document.getElementById('rankList').innerHTML = '<div class="section-loader"><div class="section-loader-text">' + getTranslation('no_users') + '</div></div>';
+                }
+            }
+
+            window.filterRankings = function() {
+                var q = document.getElementById('searchInput').value.toLowerCase().trim();
+                var myId = getUserId();
+                if (!q) {
+                    document.getElementById('rankList').innerHTML = renderRankList(allRankings, myId);
+                    return;
+                }
+                var filtered = allRankings.filter(function(item) {
+                    var n = (item.name || '').toLowerCase();
+                    var u = String(item.user_id || '').toLowerCase();
+                    return n.includes(q) || u.includes(q);
+                });
+                document.getElementById('rankList').innerHTML = renderRankList(filtered, myId);
+            };
+
+            window.viewProfile = async function(userId) {
+                document.getElementById('modalLoader').style.display = 'block';
+                document.getElementById('modalContent').style.display = 'none';
+                document.getElementById('profileModalOverlay').classList.add('show');
+                var result = await fetchData('getUser', { username: String(userId) });
+                setTimeout(function() {
+                    document.getElementById('modalLoader').style.display = 'none';
+                    document.getElementById('modalContent').style.display = 'block';
+                    if (result.ok && result.data) {
+                        var d = result.data;
+                        document.getElementById('modalAvatar').innerHTML = getAvatarHtml(d.avatar || 'default');
+                        document.getElementById('modalName').innerHTML = getUserTypeBadge(d.user_type) + ' ' + (d.name || 'کاربر');
+                        document.getElementById('modalUsername').textContent = 'ID: ' + (d.user_id || userId);
+                        document.getElementById('modalScore').textContent = d.score || 0;
+                        document.getElementById('modalGames').textContent = d.coins || 0;
+                    } else {
+                        document.getElementById('modalName').textContent = getTranslation('error_loading');
+                        document.getElementById('modalUsername').textContent = 'ID: ' + userId;
+                        document.getElementById('modalScore').textContent = '0';
+                        document.getElementById('modalGames').textContent = '0';
+                    }
+                }, 500);
+            };
+
+            window.closeProfileModal = function() {
+                document.getElementById('profileModalOverlay').classList.remove('show');
+            };
+
+            window.scrollToMyRank = function() {
+                var items = document.querySelectorAll('.rank-item.is-me');
+                if (items.length > 0) {
+                    items[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            };
+
+            function openSupportLink(){
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
+                } else {
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank');
+                }
+            }
+            window.openSupportLink = openSupportLink;
+
+            if (webApp) {
+                webApp.ready();
+                webApp.expand();
+                webApp.BackButton.show();
+                webApp.BackButton.onClick(function(){ window.location.href = '../dashboard/'; });
+            }
+
+            applyTheme();
+            loadRankings();
+            
+            setTimeout(function() {
+                var notif = document.getElementById('supportNotification');
+                if (notif) { notif.style.display = 'none'; }
+            }, 5000);
+        })();
+    </script>
+</body>
+</html>
