@@ -733,7 +733,7 @@
                 return '<div class="rank-item' + (isMe ? ' is-me' : '') + '" onclick="viewProfile(\'' + (item.user_id || item.username) + '\')">' +
                     '<div class="rank-number ' + getRankClass(index) + '">' + getRankIcon(index) + '</div>' +
                     '<div class="rank-avatar">' + getAvatarHtml(avatarField) + '</div>' +
-                    '<div class="rank-info"><div class="rank-name">' + getUserTypeBadge(userType) + ' ' + (item.name || item.user_id || '؟') + '</div>' +
+                    '<div class="rank-info"><div class="rank-name">' + (item.name || item.user_id || '؟') + ' ' + getUserTypeBadge(userType) + '</div>' +
                     '<div class="rank-score">' + getTranslation('score') + ': ' + (item.score || 0) + '</div></div>' +
                     (isMe ? '<span class="rank-badge-me">' + getTranslation('you') + '</span>' : '') +
                     '</div>';
@@ -769,7 +769,7 @@
                     if (myRank >= 0) {
                         document.getElementById('myRankFloatNumber').textContent = '#' + (myRank + 1);
                         document.getElementById('myRankFloatAvatar').innerHTML = getAvatarHtml(allRankings[myRank].avatar || 'default');
-                        document.getElementById('myRankFloatName').innerHTML = getUserTypeBadge(allRankings[myRank].user_type) + ' ' + (allRankings[myRank].name || '؟');
+                        document.getElementById('myRankFloatName').innerHTML = (allRankings[myRank].name || '؟') + ' ' + getUserTypeBadge(allRankings[myRank].user_type);
                         document.getElementById('myRankFloatScore').textContent = allRankings[myRank].score || 0;
                         document.getElementById('myRankFloat').style.display = 'flex';
                     }
@@ -805,7 +805,7 @@
                     if (result.ok && result.data) {
                         var d = result.data;
                         document.getElementById('modalAvatar').innerHTML = getAvatarHtml(d.avatar || 'default');
-                        document.getElementById('modalName').innerHTML = getUserTypeBadge(d.user_type) + ' ' + (d.name || 'کاربر');
+                        document.getElementById('modalName').innerHTML = (d.name || 'کاربر') + ' ' + getUserTypeBadge(d.user_type);
                         document.getElementById('modalUsername').textContent = 'ID: ' + (d.user_id || userId);
                         document.getElementById('modalScore').textContent = d.score || 0;
                         document.getElementById('modalGames').textContent = d.coins || 0;
