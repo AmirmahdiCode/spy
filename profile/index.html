@@ -167,7 +167,17 @@
         .profile-avatar:active { transform: scale(.95); }
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .profile-info { flex: 1; min-width: 0; }
-        .profile-name { font-size: 14px; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .profile-name {
+            font-size: 14px; font-weight: 800; color: #fff;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .profile-name .badge-icon {
+            width: 18px; height: 18px; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .profile-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .profile-name .badge-icon i { font-size: 14px; color: #3b82f6; }
         .profile-username { font-size: 9px; color: rgba(255,255,255,.7); direction: ltr; text-align: right; }
         [dir="ltr"] .profile-username { text-align: left; }
         .profile-actions-row { display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,.2); padding-top: 12px; }
@@ -468,7 +478,7 @@
     <script>
         (function() {
             var webApp = window.Eitaa?.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbwbp4ByhYBno6v5HKgGu2COkbu7zcmkyaRZ_eLKRJBn7JEHtcJ378O46ruUFPjogpFT/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbx_mJ5tDkGkwVhyGr5R_POJMBq2Y6AkI7HxJ82csk-NuaeFPl4sYm9COtlCoGFWnF7Y/exec';
             var currentAvatar = 'default', currentLang = 'fa';
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
@@ -711,6 +721,15 @@
                 return '<i class="fa-solid fa-user"></i>';
             }
 
+            function getUserTypeBadge(userType) {
+                if (userType === 'سازنده') {
+                    return '<span class="badge-icon"><img src="https://cdn.imgurl.ir/uploads/h95014_InShot_20260909_113952033.png" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
+                } else if (userType === 'توسعه دهنده') {
+                    return '<span class="badge-icon"><i class="fa-solid fa-code"></i></span>';
+                }
+                return '';
+            }
+
             function renderAvatarModal() {
                 var html = '';
                 avatarCategories.forEach(function(cat) {
@@ -783,7 +802,7 @@
                 if (userData.ok && userData.data) {
                     var d = userData.data;
                     currentAvatar = d.avatar || 'default';
-                    document.getElementById('profileName').textContent = d.name || 'کاربر';
+                    document.getElementById('profileName').innerHTML = getUserTypeBadge(d.user_type) + ' ' + (d.name || 'کاربر');
                     document.getElementById('profileUsername').textContent = 'ID: ' + myId;
                     document.getElementById('totalScore').textContent = d.score || 0;
                     document.getElementById('scoreValue').textContent = d.score || 0;
