@@ -107,7 +107,7 @@
             border-bottom: 1px solid var(--primary);
         }
 
-        .header-inner { display: flex; align-items: center; justify-content: flex-start; max-width: 600px; margin: 0 auto; }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
         .header-right { display: flex; align-items: center; gap: 10px; }
 
         .header-logo {
@@ -122,6 +122,26 @@
         .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
         .header-subtitle { font-size: 8px; color: var(--text-light); }
 
+        .header-currency { display: flex; align-items: center; gap: 6px; }
+        .currency-badge {
+            display: flex; align-items: center; gap: 4px;
+            background: var(--bg2); border: var(--border); border-radius: 8px;
+            padding: 4px 10px; font-size: 10px; font-weight: 700;
+            color: var(--dark); box-shadow: 2px 2px 0 #000;
+            min-width: 50px;
+            justify-content: center;
+        }
+        .currency-badge.coins i { color: #f59e0b; }
+        .currency-badge.diamonds i { color: #06b6d4; }
+        .mini-spinner {
+            width: 12px; height: 12px;
+            border: 2px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
         .main-container {
             position: relative; z-index: 5;
             max-width: 600px; width: 100%;
@@ -132,29 +152,46 @@
         .mystery-banner {
             position: relative;
             width: 100%;
-            height: 200px;
+            height: 280px;
             overflow: hidden;
+            margin-top: 8px;
         }
         .mystery-banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center 15%;
             display: block;
         }
         .mystery-banner::after {
             content: '';
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 60%;
-            background: linear-gradient(to bottom, transparent, var(--bg));
+            height: 75%;
+            background: linear-gradient(to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 20%,
+                rgba(255, 255, 255, 0.3) 40%,
+                rgba(255, 255, 255, 0.6) 60%,
+                rgba(255, 255, 255, 0.85) 80%,
+                #ffffff 100%);
             pointer-events: none;
+        }
+        [data-theme="dark"] .mystery-banner::after {
+            background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.1) 20%,
+                rgba(0, 0, 0, 0.3) 40%,
+                rgba(0, 0, 0, 0.6) 60%,
+                rgba(0, 0, 0, 0.85) 80%,
+                #000000 100%);
         }
 
         .action-row {
             display: flex;
             gap: 8px;
             padding: 0 12px;
-            margin-top: -30px;
+            margin-top: -50px;
             position: relative;
             z-index: 6;
         }
@@ -315,6 +352,15 @@
         [dir="ltr"] .rules-article ul { padding-right: 0; padding-left: 18px; }
         .rules-article li { margin-bottom: 4px; }
         .rules-article .highlight { font-weight: 800; color: var(--primary); }
+        .rules-article .warning {
+            background: rgba(var(--primary-rgb), 0.1);
+            border-right: 3px solid var(--primary);
+            padding: 8px 10px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-weight: 700;
+        }
+        [dir="ltr"] .rules-article .warning { border-right: none; border-left: 3px solid var(--primary); }
 
         .active-game-float {
             position: fixed;
@@ -454,6 +500,10 @@
                     <div class="header-subtitle" id="headerSubtitle">جاسوس شهر رو پیدا کن.</div>
                 </div>
             </div>
+            <div class="header-currency">
+                <span class="currency-badge coins"><i class="bi bi-coin"></i> <span id="coinsHeader"><span class="mini-spinner"></span></span></span>
+                <span class="currency-badge diamonds"><i class="bi bi-gem"></i> <span id="diamondsHeader"><span class="mini-spinner"></span></span></span>
+            </div>
         </div>
     </header>
 
@@ -493,9 +543,11 @@
             <div class="rules-article">
                 <h3><i class="bi bi-bullseye"></i> <span data-i18n="goal">هدف بازی</span></h3>
                 <ul>
-                    <li><span class="highlight" data-i18n="citizens">شهروندان:</span> <span data-i18n="citizens_goal">جاسوس را شناسایی و تا پایان روز سوم اخراج کنند.</span></li>
-                    <li><span class="highlight" data-i18n="mafia">مافیا (جاسوس و وکیل):</span> <span data-i18n="mafia_goal">جاسوس تا پایان روز سوم زنده بماند.</span></li>
+                    <li><span class="highlight" data-i18n="citizens">شهروندان:</span> <span data-i18n="citizens_goal">جاسوس را شناسایی و اخراج کنند.</span></li>
+                    <li><span class="highlight" data-i18n="mafia">مافیا:</span> <span data-i18n="mafia_goal">جاسوس باید تا آخر بازی زنده بماند.</span></li>
                 </ul>
+
+                <div class="warning" data-i18n="critical_rule">⚠️ نکته مهم: اگر کسی به غیر از جاسوس اخراج شود، شهر بازنده و مافیا برنده می‌شود!</div>
 
                 <h3><i class="bi bi-people"></i> <span data-i18n="players_combo">ترکیب بازیکنان</span></h3>
                 <p data-i18n="players_desc">حداقل ۵ تا حداکثر ۱۰ نفر. با افزایش تعداد، فقط به تعداد شهروند عادی اضافه می‌شود. سایر نقش‌ها ثابت هستند.</p>
@@ -504,24 +556,24 @@
                 <ul>
                     <li><span class="highlight" data-i18n="citizen_role">شهروند عادی:</span> <span data-i18n="citizen_desc">کلمه واقعی را می‌بیند و با توضیحاتش جاسوس را لو می‌دهد.</span></li>
                     <li><span class="highlight" data-i18n="detective_role">کارآگاه:</span> <span data-i18n="detective_desc">هر شب می‌تواند از یک نفر استعلام بگیرد که مافیا است یا نه. ولی حق لو دادن مستقیم را ندارد.</span></li>
-                    <li><span class="highlight" data-i18n="judge_role">قاضی:</span> <span data-i18n="judge_desc">پس از رای‌گیری مقدماتی، تصمیم نهایی برای اخراج یا تبرئه‌ی ۲ نفر مظنون را می‌گیرد.</span></li>
+                    <li><span class="highlight" data-i18n="judge_role">قاضی:</span> <span data-i18n="judge_desc">پس از رای‌گیری، از بین کسانی که بیشترین رای را آورده‌اند یکی را انتخاب می‌کند یا همه را تبرئه می‌کند و بازی به روز بعد موکول می‌شود.</span></li>
                     <li><span class="highlight" data-i18n="spy_role">جاسوس:</span> <span data-i18n="spy_desc">کلمه واقعی را نمی‌داند و باید خود را مخفی نگه دارد.</span></li>
                     <li><span class="highlight" data-i18n="lawyer_role">وکیل:</span> <span data-i18n="lawyer_desc">کلمه واقعی را می‌داند و در شب اول هم‌گروهی‌های خود را می‌شناسد. باید مردم را گمراه کند.</span></li>
                 </ul>
 
                 <h3><i class="bi bi-arrow-repeat"></i> <span data-i18n="phases">مراحل بازی</span></h3>
-                <p><span class="highlight" data-i18n="night_phase">🌙 فاز شب:</span> <span data-i18n="night_desc">وکیل و جاسوس همدیگر را می‌شناسند. کارآگاه از یک نفر استعلام می‌گیرد.</span></p>
+                <p><span class="highlight" data-i18n="night_phase">🌙 فاز شب:</span> <span data-i18n="night_desc">وکیل و جاسوس همدیگر را می‌شناسند. کارآگاه از یک نفر استعلام می‌گیرد. قاضی نیز بیدار می‌شود و نتیجه رای‌گیری را اعلام می‌کند تا نقشش لو نرود.</span></p>
                 <p><span class="highlight" data-i18n="day_phase">☀️ فاز روز:</span> <span data-i18n="day_desc">بحث آزاد، معرفی مظنون و رای‌گیری مقدماتی، سپس فاز قاضی.</span></p>
 
                 <h3><i class="bi bi-trophy"></i> <span data-i18n="win_conditions">شرایط برنده شدن</span></h3>
                 <ul>
-                    <li><span class="highlight" data-i18n="citizens_win">شهروندان:</span> <span data-i18n="citizens_win_desc">جاسوس تا پایان روز سوم اخراج شود.</span></li>
-                    <li><span class="highlight" data-i18n="mafia_win">مافیا:</span> <span data-i18n="mafia_win_desc">جاسوس تا پایان روز سوم زنده بماند.</span></li>
+                    <li><span class="highlight" data-i18n="citizens_win">شهروندان:</span> <span data-i18n="citizens_win_desc">جاسوس اخراج شود.</span></li>
+                    <li><span class="highlight" data-i18n="mafia_win">مافیا:</span> <span data-i18n="mafia_win_desc">جاسوس زنده بماند یا کسی غیر از جاسوس اخراج شود.</span></li>
                 </ul>
 
                 <h3><i class="bi bi-star-fill"></i> <span data-i18n="golden_rules">قوانین طلایی</span></h3>
                 <ul>
-                    <li data-i18n="rule_1">اخراج = حذف از بازی (نه مرگ) - فرد اخراجی نقشش فاش نمی‌شود و فقط تماشاگر می‌ماند.</li>
+                    <li data-i18n="rule_1">هرکس حذف شد، بازی برای او تمام می‌شود و نقشش فاش نمی‌شود.</li>
                     <li data-i18n="rule_2">قاضی هرگز به خودش رای نمی‌دهد (در صورت مظنون بودن، رای‌گیری عمومی برگزار می‌شود).</li>
                     <li data-i18n="rule_3">وکیل و جاسوس فقط در شب اول همدیگر را می‌شناسند.</li>
                     <li data-i18n="rule_4">کارآگاه اگر از وکیل استعلام بگیرد، پاسخ "خیر" دریافت می‌کند.</li>
@@ -590,7 +642,6 @@
 
             var translations = {
                 fa: {
-                    header_subtitle: 'جاسوس شهر رو پیدا کن.',
                     start_new_game: 'شروع بازی جدید',
                     wheel: 'گردونه',
                     public_games: 'بازی‌های سراسری',
@@ -598,9 +649,10 @@
                     game_rules: 'قوانین بازی',
                     goal: 'هدف بازی',
                     citizens: 'شهروندان:',
-                    citizens_goal: 'جاسوس را شناسایی و تا پایان روز سوم اخراج کنند.',
-                    mafia: 'مافیا (جاسوس و وکیل):',
-                    mafia_goal: 'جاسوس تا پایان روز سوم زنده بماند.',
+                    citizens_goal: 'جاسوس را شناسایی و اخراج کنند.',
+                    mafia: 'مافیا:',
+                    mafia_goal: 'جاسوس باید تا آخر بازی زنده بماند.',
+                    critical_rule: '⚠️ نکته مهم: اگر کسی به غیر از جاسوس اخراج شود، شهر بازنده و مافیا برنده می‌شود!',
                     players_combo: 'ترکیب بازیکنان',
                     players_desc: 'حداقل ۵ تا حداکثر ۱۰ نفر. با افزایش تعداد، فقط به تعداد شهروند عادی اضافه می‌شود. سایر نقش‌ها ثابت هستند.',
                     roles: 'نقش‌ها و وظایف',
@@ -609,23 +661,23 @@
                     detective_role: 'کارآگاه:',
                     detective_desc: 'هر شب می‌تواند از یک نفر استعلام بگیرد که مافیا است یا نه. ولی حق لو دادن مستقیم را ندارد.',
                     judge_role: 'قاضی:',
-                    judge_desc: 'پس از رای‌گیری مقدماتی، تصمیم نهایی برای اخراج یا تبرئه‌ی ۲ نفر مظنون را می‌گیرد.',
+                    judge_desc: 'پس از رای‌گیری، از بین کسانی که بیشترین رای را آورده‌اند یکی را انتخاب می‌کند یا همه را تبرئه می‌کند و بازی به روز بعد موکول می‌شود.',
                     spy_role: 'جاسوس:',
                     spy_desc: 'کلمه واقعی را نمی‌داند و باید خود را مخفی نگه دارد.',
                     lawyer_role: 'وکیل:',
                     lawyer_desc: 'کلمه واقعی را می‌داند و در شب اول هم‌گروهی‌های خود را می‌شناسد. باید مردم را گمراه کند.',
                     phases: 'مراحل بازی',
                     night_phase: '🌙 فاز شب:',
-                    night_desc: 'وکیل و جاسوس همدیگر را می‌شناسند. کارآگاه از یک نفر استعلام می‌گیرد.',
+                    night_desc: 'وکیل و جاسوس همدیگر را می‌شناسند. کارآگاه از یک نفر استعلام می‌گیرد. قاضی نیز بیدار می‌شود و نتیجه رای‌گیری را اعلام می‌کند تا نقشش لو نرود.',
                     day_phase: '☀️ فاز روز:',
                     day_desc: 'بحث آزاد، معرفی مظنون و رای‌گیری مقدماتی، سپس فاز قاضی.',
                     win_conditions: 'شرایط برنده شدن',
                     citizens_win: 'شهروندان:',
-                    citizens_win_desc: 'جاسوس تا پایان روز سوم اخراج شود.',
+                    citizens_win_desc: 'جاسوس اخراج شود.',
                     mafia_win: 'مافیا:',
-                    mafia_win_desc: 'جاسوس تا پایان روز سوم زنده بماند.',
+                    mafia_win_desc: 'جاسوس زنده بماند یا کسی غیر از جاسوس اخراج شود.',
                     golden_rules: 'قوانین طلایی',
-                    rule_1: 'اخراج = حذف از بازی (نه مرگ) - فرد اخراجی نقشش فاش نمی‌شود و فقط تماشاگر می‌ماند.',
+                    rule_1: 'هرکس حذف شد، بازی برای او تمام می‌شود و نقشش فاش نمی‌شود.',
                     rule_2: 'قاضی هرگز به خودش رای نمی‌دهد (در صورت مظنون بودن، رای‌گیری عمومی برگزار می‌شود).',
                     rule_3: 'وکیل و جاسوس فقط در شب اول همدیگر را می‌شناسند.',
                     rule_4: 'کارآگاه اگر از وکیل استعلام بگیرد، پاسخ "خیر" دریافت می‌کند.',
@@ -641,7 +693,6 @@
                     waiting: 'در انتظار'
                 },
                 en: {
-                    header_subtitle: 'Find the city spy.',
                     start_new_game: 'Start New Game',
                     wheel: 'Wheel',
                     public_games: 'Public Games',
@@ -649,9 +700,10 @@
                     game_rules: 'Game Rules',
                     goal: 'Goal',
                     citizens: 'Citizens:',
-                    citizens_goal: 'Identify the spy and expel them by end of Day 3.',
-                    mafia: 'Mafia (Spy & Lawyer):',
-                    mafia_goal: 'The spy must survive until end of Day 3.',
+                    citizens_goal: 'Identify and expel the spy.',
+                    mafia: 'Mafia:',
+                    mafia_goal: 'The spy must survive until the end of the game.',
+                    critical_rule: '⚠️ Important: If anyone other than the spy is expelled, the city loses and the mafia wins!',
                     players_combo: 'Player Composition',
                     players_desc: 'Minimum 5 to maximum 10 players. As numbers increase, only regular citizens are added.',
                     roles: 'Roles & Responsibilities',
@@ -660,23 +712,23 @@
                     detective_role: 'Detective:',
                     detective_desc: 'Each night can inquire about one person if they are mafia.',
                     judge_role: 'Judge:',
-                    judge_desc: 'After preliminary voting, decides the final expulsion or acquittal of 2 suspects.',
+                    judge_desc: 'After voting, chooses one from those with most votes, or acquits all and the game continues to the next day.',
                     spy_role: 'Spy:',
                     spy_desc: 'Does not know the real word and must stay hidden.',
                     lawyer_role: 'Lawyer:',
                     lawyer_desc: 'Knows the real word and their teammates on night one. Must mislead people.',
                     phases: 'Game Phases',
                     night_phase: '🌙 Night Phase:',
-                    night_desc: 'Lawyer and spy recognize each other. Detective inquires about one person.',
+                    night_desc: 'Lawyer and spy recognize each other. Detective inquires about one person. The judge also wakes up and announces the voting result to hide their identity.',
                     day_phase: '☀️ Day Phase:',
                     day_desc: 'Free discussion, suspect nomination, preliminary vote, then judge phase.',
                     win_conditions: 'Win Conditions',
                     citizens_win: 'Citizens:',
-                    citizens_win_desc: 'The spy is expelled by end of Day 3.',
+                    citizens_win_desc: 'The spy is expelled.',
                     mafia_win: 'Mafia:',
-                    mafia_win_desc: 'The spy survives until end of Day 3.',
+                    mafia_win_desc: 'The spy survives, or someone other than the spy is expelled.',
                     golden_rules: 'Golden Rules',
-                    rule_1: 'Expulsion = removal (not death) - the expelled player\'s role is not revealed.',
+                    rule_1: 'Whoever is eliminated, the game ends for them and their role is not revealed.',
                     rule_2: 'The judge never votes for themselves.',
                     rule_3: 'Lawyer and spy only recognize each other on Night 1.',
                     rule_4: 'If detective inquires about lawyer, receives "No".',
@@ -692,7 +744,6 @@
                     waiting: 'Waiting'
                 },
                 ar: {
-                    header_subtitle: 'اعثر على جاسوس المدينة.',
                     start_new_game: 'ابدأ لعبة جديدة',
                     wheel: 'العجلة',
                     public_games: 'الألعاب العامة',
@@ -700,9 +751,10 @@
                     game_rules: 'قوانين اللعبة',
                     goal: 'الهدف',
                     citizens: 'المواطنون:',
-                    citizens_goal: 'التعرف على الجاسوس وطرده قبل نهاية اليوم الثالث.',
-                    mafia: 'المافيا (الجاسوس والمحامي):',
-                    mafia_goal: 'يجب أن ينجو الجاسوس حتى نهاية اليوم الثالث.',
+                    citizens_goal: 'التعرف على الجاسوس وطرده.',
+                    mafia: 'المافيا:',
+                    mafia_goal: 'يجب أن ينجو الجاسوس حتى نهاية اللعبة.',
+                    critical_rule: '⚠️ مهم: إذا تم طرد أي شخص غير الجاسوس، تخسر المدينة وتفوز المافيا!',
                     players_combo: 'تركيبة اللاعبين',
                     players_desc: 'من 5 إلى 10 لاعبين. عند الزيادة، يضاف مواطنون عاديون فقط.',
                     roles: 'الأدوار والمسؤوليات',
@@ -711,23 +763,23 @@
                     detective_role: 'المحقق:',
                     detective_desc: 'كل ليلة يستعلم عن شخص واحد إذا كان من المافيا.',
                     judge_role: 'القاضي:',
-                    judge_desc: 'بعد التصويت الأولي، يقرر الطرد أو التبرئة النهائية.',
+                    judge_desc: 'بعد التصويت، يختار واحداً من الحاصلين على أكثر الأصوات، أو يبرئ الجميع.',
                     spy_role: 'الجاسوس:',
                     spy_desc: 'لا يعرف الكلمة الحقيقية ويجب أن يبقى مخفياً.',
                     lawyer_role: 'المحامي:',
                     lawyer_desc: 'يعرف الكلمة الحقيقية ورفاقه في الليلة الأولى.',
                     phases: 'مراحل اللعبة',
                     night_phase: '🌙 مرحلة الليل:',
-                    night_desc: 'يتعرف المحامي والجاسوس على بعضهما. المحقق يستعلم عن شخص.',
+                    night_desc: 'يتعرف المحامي والجاسوس على بعضهما. المحقق يستعلم عن شخص. يستيقظ القاضي أيضاً ويعلن نتيجة التصويت.',
                     day_phase: '☀️ مرحلة النهار:',
                     day_desc: 'نقاش حر، ترشيح المشتبه بهم، تصويت أولي، ثم مرحلة القاضي.',
                     win_conditions: 'شروط الفوز',
                     citizens_win: 'المواطنون:',
-                    citizens_win_desc: 'يتم طرد الجاسوس قبل نهاية اليوم الثالث.',
+                    citizens_win_desc: 'يتم طرد الجاسوس.',
                     mafia_win: 'المافيا:',
-                    mafia_win_desc: 'ينجو الجاسوس حتى نهاية اليوم الثالث.',
+                    mafia_win_desc: 'ينجو الجاسوس، أو يتم طرد شخص آخر غير الجاسوس.',
                     golden_rules: 'القواعد الذهبية',
-                    rule_1: 'الطرد = إزالة (ليس موتاً) - لا يُكشف دور المطرود.',
+                    rule_1: 'من يُزال، تنتهي اللعبة له ولا يُكشف دوره.',
                     rule_2: 'القاضي لا يصوت لنفسه أبداً.',
                     rule_3: 'المحامي والجاسوس يتعرفان على بعضهما فقط في الليلة الأولى.',
                     rule_4: 'إذا استعلم المحقق عن المحامي، يتلقى "لا".',
@@ -854,6 +906,22 @@
                 return matches ? matches.length : 0;
             }
 
+            async function loadUserCurrency() {
+                try {
+                    var userData = await fetchData('getUser', {});
+                    if (userData.ok && userData.data) {
+                        document.getElementById('coinsHeader').textContent = userData.data.coins || 0;
+                        document.getElementById('diamondsHeader').textContent = userData.data.diamonds || 0;
+                    } else {
+                        document.getElementById('coinsHeader').textContent = '0';
+                        document.getElementById('diamondsHeader').textContent = '0';
+                    }
+                } catch(e) {
+                    document.getElementById('coinsHeader').textContent = '0';
+                    document.getElementById('diamondsHeader').textContent = '0';
+                }
+            }
+
             async function loadPublicGames() {
                 var list = document.getElementById('publicList');
                 var loader = document.getElementById('publicLoader');
@@ -901,8 +969,6 @@
                 var result = await fetchData('getGamesByPlayer', {});
                 
                 if (result.ok && Array.isArray(result.data)) {
-                    var myId = getUserId();
-                    
                     var activeGame = null;
                     var halfFinished = false;
                     
@@ -977,6 +1043,7 @@
             }
 
             applyTheme();
+            loadUserCurrency();
             loadPublicGames();
             checkActiveGame();
 
