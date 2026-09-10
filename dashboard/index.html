@@ -361,6 +361,13 @@
             font-weight: 700;
         }
         [dir="ltr"] .rules-article .warning { border-right: none; border-left: 3px solid var(--primary); }
+        .rules-article a {
+            color: var(--primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary);
+            cursor: pointer;
+        }
 
         .active-game-float {
             position: fixed;
@@ -455,7 +462,7 @@
         }
         .terms-modal-header i { color: var(--primary); font-size: 16px; }
         .terms-modal-body {
-            font-size: 11px;
+            font-size: 10.5px;
             line-height: 1.9;
             color: var(--text);
             margin-bottom: 16px;
@@ -471,6 +478,13 @@
         .terms-modal-body li strong {
             color: var(--dark);
             font-weight: 800;
+        }
+        .terms-modal-body a {
+            color: var(--primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary);
+            cursor: pointer;
         }
         .terms-checkbox-row {
             display: flex;
@@ -710,16 +724,25 @@
             </div>
             <div class="rules-article">
                 <h3><i class="bi bi-1-circle"></i> <span data-i18n="term_1_title">ممنوعیت بحث‌های غیرمرتبط</span></h3>
-                <p data-i18n="term_1_desc">در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع می‌باشد. در صورت مشاهده تخلف، امکان اعمال محدودیت موقت یا دائم برای کاربر متخلف وجود خواهد داشت.</p>
+                <p data-i18n="term_1_desc">در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع می‌باشد. در صورت مشاهده تخلف، تیم مدیریت امکان اعمال محدودیت موقت یا دائم را برای کاربر متخلف خواهد داشت.</p>
 
-                <h3><i class="bi bi-2-circle"></i> <span data-i18n="term_2_title">نظارت بر مکالمات</span></h3>
-                <p data-i18n="term_2_desc">تمامی گفتگوها و تعاملات در طول بازی تحت نظارت و بررسی قرار می‌گیرند. از طرح موضوعات شخصی یا مباحث خارج از چارچوب بازی خودداری فرمایید.</p>
+                <h3><i class="bi bi-2-circle"></i> <span data-i18n="term_2_title">نظارت بر محتوا</span></h3>
+                <p data-i18n="term_2_desc">تمامی گفتگوها و تعاملات در طول بازی توسط تیم ادمین بررسی می‌شوند تا محیطی سالم و لذت‌بخش برای همه فراهم شود. از طرح موضوعات شخصی یا مباحث خارج از چارچوب بازی خودداری فرمایید.</p>
 
                 <h3><i class="bi bi-3-circle"></i> <span data-i18n="term_3_title">رعایت قوانین جمهوری اسلامی ایران</span></h3>
-                <p data-i18n="term_3_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری و پیگرد قانونی خواهد شد.</p>
+                <p data-i18n="term_3_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.</p>
 
-                <h3><i class="bi bi-4-circle"></i> <span data-i18n="term_4_title">پذیرش شرایط و ضوابط</span></h3>
-                <p data-i18n="term_4_desc">استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.</p>
+                <h3><i class="bi bi-4-circle"></i> <span data-i18n="term_4_title">هدف سرگرمی</span></h3>
+                <p data-i18n="term_4_desc">این بازی صرفاً با هدف سرگرمی طراحی شده است. هرگونه سوءاستفاده از آن برخلاف هدف اصلی سازندگان خواهد بود.</p>
+
+                <h3><i class="bi bi-5-circle"></i> <span data-i18n="term_5_title">مالکیت معنوی</span></h3>
+                <p><span data-i18n="term_5_desc_1">تمامی حقوق مادی و معنوی این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_5_desc_2"> می‌باشد و با ❤️ به شما تقدیم می‌شود.</span></p>
+
+                <h3><i class="bi bi-6-circle"></i> <span data-i18n="term_6_title">مسئولیت سرویس</span></h3>
+                <p data-i18n="term_6_desc">تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. از صبر و همراهی شما سپاسگزاریم ❤️</p>
+
+                <h3><i class="bi bi-7-circle"></i> <span data-i18n="term_7_title">پذیرش شرایط</span></h3>
+                <p data-i18n="term_7_desc">استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.</p>
             </div>
         </div>
 
@@ -742,10 +765,13 @@
             </div>
             <div class="terms-modal-body">
                 <ol>
-                    <li data-i18n="modal_term_1"><strong>ممنوعیت بحث‌های غیرمرتبط:</strong> در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع است. تخلف ممکن است منجر به محدودیت موقت یا دائم شود.</li>
-                    <li data-i18n="modal_term_2"><strong>نظارت بر مکالمات:</strong> تمامی گفتگوها و تعاملات در طول بازی تحت نظارت قرار می‌گیرند. از طرح موضوعات شخصی خودداری فرمایید.</li>
-                    <li data-i18n="modal_term_3"><strong>رعایت قوانین جمهوری اسلامی ایران:</strong> هرگونه فعالیت مغایر با قوانین ایران ممنوع بوده و موجب مسدودسازی و پیگرد قانونی خواهد شد.</li>
-                    <li data-i18n="modal_term_4"><strong>پذیرش شرایط و ضوابط:</strong> استفاده از برنامک به منزله پذیرش کامل شرایط است. کاربر موظف به مطالعه مستمر قوانین می‌باشد.</li>
+                    <li><strong data-i18n="modal_1_title">ممنوعیت بحث‌های غیرمرتبط:</strong> <span data-i18n="modal_1_desc">پرداختن به موضوعات غیرمرتبط با بازی ممنوع است. تخلف ممکن است منجر به محدودیت موقت یا دائم شود.</span></li>
+                    <li><strong data-i18n="modal_2_title">نظارت بر محتوا:</strong> <span data-i18n="modal_2_desc">تمامی گفتگوها توسط تیم ادمین بررسی می‌شوند تا محیطی سالم برای همه فراهم شود.</span></li>
+                    <li><strong data-i18n="modal_3_title">رعایت قوانین جمهوری اسلامی ایران:</strong> <span data-i18n="modal_3_desc">هرگونه فعالیت مغایر با قوانین ایران ممنوع بوده و موجب مسدودسازی حساب خواهد شد. در صورت نیاز، تخلفات به مراجع قانونی گزارش داده می‌شود.</span></li>
+                    <li><strong data-i18n="modal_4_title">هدف سرگرمی:</strong> <span data-i18n="modal_4_desc">این بازی صرفاً جهت سرگرمی طراحی شده است.</span></li>
+                    <li><strong data-i18n="modal_5_title">مالکیت معنوی:</strong> <span data-i18n="modal_5_desc_1">تمامی حقوق این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="modal_5_desc_2"> می‌باشد و با ❤️ تقدیم می‌شود.</span></li>
+                    <li><strong data-i18n="modal_6_title">مسئولیت سرویس:</strong> <span data-i18n="modal_6_desc">تیم فنی همواره در تلاش برای بهبود است، اما این بازی "همان‌طور که هست" ارائه شده و مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد ❤️</span></li>
+                    <li><strong data-i18n="modal_7_title">پذیرش شرایط:</strong> <span data-i18n="modal_7_desc">استفاده از برنامک به منزله پذیرش کامل شرایط است.</span></li>
                 </ol>
             </div>
             <div class="terms-checkbox-row" id="termsCheckboxRow" onclick="toggleTermsCheckbox()">
@@ -851,22 +877,40 @@
                     rule_4: 'کارآگاه اگر از وکیل استعلام بگیرد، پاسخ "خیر" دریافت می‌کند.',
                     terms_title: 'قوانین و مقررات استفاده',
                     term_1_title: 'ممنوعیت بحث‌های غیرمرتبط',
-                    term_1_desc: 'در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع می‌باشد. در صورت مشاهده تخلف، امکان اعمال محدودیت موقت یا دائم برای کاربر متخلف وجود خواهد داشت.',
-                    term_2_title: 'نظارت بر مکالمات',
-                    term_2_desc: 'تمامی گفتگوها و تعاملات در طول بازی تحت نظارت و بررسی قرار می‌گیرند. از طرح موضوعات شخصی یا مباحث خارج از چارچوب بازی خودداری فرمایید.',
+                    term_1_desc: 'در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع می‌باشد. در صورت مشاهده تخلف، تیم مدیریت امکان اعمال محدودیت موقت یا دائم را برای کاربر متخلف خواهد داشت.',
+                    term_2_title: 'نظارت بر محتوا',
+                    term_2_desc: 'تمامی گفتگوها و تعاملات در طول بازی توسط تیم ادمین بررسی می‌شوند تا محیطی سالم و لذت‌بخش برای همه فراهم شود. از طرح موضوعات شخصی یا مباحث خارج از چارچوب بازی خودداری فرمایید.',
                     term_3_title: 'رعایت قوانین جمهوری اسلامی ایران',
-                    term_3_desc: 'انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری و پیگرد قانونی خواهد شد.',
-                    term_4_title: 'پذیرش شرایط و ضوابط',
-                    term_4_desc: 'استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.',
+                    term_3_desc: 'انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.',
+                    term_4_title: 'هدف سرگرمی',
+                    term_4_desc: 'این بازی صرفاً با هدف سرگرمی طراحی شده است. هرگونه سوءاستفاده از آن برخلاف هدف اصلی سازندگان خواهد بود.',
+                    term_5_title: 'مالکیت معنوی',
+                    term_5_desc_1: 'تمامی حقوق مادی و معنوی این بازی متعلق به ',
+                    amirmahdi: 'امیرمهدی',
+                    term_5_desc_2: ' می‌باشد و با ❤️ به شما تقدیم می‌شود.',
+                    term_6_title: 'مسئولیت سرویس',
+                    term_6_desc: 'تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. از صبر و همراهی شما سپاسگزاریم ❤️',
+                    term_7_title: 'پذیرش شرایط',
+                    term_7_desc: 'استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.',
                     terms_modal_title: 'قوانین و مقررات استفاده',
-                    modal_term_1: 'ممنوعیت بحث‌های غیرمرتبط: در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع است. تخلف ممکن است منجر به محدودیت موقت یا دائم شود.',
-                    modal_term_2: 'نظارت بر مکالمات: تمامی گفتگوها و تعاملات در طول بازی تحت نظارت قرار می‌گیرند. از طرح موضوعات شخصی خودداری فرمایید.',
-                    modal_term_3: 'رعایت قوانین جمهوری اسلامی ایران: هرگونه فعالیت مغایر با قوانین ایران ممنوع بوده و موجب مسدودسازی و پیگرد قانونی خواهد شد.',
-                    modal_term_4: 'پذیرش شرایط و ضوابط: استفاده از برنامک به منزله پذیرش کامل شرایط است. کاربر موظف به مطالعه مستمر قوانین می‌باشد.',
+                    modal_1_title: 'ممنوعیت بحث‌های غیرمرتبط:',
+                    modal_1_desc: 'پرداختن به موضوعات غیرمرتبط با بازی ممنوع است. تخلف ممکن است منجر به محدودیت موقت یا دائم شود.',
+                    modal_2_title: 'نظارت بر محتوا:',
+                    modal_2_desc: 'تمامی گفتگوها توسط تیم ادمین بررسی می‌شوند تا محیطی سالم برای همه فراهم شود.',
+                    modal_3_title: 'رعایت قوانین جمهوری اسلامی ایران:',
+                    modal_3_desc: 'هرگونه فعالیت مغایر با قوانین ایران ممنوع بوده و موجب مسدودسازی حساب خواهد شد. در صورت نیاز، تخلفات به مراجع قانونی گزارش داده می‌شود.',
+                    modal_4_title: 'هدف سرگرمی:',
+                    modal_4_desc: 'این بازی صرفاً جهت سرگرمی طراحی شده است.',
+                    modal_5_title: 'مالکیت معنوی:',
+                    modal_5_desc_1: 'تمامی حقوق این بازی متعلق به ',
+                    modal_5_desc_2: ' می‌باشد و با ❤️ تقدیم می‌شود.',
+                    modal_6_title: 'مسئولیت سرویس:',
+                    modal_6_desc: 'تیم فنی همواره در تلاش برای بهبود است، اما این بازی "همان‌طور که هست" ارائه شده و مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد ❤️',
+                    modal_7_title: 'پذیرش شرایط:',
+                    modal_7_desc: 'استفاده از برنامک به منزله پذیرش کامل شرایط است.',
                     terms_accept_label: 'قوانین و ضوابط را مطالعه کرده و می‌پذیرم.',
                     terms_cancel: 'انصراف',
                     terms_continue: 'تایید و ادامه',
-                    terms_must_accept: 'لطفاً ابتدا قوانین را تایید کنید.',
                     home: 'خانه',
                     ranking: 'رتبه',
                     profile: 'پروفایل',
@@ -920,22 +964,40 @@
                     rule_4: 'If detective inquires about lawyer, receives "No".',
                     terms_title: 'Terms & Conditions',
                     term_1_title: 'Prohibition of Irrelevant Discussions',
-                    term_1_desc: 'Discussing topics unrelated to the game during play is prohibited. In case of violation, temporary or permanent restrictions may be applied.',
-                    term_2_title: 'Monitoring of Conversations',
-                    term_2_desc: 'All conversations and interactions during the game are monitored. Please refrain from discussing personal matters or off-topic subjects.',
+                    term_1_desc: 'Discussing topics unrelated to the game during play is prohibited. In case of violation, the management team may apply temporary or permanent restrictions.',
+                    term_2_title: 'Content Monitoring',
+                    term_2_desc: 'All conversations during the game are reviewed by the admin team to ensure a safe and enjoyable environment for everyone. Please refrain from discussing personal matters or off-topic subjects.',
                     term_3_title: 'Compliance with Islamic Republic of Iran Laws',
-                    term_3_desc: 'Any activity contrary to the laws of the Islamic Republic of Iran is prohibited and will result in account suspension and legal prosecution.',
-                    term_4_title: 'Acceptance of Terms',
-                    term_4_desc: 'Using this app constitutes full acceptance of our terms and conditions. Users are required to review the rules regularly to stay informed of updates.',
+                    term_3_desc: 'Any activity contrary to the laws of the Islamic Republic of Iran is prohibited and will result in account suspension. If necessary, violations will be reported to the relevant legal authorities.',
+                    term_4_title: 'Entertainment Purpose',
+                    term_4_desc: 'This game is designed purely for entertainment purposes. Any misuse contrary to the creators\' intent is not permitted.',
+                    term_5_title: 'Intellectual Property',
+                    term_5_desc_1: 'All material and intellectual rights of this game belong to ',
+                    amirmahdi: 'Amirmahdi',
+                    term_5_desc_2: ' and it is dedicated to you with ❤️.',
+                    term_6_title: 'Service Responsibility',
+                    term_6_desc: 'Our technical team continuously strives to provide the best experience by improving and fixing issues. However, this game is provided "as is" and the technical team bears no responsibility for potential issues. Thank you for your patience and support ❤️',
+                    term_7_title: 'Acceptance of Terms',
+                    term_7_desc: 'Using this app constitutes full acceptance of our terms and conditions. Users are required to review the rules regularly to stay informed of updates.',
                     terms_modal_title: 'Terms & Conditions',
-                    modal_term_1: 'Prohibition of Irrelevant Discussions: Discussing topics unrelated to the game is prohibited. Violation may result in temporary or permanent restrictions.',
-                    modal_term_2: 'Monitoring of Conversations: All conversations during the game are monitored. Please refrain from discussing personal matters.',
-                    modal_term_3: 'Compliance with Iranian Laws: Any activity contrary to Iranian laws is prohibited and will result in account suspension and legal prosecution.',
-                    modal_term_4: 'Acceptance of Terms: Using the app constitutes full acceptance. Users must regularly review the rules.',
+                    modal_1_title: 'Prohibition of Irrelevant Discussions:',
+                    modal_1_desc: 'Discussing topics unrelated to the game is prohibited. Violation may result in temporary or permanent restrictions.',
+                    modal_2_title: 'Content Monitoring:',
+                    modal_2_desc: 'All conversations are reviewed by the admin team to ensure a safe environment for everyone.',
+                    modal_3_title: 'Compliance with Iranian Laws:',
+                    modal_3_desc: 'Any activity contrary to Iranian laws is prohibited and will result in account suspension. If necessary, violations will be reported to legal authorities.',
+                    modal_4_title: 'Entertainment Purpose:',
+                    modal_4_desc: 'This game is designed purely for entertainment.',
+                    modal_5_title: 'Intellectual Property:',
+                    modal_5_desc_1: 'All rights of this game belong to ',
+                    modal_5_desc_2: ' and it is dedicated with ❤️.',
+                    modal_6_title: 'Service Responsibility:',
+                    modal_6_desc: 'Our technical team continuously strives for improvement, but this game is provided "as is" with no responsibility for potential issues ❤️',
+                    modal_7_title: 'Acceptance of Terms:',
+                    modal_7_desc: 'Using the app constitutes full acceptance of the terms.',
                     terms_accept_label: 'I have read and accept the terms and conditions.',
                     terms_cancel: 'Cancel',
                     terms_continue: 'Confirm & Continue',
-                    terms_must_accept: 'Please accept the terms first.',
                     home: 'Home',
                     ranking: 'Ranking',
                     profile: 'Profile',
@@ -989,22 +1051,40 @@
                     rule_4: 'إذا استعلم المحقق عن المحامي، يتلقى "لا".',
                     terms_title: 'الشروط والأحكام',
                     term_1_title: 'حظر المناقشات غير ذات الصلة',
-                    term_1_desc: 'يُحظر مناقشة مواضيع غير متعلقة باللعبة أثناء اللعب. في حالة المخالفة، قد يتم تطبيق قيود مؤقتة أو دائمة.',
-                    term_2_title: 'مراقبة المحادثات',
-                    term_2_desc: 'تتم مراقبة جميع المحادثات والتفاعلات أثناء اللعبة. يرجى الامتناع عن مناقشة الأمور الشخصية أو المواضيع الخارجة عن سياق اللعبة.',
+                    term_1_desc: 'يُحظر مناقشة مواضيع غير متعلقة باللعبة. في حالة المخالفة، قد يطبق فريق الإدارة قيودًا مؤقتة أو دائمة.',
+                    term_2_title: 'مراقبة المحتوى',
+                    term_2_desc: 'تتم مراجعة جميع المحادثات من قبل فريق الإدارة لضمان بيئة آمنة وممتعة للجميع.',
                     term_3_title: 'الالتزام بقوانين جمهورية إيران الإسلامية',
-                    term_3_desc: 'أي نشاط مخالف لقوانين جمهورية إيران الإسلامية محظور وسيؤدي إلى تعليق الحساب والملاحقة القانونية.',
-                    term_4_title: 'قبول الشروط',
-                    term_4_desc: 'استخدام هذا التطبيق يعني القبول الكامل لشروطنا وأحكامنا. يُطلب من المستخدمين مراجعة القواعد بانتظام للبقاء على اطلاع بالتحديثات.',
+                    term_3_desc: 'أي نشاط مخالف لقوانين جمهورية إيران الإسلامية محظور وسيؤدي إلى تعليق الحساب. في حالة الحاجة، سيتم الإبلاغ عن المخالفات إلى السلطات القانونية المختصة.',
+                    term_4_title: 'غرض الترفيه',
+                    term_4_desc: 'تم تصميم هذه اللعبة لغرض الترفيه فقط. أي سوء استخدام غير مسموح به.',
+                    term_5_title: 'الملكية الفكرية',
+                    term_5_desc_1: 'جميع الحقوق المادية والمعنوية لهذه اللعبة تعود إلى ',
+                    amirmahdi: 'أميرمهدي',
+                    term_5_desc_2: ' وتُقدَّم لكم بـ ❤️.',
+                    term_6_title: 'مسؤولية الخدمة',
+                    term_6_desc: 'يسعى فريقنا الفني باستمرار لتقديم أفضل تجربة. ومع ذلك، يتم تقديم هذه اللعبة "كما هي" ولا يتحمل الفريق الفني أي مسؤولية عن المشاكل المحتملة. شكراً لصبركم ودعمكم ❤️',
+                    term_7_title: 'قبول الشروط',
+                    term_7_desc: 'استخدام هذا التطبيق يعني القبول الكامل لشروطنا وأحكامنا.',
                     terms_modal_title: 'الشروط والأحكام',
-                    modal_term_1: 'حظر المناقشات غير ذات الصلة: يُحظر مناقشة مواضيع غير متعلقة باللعبة. المخالفة قد تؤدي إلى قيود مؤقتة أو دائمة.',
-                    modal_term_2: 'مراقبة المحادثات: تتم مراقبة جميع المحادثات أثناء اللعبة. يرجى الامتناع عن مناقشة الأمور الشخصية.',
-                    modal_term_3: 'الالتزام بقوانين إيران: أي نشاط مخالف للقوانين الإيرانية محظور وسيؤدي إلى تعليق الحساب والملاحقة القانونية.',
-                    modal_term_4: 'قبول الشروط: استخدام التطبيق يعني القبول الكامل. يجب على المستخدمين مراجعة القواعد بانتظام.',
+                    modal_1_title: 'حظر المناقشات غير ذات الصلة:',
+                    modal_1_desc: 'يُحظر مناقشة مواضيع غير متعلقة باللعبة. المخالفة قد تؤدي إلى قيود.',
+                    modal_2_title: 'مراقبة المحتوى:',
+                    modal_2_desc: 'تتم مراجعة جميع المحادثات من قبل فريق الإدارة.',
+                    modal_3_title: 'الالتزام بقوانين إيران:',
+                    modal_3_desc: 'أي نشاط مخالف للقوانين الإيرانية محظور وسيؤدي إلى تعليق الحساب. في حالة الحاجة، سيتم الإبلاغ عن المخالفات للسلطات القانونية.',
+                    modal_4_title: 'غرض الترفيه:',
+                    modal_4_desc: 'تم تصميم هذه اللعبة لغرض الترفيه فقط.',
+                    modal_5_title: 'الملكية الفكرية:',
+                    modal_5_desc_1: 'جميع حقوق هذه اللعبة تعود إلى ',
+                    modal_5_desc_2: ' وتُقدَّم بـ ❤️.',
+                    modal_6_title: 'مسؤولية الخدمة:',
+                    modal_6_desc: 'يسعى فريقنا الفني للتحسين باستمرار، لكن اللعبة مقدمة "كما هي" دون مسؤولية ❤️',
+                    modal_7_title: 'قبول الشروط:',
+                    modal_7_desc: 'استخدام التطبيق يعني القبول الكامل للشروط.',
                     terms_accept_label: 'لقد قرأت الشروط والأحكام وأوافق عليها.',
                     terms_cancel: 'إلغاء',
                     terms_continue: 'تأكيد ومتابعة',
-                    terms_must_accept: 'يرجى قبول الشروط أولاً.',
                     home: 'الرئيسية',
                     ranking: 'الترتيب',
                     profile: 'الملف',
@@ -1210,6 +1290,14 @@
             window.toggleTermsCheckbox = toggleTermsCheckbox;
 
             function showTermsModal(callback) {
+                var lastAccepted = localStorage.getItem('mafiaTermsAccepted');
+                var fortyEightHours = 48 * 60 * 60 * 1000;
+                
+                if (lastAccepted && (Date.now() - parseInt(lastAccepted)) < fortyEightHours) {
+                    if (callback) callback();
+                    return;
+                }
+                
                 pendingAction = callback;
                 document.getElementById('termsCheckbox').classList.remove('checked');
                 document.getElementById('termsAcceptBtn').disabled = true;
@@ -1235,6 +1323,15 @@
                 }
             }
             window.acceptTerms = acceptTerms;
+
+            function openChannelLink() {
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
+                } else {
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank');
+                }
+            }
+            window.openChannelLink = openChannelLink;
 
             window.startNewGame = function() {
                 triggerHaptic('medium');
