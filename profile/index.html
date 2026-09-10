@@ -107,7 +107,7 @@
             border-bottom: 1px solid var(--primary);
         }
 
-        .header-inner { display: flex; align-items: center; justify-content: flex-start; max-width: 600px; margin: 0 auto; }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
         .header-right { display: flex; align-items: center; gap: 10px; }
 
         .header-logo {
@@ -120,6 +120,26 @@
         }
         .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
+
+        .header-currency { display: flex; align-items: center; gap: 6px; }
+        .currency-badge {
+            display: flex; align-items: center; gap: 4px;
+            background: var(--bg2); border: var(--border); border-radius: 8px;
+            padding: 4px 10px; font-size: 10px; font-weight: 700;
+            color: var(--dark); box-shadow: 2px 2px 0 #000;
+            min-width: 50px;
+            justify-content: center;
+        }
+        .currency-badge.coins i { color: #f59e0b; }
+        .currency-badge.diamonds i { color: #06b6d4; }
+        .mini-spinner {
+            width: 12px; height: 12px;
+            border: 2px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
 
         .main-container {
             position: relative; z-index: 5;
@@ -373,6 +393,10 @@
                     <div class="header-title" id="headerTitle">جاسوس مافیایی</div>
                 </div>
             </div>
+            <div class="header-currency">
+                <span class="currency-badge coins"><i class="bi bi-coin"></i> <span id="coinsHeader"><span class="mini-spinner"></span></span></span>
+                <span class="currency-badge diamonds"><i class="bi bi-gem"></i> <span id="diamondsHeader"><span class="mini-spinner"></span></span></span>
+            </div>
         </div>
     </header>
 
@@ -414,9 +438,9 @@
                     <div class="stat-label" data-i18n="total_games">تعداد بازی</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-trophy"></i></div>
-                    <div class="stat-value" id="totalWins">0</div>
-                    <div class="stat-label" data-i18n="total_wins">تعداد برد</div>
+                    <div class="stat-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div class="stat-value" id="winRate">0%</div>
+                    <div class="stat-label" data-i18n="win_rate">درصد برد</div>
                 </div>
             </div>
 
@@ -480,7 +504,7 @@
     <script>
         (function() {
             var webApp = window.Eitaa?.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbx_mJ5tDkGkwVhyGr5R_POJMBq2Y6AkI7HxJ82csk-NuaeFPl4sYm9COtlCoGFWnF7Y/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycby-MT3aVkVgQ_L_9SLQJdpMHbKgjP8NwG8tqHmy0UKz0a7c_yEBKuC6q--7ZtnChB3Z/exec';
             var currentAvatar = 'default', currentLang = 'fa', userDiamonds = 0;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
@@ -505,7 +529,7 @@
                     change_avatar: 'تغییر آواتار',
                     total_score: 'امتیاز کل',
                     total_games: 'تعداد بازی',
-                    total_wins: 'تعداد برد',
+                    win_rate: 'درصد برد',
                     achievements: 'افتخارات',
                     game_history: 'تاریخچه بازی‌ها',
                     select_avatar: 'انتخاب آواتار',
@@ -542,7 +566,7 @@
                     change_avatar: 'Change Avatar',
                     total_score: 'Total Score',
                     total_games: 'Total Games',
-                    total_wins: 'Total Wins',
+                    win_rate: 'Win Rate',
                     achievements: 'Achievements',
                     game_history: 'Game History',
                     select_avatar: 'Select Avatar',
@@ -579,7 +603,7 @@
                     change_avatar: 'تغيير الصورة',
                     total_score: 'مجموع النقاط',
                     total_games: 'عدد المباريات',
-                    total_wins: 'عدد الانتصارات',
+                    win_rate: 'نسبة الفوز',
                     achievements: 'الإنجازات',
                     game_history: 'سجل المباريات',
                     select_avatar: 'اختر الصورة',
@@ -809,8 +833,8 @@
                     return;
                 }
                 userDiamonds -= price;
-                document.getElementById('scoreValue').textContent = document.getElementById('scoreValue').textContent;
                 fetchData('updateUser', {diamonds: userDiamonds});
+                document.getElementById('diamondsHeader').textContent = userDiamonds;
                 var ownedAvatars = [];
                 try { ownedAvatars = JSON.parse(localStorage.getItem('ownedAvatars') || '[]'); } catch(e) {}
                 if (ownedAvatars.indexOf(itemId) === -1) {
@@ -869,6 +893,8 @@
                     document.getElementById('profileUsername').textContent = 'ID: ' + myId;
                     document.getElementById('totalScore').textContent = d.score || 0;
                     document.getElementById('scoreValue').textContent = d.score || 0;
+                    document.getElementById('coinsHeader').textContent = d.coins || 0;
+                    document.getElementById('diamondsHeader').textContent = d.diamonds || 0;
                     updateProfileAvatar();
                     document.getElementById('headerLoader').style.display = 'none';
                     document.getElementById('headerCard').style.display = 'block';
@@ -894,7 +920,7 @@
                     }
                     
                     document.getElementById('totalGames').textContent = totalGames;
-                    document.getElementById('totalWins').textContent = totalWins;
+                    document.getElementById('winRate').textContent = totalGames > 0 ? Math.round((totalWins / totalGames) * 100) + '%' : '0%';
                     
                     var list = document.getElementById('gamesList');
                     
