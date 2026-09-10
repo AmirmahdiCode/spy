@@ -205,14 +205,14 @@
             text-overflow: ellipsis;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
         .rank-name .badge-icon {
-            width: 16px; height: 16px; flex-shrink: 0;
+            width: 13px; height: 13px; flex-shrink: 0;
             display: inline-flex; align-items: center; justify-content: center;
         }
         .rank-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
-        .rank-name .badge-icon i { font-size: 12px; color: #3b82f6; }
+        .rank-name .badge-icon i { font-size: 10px; color: #3b82f6; }
         .rank-score { font-size: 8px; color: var(--text-light); }
 
         .rank-badge-me {
@@ -305,14 +305,14 @@
             text-overflow: ellipsis;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
         .my-rank-float .my-rank-name .badge-icon {
-            width: 14px; height: 14px; flex-shrink: 0;
+            width: 12px; height: 12px; flex-shrink: 0;
             display: inline-flex; align-items: center; justify-content: center;
         }
         .my-rank-float .my-rank-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
-        .my-rank-float .my-rank-name .badge-icon i { font-size: 10px; color: #3b82f6; }
+        .my-rank-float .my-rank-name .badge-icon i { font-size: 9px; color: #3b82f6; }
         .my-rank-float .my-rank-score {
             font-size: 9px;
             font-weight: 800;
@@ -378,16 +378,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
         }
         .profile-modal-name .badge-icon {
-            width: 18px; height: 18px; flex-shrink: 0;
+            width: 15px; height: 15px; flex-shrink: 0;
             display: inline-flex; align-items: center; justify-content: center;
         }
         .profile-modal-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
-        .profile-modal-name .badge-icon i { font-size: 14px; color: #3b82f6; }
+        .profile-modal-name .badge-icon i { font-size: 12px; color: #3b82f6; }
         .profile-modal-username { font-size: 9px; color: var(--text-light); direction: ltr; margin-bottom: 10px; }
-        .profile-modal-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .profile-modal-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .profile-modal-stat {
             background: var(--bg2);
             border: var(--border);
@@ -522,7 +522,8 @@
                 <div class="profile-modal-username" id="modalUsername"></div>
                 <div class="profile-modal-stats">
                     <div class="profile-modal-stat"><div class="profile-modal-stat-value" id="modalScore">0</div><div class="profile-modal-stat-label" data-i18n="score">امتیاز</div></div>
-                    <div class="profile-modal-stat"><div class="profile-modal-stat-value" id="modalGames">0</div><div class="profile-modal-stat-label" data-i18n="games">بازی</div></div>
+                    <div class="profile-modal-stat"><div class="profile-modal-stat-value" id="modalCoins">0</div><div class="profile-modal-stat-label" data-i18n="coins">سکه</div></div>
+                    <div class="profile-modal-stat"><div class="profile-modal-stat-value" id="modalDiamonds">0</div><div class="profile-modal-stat-label" data-i18n="diamonds">الماس</div></div>
                 </div>
             </div>
         </div>
@@ -582,13 +583,27 @@
                 'icon_hat': 'fa-hat-wizard', 'icon_shield': 'fa-shield-halved'
             };
 
+            var allAvatarUrls = {
+                'pack1_1': 'https://cdn.imgurl.ir/uploads/w54346_lIQr-ezB9TyDFznBX3EieIvKLKM-CdpmSV-OSA2l26jhWCDcIA.png',
+                'pack1_2': 'https://cdn.imgurl.ir/uploads/d045472_45mp0V0r9zSquRAopHTdR59Od_o-L60GmINsTj2gUswx-2AmsQ.png',
+                'pack1_3': 'https://cdn.imgurl.ir/uploads/d114583_ftWUHkzgH4A2JymrtJgRp63obmk-8-j-mwqcSiacnVXLLkp0hA.png',
+                'pack1_4': 'https://cdn.imgurl.ir/uploads/w41443_xNi0R1rJosqzhzhbLnQzYQHn2fw-XhSRfdtbSTe4-1WdpJFA2w.png',
+                'pack1_5': 'https://cdn.imgurl.ir/uploads/n160157_D0pfZYH_Qyviui_DHs7nz-Ov8ok-9QNBVHKnRPi3pACDH8ybJw.png',
+                'pack1_6': 'https://cdn.imgurl.ir/uploads/z506541_xNi0R1rJosqzhzhbLnQzYQHn2fw-XhSRfdtbSTe4-1WdpJFA2w.png',
+                'pack1_7': 'https://cdn.imgurl.ir/uploads/o90527_iXRzLE_NMWaY3YWS7NVyWsLAnKc-5FHSha4aSI-iAd9SZcXZuA.png',
+                'pack1_8': 'https://cdn.imgurl.ir/uploads/x98720_ip7QxGUh5btN7O3bJEWpsCVMFcc-ior1jq1JT4yr8KBbjEEGNw.png',
+                'pack1_9': 'https://cdn.imgurl.ir/uploads/m835437_pGirYQXoRTm0dS72qKE41Rzrhwc-OrCH6A2LS7eVKdUmFciPEA.png',
+                'pack1_10': 'https://cdn.imgurl.ir/uploads/n589870_n1TPqxlnhdfs8om-ovlEjYGgBIM-LwT9XNfyQQSttH7PhHi5iQ.png'
+            };
+
             var translations = {
                 fa: {
                     search_user: 'جستجوی کاربر...',
                     loading_rankings: 'در حال دریافت رتبه‌ها...',
                     no_users: 'کاربری یافت نشد',
                     score: 'امتیاز',
-                    games: 'بازی',
+                    coins: 'سکه',
+                    diamonds: 'الماس',
                     home: 'خانه',
                     ranking: 'رتبه',
                     profile: 'پروفایل',
@@ -601,7 +616,8 @@
                     loading_rankings: 'Loading rankings...',
                     no_users: 'No users found',
                     score: 'Score',
-                    games: 'Games',
+                    coins: 'Coins',
+                    diamonds: 'Diamonds',
                     home: 'Home',
                     ranking: 'Ranking',
                     profile: 'Profile',
@@ -614,7 +630,8 @@
                     loading_rankings: 'جار تحميل الترتيب...',
                     no_users: 'لا يوجد مستخدمين',
                     score: 'النقاط',
-                    games: 'مباريات',
+                    coins: 'عملات',
+                    diamonds: 'الماس',
                     home: 'الرئيسية',
                     ranking: 'الترتيب',
                     profile: 'الملف',
@@ -701,6 +718,7 @@
             function getAvatarHtml(avatarId) {
                 if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user"></i>';
                 if (iconAvatars[avatarId]) return '<i class="fa-solid ' + iconAvatars[avatarId] + '"></i>';
+                if (allAvatarUrls[avatarId]) return '<img src="' + allAvatarUrls[avatarId] + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
                 return '<i class="fa-solid fa-user"></i>';
             }
 
@@ -808,12 +826,14 @@
                         document.getElementById('modalName').innerHTML = (d.name || 'کاربر') + ' ' + getUserTypeBadge(d.user_type);
                         document.getElementById('modalUsername').textContent = 'ID: ' + (d.user_id || userId);
                         document.getElementById('modalScore').textContent = d.score || 0;
-                        document.getElementById('modalGames').textContent = d.coins || 0;
+                        document.getElementById('modalCoins').textContent = d.coins || 0;
+                        document.getElementById('modalDiamonds').textContent = d.diamonds || 0;
                     } else {
                         document.getElementById('modalName').textContent = getTranslation('error_loading');
                         document.getElementById('modalUsername').textContent = 'ID: ' + userId;
                         document.getElementById('modalScore').textContent = '0';
-                        document.getElementById('modalGames').textContent = '0';
+                        document.getElementById('modalCoins').textContent = '0';
+                        document.getElementById('modalDiamonds').textContent = '0';
                     }
                 }, 500);
             };
