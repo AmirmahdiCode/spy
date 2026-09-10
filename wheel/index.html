@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گردونه شانس | جاسوس مافیایی</title>
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg2: #f5f5f5;
+            --bg3: #e0e0e0;
+            --primary: #000000;
+            --primary-dark: #333333;
+            --primary-light: #666666;
+            --primary-rgb: 0, 0, 0;
+            --dark: #000000;
+            --text: #333333;
+            --text-light: #999999;
+            --white: #ffffff;
+            --card-bg: #ffffff;
+            --shadow: 3px 3px 0 #000000;
+            --radius: 12px;
+            --border: 1px solid #000000;
+            --gold: #f59e0b;
+            --font: 'Samim', Tahoma, sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #000000;
+            --bg2: #1a1a1a;
+            --bg3: #333333;
+            --primary: #666666;
+            --primary-dark: #999999;
+            --primary-light: #444444;
+            --primary-rgb: 102, 102, 102;
+            --dark: #ffffff;
+            --text: #cccccc;
+            --text-light: #888888;
+            --white: #1a1a1a;
+            --card-bg: #1a1a1a;
+            --shadow: 3px 3px 0 #000000;
+            --border: 1px solid #666666;
+        }
+
+        [data-special-theme="crime"] {
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --primary-light: #fca5a5;
+            --primary-rgb: 220, 38, 38;
+            --border: 1px solid #dc2626;
+        }
+
+        [data-theme="dark"][data-special-theme="crime"] {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #fca5a5;
+            --primary-rgb: 239, 68, 68;
+            --border: 1px solid #ef4444;
+        }
+
+        [data-animation="off"] * { animation: none !important; transition: none !important; }
+
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+            -webkit-user-drag: none; user-drag: none;
+        }
+        img { pointer-events: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; user-drag: none; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: font-family 0.3s ease;
+        }
+
+        .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+
+        .header-logo {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: none;
+            box-shadow: none;
+            flex-shrink: 0;
+        }
+        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
+        .header-currency { display: flex; align-items: center; gap: 6px; }
+        .currency-badge {
+            display: flex; align-items: center; gap: 4px;
+            background: var(--bg2); border: var(--border); border-radius: 8px;
+            padding: 4px 10px; font-size: 10px; font-weight: 700;
+            color: var(--dark); box-shadow: 2px 2px 0 #000;
+        }
+        .currency-badge.coins i { color: #f59e0b; }
+        .currency-badge.diamonds i { color: #06b6d4; }
+
+        .main-container {
+            position: relative; z-index: 5;
+            max-width: 600px; width: 100%;
+            margin: 16px auto; padding: 0 12px 90px;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+
+        .wheel-card {
+            background: var(--card-bg); border: var(--border); border-radius: var(--radius);
+            padding: 20px; box-shadow: var(--shadow); text-align: center;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .wheel-title {
+            font-size: 14px; font-weight: 800; color: var(--dark); margin-bottom: 12px;
+        }
+        .wheel-container { position: relative; width: 250px; height: 250px; margin: 0 auto 14px; }
+        .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #000; transition: transform 4s cubic-bezier(.17,.67,.12,.99); }
+        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 32px; color: #f59e0b; z-index: 5; }
+        .wheel-result { text-align: center; font-size: 12px; font-weight: 800; color: var(--primary); min-height: 25px; margin-top: 8px; }
+        
+        .spin-btn {
+            display: block; width: 100%; max-width: 250px; margin: 10px auto 0;
+            padding: 10px; background: var(--gold); color: #fff; border: var(--border);
+            border-radius: 12px; font-family: var(--font); font-size: 11px; font-weight: 800;
+            cursor: pointer; box-shadow: 3px 3px 0 #000;
+        }
+        .spin-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .spin-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .spin-btn.diamond-btn { background: #06b6d4; }
+
+        .confirm-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7); z-index: 3000;
+            display: none; align-items: center; justify-content: center;
+        }
+        .confirm-overlay.show { display: flex; }
+        .confirm-box {
+            background: var(--card-bg); border: var(--border); border-radius: var(--radius);
+            padding: 24px; box-shadow: 5px 5px 0 #000; text-align: center;
+            max-width: 300px; width: 90%;
+        }
+        .confirm-text { font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
+        .confirm-btns { display: flex; gap: 10px; }
+        .confirm-btn {
+            flex: 1; padding: 10px; border: var(--border); border-radius: 8px;
+            cursor: pointer; font-family: var(--font); font-size: 11px; font-weight: 700;
+            box-shadow: 2px 2px 0 #000;
+        }
+        .confirm-btn.yes { background: #10b981; color: #fff; }
+        .confirm-btn.no { background: #ef4444; color: #fff; }
+
+        .support-notification {
+            position: fixed; top: 75px; right: 5%; left: 5%;
+            max-width: 400px; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 10px 14px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 2000;
+            animation: slideDownNotif 0.5s ease forwards, slideUpNotif 0.5s ease 4.5s forwards;
+            cursor: pointer;
+        }
+        [data-theme="dark"] .support-notification {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+        }
+        .support-notification img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary); object-fit: cover; }
+        .support-notification .notif-info { flex: 1; }
+        .support-notification .notif-name { font-size: 10px; font-weight: 800; color: var(--dark); }
+        .support-notification i { color: var(--text-light); font-size: 10px; }
+
+        @keyframes slideDownNotif { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpNotif { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+
+        .bottom-nav {
+            position: fixed; bottom: 8px; right: 5%; left: 5%; width: 90%; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 25px;
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 4px 0; z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+        [data-theme="dark"] .bottom-nav {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; gap: 1px;
+            cursor: pointer; text-decoration: none; color: var(--text-light);
+            padding: 4px 10px; font-family: var(--font); background: none; border: none; font-size: 12px;
+        }
+        .nav-item img {
+            width: 20px; height: 20px;
+            opacity: 0.5;
+            filter: brightness(0);
+        }
+        [data-theme="dark"] .nav-item img {
+            filter: brightness(0) invert(1);
+        }
+        .nav-item.active img {
+            opacity: 1;
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+        .nav-item span { font-size: 7px; font-weight: 600; }
+        .nav-item.active { color: var(--primary); }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-right">
+                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="Mafia Spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
+                <div>
+                    <div class="header-title" id="headerTitle">جاسوس مافیایی</div>
+                </div>
+            </div>
+            <div class="header-currency">
+                <span class="currency-badge coins"><i class="bi bi-coin"></i> <span id="coinsHeader">0</span></span>
+                <span class="currency-badge diamonds"><i class="bi bi-gem"></i> <span id="diamondsHeader">0</span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container" id="wheelsContainer"></main>
+
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-box">
+            <div class="confirm-text" id="confirmText">مطمئنی؟</div>
+            <div class="confirm-btns">
+                <button class="confirm-btn yes" id="confirmYes" onclick="confirmSpin()">بله</button>
+                <button class="confirm-btn no" onclick="closeConfirm()">خیر</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="support-notification" id="supportNotification" onclick="openSupportLink()">
+        <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="notif-info">
+            <div class="notif-name">امیرمهدی | Amirmahdi</div>
+        </div>
+        <i class="bi bi-chevron-left"></i>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item" onclick="window.location.href='../dashboard/'">
+            <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <span data-i18n="home">خانه</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='../ranking/'">
+            <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <span data-i18n="ranking">رتبه</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='../profile/'">
+            <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <span data-i18n="profile">پروفایل</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='../setting/'">
+            <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <span data-i18n="settings_nav">تنظیمات</span>
+        </div>
+    </nav>
+
+    <script>
+        (function() {
+            var webApp = window.Eitaa?.WebApp;
+            var API_URL = 'https://script.google.com/macros/s/AKfycby-MT3aVkVgQ_L_9SLQJdpMHbKgjP8NwG8tqHmy0UKz0a7c_yEBKuC6q--7ZtnChB3Z/exec';
+            var userCoins = 0, userDiamonds = 0, currentLang = 'fa';
+            var isSpinning = false;
+            var pendingSpin = null;
+            var wheelStates = {};
+
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+            document.addEventListener('copy', function(e) { e.preventDefault(); });
+            document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+            var fontMap = {
+                'Samim': "'Samim', Tahoma, sans-serif",
+                'Sahel': "'Sahel', Tahoma, sans-serif",
+                'IRANSans': "'IRANSans', Tahoma, sans-serif",
+                'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
+                'Estedad': "'Estedad', Tahoma, sans-serif"
+            };
+
+            var translations = {
+                fa: {
+                    home: 'خانه',
+                    ranking: 'رتبه',
+                    profile: 'پروفایل',
+                    settings_nav: 'تنظیمات',
+                    beginner: 'مبتدی',
+                    skilled: 'کاربلد',
+                    pro: 'حرفه‌ای',
+                    royal: 'اشرافی',
+                    imperial: 'سلطنتی',
+                    coins: 'سکه',
+                    diamonds: 'الماس',
+                    empty: 'پوچ',
+                    retry: 'شانس دوباره',
+                    confirm_text: 'مطمئنی می‌خوای ',
+                    spend: ' خرج کنی؟',
+                    yes: 'بله',
+                    no: 'خیر',
+                    not_enough: 'سکه یا الماس کافی نداری!',
+                    got_empty: 'پوچ!',
+                    got_coins: '+',
+                    got_diamonds: '+',
+                    got_retry: 'شانس دوباره!'
+                },
+                en: {
+                    home: 'Home',
+                    ranking: 'Ranking',
+                    profile: 'Profile',
+                    settings_nav: 'Settings',
+                    beginner: 'Beginner',
+                    skilled: 'Skilled',
+                    pro: 'Pro',
+                    royal: 'Royal',
+                    imperial: 'Imperial',
+                    coins: 'coins',
+                    diamonds: 'diamonds',
+                    empty: 'Empty',
+                    retry: 'Retry',
+                    confirm_text: 'Are you sure you want to spend ',
+                    spend: '?',
+                    yes: 'Yes',
+                    no: 'No',
+                    not_enough: 'Not enough coins or diamonds!',
+                    got_empty: 'Empty!',
+                    got_coins: '+',
+                    got_diamonds: '+',
+                    got_retry: 'Retry!'
+                },
+                ar: {
+                    home: 'الرئيسية',
+                    ranking: 'الترتيب',
+                    profile: 'الملف',
+                    settings_nav: 'الإعدادات',
+                    beginner: 'مبتدئ',
+                    skilled: 'ماهر',
+                    pro: 'محترف',
+                    royal: 'ملكي',
+                    imperial: 'إمبراطوري',
+                    coins: 'عملة',
+                    diamonds: 'الماس',
+                    empty: 'فارغ',
+                    retry: 'إعادة',
+                    confirm_text: 'هل أنت متأكد من صرف ',
+                    spend: '؟',
+                    yes: 'نعم',
+                    no: 'لا',
+                    not_enough: 'عملات أو الماس غير كافي!',
+                    got_empty: 'فارغ!',
+                    got_coins: '+',
+                    got_diamonds: '+',
+                    got_retry: 'إعادة!'
+                }
+            };
+
+            function getTranslation(k) {
+                var t = translations[currentLang] || translations.fa;
+                return t[k] || translations.fa[k] || k;
+            }
+
+            function getSettings() {
+                try {
+                    var raw = localStorage.getItem('mafiaSettings');
+                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                    var p = JSON.parse(raw);
+                    if (!p.theme) p.theme = 'light';
+                    if (!p.specialTheme) p.specialTheme = 'none';
+                    if (p.animation === undefined) p.animation = true;
+                    if (p.haptic === undefined) p.haptic = true;
+                    if (!p.font) p.font = 'Samim';
+                    if (!p.language) p.language = 'fa';
+                    return p;
+                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+            }
+
+            function updateHeaderTitle(lang) {
+                var titleEl = document.getElementById('headerTitle');
+                if (lang === 'en') {
+                    titleEl.textContent = 'Mafia Spy';
+                } else {
+                    titleEl.textContent = 'جاسوس مافیایی';
+                }
+            }
+
+            function applyLanguage(lang) {
+                var t = translations[lang] || translations.fa;
+                document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                    var k = el.getAttribute('data-i18n');
+                    if (t[k]) el.textContent = t[k];
+                });
+                if (lang === 'en') {
+                    document.documentElement.setAttribute('dir', 'ltr');
+                } else {
+                    document.documentElement.setAttribute('dir', 'rtl');
+                }
+                updateHeaderTitle(lang);
+            }
+
+            function applyTheme() {
+                var s = getSettings();
+                currentLang = s.language || 'fa';
+                var t = s.theme || 'light';
+                var st = s.specialTheme || 'none';
+                var f = s.font || 'Samim';
+                document.documentElement.setAttribute('data-theme', t);
+                document.documentElement.setAttribute('data-special-theme', st);
+                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
+                else { document.documentElement.removeAttribute('data-animation'); }
+                var fontFamily = fontMap[f] || fontMap['Samim'];
+                document.documentElement.style.setProperty('--font', fontFamily);
+                document.body.style.fontFamily = fontFamily;
+                applyLanguage(currentLang);
+            }
+
+            function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
+            function getUserId(){var u=getEitaaUser();return u?(typeof u.id==='number'?u.id.toString():String(u.id||'')):'';}
+            function fetchData(action,params){
+                var payload={action:action,username:getUserId()};
+                if(params){for(var k in params){if(params.hasOwnProperty(k))payload[k]=params[k];}}
+                return Promise.race([
+                    fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(function(r){return r.json();}),
+                    new Promise(function(_,reject){setTimeout(function(){reject(new Error('timeout'));},10000);})
+                ]).catch(function(){return{ok:false};});
+            }
+
+            var wheels = {
+                beginner: {
+                    nameKey: 'beginner',
+                    costType: 'coins',
+                    cost: 30,
+                    prizes: [
+                        {labelKey:'empty', type:'empty', value:0},
+                        {label:'۲۰', labelUnit:'coins', type:'coins', value:20},
+                        {labelKey:'empty', type:'empty', value:0},
+                        {label:'۱۰۰', labelUnit:'coins', type:'coins', value:100},
+                        {label:'۱', labelUnit:'diamonds', type:'diamonds', value:1},
+                        {label:'۲۰۰', labelUnit:'coins', type:'coins', value:200},
+                        {label:'۵', labelUnit:'diamonds', type:'diamonds', value:5},
+                        {label:'۱۰', labelUnit:'diamonds', type:'diamonds', value:10}
+                    ]
+                },
+                skilled: {
+                    nameKey: 'skilled',
+                    costType: 'coins',
+                    cost: 100,
+                    prizes: [
+                        {labelKey:'empty', type:'empty', value:0},
+                        {labelKey:'empty', type:'empty', value:0},
+                        {label:'۱۰۰', labelUnit:'coins', type:'coins', value:100},
+                        {label:'۱۰۰۰', labelUnit:'coins', type:'coins', value:1000},
+                        {label:'۵', labelUnit:'diamonds', type:'diamonds', value:5},
+                        {label:'۱۰', labelUnit:'diamonds', type:'diamonds', value:10},
+                        {label:'۵۰', labelUnit:'diamonds', type:'diamonds', value:50},
+                        {labelKey:'retry', type:'retry', value:0}
+                    ]
+                },
+                pro: {
+                    nameKey: 'pro',
+                    costType: 'coins',
+                    cost: 500,
+                    prizes: [
+                        {labelKey:'empty', type:'empty', value:0},
+                        {label:'۴۰۰', labelUnit:'coins', type:'coins', value:400},
+                        {label:'۷۰۰', labelUnit:'coins', type:'coins', value:700},
+                        {label:'۱۰۰۰', labelUnit:'coins', type:'coins', value:1000},
+                        {label:'۲۰۰۰', labelUnit:'coins', type:'coins', value:2000},
+                        {label:'۳۰', labelUnit:'diamonds', type:'diamonds', value:30},
+                        {label:'۵۰', labelUnit:'diamonds', type:'diamonds', value:50},
+                        {labelKey:'retry', type:'retry', value:0}
+                    ]
+                },
+                royal: {
+                    nameKey: 'royal',
+                    costType: 'both',
+                    costCoins: 1000,
+                    costDiamonds: 50,
+                    prizes: [
+                        {label:'۸۰۰', labelUnit:'coins', type:'coins', value:800},
+                        {label:'۱۵۰۰', labelUnit:'coins', type:'coins', value:1500},
+                        {label:'۲۰۰۰', labelUnit:'coins', type:'coins', value:2000},
+                        {label:'۳۰۰۰', labelUnit:'coins', type:'coins', value:3000},
+                        {label:'۵۰', labelUnit:'diamonds', type:'diamonds', value:50},
+                        {label:'۱۰۰', labelUnit:'diamonds', type:'diamonds', value:100},
+                        {label:'۱۵۰', labelUnit:'diamonds', type:'diamonds', value:150},
+                        {labelKey:'retry', type:'retry', value:0}
+                    ]
+                },
+                imperial: {
+                    nameKey: 'imperial',
+                    costType: 'diamonds',
+                    cost: 200,
+                    prizes: [
+                        {label:'۱۰۰۰۰', labelUnit:'coins', type:'coins', value:10000},
+                        {label:'۲۰۰۰۰', labelUnit:'coins', type:'coins', value:20000},
+                        {label:'۳۰۰۰۰', labelUnit:'coins', type:'coins', value:30000},
+                        {label:'۵۰۰۰۰', labelUnit:'coins', type:'coins', value:50000},
+                        {label:'۱۵۰', labelUnit:'diamonds', type:'diamonds', value:150},
+                        {label:'۲۵۰', labelUnit:'diamonds', type:'diamonds', value:250},
+                        {label:'۳۵۰', labelUnit:'diamonds', type:'diamonds', value:350},
+                        {label:'۵۰۰', labelUnit:'diamonds', type:'diamonds', value:500}
+                    ]
+                }
+            };
+
+            var wheelColors = ['#ef4444','#f59e0b','#10b981','#06b6d4','#8b5cf6','#ec4899','#84cc16','#f97316'];
+
+            function getPrizeLabel(prize) {
+                if (prize.labelKey) return getTranslation(prize.labelKey);
+                if (prize.label && prize.labelUnit) {
+                    return prize.label + ' ' + getTranslation(prize.labelUnit);
+                }
+                return prize.label || '';
+            }
+
+            function renderAllWheels() {
+                var container = document.getElementById('wheelsContainer');
+                var html = '';
+                for (var key in wheels) {
+                    var w = wheels[key];
+                    html += '<div class="wheel-card" id="wheel-' + key + '">';
+                    html += '<div class="wheel-title">' + getTranslation(w.nameKey) + '</div>';
+                    html += '<div class="wheel-container">';
+                    html += '<div class="wheel-pointer"><i class="bi bi-geo-alt-fill"></i></div>';
+                    html += '<canvas class="wheel-canvas" id="canvas-' + key + '" width="250" height="250"></canvas>';
+                    html += '</div>';
+                    if (w.costType === 'both') {
+                        html += '<button class="spin-btn" onclick="askSpin(\'' + key + '\',\'coins\')">' + w.costCoins + ' ' + getTranslation('coins') + '</button>';
+                        html += '<button class="spin-btn diamond-btn" style="margin-top:6px;" onclick="askSpin(\'' + key + '\',\'diamonds\')">' + w.costDiamonds + ' ' + getTranslation('diamonds') + '</button>';
+                    } else if (w.costType === 'coins') {
+                        html += '<button class="spin-btn" onclick="askSpin(\'' + key + '\',\'coins\')">' + w.cost + ' ' + getTranslation('coins') + '</button>';
+                    } else {
+                        html += '<button class="spin-btn diamond-btn" onclick="askSpin(\'' + key + '\',\'diamonds\')">' + w.cost + ' ' + getTranslation('diamonds') + '</button>';
+                    }
+                    html += '<div class="wheel-result" id="result-' + key + '"></div>';
+                    html += '</div>';
+                }
+                container.innerHTML = html;
+                
+                for (var k in wheels) {
+                    if (!wheelStates[k]) wheelStates[k] = {rotation: 0};
+                    drawWheel(k);
+                }
+            }
+
+            function drawWheel(key) {
+                var canvas = document.getElementById('canvas-' + key);
+                if (!canvas) return;
+                var ctx = canvas.getContext('2d');
+                var cx = canvas.width / 2, cy = canvas.height / 2;
+                var radius = canvas.width / 2 - 10;
+                var w = wheels[key];
+                var seg = (2 * Math.PI) / w.prizes.length;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (var i = 0; i < w.prizes.length; i++) {
+                    var sa = i * seg, ea = sa + seg;
+                    ctx.beginPath();
+                    ctx.moveTo(cx, cy);
+                    ctx.arc(cx, cy, radius, sa, ea);
+                    ctx.closePath();
+                    ctx.fillStyle = wheelColors[i % wheelColors.length];
+                    ctx.fill();
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(sa + seg / 2);
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 9px Samim, Tahoma';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(getPrizeLabel(w.prizes[i]), radius - 35, 0);
+                    ctx.restore();
+                }
+                var state = wheelStates[key];
+                if (state && state.rotation) {
+                    canvas.style.transform = 'rotate(' + state.rotation + 'deg)';
+                }
+            }
+
+            window.askSpin = function(key, payType) {
+                if (isSpinning) return;
+                var w = wheels[key];
+                var costText = '';
+                
+                if (payType === 'coins') {
+                    if (w.costType === 'both') costText = w.costCoins + ' ' + getTranslation('coins');
+                    else costText = w.cost + ' ' + getTranslation('coins');
+                } else {
+                    if (w.costType === 'both') costText = w.costDiamonds + ' ' + getTranslation('diamonds');
+                    else costText = w.cost + ' ' + getTranslation('diamonds');
+                }
+                
+                document.getElementById('confirmText').textContent = getTranslation('confirm_text') + costText + getTranslation('spend');
+                document.getElementById('confirmOverlay').classList.add('show');
+                document.getElementById('confirmYes').textContent = getTranslation('yes');
+                document.querySelector('.confirm-btn.no').textContent = getTranslation('no');
+                pendingSpin = {key: key, payType: payType};
+                window._pendingSpin = pendingSpin;
+            };
+
+            window.confirmSpin = function() {
+                document.getElementById('confirmOverlay').classList.remove('show');
+                if (!window._pendingSpin) return;
+                var key = window._pendingSpin.key;
+                var payType = window._pendingSpin.payType;
+                window._pendingSpin = null;
+                executeSpin(key, payType);
+            };
+
+            window.closeConfirm = function() {
+                document.getElementById('confirmOverlay').classList.remove('show');
+                window._pendingSpin = null;
+            };
+
+            function executeSpin(key, payType) {
+                var w = wheels[key];
+                var canSpin = false;
+                
+                if (w.costType === 'coins') {
+                    canSpin = userCoins >= w.cost;
+                } else if (w.costType === 'diamonds') {
+                    canSpin = userDiamonds >= w.cost;
+                } else if (w.costType === 'both') {
+                    if (payType === 'coins') canSpin = userCoins >= w.costCoins;
+                    else canSpin = userDiamonds >= w.costDiamonds;
+                }
+                
+                if (!canSpin) {
+                    document.getElementById('result-' + key).textContent = getTranslation('not_enough');
+                    return;
+                }
+                
+                if (w.costType === 'both') {
+                    if (payType === 'coins') userCoins -= w.costCoins;
+                    else userDiamonds -= w.costDiamonds;
+                } else if (w.costType === 'coins') {
+                    userCoins -= w.cost;
+                } else {
+                    userDiamonds -= w.cost;
+                }
+                
+                fetchData('updateUser', {coins: userCoins, diamonds: userDiamonds});
+                document.getElementById('coinsHeader').textContent = userCoins;
+                document.getElementById('diamondsHeader').textContent = userDiamonds;
+                document.getElementById('result-' + key).textContent = '';
+                
+                isSpinning = true;
+                var seg = 360 / w.prizes.length;
+                var ri = Math.floor(Math.random() * w.prizes.length);
+                var target = -90 - (ri * seg + seg / 2);
+                var state = wheelStates[key] || {rotation: 0};
+                var ca = state.rotation % 360;
+                var rot = 1800 + (target - ca);
+                if (rot < 1800) rot += 360;
+                var nr = state.rotation + rot;
+                state.rotation = nr;
+                var canvas = document.getElementById('canvas-' + key);
+                canvas.style.transform = 'rotate(' + nr + 'deg)';
+                
+                setTimeout(function() {
+                    var prize = w.prizes[ri];
+                    var resultText = '';
+                    if (prize.type === 'empty') {
+                        resultText = getTranslation('got_empty');
+                    } else if (prize.type === 'coins') {
+                        userCoins += prize.value;
+                        resultText = getTranslation('got_coins') + prize.value + ' ' + getTranslation('coins');
+                        fetchData('updateUser', {coins: userCoins, diamonds: userDiamonds});
+                    } else if (prize.type === 'diamonds') {
+                        userDiamonds += prize.value;
+                        resultText = getTranslation('got_diamonds') + prize.value + ' ' + getTranslation('diamonds');
+                        fetchData('updateUser', {coins: userCoins, diamonds: userDiamonds});
+                    } else if (prize.type === 'retry') {
+                        resultText = getTranslation('got_retry');
+                        if (w.costType === 'coins') userCoins += w.cost;
+                        else if (w.costType === 'diamonds') userDiamonds += w.cost;
+                        else if (w.costType === 'both') {
+                            if (payType === 'coins') userCoins += w.costCoins;
+                            else userDiamonds += w.costDiamonds;
+                        }
+                        fetchData('updateUser', {coins: userCoins, diamonds: userDiamonds});
+                    }
+                    document.getElementById('result-' + key).textContent = resultText;
+                    document.getElementById('coinsHeader').textContent = userCoins;
+                    document.getElementById('diamondsHeader').textContent = userDiamonds;
+                    isSpinning = false;
+                }, 4200);
+            }
+
+            function openSupportLink() {
+                if (webApp && webApp.openEitaaLink) { webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code'); }
+                else { window.open('https://eitaa.com/Amirmahdi_code', '_blank'); }
+            }
+            window.openSupportLink = openSupportLink;
+
+            async function init() {
+                applyTheme();
+                if (webApp) {
+                    webApp.ready();
+                    webApp.expand();
+                    webApp.BackButton.show();
+                    webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                }
+                var userData = await fetchData('getUser', {});
+                if (userData.ok && userData.data) {
+                    userCoins = userData.data.coins || 0;
+                    userDiamonds = userData.data.diamonds || 0;
+                    document.getElementById('coinsHeader').textContent = userCoins;
+                    document.getElementById('diamondsHeader').textContent = userDiamonds;
+                }
+                renderAllWheels();
+                setTimeout(function() {
+                    var notif = document.getElementById('supportNotification');
+                    if (notif) { notif.style.display = 'none'; }
+                }, 5000);
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>
