@@ -85,6 +85,7 @@
             display: flex;
             flex-direction: column;
             transition: font-family 0.3s ease;
+            overflow-x: hidden;
         }
 
         .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
@@ -294,6 +295,37 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        .error-state {
+            text-align: center;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .error-state i {
+            font-size: 30px;
+            color: #ef4444;
+        }
+        .error-state-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .error-state-btn {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: #fff;
+            border: var(--border);
+            border-radius: 8px;
+            box-shadow: 2px 2px 0 #000;
+            font-family: var(--font);
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .error-state-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+
         .games-list { display: flex; flex-direction: column; gap: 8px; }
         .game-card {
             display: flex;
@@ -361,8 +393,17 @@
             border-radius: 6px;
             margin: 8px 0;
             font-weight: 700;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
         }
         [dir="ltr"] .rules-article .warning { border-right: none; border-left: 3px solid var(--primary); }
+        .rules-article .warning i {
+            color: #dc2626;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
         .rules-article a {
             color: var(--primary);
             font-weight: 800;
@@ -370,6 +411,20 @@
             border-bottom: 1px dashed var(--primary);
             cursor: pointer;
         }
+        .rules-article .heart-icon {
+            color: #ef4444;
+            font-size: 11px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .rules-article .phase-icon {
+            color: var(--primary);
+            font-size: 12px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        [dir="ltr"] .rules-article .phase-icon { margin-left: 0; margin-right: 4px; }
 
         .active-game-float {
             position: fixed;
@@ -644,7 +699,7 @@
     <main class="main-container">
         
         <div class="mystery-banner">
-            <img src="https://cdn.imgurl.ir/uploads/x53745_InShot_20260908_173109765.jpg" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <img src="https://cdn.imgurl.ir/uploads/x53745_InShot_20260908_173109765.jpg" alt="تصویر مرموز بازی جاسوس مافیایی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         </div>
 
         <div class="action-row">
@@ -667,6 +722,7 @@
                 <div class="section-loader-spinner"></div>
                 <div class="section-loader-text" data-i18n="loading_games">در حال دریافت بازی‌ها...</div>
             </div>
+            <div id="publicError" style="display:none;"></div>
             <div class="games-list" id="publicList" style="display:none;"></div>
         </div>
 
@@ -681,7 +737,10 @@
                     <li><span class="highlight" data-i18n="mafia">مافیا:</span> <span data-i18n="mafia_goal">جاسوس باید تا آخر بازی زنده بماند.</span></li>
                 </ul>
 
-                <div class="warning" data-i18n="critical_rule">⚠️ نکته مهم: اگر کسی به غیر از جاسوس اخراج شود، شهر بازنده و مافیا برنده می‌شود!</div>
+                <div class="warning">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <span data-i18n="critical_rule">نکته مهم: اگر کسی به غیر از جاسوس اخراج شود، شهر بازنده و مافیا برنده می‌شود!</span>
+                </div>
 
                 <h3><i class="bi bi-people"></i> <span data-i18n="players_combo">ترکیب بازیکنان</span></h3>
                 <p data-i18n="players_desc">حداقل ۵ تا حداکثر ۱۰ نفر. با افزایش تعداد، فقط به تعداد شهروند عادی اضافه می‌شود. سایر نقش‌ها ثابت هستند.</p>
@@ -696,8 +755,16 @@
                 </ul>
 
                 <h3><i class="bi bi-arrow-repeat"></i> <span data-i18n="phases">مراحل بازی</span></h3>
-                <p><span class="highlight" data-i18n="night_phase">🌙 فاز شب:</span> <span data-i18n="night_desc">وکیل و جاسوس همدیگر را می‌شناسند. کارآگاه از یک نفر استعلام می‌گیرد. قاضی نیز بیدار می‌شود و نتیجه رای‌گیری را اعلام می‌کند تا نقشش لو نرود.</span></p>
-                <p><span class="highlight" data-i18n="day_phase">☀️ فاز روز:</span> <span data-i18n="day_desc">بحث آزاد، معرفی مظنون و رای‌گیری مقدماتی، سپس فاز قاضی.</span></p>
+                <p>
+                    <i class="bi bi-moon-stars-fill phase-icon"></i>
+                    <span class="highlight" data-i18n="night_phase">فاز شب:</span>
+                    <span data-i18n="night_desc">وکیل و جاسوس همدیگر را می‌شناسند. کارآگاه از یک نفر استعلام می‌گیرد. قاضی نیز بیدار می‌شود و نتیجه رای‌گیری را اعلام می‌کند تا نقشش لو نرود.</span>
+                </p>
+                <p>
+                    <i class="bi bi-sun-fill phase-icon"></i>
+                    <span class="highlight" data-i18n="day_phase">فاز روز:</span>
+                    <span data-i18n="day_desc">بحث آزاد، معرفی مظنون و رای‌گیری مقدماتی، سپس فاز قاضی.</span>
+                </p>
 
                 <h3><i class="bi bi-trophy"></i> <span data-i18n="win_conditions">شرایط برنده شدن</span></h3>
                 <ul>
@@ -730,16 +797,16 @@
                 <p data-i18n="term_3_desc">ارسال هرگونه تبلیغات، لینک خارجی، معرفی سرویس‌های دیگر یا دعوت به کانال‌ها و گروه‌های شخصی، تحت هر شرایطی ممنوع بوده و موجب مسدودسازی اکانت خواهد شد.</p>
 
                 <h3><i class="bi bi-4-circle"></i> <span data-i18n="term_4_title">حفاظت از کدهای بازی</span></h3>
-                <p data-i18n="term_4_desc">هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و در صورت لزوم از طریق مراجع قانونی پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید ❤️</p>
+                <p><span data-i18n="term_4_desc">هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و در صورت لزوم از طریق مراجع قانونی پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید </span><i class="bi bi-heart-fill heart-icon"></i></p>
 
                 <h3><i class="bi bi-5-circle"></i> <span data-i18n="term_5_title">رعایت قوانین جمهوری اسلامی ایران</span></h3>
                 <p data-i18n="term_5_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.</p>
 
                 <h3><i class="bi bi-6-circle"></i> <span data-i18n="term_6_title">هدف سرگرمی و مالکیت معنوی</span></h3>
-                <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد و با ❤️ به شما تقدیم می‌شود.</span></p>
+                <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد و با </span><i class="bi bi-heart-fill heart-icon"></i><span data-i18n="term_6_desc_3"> به شما تقدیم می‌شود.</span></p>
 
                 <h3><i class="bi bi-7-circle"></i> <span data-i18n="term_7_title">مسئولیت سرویس و قطع سرویس</span></h3>
-                <p data-i18n="term_7_desc">تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. همچنین تیم مدیریت حق قطع موقت یا دائم سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم ❤️</p>
+                <p><span data-i18n="term_7_desc">تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. همچنین تیم مدیریت حق قطع موقت یا دائم سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم </span><i class="bi bi-heart-fill heart-icon"></i></p>
 
                 <h3><i class="bi bi-8-circle"></i> <span data-i18n="term_8_title">پذیرش شرایط</span></h3>
                 <p data-i18n="term_8_desc">استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.</p>
@@ -840,7 +907,7 @@
                     citizens_goal: 'جاسوس را شناسایی و اخراج کنند.',
                     mafia: 'مافیا:',
                     mafia_goal: 'جاسوس باید تا آخر بازی زنده بماند.',
-                    critical_rule: '⚠️ نکته مهم: اگر کسی به غیر از جاسوس اخراج شود، شهر بازنده و مافیا برنده می‌شود!',
+                    critical_rule: 'نکته مهم: اگر کسی به غیر از جاسوس اخراج شود، شهر بازنده و مافیا برنده می‌شود!',
                     players_combo: 'ترکیب بازیکنان',
                     players_desc: 'حداقل ۵ تا حداکثر ۱۰ نفر. با افزایش تعداد، فقط به تعداد شهروند عادی اضافه می‌شود. سایر نقش‌ها ثابت هستند.',
                     roles: 'نقش‌ها و وظایف',
@@ -855,9 +922,9 @@
                     lawyer_role: 'وکیل:',
                     lawyer_desc: 'کلمه واقعی را می‌داند و در شب اول هم‌گروهی‌های خود را می‌شناسد. باید مردم را گمراه کند.',
                     phases: 'مراحل بازی',
-                    night_phase: '🌙 فاز شب:',
+                    night_phase: 'فاز شب:',
                     night_desc: 'وکیل و جاسوس همدیگر را می‌شناسند. کارآگاه از یک نفر استعلام می‌گیرد. قاضی نیز بیدار می‌شود و نتیجه رای‌گیری را اعلام می‌کند تا نقشش لو نرود.',
-                    day_phase: '☀️ فاز روز:',
+                    day_phase: 'فاز روز:',
                     day_desc: 'بحث آزاد، معرفی مظنون و رای‌گیری مقدماتی، سپس فاز قاضی.',
                     win_conditions: 'شرایط برنده شدن',
                     citizens_win: 'شهروندان:',
@@ -877,15 +944,16 @@
                     term_3_title: 'ممنوعیت تبلیغات',
                     term_3_desc: 'ارسال هرگونه تبلیغات، لینک خارجی، معرفی سرویس‌های دیگر یا دعوت به کانال‌ها و گروه‌های شخصی، تحت هر شرایطی ممنوع بوده و موجب مسدودسازی اکانت خواهد شد.',
                     term_4_title: 'حفاظت از کدهای بازی',
-                    term_4_desc: 'هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و در صورت لزوم از طریق مراجع قانونی پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید ❤️',
+                    term_4_desc: 'هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و در صورت لزوم از طریق مراجع قانونی پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید ',
                     term_5_title: 'رعایت قوانین جمهوری اسلامی ایران',
                     term_5_desc: 'انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.',
                     term_6_title: 'هدف سرگرمی و مالکیت معنوی',
                     term_6_desc_1: 'این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به ',
                     amirmahdi: 'امیرمهدی',
-                    term_6_desc_2: ' می‌باشد و با ❤️ به شما تقدیم می‌شود.',
+                    term_6_desc_2: ' می‌باشد و با ',
+                    term_6_desc_3: ' به شما تقدیم می‌شود.',
                     term_7_title: 'مسئولیت سرویس و قطع سرویس',
-                    term_7_desc: 'تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. همچنین تیم مدیریت حق قطع موقت یا دائم سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم ❤️',
+                    term_7_desc: 'تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. همچنین تیم مدیریت حق قطع موقت یا دائم سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم ',
                     term_8_title: 'پذیرش شرایط',
                     term_8_desc: 'استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.',
                     terms_modal_title: 'قوانین و مقررات استفاده',
@@ -903,7 +971,10 @@
                     no_public_games: 'بازی سراسری فعالی وجود ندارد',
                     you_have_active_game: 'شما یک بازی نیمه‌تمام دارید! ابتدا آن را تمام کنید.',
                     players: 'بازیکن',
-                    waiting: 'در انتظار'
+                    waiting: 'در انتظار',
+                    error_loading: 'خطا در دریافت اطلاعات',
+                    error_network: 'اتصال اینترنت خود را بررسی کنید',
+                    retry: 'تلاش مجدد'
                 },
                 en: {
                     start_new_game: 'Start New Game',
@@ -916,7 +987,7 @@
                     citizens_goal: 'Identify and expel the spy.',
                     mafia: 'Mafia:',
                     mafia_goal: 'The spy must survive until the end of the game.',
-                    critical_rule: '⚠️ Important: If anyone other than the spy is expelled, the city loses and the mafia wins!',
+                    critical_rule: 'Important: If anyone other than the spy is expelled, the city loses and the mafia wins!',
                     players_combo: 'Player Composition',
                     players_desc: 'Minimum 5 to maximum 10 players. As numbers increase, only regular citizens are added.',
                     roles: 'Roles & Responsibilities',
@@ -931,9 +1002,9 @@
                     lawyer_role: 'Lawyer:',
                     lawyer_desc: 'Knows the real word and their teammates on night one. Must mislead people.',
                     phases: 'Game Phases',
-                    night_phase: '🌙 Night Phase:',
+                    night_phase: 'Night Phase:',
                     night_desc: 'Lawyer and spy recognize each other. Detective inquires about one person. The judge also wakes up and announces the voting result to hide their identity.',
-                    day_phase: '☀️ Day Phase:',
+                    day_phase: 'Day Phase:',
                     day_desc: 'Free discussion, suspect nomination, preliminary vote, then judge phase.',
                     win_conditions: 'Win Conditions',
                     citizens_win: 'Citizens:',
@@ -953,15 +1024,16 @@
                     term_3_title: 'Prohibition of Advertising',
                     term_3_desc: 'Sending any advertisements, external links, introducing other services, or inviting to personal channels and groups is strictly prohibited and will result in account suspension.',
                     term_4_title: 'Protection of Game Codes',
-                    term_4_desc: 'Any attempt to exploit game codes, or efforts to access and misuse them, is prohibited and will be pursued through legal authorities if necessary. Please enjoy the game instead ❤️',
+                    term_4_desc: 'Any attempt to exploit game codes, or efforts to access and misuse them, is prohibited and will be pursued through legal authorities if necessary. Please enjoy the game instead ',
                     term_5_title: 'Compliance with Islamic Republic of Iran Laws',
                     term_5_desc: 'Any activity contrary to the laws of the Islamic Republic of Iran is prohibited and will result in account suspension. If necessary, violations will be reported to the relevant legal authorities.',
                     term_6_title: 'Entertainment Purpose & Intellectual Property',
                     term_6_desc_1: 'This game is designed purely for entertainment purposes. All material and intellectual rights of this game belong to ',
                     amirmahdi: 'Amirmahdi',
-                    term_6_desc_2: ' and it is dedicated to you with ❤️.',
+                    term_6_desc_2: ' and it is dedicated to you with ',
+                    term_6_desc_3: '.',
                     term_7_title: 'Service Responsibility & Termination',
-                    term_7_desc: 'Our technical team continuously strives to provide the best experience by improving and fixing issues. However, this game is provided "as is" and the technical team bears no responsibility for potential issues. The management team also reserves the right to temporarily or permanently terminate the service for maintenance, updates, or technical reasons. Thank you for your patience and support ❤️',
+                    term_7_desc: 'Our technical team continuously strives to provide the best experience by improving and fixing issues. However, this game is provided "as is" and the technical team bears no responsibility for potential issues. The management team also reserves the right to temporarily or permanently terminate the service for maintenance, updates, or technical reasons. Thank you for your patience and support ',
                     term_8_title: 'Acceptance of Terms',
                     term_8_desc: 'Using this app constitutes full acceptance of our terms and conditions. Users are required to review the rules regularly to stay informed of updates.',
                     terms_modal_title: 'Terms & Conditions',
@@ -979,7 +1051,10 @@
                     no_public_games: 'No active public games',
                     you_have_active_game: 'You have a half-finished game! Finish it first.',
                     players: 'players',
-                    waiting: 'Waiting'
+                    waiting: 'Waiting',
+                    error_loading: 'Error loading data',
+                    error_network: 'Please check your internet connection',
+                    retry: 'Retry'
                 },
                 ar: {
                     start_new_game: 'ابدأ لعبة جديدة',
@@ -992,7 +1067,7 @@
                     citizens_goal: 'التعرف على الجاسوس وطرده.',
                     mafia: 'المافيا:',
                     mafia_goal: 'يجب أن ينجو الجاسوس حتى نهاية اللعبة.',
-                    critical_rule: '⚠️ مهم: إذا تم طرد أي شخص غير الجاسوس، تخسر المدينة وتفوز المافيا!',
+                    critical_rule: 'مهم: إذا تم طرد أي شخص غير الجاسوس، تخسر المدينة وتفوز المافيا!',
                     players_combo: 'تركيبة اللاعبين',
                     players_desc: 'من 5 إلى 10 لاعبين. عند الزيادة، يضاف مواطنون عاديون فقط.',
                     roles: 'الأدوار والمسؤوليات',
@@ -1007,9 +1082,9 @@
                     lawyer_role: 'المحامي:',
                     lawyer_desc: 'يعرف الكلمة الحقيقية ورفاقه في الليلة الأولى.',
                     phases: 'مراحل اللعبة',
-                    night_phase: '🌙 مرحلة الليل:',
+                    night_phase: 'مرحلة الليل:',
                     night_desc: 'يتعرف المحامي والجاسوس على بعضهما. المحقق يستعلم عن شخص. يستيقظ القاضي أيضاً ويعلن نتيجة التصويت.',
-                    day_phase: '☀️ مرحلة النهار:',
+                    day_phase: 'مرحلة النهار:',
                     day_desc: 'نقاش حر، ترشيح المشتبه بهم، تصويت أولي، ثم مرحلة القاضي.',
                     win_conditions: 'شروط الفوز',
                     citizens_win: 'المواطنون:',
@@ -1029,15 +1104,16 @@
                     term_3_title: 'حظر الإعلانات',
                     term_3_desc: 'يُحظر تماماً إرسال أي إعلانات أو روابط خارجية أو الترويج لخدمات أخرى أو الدعوة إلى قنوات ومجموعات شخصية، وسيؤدي إلى تعليق الحساب.',
                     term_4_title: 'حماية أكواد اللعبة',
-                    term_4_desc: 'أي محاولة لاستغلال أكواد اللعبة أو الوصول إليها وإساءة استخدامها محظورة وسيتم متابعتها قانونياً إذا لزم الأمر. يرجى الاستمتاع باللعبة بدلاً من ذلك ❤️',
+                    term_4_desc: 'أي محاولة لاستغلال أكواد اللعبة أو الوصول إليها وإساءة استخدامها محظورة وسيتم متابعتها قانونياً إذا لزم الأمر. يرجى الاستمتاع باللعبة بدلاً من ذلك ',
                     term_5_title: 'الالتزام بقوانين جمهورية إيران الإسلامية',
                     term_5_desc: 'أي نشاط مخالف لقوانين جمهورية إيران الإسلامية محظور وسيؤدي إلى تعليق الحساب. في حالة الحاجة، سيتم الإبلاغ عن المخالفات إلى السلطات القانونية المختصة.',
                     term_6_title: 'غرض الترفيه والملكية الفكرية',
                     term_6_desc_1: 'تم تصميم هذه اللعبة لغرض الترفيه فقط. جميع الحقوق المادية والمعنوية لهذه اللعبة تعود إلى ',
                     amirmahdi: 'أميرمهدي',
-                    term_6_desc_2: ' وتُقدَّم لكم بـ ❤️.',
+                    term_6_desc_2: ' وتُقدَّم لكم بـ ',
+                    term_6_desc_3: '.',
                     term_7_title: 'مسؤولية الخدمة وإنهاء الخدمة',
-                    term_7_desc: 'يسعى فريقنا الفني باستمرار لتقديم أفضل تجربة. ومع ذلك، يتم تقديم هذه اللعبة "كما هي" ولا يتحمل الفريق الفني أي مسؤولية عن المشاكل المحتملة. كما يحتفظ فريق الإدارة بالحق في إنهاء الخدمة مؤقتاً أو دائماً للصيانة أو التحديثات أو الأسباب الفنية. شكراً لصبركم ودعمكم ❤️',
+                    term_7_desc: 'يسعى فريقنا الفني باستمرار لتقديم أفضل تجربة. ومع ذلك، يتم تقديم هذه اللعبة "كما هي" ولا يتحمل الفريق الفني أي مسؤولية عن المشاكل المحتملة. كما يحتفظ فريق الإدارة بالحق في إنهاء الخدمة مؤقتاً أو دائماً للصيانة أو التحديثات أو الأسباب الفنية. شكراً لصبركم ودعمكم ',
                     term_8_title: 'قبول الشروط',
                     term_8_desc: 'استخدام هذا التطبيق يعني القبول الكامل لشروطنا وأحكامنا. يُطلب من المستخدمين مراجعة القواعد بانتظام للبقاء على اطلاع بالتحديثات.',
                     terms_modal_title: 'الشروط والأحكام',
@@ -1055,7 +1131,10 @@
                     no_public_games: 'لا توجد ألعاب عامة نشطة',
                     you_have_active_game: 'لديك لعبة غير مكتملة! أكملها أولاً.',
                     players: 'لاعبين',
-                    waiting: 'في الانتظار'
+                    waiting: 'في الانتظار',
+                    error_loading: 'خطأ في تحميل البيانات',
+                    error_network: 'يرجى التحقق من اتصالك بالإنترنت',
+                    retry: 'إعادة المحاولة'
                 }
             };
 
@@ -1132,7 +1211,8 @@
             function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
             function getUserId(){var u=getEitaaUser();return u?(typeof u.id==='number'?u.id.toString():String(u.id||'')):'';}
 
-            function fetchData(action, params) {
+            function fetchData(action, params, retryCount) {
+                retryCount = retryCount || 0;
                 var payload = { action: action, username: getUserId() };
                 if (params) {
                     for (var k in params) { if (params.hasOwnProperty(k)) payload[k] = params[k]; }
@@ -1142,18 +1222,47 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                         body: JSON.stringify(payload)
-                    }).then(function(r) { return r.json(); }),
+                    }).then(function(r) { return r.json(); }).then(function(data) {
+                        if (data && data.ok) return data;
+                        return data;
+                    }).catch(function(err) {
+                        if (retryCount < 2) {
+                            return new Promise(function(resolve) {
+                                setTimeout(function() { resolve(fetchData(action, params, retryCount + 1)); }, 1000);
+                            });
+                        }
+                        return { ok: false, error: 'network' };
+                    }),
                     new Promise(function(_, reject) { setTimeout(function() { reject(new Error('timeout')); }, 10000); })
-                ]).catch(function() { return { ok: false }; });
+                ]).catch(function() {
+                    return { ok: false, error: 'timeout' };
+                });
             }
 
             function renderEmpty(text) {
                 return '<div class="empty-state"><i class="bi bi-inbox"></i><p>' + text + '</p></div>';
             }
 
+            function renderError(onRetry) {
+                var id = 'err_' + Math.random().toString(36).substr(2, 9);
+                setTimeout(function() {
+                    var btn = document.getElementById(id);
+                    if (btn) btn.onclick = onRetry;
+                }, 10);
+                return '<div class="error-state">' +
+                    '<i class="bi bi-wifi-off"></i>' +
+                    '<div class="error-state-text">' + getTranslation('error_network') + '</div>' +
+                    '<button class="error-state-btn" id="' + id + '">' + getTranslation('retry') + '</button>' +
+                    '</div>';
+            }
+
             function countPlayers(playersStr) {
                 if (!playersStr) return 0;
-                var matches = playersStr.match(/\[/g);
+                try {
+                    var parsed = JSON.parse(playersStr);
+                    if (Array.isArray(parsed)) return parsed.length;
+                } catch(e) {}
+                var matches = String(playersStr).match(/\[/g);
                 return matches ? matches.length : 0;
             }
 
@@ -1176,6 +1285,11 @@
             async function loadPublicGames() {
                 var list = document.getElementById('publicList');
                 var loader = document.getElementById('publicLoader');
+                var errorBox = document.getElementById('publicError');
+                
+                loader.style.display = 'flex';
+                errorBox.style.display = 'none';
+                list.style.display = 'none';
                 
                 try {
                     var result = await fetchData('getPublicGames', {});
@@ -1201,18 +1315,20 @@
                             }
                             list.innerHTML = html;
                         }
+                        
+                        loader.style.display = 'none';
+                        list.style.display = 'flex';
                     } else {
                         document.getElementById('publicCount').textContent = '0';
-                        list.innerHTML = renderEmpty(getTranslation('no_public_games'));
+                        loader.style.display = 'none';
+                        errorBox.innerHTML = renderError(function() { loadPublicGames(); });
+                        errorBox.style.display = 'block';
                     }
-                    
-                    loader.style.display = 'none';
-                    list.style.display = 'flex';
                 } catch(e) {
                     document.getElementById('publicCount').textContent = '0';
-                    list.innerHTML = renderEmpty(getTranslation('no_public_games'));
                     loader.style.display = 'none';
-                    list.style.display = 'flex';
+                    errorBox.innerHTML = renderError(function() { loadPublicGames(); });
+                    errorBox.style.display = 'block';
                 }
             }
 
@@ -1249,6 +1365,19 @@
                 triggerHaptic('light');
             }
             window.toggleTermsCheckbox = toggleTermsCheckbox;
+
+            function guardGameEntry(callback) {
+                triggerHaptic('medium');
+                if (hasHalfFinishedGame) {
+                    if (webApp && webApp.showAlert) {
+                        webApp.showAlert(getTranslation('you_have_active_game'));
+                    } else {
+                        alert(getTranslation('you_have_active_game'));
+                    }
+                    return;
+                }
+                showTermsModal(callback);
+            }
 
             function showTermsModal(callback) {
                 var lastAccepted = localStorage.getItem('mafiaTermsAccepted');
@@ -1307,16 +1436,7 @@
             window.openChannelLink = openChannelLink;
 
             window.startNewGame = function() {
-                triggerHaptic('medium');
-                if (hasHalfFinishedGame) {
-                    if (webApp && webApp.showAlert) {
-                        webApp.showAlert(getTranslation('you_have_active_game'));
-                    } else {
-                        alert(getTranslation('you_have_active_game'));
-                    }
-                    return;
-                }
-                showTermsModal(function() {
+                guardGameEntry(function() {
                     window.location.href = '../game/new/';
                 });
             };
@@ -1327,16 +1447,7 @@
             };
 
             window.joinGame = function(gameId) {
-                triggerHaptic('medium');
-                if (hasHalfFinishedGame) {
-                    if (webApp && webApp.showAlert) {
-                        webApp.showAlert(getTranslation('you_have_active_game'));
-                    } else {
-                        alert(getTranslation('you_have_active_game'));
-                    }
-                    return;
-                }
-                showTermsModal(function() {
+                guardGameEntry(function() {
                     localStorage.setItem('mafiaRoomCode', gameId);
                     window.location.href = '../game/table/?room=' + gameId;
                 });
@@ -1345,7 +1456,7 @@
             window.goToActiveGame = function() {
                 triggerHaptic('light');
                 if (activeGameId) {
-                    showTermsModal(function() {
+                    guardGameEntry(function() {
                         localStorage.setItem('mafiaRoomCode', activeGameId);
                         window.location.href = '../game/table/?room=' + activeGameId;
                     });
