@@ -7,11 +7,11 @@
     <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
     <style>
         :root {
             --bg: #ffffff;
@@ -690,8 +690,8 @@
                 </div>
             </div>
             <div class="header-currency">
-                <span class="currency-badge coins"><i class="bi bi-coin"></i> <span id="coinsHeader"><span class="mini-spinner"></span></span></span>
-                <span class="currency-badge diamonds"><i class="bi bi-gem"></i> <span id="diamondsHeader"><span class="mini-spinner"></span></span></span>
+                <span class="currency-badge coins"><i class="bi bi-coin" aria-hidden="true"></i> <span id="coinsHeader"><span class="mini-spinner"></span></span></span>
+                <span class="currency-badge diamonds"><i class="bi bi-gem" aria-hidden="true"></i> <span id="diamondsHeader"><span class="mini-spinner"></span></span></span>
             </div>
         </div>
     </header>
@@ -704,48 +704,48 @@
 
         <div class="action-row">
             <button class="btn-start-game" onclick="startNewGame()">
-                <i class="bi bi-plus-circle"></i>
+                <i class="bi bi-plus-circle" aria-hidden="true"></i>
                 <span data-i18n="start_new_game">شروع بازی جدید</span>
             </button>
             <button class="btn-wheel" onclick="goToWheel()">
-                <i class="bi bi-stars"></i>
+                <i class="bi bi-stars" aria-hidden="true"></i>
                 <span data-i18n="wheel">گردونه</span>
             </button>
         </div>
 
         <div class="section-card">
             <div class="section-title">
-                <span class="section-title-left"><i class="bi bi-globe"></i> <span data-i18n="public_games">بازی‌های سراسری</span></span>
+                <span class="section-title-left"><i class="bi bi-globe" aria-hidden="true"></i> <span data-i18n="public_games">بازی‌های سراسری</span></span>
                 <span class="section-badge" id="publicCount">0</span>
             </div>
             <div class="section-loader" id="publicLoader">
                 <div class="section-loader-spinner"></div>
                 <div class="section-loader-text" data-i18n="loading_games">در حال دریافت بازی‌ها...</div>
             </div>
-            <div id="publicError" style="display:none;"></div>
+            <div id="publicError" aria-live="polite" style="display:none;"></div>
             <div class="games-list" id="publicList" style="display:none;"></div>
         </div>
 
         <div class="section-card">
             <div class="section-title">
-                <span class="section-title-left"><i class="bi bi-book"></i> <span data-i18n="game_rules">قوانین بازی</span></span>
+                <span class="section-title-left"><i class="bi bi-book" aria-hidden="true"></i> <span data-i18n="game_rules">قوانین بازی</span></span>
             </div>
             <div class="rules-article">
-                <h3><i class="bi bi-bullseye"></i> <span data-i18n="goal">هدف بازی</span></h3>
+                <h3><i class="bi bi-bullseye" aria-hidden="true"></i> <span data-i18n="goal">هدف بازی</span></h3>
                 <ul>
                     <li><span class="highlight" data-i18n="citizens">شهروندان:</span> <span data-i18n="citizens_goal">جاسوس را شناسایی و اخراج کنند.</span></li>
                     <li><span class="highlight" data-i18n="mafia">مافیا:</span> <span data-i18n="mafia_goal">جاسوس باید تا آخر بازی زنده بماند.</span></li>
                 </ul>
 
                 <div class="warning">
-                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
                     <span data-i18n="critical_rule">نکته مهم: اگر کسی به غیر از جاسوس اخراج شود، شهر بازنده و مافیا برنده می‌شود!</span>
                 </div>
 
-                <h3><i class="bi bi-people"></i> <span data-i18n="players_combo">ترکیب بازیکنان</span></h3>
+                <h3><i class="bi bi-people" aria-hidden="true"></i> <span data-i18n="players_combo">ترکیب بازیکنان</span></h3>
                 <p data-i18n="players_desc">حداقل ۵ تا حداکثر ۱۰ نفر. با افزایش تعداد، فقط به تعداد شهروند عادی اضافه می‌شود. سایر نقش‌ها ثابت هستند.</p>
 
-                <h3><i class="bi bi-person-badge"></i> <span data-i18n="roles">نقش‌ها و وظایف</span></h3>
+                <h3><i class="bi bi-person-badge" aria-hidden="true"></i> <span data-i18n="roles">نقش‌ها و وظایف</span></h3>
                 <ul>
                     <li><span class="highlight" data-i18n="citizen_role">شهروند عادی:</span> <span data-i18n="citizen_desc">کلمه واقعی را می‌بیند و با توضیحاتش جاسوس را لو می‌دهد.</span></li>
                     <li><span class="highlight" data-i18n="detective_role">کارآگاه:</span> <span data-i18n="detective_desc">هر شب می‌تواند از یک نفر استعلام بگیرد که مافیا است یا نه. ولی حق لو دادن مستقیم را ندارد.</span></li>
@@ -754,25 +754,25 @@
                     <li><span class="highlight" data-i18n="lawyer_role">وکیل:</span> <span data-i18n="lawyer_desc">کلمه واقعی را می‌داند و در شب اول هم‌گروهی‌های خود را می‌شناسد. باید مردم را گمراه کند.</span></li>
                 </ul>
 
-                <h3><i class="bi bi-arrow-repeat"></i> <span data-i18n="phases">مراحل بازی</span></h3>
+                <h3><i class="bi bi-arrow-repeat" aria-hidden="true"></i> <span data-i18n="phases">مراحل بازی</span></h3>
                 <p>
-                    <i class="bi bi-moon-stars-fill phase-icon"></i>
+                    <i class="bi bi-moon-stars-fill phase-icon" aria-hidden="true"></i>
                     <span class="highlight" data-i18n="night_phase">فاز شب:</span>
                     <span data-i18n="night_desc">وکیل و جاسوس همدیگر را می‌شناسند. کارآگاه از یک نفر استعلام می‌گیرد. قاضی نیز بیدار می‌شود و نتیجه رای‌گیری را اعلام می‌کند تا نقشش لو نرود.</span>
                 </p>
                 <p>
-                    <i class="bi bi-sun-fill phase-icon"></i>
+                    <i class="bi bi-sun-fill phase-icon" aria-hidden="true"></i>
                     <span class="highlight" data-i18n="day_phase">فاز روز:</span>
                     <span data-i18n="day_desc">بحث آزاد، معرفی مظنون و رای‌گیری مقدماتی، سپس فاز قاضی.</span>
                 </p>
 
-                <h3><i class="bi bi-trophy"></i> <span data-i18n="win_conditions">شرایط برنده شدن</span></h3>
+                <h3><i class="bi bi-trophy" aria-hidden="true"></i> <span data-i18n="win_conditions">شرایط برنده شدن</span></h3>
                 <ul>
                     <li><span class="highlight" data-i18n="citizens_win">شهروندان:</span> <span data-i18n="citizens_win_desc">جاسوس اخراج شود.</span></li>
                     <li><span class="highlight" data-i18n="mafia_win">مافیا:</span> <span data-i18n="mafia_win_desc">جاسوس زنده بماند یا کسی غیر از جاسوس اخراج شود.</span></li>
                 </ul>
 
-                <h3><i class="bi bi-star-fill"></i> <span data-i18n="golden_rules">قوانین طلایی</span></h3>
+                <h3><i class="bi bi-star-fill" aria-hidden="true"></i> <span data-i18n="golden_rules">قوانین طلایی</span></h3>
                 <ul>
                     <li data-i18n="rule_1">هرکس حذف شد، بازی برای او تمام می‌شود و نقشش فاش نمی‌شود.</li>
                     <li data-i18n="rule_2">قاضی هم اگر مظنون شود، خودش را تبرئه می‌کند و کسی نمی‌فهمد که قاضی بوده.</li>
@@ -784,31 +784,31 @@
 
         <div class="section-card" id="termsSection">
             <div class="section-title">
-                <span class="section-title-left"><i class="bi bi-file-earmark-text"></i> <span data-i18n="terms_title">قوانین و مقررات استفاده</span></span>
+                <span class="section-title-left"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> <span data-i18n="terms_title">قوانین و مقررات استفاده</span></span>
             </div>
             <div class="rules-article">
-                <h3><i class="bi bi-1-circle"></i> <span data-i18n="term_1_title">بحث‌های غیرمرتبط و نظارت بر محتوا</span></h3>
+                <h3><i class="bi bi-1-circle" aria-hidden="true"></i> <span data-i18n="term_1_title">بحث‌های غیرمرتبط و نظارت بر محتوا</span></h3>
                 <p data-i18n="term_1_desc">در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع می‌باشد. تمامی گفتگوها و تعاملات در طول بازی توسط تیم ادمین بررسی می‌شوند تا محیطی سالم و لذت‌بخش برای همه فراهم شود. در صورت مشاهده تخلف، تیم مدیریت امکان اعمال محدودیت موقت یا دائم را برای کاربر متخلف خواهد داشت.</p>
 
-                <h3><i class="bi bi-2-circle"></i> <span data-i18n="term_2_title">ممنوعیت محتوای غیراخلاقی و احترام به بازیکنان</span></h3>
+                <h3><i class="bi bi-2-circle" aria-hidden="true"></i> <span data-i18n="term_2_title">ممنوعیت محتوای غیراخلاقی و احترام به بازیکنان</span></h3>
                 <p data-i18n="term_2_desc">ارسال هرگونه محتوای غیراخلاقی یا ترویج فرهنگ ابتذال - از جمله بدزبانی، فحاشی، محتوای مستهجن، خلاف شرع و موارد مشابه - غیرمجاز بوده و موجب اعمال محدودیت‌های لازم خواهد شد. همچنین توهین، تمسخر، آزار و اذیت سایر بازیکنان به هر شکل ممکن ممنوع است و محیط بازی باید برای همه سالم و محترمانه باشد.</p>
 
-                <h3><i class="bi bi-3-circle"></i> <span data-i18n="term_3_title">ممنوعیت تبلیغات</span></h3>
+                <h3><i class="bi bi-3-circle" aria-hidden="true"></i> <span data-i18n="term_3_title">ممنوعیت تبلیغات</span></h3>
                 <p data-i18n="term_3_desc">ارسال هرگونه تبلیغات، لینک خارجی، معرفی سرویس‌های دیگر یا دعوت به کانال‌ها و گروه‌های شخصی، تحت هر شرایطی ممنوع بوده و موجب مسدودسازی اکانت خواهد شد.</p>
 
-                <h3><i class="bi bi-4-circle"></i> <span data-i18n="term_4_title">حفاظت از کدهای بازی</span></h3>
-                <p><span data-i18n="term_4_desc">هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و در صورت لزوم از طریق مراجع قانونی پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید </span><i class="bi bi-heart-fill heart-icon"></i></p>
+                <h3><i class="bi bi-4-circle" aria-hidden="true"></i> <span data-i18n="term_4_title">حفاظت از کدهای بازی</span></h3>
+                <p><span data-i18n="term_4_desc">هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و در صورت لزوم از طریق مراجع قانونی پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید </span><i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i></p>
 
-                <h3><i class="bi bi-5-circle"></i> <span data-i18n="term_5_title">رعایت قوانین جمهوری اسلامی ایران</span></h3>
+                <h3><i class="bi bi-5-circle" aria-hidden="true"></i> <span data-i18n="term_5_title">رعایت قوانین جمهوری اسلامی ایران</span></h3>
                 <p data-i18n="term_5_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.</p>
 
-                <h3><i class="bi bi-6-circle"></i> <span data-i18n="term_6_title">هدف سرگرمی و مالکیت معنوی</span></h3>
-                <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد و با </span><i class="bi bi-heart-fill heart-icon"></i><span data-i18n="term_6_desc_3"> به شما تقدیم می‌شود.</span></p>
+                <h3><i class="bi bi-6-circle" aria-hidden="true"></i> <span data-i18n="term_6_title">هدف سرگرمی و مالکیت معنوی</span></h3>
+                <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد و با </span><i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i><span data-i18n="term_6_desc_3"> به شما تقدیم می‌شود.</span></p>
 
-                <h3><i class="bi bi-7-circle"></i> <span data-i18n="term_7_title">مسئولیت سرویس و قطع سرویس</span></h3>
-                <p><span data-i18n="term_7_desc">تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. همچنین تیم مدیریت حق قطع موقت یا دائم سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم </span><i class="bi bi-heart-fill heart-icon"></i></p>
+                <h3><i class="bi bi-7-circle" aria-hidden="true"></i> <span data-i18n="term_7_title">مسئولیت سرویس و قطع سرویس</span></h3>
+                <p><span data-i18n="term_7_desc">تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. همچنین تیم مدیریت حق قطع موقت یا دائم سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم </span><i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i></p>
 
-                <h3><i class="bi bi-8-circle"></i> <span data-i18n="term_8_title">پذیرش شرایط</span></h3>
+                <h3><i class="bi bi-8-circle" aria-hidden="true"></i> <span data-i18n="term_8_title">پذیرش شرایط</span></h3>
                 <p data-i18n="term_8_desc">استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.</p>
             </div>
         </div>
@@ -816,7 +816,7 @@
     </main>
 
     <div class="active-game-float" id="activeGameFloat" onclick="goToActiveGame()">
-        <div class="active-game-float-icon"><i class="bi bi-controller"></i></div>
+        <div class="active-game-float-icon"><i class="bi bi-controller" aria-hidden="true"></i></div>
         <div class="active-game-float-info">
             <div class="active-game-float-title" data-i18n="active_game">بازی فعال داری</div>
             <div class="active-game-float-subtitle" id="activeGameCode">...</div>
@@ -827,7 +827,7 @@
     <div class="terms-modal-overlay" id="termsModalOverlay">
         <div class="terms-modal">
             <div class="terms-modal-header">
-                <i class="bi bi-file-earmark-text"></i>
+                <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
                 <span data-i18n="terms_modal_title">قوانین و مقررات استفاده</span>
             </div>
             <div class="terms-modal-simple-text">
@@ -851,7 +851,7 @@
         <div class="notif-info">
             <div class="notif-name">امیرمهدی | Amirmahdi</div>
         </div>
-        <i class="bi bi-chevron-left"></i>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
     </div>
 
     <nav class="bottom-nav">
@@ -894,6 +894,25 @@
                 'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
                 'Estedad': "'Estedad', Tahoma, sans-serif"
             };
+
+            var loadedFonts = { 'Samim': true };
+
+            function loadFont(fontName) {
+                if (loadedFonts[fontName]) return;
+                loadedFonts[fontName] = true;
+                var fontFiles = {
+                    'Vazirmatn': 'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css',
+                    'Sahel': 'https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css',
+                    'Estedad': 'https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css',
+                    'IRANSans': 'https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css'
+                };
+                if (fontFiles[fontName]) {
+                    var link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = fontFiles[fontName];
+                    document.head.appendChild(link);
+                }
+            }
 
             var translations = {
                 fa: {
@@ -1194,6 +1213,7 @@
                 document.documentElement.setAttribute('data-special-theme', st);
                 if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
                 else { document.documentElement.removeAttribute('data-animation'); }
+                loadFont(f);
                 var fontFamily = fontMap[f] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
@@ -1211,48 +1231,41 @@
             function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
             function getUserId(){var u=getEitaaUser();return u?(typeof u.id==='number'?u.id.toString():String(u.id||'')):'';}
 
-            function fetchData(action, params, retryCount) {
+            async function fetchData(action, params, retryCount) {
                 retryCount = retryCount || 0;
                 var payload = { action: action, username: getUserId() };
                 if (params) {
                     for (var k in params) { if (params.hasOwnProperty(k)) payload[k] = params[k]; }
                 }
-                return Promise.race([
-                    fetch(API_URL, {
+                try {
+                    var controller = new AbortController();
+                    var timeoutId = setTimeout(function() { controller.abort(); }, 10000);
+                    var r = await fetch(API_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(payload)
-                    }).then(function(r) { return r.json(); }).then(function(data) {
-                        if (data && data.ok) return data;
-                        return data;
-                    }).catch(function(err) {
-                        if (retryCount < 2) {
-                            return new Promise(function(resolve) {
-                                setTimeout(function() { resolve(fetchData(action, params, retryCount + 1)); }, 1000);
-                            });
-                        }
-                        return { ok: false, error: 'network' };
-                    }),
-                    new Promise(function(_, reject) { setTimeout(function() { reject(new Error('timeout')); }, 10000); })
-                ]).catch(function() {
-                    return { ok: false, error: 'timeout' };
-                });
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    return await r.json();
+                } catch(err) {
+                    if (retryCount < 2) {
+                        await new Promise(function(res) { setTimeout(res, 1000); });
+                        return fetchData(action, params, retryCount + 1);
+                    }
+                    return { ok: false, error: 'network' };
+                }
             }
 
             function renderEmpty(text) {
-                return '<div class="empty-state"><i class="bi bi-inbox"></i><p>' + text + '</p></div>';
+                return '<div class="empty-state"><i class="bi bi-inbox" aria-hidden="true"></i><p>' + text + '</p></div>';
             }
 
-            function renderError(onRetry) {
-                var id = 'err_' + Math.random().toString(36).substr(2, 9);
-                setTimeout(function() {
-                    var btn = document.getElementById(id);
-                    if (btn) btn.onclick = onRetry;
-                }, 10);
+            function renderError() {
                 return '<div class="error-state">' +
-                    '<i class="bi bi-wifi-off"></i>' +
+                    '<i class="bi bi-wifi-off" aria-hidden="true"></i>' +
                     '<div class="error-state-text">' + getTranslation('error_network') + '</div>' +
-                    '<button class="error-state-btn" id="' + id + '">' + getTranslation('retry') + '</button>' +
+                    '<button class="error-state-btn" data-retry="public">' + getTranslation('retry') + '</button>' +
                     '</div>';
             }
 
@@ -1305,7 +1318,7 @@
                                 var g = result.data[i];
                                 var playerCount = countPlayers(g.players);
                                 html += '<div class="game-card" onclick="joinGame(\'' + g.id + '\')">' +
-                                    '<div class="game-card-avatar"><i class="bi bi-people"></i></div>' +
+                                    '<div class="game-card-avatar"><i class="bi bi-people" aria-hidden="true"></i></div>' +
                                     '<div class="game-card-info">' +
                                     '<div class="game-card-title">' + g.id + '</div>' +
                                     '<div class="game-card-subtitle">' + playerCount + ' ' + getTranslation('players') + '</div>' +
@@ -1321,16 +1334,22 @@
                     } else {
                         document.getElementById('publicCount').textContent = '0';
                         loader.style.display = 'none';
-                        errorBox.innerHTML = renderError(function() { loadPublicGames(); });
+                        errorBox.innerHTML = renderError();
                         errorBox.style.display = 'block';
                     }
                 } catch(e) {
                     document.getElementById('publicCount').textContent = '0';
                     loader.style.display = 'none';
-                    errorBox.innerHTML = renderError(function() { loadPublicGames(); });
+                    errorBox.innerHTML = renderError();
                     errorBox.style.display = 'block';
                 }
             }
+
+            document.getElementById('publicError').addEventListener('click', function(e) {
+                if (e.target.classList.contains('error-state-btn')) {
+                    loadPublicGames();
+                }
+            });
 
             async function checkActiveGame() {
                 var result = await fetchData('getGamesByPlayer', {});
@@ -1464,6 +1483,8 @@
             };
 
             function openSupportLink() {
+                var notif = document.getElementById('supportNotification');
+                if (notif) notif.style.display = 'none';
                 if (webApp && webApp.openEitaaLink) { webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code'); }
                 else { window.open('https://eitaa.com/Amirmahdi_code', '_blank'); }
             }
