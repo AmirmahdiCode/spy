@@ -419,6 +419,129 @@
             white-space: nowrap;
         }
 
+        .terms-modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .terms-modal-overlay.show { display: flex; }
+        .terms-modal {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 5px 5px 0 #000;
+            max-width: 450px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .terms-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 14px;
+            border-bottom: 1px dashed var(--text-light);
+            padding-bottom: 10px;
+        }
+        .terms-modal-header i { color: var(--primary); font-size: 16px; }
+        .terms-modal-body {
+            font-size: 11px;
+            line-height: 1.9;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+        .terms-modal-body ol {
+            padding-right: 18px;
+            margin: 0;
+        }
+        [dir="ltr"] .terms-modal-body ol { padding-right: 0; padding-left: 18px; }
+        .terms-modal-body li {
+            margin-bottom: 10px;
+        }
+        .terms-modal-body li strong {
+            color: var(--dark);
+            font-weight: 800;
+        }
+        .terms-checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 14px;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .terms-checkbox-row:active { transform: scale(.98); }
+        .terms-checkbox {
+            width: 22px; height: 22px;
+            border: 2px solid var(--text-light);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+            transition: all .2s;
+            background: var(--card-bg);
+        }
+        .terms-checkbox.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        .terms-checkbox.checked::after {
+            content: '✓';
+            color: #fff;
+            font-weight: 800;
+            font-size: 14px;
+        }
+        .terms-checkbox-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+        .terms-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .terms-btn {
+            flex: 1;
+            padding: 12px;
+            border: var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 12px;
+            font-weight: 800;
+            box-shadow: 2px 2px 0 #000;
+            transition: all .2s;
+        }
+        .terms-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .terms-btn.accept {
+            background: #10b981;
+            color: #fff;
+        }
+        .terms-btn.accept:disabled {
+            background: var(--bg3);
+            color: var(--text-light);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .terms-btn.cancel {
+            background: var(--bg2);
+            color: var(--text);
+        }
+
         .support-notification {
             position: fixed; top: 75px; right: 5%; left: 5%;
             max-width: 400px; margin: 0 auto;
@@ -581,6 +704,25 @@
             </div>
         </div>
 
+        <div class="section-card">
+            <div class="section-title">
+                <span class="section-title-left"><i class="bi bi-file-earmark-text"></i> <span data-i18n="terms_title">قوانین و مقررات استفاده</span></span>
+            </div>
+            <div class="rules-article">
+                <h3><i class="bi bi-1-circle"></i> <span data-i18n="term_1_title">ممنوعیت بحث‌های غیرمرتبط</span></h3>
+                <p data-i18n="term_1_desc">در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع می‌باشد. در صورت مشاهده تخلف، امکان اعمال محدودیت موقت یا دائم برای کاربر متخلف وجود خواهد داشت.</p>
+
+                <h3><i class="bi bi-2-circle"></i> <span data-i18n="term_2_title">نظارت بر مکالمات</span></h3>
+                <p data-i18n="term_2_desc">تمامی گفتگوها و تعاملات در طول بازی تحت نظارت و بررسی قرار می‌گیرند. از طرح موضوعات شخصی یا مباحث خارج از چارچوب بازی خودداری فرمایید.</p>
+
+                <h3><i class="bi bi-3-circle"></i> <span data-i18n="term_3_title">رعایت قوانین جمهوری اسلامی ایران</span></h3>
+                <p data-i18n="term_3_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری و پیگرد قانونی خواهد شد.</p>
+
+                <h3><i class="bi bi-4-circle"></i> <span data-i18n="term_4_title">پذیرش شرایط و ضوابط</span></h3>
+                <p data-i18n="term_4_desc">استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.</p>
+            </div>
+        </div>
+
     </main>
 
     <div class="active-game-float" id="activeGameFloat" onclick="goToActiveGame()">
@@ -590,6 +732,31 @@
             <div class="active-game-float-subtitle" id="activeGameCode">...</div>
         </div>
         <span class="active-game-float-btn" data-i18n="enter_room">ورود</span>
+    </div>
+
+    <div class="terms-modal-overlay" id="termsModalOverlay">
+        <div class="terms-modal">
+            <div class="terms-modal-header">
+                <i class="bi bi-file-earmark-text"></i>
+                <span data-i18n="terms_modal_title">قوانین و مقررات استفاده</span>
+            </div>
+            <div class="terms-modal-body">
+                <ol>
+                    <li data-i18n="modal_term_1"><strong>ممنوعیت بحث‌های غیرمرتبط:</strong> در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع است. تخلف ممکن است منجر به محدودیت موقت یا دائم شود.</li>
+                    <li data-i18n="modal_term_2"><strong>نظارت بر مکالمات:</strong> تمامی گفتگوها و تعاملات در طول بازی تحت نظارت قرار می‌گیرند. از طرح موضوعات شخصی خودداری فرمایید.</li>
+                    <li data-i18n="modal_term_3"><strong>رعایت قوانین جمهوری اسلامی ایران:</strong> هرگونه فعالیت مغایر با قوانین ایران ممنوع بوده و موجب مسدودسازی و پیگرد قانونی خواهد شد.</li>
+                    <li data-i18n="modal_term_4"><strong>پذیرش شرایط و ضوابط:</strong> استفاده از برنامک به منزله پذیرش کامل شرایط است. کاربر موظف به مطالعه مستمر قوانین می‌باشد.</li>
+                </ol>
+            </div>
+            <div class="terms-checkbox-row" id="termsCheckboxRow" onclick="toggleTermsCheckbox()">
+                <div class="terms-checkbox" id="termsCheckbox"></div>
+                <div class="terms-checkbox-label" data-i18n="terms_accept_label">قوانین و ضوابط را مطالعه کرده و می‌پذیرم.</div>
+            </div>
+            <div class="terms-actions">
+                <button class="terms-btn cancel" onclick="closeTermsModal()" data-i18n="terms_cancel">انصراف</button>
+                <button class="terms-btn accept" id="termsAcceptBtn" onclick="acceptTerms()" disabled data-i18n="terms_continue">تایید و ادامه</button>
+            </div>
+        </div>
     </div>
 
     <div class="support-notification" id="supportNotification" onclick="openSupportLink()">
@@ -626,6 +793,7 @@
             var currentLang = 'fa';
             var activeGameId = null;
             var hasHalfFinishedGame = false;
+            var pendingAction = null;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
@@ -681,6 +849,24 @@
                     rule_2: 'قاضی هم اگر مظنون شود، خودش را تبرئه می‌کند و کسی نمی‌فهمد که قاضی بوده.',
                     rule_3: 'وکیل و جاسوس فقط در شب اول همدیگر را می‌شناسند.',
                     rule_4: 'کارآگاه اگر از وکیل استعلام بگیرد، پاسخ "خیر" دریافت می‌کند.',
+                    terms_title: 'قوانین و مقررات استفاده',
+                    term_1_title: 'ممنوعیت بحث‌های غیرمرتبط',
+                    term_1_desc: 'در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع می‌باشد. در صورت مشاهده تخلف، امکان اعمال محدودیت موقت یا دائم برای کاربر متخلف وجود خواهد داشت.',
+                    term_2_title: 'نظارت بر مکالمات',
+                    term_2_desc: 'تمامی گفتگوها و تعاملات در طول بازی تحت نظارت و بررسی قرار می‌گیرند. از طرح موضوعات شخصی یا مباحث خارج از چارچوب بازی خودداری فرمایید.',
+                    term_3_title: 'رعایت قوانین جمهوری اسلامی ایران',
+                    term_3_desc: 'انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری و پیگرد قانونی خواهد شد.',
+                    term_4_title: 'پذیرش شرایط و ضوابط',
+                    term_4_desc: 'استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.',
+                    terms_modal_title: 'قوانین و مقررات استفاده',
+                    modal_term_1: 'ممنوعیت بحث‌های غیرمرتبط: در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع است. تخلف ممکن است منجر به محدودیت موقت یا دائم شود.',
+                    modal_term_2: 'نظارت بر مکالمات: تمامی گفتگوها و تعاملات در طول بازی تحت نظارت قرار می‌گیرند. از طرح موضوعات شخصی خودداری فرمایید.',
+                    modal_term_3: 'رعایت قوانین جمهوری اسلامی ایران: هرگونه فعالیت مغایر با قوانین ایران ممنوع بوده و موجب مسدودسازی و پیگرد قانونی خواهد شد.',
+                    modal_term_4: 'پذیرش شرایط و ضوابط: استفاده از برنامک به منزله پذیرش کامل شرایط است. کاربر موظف به مطالعه مستمر قوانین می‌باشد.',
+                    terms_accept_label: 'قوانین و ضوابط را مطالعه کرده و می‌پذیرم.',
+                    terms_cancel: 'انصراف',
+                    terms_continue: 'تایید و ادامه',
+                    terms_must_accept: 'لطفاً ابتدا قوانین را تایید کنید.',
                     home: 'خانه',
                     ranking: 'رتبه',
                     profile: 'پروفایل',
@@ -732,6 +918,24 @@
                     rule_2: 'If the judge becomes a suspect, they acquit themselves and no one knows they are the judge.',
                     rule_3: 'Lawyer and spy only recognize each other on Night 1.',
                     rule_4: 'If detective inquires about lawyer, receives "No".',
+                    terms_title: 'Terms & Conditions',
+                    term_1_title: 'Prohibition of Irrelevant Discussions',
+                    term_1_desc: 'Discussing topics unrelated to the game during play is prohibited. In case of violation, temporary or permanent restrictions may be applied.',
+                    term_2_title: 'Monitoring of Conversations',
+                    term_2_desc: 'All conversations and interactions during the game are monitored. Please refrain from discussing personal matters or off-topic subjects.',
+                    term_3_title: 'Compliance with Islamic Republic of Iran Laws',
+                    term_3_desc: 'Any activity contrary to the laws of the Islamic Republic of Iran is prohibited and will result in account suspension and legal prosecution.',
+                    term_4_title: 'Acceptance of Terms',
+                    term_4_desc: 'Using this app constitutes full acceptance of our terms and conditions. Users are required to review the rules regularly to stay informed of updates.',
+                    terms_modal_title: 'Terms & Conditions',
+                    modal_term_1: 'Prohibition of Irrelevant Discussions: Discussing topics unrelated to the game is prohibited. Violation may result in temporary or permanent restrictions.',
+                    modal_term_2: 'Monitoring of Conversations: All conversations during the game are monitored. Please refrain from discussing personal matters.',
+                    modal_term_3: 'Compliance with Iranian Laws: Any activity contrary to Iranian laws is prohibited and will result in account suspension and legal prosecution.',
+                    modal_term_4: 'Acceptance of Terms: Using the app constitutes full acceptance. Users must regularly review the rules.',
+                    terms_accept_label: 'I have read and accept the terms and conditions.',
+                    terms_cancel: 'Cancel',
+                    terms_continue: 'Confirm & Continue',
+                    terms_must_accept: 'Please accept the terms first.',
                     home: 'Home',
                     ranking: 'Ranking',
                     profile: 'Profile',
@@ -783,6 +987,24 @@
                     rule_2: 'إذا أصبح القاضي مشتبهاً به، يبرئ نفسه ولا أحد يعلم أنه القاضي.',
                     rule_3: 'المحامي والجاسوس يتعرفان على بعضهما فقط في الليلة الأولى.',
                     rule_4: 'إذا استعلم المحقق عن المحامي، يتلقى "لا".',
+                    terms_title: 'الشروط والأحكام',
+                    term_1_title: 'حظر المناقشات غير ذات الصلة',
+                    term_1_desc: 'يُحظر مناقشة مواضيع غير متعلقة باللعبة أثناء اللعب. في حالة المخالفة، قد يتم تطبيق قيود مؤقتة أو دائمة.',
+                    term_2_title: 'مراقبة المحادثات',
+                    term_2_desc: 'تتم مراقبة جميع المحادثات والتفاعلات أثناء اللعبة. يرجى الامتناع عن مناقشة الأمور الشخصية أو المواضيع الخارجة عن سياق اللعبة.',
+                    term_3_title: 'الالتزام بقوانين جمهورية إيران الإسلامية',
+                    term_3_desc: 'أي نشاط مخالف لقوانين جمهورية إيران الإسلامية محظور وسيؤدي إلى تعليق الحساب والملاحقة القانونية.',
+                    term_4_title: 'قبول الشروط',
+                    term_4_desc: 'استخدام هذا التطبيق يعني القبول الكامل لشروطنا وأحكامنا. يُطلب من المستخدمين مراجعة القواعد بانتظام للبقاء على اطلاع بالتحديثات.',
+                    terms_modal_title: 'الشروط والأحكام',
+                    modal_term_1: 'حظر المناقشات غير ذات الصلة: يُحظر مناقشة مواضيع غير متعلقة باللعبة. المخالفة قد تؤدي إلى قيود مؤقتة أو دائمة.',
+                    modal_term_2: 'مراقبة المحادثات: تتم مراقبة جميع المحادثات أثناء اللعبة. يرجى الامتناع عن مناقشة الأمور الشخصية.',
+                    modal_term_3: 'الالتزام بقوانين إيران: أي نشاط مخالف للقوانين الإيرانية محظور وسيؤدي إلى تعليق الحساب والملاحقة القانونية.',
+                    modal_term_4: 'قبول الشروط: استخدام التطبيق يعني القبول الكامل. يجب على المستخدمين مراجعة القواعد بانتظام.',
+                    terms_accept_label: 'لقد قرأت الشروط والأحكام وأوافق عليها.',
+                    terms_cancel: 'إلغاء',
+                    terms_continue: 'تأكيد ومتابعة',
+                    terms_must_accept: 'يرجى قبول الشروط أولاً.',
                     home: 'الرئيسية',
                     ranking: 'الترتيب',
                     profile: 'الملف',
@@ -884,18 +1106,6 @@
                 ]).catch(function() { return { ok: false }; });
             }
 
-            function generateRoomCode() {
-                var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-                var randomLetters = '';
-                for (var i = 0; i < 3; i++) {
-                    randomLetters += letters.charAt(Math.floor(Math.random() * letters.length));
-                }
-                var startOf2000 = new Date('2000-01-01T00:00:00Z').getTime();
-                var now = Date.now();
-                var secondsSince2000 = Math.floor((now - startOf2000) / 1000);
-                return randomLetters + secondsSince2000;
-            }
-
             function renderEmpty(text) {
                 return '<div class="empty-state"><i class="bi bi-inbox"></i><p>' + text + '</p></div>';
             }
@@ -990,6 +1200,42 @@
                 }
             }
 
+            function toggleTermsCheckbox() {
+                var cb = document.getElementById('termsCheckbox');
+                var btn = document.getElementById('termsAcceptBtn');
+                cb.classList.toggle('checked');
+                btn.disabled = !cb.classList.contains('checked');
+                triggerHaptic('light');
+            }
+            window.toggleTermsCheckbox = toggleTermsCheckbox;
+
+            function showTermsModal(callback) {
+                pendingAction = callback;
+                document.getElementById('termsCheckbox').classList.remove('checked');
+                document.getElementById('termsAcceptBtn').disabled = true;
+                document.getElementById('termsModalOverlay').classList.add('show');
+            }
+
+            function closeTermsModal() {
+                document.getElementById('termsModalOverlay').classList.remove('show');
+                pendingAction = null;
+            }
+            window.closeTermsModal = closeTermsModal;
+
+            function acceptTerms() {
+                var cb = document.getElementById('termsCheckbox');
+                if (!cb.classList.contains('checked')) return;
+                localStorage.setItem('mafiaTermsAccepted', Date.now().toString());
+                document.getElementById('termsModalOverlay').classList.remove('show');
+                triggerHaptic('medium');
+                var action = pendingAction;
+                pendingAction = null;
+                if (action) {
+                    setTimeout(function() { action(); }, 200);
+                }
+            }
+            window.acceptTerms = acceptTerms;
+
             window.startNewGame = function() {
                 triggerHaptic('medium');
                 if (hasHalfFinishedGame) {
@@ -1000,7 +1246,9 @@
                     }
                     return;
                 }
-                window.location.href = '../game/new/';
+                showTermsModal(function() {
+                    window.location.href = '../game/new/';
+                });
             };
 
             window.goToWheel = function() {
@@ -1018,15 +1266,19 @@
                     }
                     return;
                 }
-                localStorage.setItem('mafiaRoomCode', gameId);
-                window.location.href = '../game/table/?room=' + gameId;
+                showTermsModal(function() {
+                    localStorage.setItem('mafiaRoomCode', gameId);
+                    window.location.href = '../game/table/?room=' + gameId;
+                });
             };
 
             window.goToActiveGame = function() {
                 triggerHaptic('light');
                 if (activeGameId) {
-                    localStorage.setItem('mafiaRoomCode', activeGameId);
-                    window.location.href = '../game/table/?room=' + activeGameId;
+                    showTermsModal(function() {
+                        localStorage.setItem('mafiaRoomCode', activeGameId);
+                        window.location.href = '../game/table/?room=' + activeGameId;
+                    });
                 }
             };
 
