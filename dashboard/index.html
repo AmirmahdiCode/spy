@@ -303,15 +303,8 @@
             align-items: center;
             gap: 8px;
         }
-        .error-state i {
-            font-size: 30px;
-            color: #ef4444;
-        }
-        .error-state-text {
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text);
-        }
+        .error-state i { font-size: 30px; color: #ef4444; }
+        .error-state-text { font-size: 10px; font-weight: 700; color: var(--text); }
         .error-state-btn {
             padding: 8px 16px;
             background: var(--primary);
@@ -427,120 +420,61 @@
         }
         [dir="ltr"] .rules-article .phase-icon { margin-left: 0; margin-right: 4px; }
 
-        /* ═══════════ Roles Accordion ═══════════ */
+        /* ═══════════ Role Categories (Simple Headers) ═══════════ */
         .role-category {
             margin-bottom: 12px;
         }
         .role-category:last-child { margin-bottom: 0; }
 
         .role-category-title {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 7px 10px;
-            border-radius: 8px;
-            margin-bottom: 6px;
-            border: var(--border);
-            box-shadow: 2px 2px 0 #000;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--dark);
+            padding: 8px 0 6px;
+            margin-bottom: 8px;
+            border-bottom: 1.5px solid var(--primary);
         }
-        .role-category-title i { font-size: 13px; }
-        .role-category.citizens .role-category-title {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: #10b981;
-        }
-        .role-category.citizens .role-category-title i { color: #10b981; }
-        .role-category.mafia .role-category-title {
-            background: rgba(220, 38, 38, 0.1);
-            border-color: #dc2626;
-        }
-        .role-category.mafia .role-category-title i { color: #dc2626; }
-        .role-category.free .role-category-title {
-            background: rgba(107, 114, 128, 0.1);
-            border-color: #6b7280;
-        }
-        .role-category.free .role-category-title i { color: #6b7280; }
-        [data-theme="dark"] .role-category.citizens .role-category-title { background: rgba(16, 185, 129, 0.15); }
-        [data-theme="dark"] .role-category.mafia .role-category-title { background: rgba(220, 38, 38, 0.15); }
-        [data-theme="dark"] .role-category.free .role-category-title { background: rgba(107, 114, 128, 0.15); }
+        .role-category-title i { color: var(--primary); font-size: 14px; }
 
-        .role-accordion {
+        /* ═══════════ Role Cards ═══════════ */
+        .role-card {
             background: var(--bg2);
             border: var(--border);
             border-radius: 8px;
-            margin-bottom: 5px;
-            overflow: hidden;
+            padding: 10px 12px;
+            margin-bottom: 6px;
             box-shadow: 2px 2px 0 #000;
-            transition: all 0.2s ease;
-        }
-        .role-accordion:last-child { margin-bottom: 0; }
-
-        .role-accordion-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
-            padding: 9px 11px;
-            cursor: pointer;
-            user-select: none;
-            transition: background 0.2s;
         }
-        .role-accordion-header:active { background: var(--bg3); }
-
-        .role-accordion-icon {
-            width: 28px; height: 28px;
-            border-radius: 7px;
+        .role-card:last-child { margin-bottom: 0; }
+        .role-card-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
             flex-shrink: 0;
-            color: #fff;
             border: var(--border);
+            color: #fff;
         }
-        .role-accordion.citizens .role-accordion-icon { background: #10b981; }
-        .role-accordion.mafia .role-accordion-icon { background: #dc2626; }
-        .role-accordion.free .role-accordion-icon { background: #6b7280; }
-
-        .role-accordion-title {
-            flex: 1;
+        .role-card.citizens .role-card-icon { background: #10b981; }
+        .role-card.mafia .role-card-icon { background: #dc2626; }
+        .role-card.free .role-card-icon { background: #6b7280; }
+        .role-card-content { flex: 1; min-width: 0; }
+        .role-card-title {
             font-size: 11px;
             font-weight: 800;
             color: var(--dark);
+            margin-bottom: 3px;
             display: flex;
             align-items: center;
             gap: 6px;
             flex-wrap: wrap;
         }
-
-        .role-accordion-arrow {
-            font-size: 13px;
-            color: var(--text-light);
-            transition: transform 0.3s ease;
-            flex-shrink: 0;
-        }
-        .role-accordion.open .role-accordion-arrow {
-            transform: rotate(180deg);
-        }
-
-        .role-accordion-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s ease;
-        }
-        .role-accordion.open .role-accordion-body {
-            max-height: 500px;
-        }
-
-        .role-accordion-desc {
-            padding: 0 11px 11px 11px;
-            font-size: 10px;
-            line-height: 1.85;
-            color: var(--text);
-            border-top: 1px dashed var(--text-light);
-            padding-top: 9px;
-            margin-top: 0;
-        }
-
         .coming-soon-badge {
             font-size: 7px;
             font-weight: 700;
@@ -550,6 +484,11 @@
             color: #fff;
             border: 1px solid #d97706;
             white-space: nowrap;
+        }
+        .role-card-desc {
+            font-size: 10px;
+            line-height: 1.8;
+            color: var(--text);
         }
 
         .active-game-float {
@@ -589,15 +528,8 @@
             font-size: 12px; flex-shrink: 0;
         }
         .active-game-float-info { flex: 1; min-width: 0; }
-        .active-game-float-title {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--dark);
-        }
-        .active-game-float-subtitle {
-            font-size: 8px;
-            color: var(--text-light);
-        }
+        .active-game-float-title { font-size: 10px; font-weight: 800; color: var(--dark); }
+        .active-game-float-subtitle { font-size: 8px; color: var(--text-light); }
         .active-game-float-btn {
             font-size: 9px;
             font-weight: 700;
@@ -702,10 +634,7 @@
             color: var(--dark);
             line-height: 1.5;
         }
-        .terms-actions {
-            display: flex;
-            gap: 10px;
-        }
+        .terms-actions { display: flex; gap: 10px; }
         .terms-btn {
             flex: 1;
             padding: 12px;
@@ -719,20 +648,14 @@
             transition: all .2s;
         }
         .terms-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .terms-btn.accept {
-            background: #10b981;
-            color: #fff;
-        }
+        .terms-btn.accept { background: #10b981; color: #fff; }
         .terms-btn.accept:disabled {
             background: var(--bg3);
             color: var(--text-light);
             cursor: not-allowed;
             opacity: 0.6;
         }
-        .terms-btn.cancel {
-            background: var(--bg2);
-            color: var(--text);
-        }
+        .terms-btn.cancel { background: var(--bg2); color: var(--text); }
 
         .support-notification {
             position: fixed; top: 75px; right: 5%; left: 5%;
@@ -881,151 +804,121 @@
 
                 <h3><i class="bi bi-person-badge-fill" aria-hidden="true"></i> <span data-i18n="roles_title">نقش‌ها و وظایف</span></h3>
 
-                <!-- Citizens -->
-                <div class="role-category citizens">
+                <!-- Mafia -->
+                <div class="role-category">
                     <div class="role-category-title">
-                        <i class="bi bi-people-fill" aria-hidden="true"></i>
-                        <span data-i18n="team_citizens">شهروندان</span>
+                        <i class="bi bi-mask" aria-hidden="true"></i>
+                        <span data-i18n="team_mafia">گروه مافیا</span>
                     </div>
 
-                    <div class="role-accordion citizens" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-person" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title" data-i18n="role_citizen">شهروند ساده</div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_citizen_desc">فعالیت خاصی ندارد؛ کلمه را می‌بیند، در بحث شرکت می‌کند و در رای‌گیری نظر خود را می‌گوید.</div>
+                    <div class="role-card mafia">
+                        <div class="role-card-icon"><i class="bi bi-incognito" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title" data-i18n="role_spy">جاسوس</div>
+                            <div class="role-card-desc" data-i18n="role_spy_desc">تنها کسی است که کلمه را نمی‌داند و باید خود را مخفی نگه دارد تا لو نرود.</div>
                         </div>
                     </div>
 
-                    <div class="role-accordion citizens" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-search" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title" data-i18n="role_detective">کارآگاه</div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_detective_desc">در طول بازی فقط یک‌بار در یکی از ۳ شب می‌تواند استعلام بگیرد. استعلام جاسوس و طعمه مثبت است و بقیه منفی.</div>
+                    <div class="role-card mafia">
+                        <div class="role-card-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title" data-i18n="role_infiltrator">نفوذی</div>
+                            <div class="role-card-desc" data-i18n="role_infiltrator_desc">نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن دیگران، جاسوس را از دید شهروندان پنهان نگه دارد.</div>
                         </div>
                     </div>
 
-                    <div class="role-accordion citizens" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-bank" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title" data-i18n="role_judge">قاضی</div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_judge_desc">نظر نهایی هر رای‌گیری را قاضی می‌دهد. می‌تواند شهر را نجات دهد یا شبی را هدر دهد.</div>
-                        </div>
-                    </div>
-
-                    <div class="role-accordion citizens" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-shield-fill" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title">
-                                <span data-i18n="role_sheriff">کلانتر</span>
+                    <div class="role-card mafia">
+                        <div class="role-card-icon"><i class="bi bi-volume-mute-fill" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">
+                                <span data-i18n="role_silencer">سایلنتر</span>
                                 <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                             </div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
+                            <div class="role-card-desc" data-i18n="role_silencer_desc">فقط یک‌بار می‌تواند یک نفر را انتخاب کند تا روز بعدش حق پرسش سوال نداشته باشد.</div>
                         </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_sheriff_desc">در شب قبل از همه بیدار می‌شود و یک نفر را زندانی می‌کند. فرد زندانی آن شب نمی‌تواند بیدار شود و هیچ کاری انجام دهد و روز بعد نیز حق رای دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قدرت استفاده کند.</div>
+                    </div>
+
+                    <div class="role-card mafia">
+                        <div class="role-card-icon"><i class="bi bi-bug-fill" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">
+                                <span data-i18n="role_bait">طعمه</span>
+                                <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            </div>
+                            <div class="role-card-desc" data-i18n="role_bait_desc">جهت سردرگم کردن کارآگاه است تا مطمئن نباشد فرد استعلام‌شده جاسوس است یا نه.</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mafia -->
-                <div class="role-category mafia">
+                <!-- Citizens -->
+                <div class="role-category">
                     <div class="role-category-title">
-                        <i class="bi bi-mask" aria-hidden="true"></i>
-                        <span data-i18n="team_mafia">مافیا</span>
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>
+                        <span data-i18n="team_citizens">گروه شهر</span>
                     </div>
 
-                    <div class="role-accordion mafia" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-incognito" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title" data-i18n="role_spy">جاسوس</div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_spy_desc">تنها کسی است که کلمه را نمی‌داند و باید خود را مخفی نگه دارد تا لو نرود.</div>
+                    <div class="role-card citizens">
+                        <div class="role-card-icon"><i class="bi bi-person" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title" data-i18n="role_citizen">شهروند ساده</div>
+                            <div class="role-card-desc" data-i18n="role_citizen_desc">فعالیت خاصی ندارد؛ کلمه را می‌بیند، در بحث شرکت می‌کند و در رای‌گیری نظر خود را می‌گوید.</div>
                         </div>
                     </div>
 
-                    <div class="role-accordion mafia" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title" data-i18n="role_infiltrator">نفوذی</div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_infiltrator_desc">نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن دیگران، جاسوس را از دید شهروندان پنهان نگه دارد.</div>
+                    <div class="role-card citizens">
+                        <div class="role-card-icon"><i class="bi bi-search" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title" data-i18n="role_detective">کارآگاه</div>
+                            <div class="role-card-desc" data-i18n="role_detective_desc">در طول بازی فقط یک‌بار در یکی از ۳ شب می‌تواند استعلام بگیرد. استعلام جاسوس و طعمه مثبت است و بقیه منفی.</div>
                         </div>
                     </div>
 
-                    <div class="role-accordion mafia" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-volume-mute-fill" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title">
-                                <span data-i18n="role_silencer">سایلنتر</span>
+                    <div class="role-card citizens">
+                        <div class="role-card-icon"><i class="bi bi-bank" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title" data-i18n="role_judge">قاضی</div>
+                            <div class="role-card-desc" data-i18n="role_judge_desc">نظر نهایی هر رای‌گیری را قاضی می‌دهد. می‌تواند شهر را نجات دهد یا شبی را هدر دهد.</div>
+                        </div>
+                    </div>
+
+                    <div class="role-card citizens">
+                        <div class="role-card-icon"><i class="bi bi-shield-fill" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">
+                                <span data-i18n="role_sheriff">کلانتر</span>
                                 <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                             </div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_silencer_desc">فقط یک‌بار می‌تواند یک نفر را انتخاب کند تا روز بعدش حق پرسش سوال نداشته باشد.</div>
-                        </div>
-                    </div>
-
-                    <div class="role-accordion mafia" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-bug-fill" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title">
-                                <span data-i18n="role_bait">طعمه</span>
-                                <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
-                            </div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_bait_desc">جهت سردرگم کردن کارآگاه است تا مطمئن نباشد فرد استعلام‌شده جاسوس است یا نه.</div>
+                            <div class="role-card-desc" data-i18n="role_sheriff_desc">در شب قبل از همه بیدار می‌شود و یک نفر را زندانی می‌کند. فرد زندانی آن شب نمی‌تواند بیدار شود و هیچ کاری انجام دهد و روز بعد نیز حق رای دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قدرت استفاده کند.</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Free -->
-                <div class="role-category free">
+                <div class="role-category">
                     <div class="role-category-title">
                         <i class="bi bi-person-fill-exclamation" aria-hidden="true"></i>
-                        <span data-i18n="team_free">آزاد</span>
+                        <span data-i18n="team_free">گروه آزاد</span>
                     </div>
 
-                    <div class="role-accordion free" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-slash-circle-fill" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title">
+                    <div class="role-card free">
+                        <div class="role-card-icon"><i class="bi bi-slash-circle-fill" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">
                                 <span data-i18n="role_killer">قاتل</span>
                                 <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                             </div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_killer_desc">فقط یک‌بار می‌تواند یک نفر را بکشد. اگر فرد کشته‌شده جاسوس باشد، خودش برنده می‌شود. اگر فرد کشته‌شده شهروند باشد، از بازی حذف می‌شود.</div>
+                            <div class="role-card-desc" data-i18n="role_killer_desc">فقط یک‌بار می‌تواند یک نفر را بکشد. اگر فرد کشته‌شده جاسوس باشد، خودش برنده می‌شود. اگر فرد کشته‌شده شهروند باشد، از بازی حذف می‌شود.</div>
                         </div>
                     </div>
 
-                    <div class="role-accordion free" onclick="toggleRole(this)">
-                        <div class="role-accordion-header">
-                            <div class="role-accordion-icon"><i class="bi bi-lightning-fill" aria-hidden="true"></i></div>
-                            <div class="role-accordion-title">
+                    <div class="role-card free">
+                        <div class="role-card-icon"><i class="bi bi-lightning-fill" aria-hidden="true"></i></div>
+                        <div class="role-card-content">
+                            <div class="role-card-title">
                                 <span data-i18n="role_psycho">روانی</span>
                                 <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                             </div>
-                            <i class="bi bi-chevron-down role-accordion-arrow" aria-hidden="true"></i>
-                        </div>
-                        <div class="role-accordion-body">
-                            <div class="role-accordion-desc" data-i18n="role_psycho_desc">این بازیکن باید سعی کند خودش را حذف کند؛ یا با رای‌گیری یا با شلیک قاتل. اگر این بازیکن حذف شود، برنده می‌شود.</div>
+                            <div class="role-card-desc" data-i18n="role_psycho_desc">این بازیکن باید سعی کند خودش را حذف کند؛ یا با رای‌گیری یا با شلیک قاتل. اگر این بازیکن حذف شود، برنده می‌شود.</div>
                         </div>
                     </div>
                 </div>
@@ -1190,9 +1083,9 @@
                     flow_6: 'در شب اول افراد نقش‌های خود را ایفا می‌کنند و قاضی رای خود را اعلام می‌کند که چه کسی جاسوس هست یا اینکه تبرئه می‌کند.',
                     flow_7: 'این روند تا پایان سومین نظرسنجی، یا لو رفتن جاسوس، یا برنده شدن یکی از نقش‌های آزاد ادامه دارد.',
                     roles_title: 'نقش‌ها و وظایف',
-                    team_citizens: 'شهروندان',
-                    team_mafia: 'مافیا',
-                    team_free: 'آزاد',
+                    team_citizens: 'گروه شهر',
+                    team_mafia: 'گروه مافیا',
+                    team_free: 'گروه آزاد',
                     role_citizen: 'شهروند ساده',
                     role_citizen_desc: 'فعالیت خاصی ندارد؛ کلمه را می‌بیند، در بحث شرکت می‌کند و در رای‌گیری نظر خود را می‌گوید.',
                     role_detective: 'کارآگاه',
@@ -1278,9 +1171,9 @@
                     flow_6: 'On the first night, players use their roles, and the judge announces their vote.',
                     flow_7: 'This continues until the end of the third vote, the spy is exposed, or a free role wins.',
                     roles_title: 'Roles & Responsibilities',
-                    team_citizens: 'Citizens',
-                    team_mafia: 'Mafia',
-                    team_free: 'Free',
+                    team_citizens: 'City Group',
+                    team_mafia: 'Mafia Group',
+                    team_free: 'Free Group',
                     role_citizen: 'Regular Citizen',
                     role_citizen_desc: 'No special ability; sees the word, participates in discussion, and votes.',
                     role_detective: 'Detective',
@@ -1366,9 +1259,9 @@
                     flow_6: 'في الليلة الأولى، يستخدم اللاعبون أدوارهم، ويعلن القاضي صوته.',
                     flow_7: 'يستمر هذا حتى نهاية التصويت الثالث، أو انكشاف الجاسوس، أو فوز أحد الأدوار الحرة.',
                     roles_title: 'الأدوار والمسؤوليات',
-                    team_citizens: 'المواطنون',
-                    team_mafia: 'المافيا',
-                    team_free: 'الأحرار',
+                    team_citizens: 'مجموعة المدينة',
+                    team_mafia: 'مجموعة المافيا',
+                    team_free: 'مجموعة الأحرار',
                     role_citizen: 'المواطن العادي',
                     role_citizen_desc: 'لا يملك قدرة خاصة؛ يرى الكلمة، يشارك في النقاش ويصوت.',
                     role_detective: 'المحقق',
@@ -1650,19 +1543,6 @@
                     }
                 }
             }
-
-            function toggleRole(el) {
-                var isOpen = el.classList.contains('open');
-                var parent = el.parentElement;
-                parent.querySelectorAll('.role-accordion.open').forEach(function(item) {
-                    item.classList.remove('open');
-                });
-                if (!isOpen) {
-                    el.classList.add('open');
-                    triggerHaptic('light');
-                }
-            }
-            window.toggleRole = toggleRole;
 
             function toggleTermsCheckbox() {
                 var cb = document.getElementById('termsCheckbox');
