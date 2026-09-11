@@ -420,61 +420,53 @@
         }
         [dir="ltr"] .rules-article .phase-icon { margin-left: 0; margin-right: 4px; }
 
-        /* ═══════════ Role Categories (Simple Headers) ═══════════ */
+        /* ═══════════ Role Sections ═══════════ */
         .role-category {
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         .role-category:last-child { margin-bottom: 0; }
 
         .role-category-title {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-size: 12px;
             font-weight: 800;
-            color: var(--dark);
-            padding: 8px 0 6px;
-            margin-bottom: 8px;
+            color: var(--primary);
+            padding-bottom: 6px;
+            margin-bottom: 10px;
             border-bottom: 1.5px solid var(--primary);
         }
-        .role-category-title i { color: var(--primary); font-size: 14px; }
+        .role-category-title i { font-size: 14px; }
 
-        /* ═══════════ Role Cards ═══════════ */
-        .role-card {
-            background: var(--bg2);
-            border: var(--border);
-            border-radius: 8px;
-            padding: 10px 12px;
-            margin-bottom: 6px;
-            box-shadow: 2px 2px 0 #000;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
+        .role-block {
+            margin-bottom: 12px;
         }
-        .role-card:last-child { margin-bottom: 0; }
-        .role-card-icon {
-            width: 32px; height: 32px;
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
-            flex-shrink: 0;
-            border: var(--border);
-            color: #fff;
-        }
-        .role-card.citizens .role-card-icon { background: #10b981; }
-        .role-card.mafia .role-card-icon { background: #dc2626; }
-        .role-card.free .role-card-icon { background: #6b7280; }
-        .role-card-content { flex: 1; min-width: 0; }
-        .role-card-title {
-            font-size: 11px;
+        .role-block:last-child { margin-bottom: 0; }
+
+        .role-block-title {
+            font-size: 11.5px;
             font-weight: 800;
             color: var(--dark);
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             flex-wrap: wrap;
         }
+        .role-block-title i {
+            color: var(--primary);
+            font-size: 13px;
+        }
+
+        .role-block-desc {
+            font-size: 10.5px;
+            line-height: 1.9;
+            color: var(--text);
+            padding-right: 18px;
+        }
+        [dir="ltr"] .role-block-desc { padding-right: 0; padding-left: 18px; }
+
         .coming-soon-badge {
             font-size: 7px;
             font-weight: 700;
@@ -484,11 +476,6 @@
             color: #fff;
             border: 1px solid #d97706;
             white-space: nowrap;
-        }
-        .role-card-desc {
-            font-size: 10px;
-            line-height: 1.8;
-            color: var(--text);
         }
 
         .active-game-float {
@@ -811,42 +798,38 @@
                         <span data-i18n="team_mafia">گروه مافیا</span>
                     </div>
 
-                    <div class="role-card mafia">
-                        <div class="role-card-icon"><i class="bi bi-incognito" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title" data-i18n="role_spy">جاسوس</div>
-                            <div class="role-card-desc" data-i18n="role_spy_desc">تنها کسی است که کلمه را نمی‌داند و باید خود را مخفی نگه دارد تا لو نرود.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-incognito" aria-hidden="true"></i>
+                            <span data-i18n="role_spy">جاسوس</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_spy_desc">تنها کسی است که کلمه را نمی‌داند و باید خود را مخفی نگه دارد تا لو نرود.</div>
                     </div>
 
-                    <div class="role-card mafia">
-                        <div class="role-card-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title" data-i18n="role_infiltrator">نفوذی</div>
-                            <div class="role-card-desc" data-i18n="role_infiltrator_desc">نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن دیگران، جاسوس را از دید شهروندان پنهان نگه دارد.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
+                            <span data-i18n="role_infiltrator">نفوذی</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_infiltrator_desc">نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن دیگران، جاسوس را از دید شهروندان پنهان نگه دارد.</div>
                     </div>
 
-                    <div class="role-card mafia">
-                        <div class="role-card-icon"><i class="bi bi-volume-mute-fill" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title">
-                                <span data-i18n="role_silencer">سایلنتر</span>
-                                <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
-                            </div>
-                            <div class="role-card-desc" data-i18n="role_silencer_desc">فقط یک‌بار می‌تواند یک نفر را انتخاب کند تا روز بعدش حق پرسش سوال نداشته باشد.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-volume-mute-fill" aria-hidden="true"></i>
+                            <span data-i18n="role_silencer">سایلنتر</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_silencer_desc">فقط یک‌بار می‌تواند یک نفر را انتخاب کند تا روز بعدش حق پرسش سوال نداشته باشد.</div>
                     </div>
 
-                    <div class="role-card mafia">
-                        <div class="role-card-icon"><i class="bi bi-bug-fill" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title">
-                                <span data-i18n="role_bait">طعمه</span>
-                                <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
-                            </div>
-                            <div class="role-card-desc" data-i18n="role_bait_desc">جهت سردرگم کردن کارآگاه است تا مطمئن نباشد فرد استعلام‌شده جاسوس است یا نه.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-bug-fill" aria-hidden="true"></i>
+                            <span data-i18n="role_bait">طعمه</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_bait_desc">جهت سردرگم کردن کارآگاه است تا مطمئن نباشد فرد استعلام‌شده جاسوس است یا نه.</div>
                     </div>
                 </div>
 
@@ -857,39 +840,37 @@
                         <span data-i18n="team_citizens">گروه شهر</span>
                     </div>
 
-                    <div class="role-card citizens">
-                        <div class="role-card-icon"><i class="bi bi-person" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title" data-i18n="role_citizen">شهروند ساده</div>
-                            <div class="role-card-desc" data-i18n="role_citizen_desc">فعالیت خاصی ندارد؛ کلمه را می‌بیند، در بحث شرکت می‌کند و در رای‌گیری نظر خود را می‌گوید.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-person" aria-hidden="true"></i>
+                            <span data-i18n="role_citizen">شهروند ساده</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_citizen_desc">فعالیت خاصی ندارد؛ کلمه را می‌بیند، در بحث شرکت می‌کند و در رای‌گیری نظر خود را می‌گوید.</div>
                     </div>
 
-                    <div class="role-card citizens">
-                        <div class="role-card-icon"><i class="bi bi-search" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title" data-i18n="role_detective">کارآگاه</div>
-                            <div class="role-card-desc" data-i18n="role_detective_desc">در طول بازی فقط یک‌بار در یکی از ۳ شب می‌تواند استعلام بگیرد. استعلام جاسوس و طعمه مثبت است و بقیه منفی.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-search" aria-hidden="true"></i>
+                            <span data-i18n="role_detective">کارآگاه</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_detective_desc">در طول بازی فقط یک‌بار در یکی از ۳ شب می‌تواند استعلام بگیرد. استعلام جاسوس و طعمه مثبت است و بقیه منفی.</div>
                     </div>
 
-                    <div class="role-card citizens">
-                        <div class="role-card-icon"><i class="bi bi-bank" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title" data-i18n="role_judge">قاضی</div>
-                            <div class="role-card-desc" data-i18n="role_judge_desc">نظر نهایی هر رای‌گیری را قاضی می‌دهد. می‌تواند شهر را نجات دهد یا شبی را هدر دهد.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-bank" aria-hidden="true"></i>
+                            <span data-i18n="role_judge">قاضی</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_judge_desc">نظر نهایی هر رای‌گیری را قاضی می‌دهد. می‌تواند شهر را نجات دهد یا شبی را هدر دهد.</div>
                     </div>
 
-                    <div class="role-card citizens">
-                        <div class="role-card-icon"><i class="bi bi-shield-fill" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title">
-                                <span data-i18n="role_sheriff">کلانتر</span>
-                                <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
-                            </div>
-                            <div class="role-card-desc" data-i18n="role_sheriff_desc">در شب قبل از همه بیدار می‌شود و یک نفر را زندانی می‌کند. فرد زندانی آن شب نمی‌تواند بیدار شود و هیچ کاری انجام دهد و روز بعد نیز حق رای دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قدرت استفاده کند.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-shield-fill" aria-hidden="true"></i>
+                            <span data-i18n="role_sheriff">کلانتر</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_sheriff_desc">در شب قبل از همه بیدار می‌شود و یک نفر را زندانی می‌کند. فرد زندانی آن شب نمی‌تواند بیدار شود و هیچ کاری انجام دهد و روز بعد نیز حق رای دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قدرت استفاده کند.</div>
                     </div>
                 </div>
 
@@ -900,26 +881,22 @@
                         <span data-i18n="team_free">گروه آزاد</span>
                     </div>
 
-                    <div class="role-card free">
-                        <div class="role-card-icon"><i class="bi bi-slash-circle-fill" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title">
-                                <span data-i18n="role_killer">قاتل</span>
-                                <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
-                            </div>
-                            <div class="role-card-desc" data-i18n="role_killer_desc">فقط یک‌بار می‌تواند یک نفر را بکشد. اگر فرد کشته‌شده جاسوس باشد، خودش برنده می‌شود. اگر فرد کشته‌شده شهروند باشد، از بازی حذف می‌شود.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-slash-circle-fill" aria-hidden="true"></i>
+                            <span data-i18n="role_killer">قاتل</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_killer_desc">فقط یک‌بار می‌تواند یک نفر را بکشد. اگر فرد کشته‌شده جاسوس باشد، خودش برنده می‌شود. اگر فرد کشته‌شده شهروند باشد، از بازی حذف می‌شود.</div>
                     </div>
 
-                    <div class="role-card free">
-                        <div class="role-card-icon"><i class="bi bi-lightning-fill" aria-hidden="true"></i></div>
-                        <div class="role-card-content">
-                            <div class="role-card-title">
-                                <span data-i18n="role_psycho">روانی</span>
-                                <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
-                            </div>
-                            <div class="role-card-desc" data-i18n="role_psycho_desc">این بازیکن باید سعی کند خودش را حذف کند؛ یا با رای‌گیری یا با شلیک قاتل. اگر این بازیکن حذف شود، برنده می‌شود.</div>
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <i class="bi bi-lightning-fill" aria-hidden="true"></i>
+                            <span data-i18n="role_psycho">روانی</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
+                        <div class="role-block-desc" data-i18n="role_psycho_desc">این بازیکن باید سعی کند خودش را حذف کند؛ یا با رای‌گیری یا با شلیک قاتل. اگر این بازیکن حذف شود، برنده می‌شود.</div>
                     </div>
                 </div>
 
@@ -947,7 +924,7 @@
                 <p data-i18n="term_5_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.</p>
 
                 <h3><i class="bi bi-6-circle" aria-hidden="true"></i> <span data-i18n="term_6_title">هدف سرگرمی و مالکیت معنوی</span></h3>
-                <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد و با </span><i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i><span data-i18n="term_6_desc_3"> به شما تقدیم می‌شود.</span></p>
+                <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد. این سرویس با </span><i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i><span data-i18n="term_6_desc_3"> به شما تقدیم می‌گردد.</span></p>
 
                 <h3><i class="bi bi-7-circle" aria-hidden="true"></i> <span data-i18n="term_7_title">مسئولیت سرویس و قطع سرویس</span></h3>
                 <p><span data-i18n="term_7_desc">تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. همچنین تیم مدیریت حق قطع موقت یا دائم سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم </span><i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i></p>
@@ -1121,8 +1098,8 @@
                     term_6_title: 'هدف سرگرمی و مالکیت معنوی',
                     term_6_desc_1: 'این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به ',
                     amirmahdi: 'امیرمهدی',
-                    term_6_desc_2: ' می‌باشد و با ',
-                    term_6_desc_3: ' به شما تقدیم می‌شود.',
+                    term_6_desc_2: ' می‌باشد. این سرویس با ',
+                    term_6_desc_3: ' به شما تقدیم می‌گردد.',
                     term_7_title: 'مسئولیت سرویس و قطع سرویس',
                     term_7_desc: 'تیم فنی همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. با این حال، این بازی "همان‌طور که هست" ارائه شده و تیم فنی مسئولیتی در قبال مشکلات احتمالی نمی‌پذیرد. همچنین تیم مدیریت حق قطع موقت یا دائم سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم ',
                     term_8_title: 'پذیرش شرایط',
@@ -1209,7 +1186,7 @@
                     term_6_title: 'Entertainment Purpose & Intellectual Property',
                     term_6_desc_1: 'This game is designed purely for entertainment purposes. All material and intellectual rights of this game belong to ',
                     amirmahdi: 'Amirmahdi',
-                    term_6_desc_2: ' and it is dedicated to you with ',
+                    term_6_desc_2: '. This service is dedicated to you with ',
                     term_6_desc_3: '.',
                     term_7_title: 'Service Responsibility & Termination',
                     term_7_desc: 'Our technical team continuously strives to provide the best experience. However, this game is provided "as is" and the technical team bears no responsibility for potential issues. The management team also reserves the right to temporarily or permanently terminate the service. Thank you for your patience and support ',
@@ -1297,7 +1274,7 @@
                     term_6_title: 'غرض الترفيه والملكية الفكرية',
                     term_6_desc_1: 'تم تصميم هذه اللعبة لغرض الترفيه فقط. جميع الحقوق تعود إلى ',
                     amirmahdi: 'أميرمهدي',
-                    term_6_desc_2: ' وتُقدَّم لكم بـ ',
+                    term_6_desc_2: '. تُقدَّم لكم هذه الخدمة بـ ',
                     term_6_desc_3: '.',
                     term_7_title: 'مسؤولية الخدمة وإنهاء الخدمة',
                     term_7_desc: 'يسعى فريقنا الفني لتقديم أفضل تجربة. ومع ذلك، تُقدَّم هذه اللعبة "كما هي" ولا يتحمل الفريق الفني أي مسؤولية. كما يحتفظ فريق الإدارة بالحق في إنهاء الخدمة. شكراً لصبركم ودعمكم ',
