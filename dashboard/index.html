@@ -420,6 +420,29 @@
         }
         [dir="ltr"] .rules-article .phase-icon { margin-left: 0; margin-right: 4px; }
 
+        /* ═══════════ Terms Link Button ═══════════ */
+        .terms-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: #fff;
+            border: var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-top: 10px;
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            width: 100%;
+            justify-content: center;
+        }
+        .terms-link-btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
+        .terms-link-btn i { font-size: 14px; }
+
         /* ═══════════ Role Sections ═══════════ */
         .role-category {
             margin-bottom: 16px;
@@ -764,7 +787,7 @@
 
         <div class="section-card" id="gameRulesSection">
             <div class="section-title">
-                <span class="section-title-left"><i class="bi bi-book" aria-hidden="true"></i> <span data-i18n="game_rules">راهنمای بازی</span></span>
+                <span class="section-title-left"><i class="bi bi-book" aria-hidden="true"></i> <span data-i18n="game_guide">راهنمای بازی</span></span>
             </div>
             <div class="rules-article">
                 
@@ -903,6 +926,31 @@
             </div>
         </div>
 
+        <div class="section-card" id="gameRulesPlay">
+            <div class="section-title">
+                <span class="section-title-left"><i class="bi bi-shield-check" aria-hidden="true"></i> <span data-i18n="play_rules">قوانین بازی</span></span>
+            </div>
+            <div class="rules-article">
+
+                <h3><i class="bi bi-1-circle" aria-hidden="true"></i> <span data-i18n="play_rule_1_title">ظرفیت و تقسیم نقش‌ها</span></h3>
+                <p data-i18n="play_rule_1_desc">بازی از ۳ تا ۱۰ نفر تشکیل می‌شود و تقسیم نقش‌ها کاملاً تصادفی و خودکار انجام می‌گیرد تا بازی برای همه منصفانه باشد.</p>
+
+                <h3><i class="bi bi-2-circle" aria-hidden="true"></i> <span data-i18n="play_rule_2_title">خروج از بازی (ترک میز)</span></h3>
+                <p data-i18n="play_rule_2_desc">هر بازیکنی که در حین بازی از میز خارج شود، خودش و هم‌گروهی‌هایش بازنده حساب می‌شوند و امتیاز کسر می‌گردد. ۵۰ امتیاز از خود فرد و ۱۰ امتیاز از هر یک از هم‌گروهی‌هایش کسر خواهد شد.</p>
+
+                <h3><i class="bi bi-3-circle" aria-hidden="true"></i> <span data-i18n="play_rule_3_title">ممنوعیت لو دادن نقش‌ها</span></h3>
+                <p data-i18n="play_rule_3_desc">لو دادن نقش خود یا دیگران در طول بازی ممنوع است. کاربران در صورت مشاهده می‌توانند از طریق منوی بازی گزارش دهند. اگر ۵۰٪ یا بیشتر بازیکنان روی یک پیام گزارش بزنند، بازی به‌صورت خودکار متوقف و تیم متخلف بازنده محسوب می‌شود.</p>
+
+                <h3><i class="bi bi-4-circle" aria-hidden="true"></i> <span data-i18n="play_rule_4_title">گزارش محتوای خلاف قوانین</span></h3>
+                <p data-i18n="play_rule_4_desc">هر فرد موظف است در صورت مشاهده محتوای خلاف قوانین و مقررات استفاده، از طریق منوی بازی گزارش دهد.</p>
+                <button class="terms-link-btn" onclick="scrollToTerms()">
+                    <i class="bi bi-arrow-down-circle-fill" aria-hidden="true"></i>
+                    <span data-i18n="play_rule_4_btn">مشاهده قوانین و مقررات استفاده</span>
+                </button>
+
+            </div>
+        </div>
+
         <div class="section-card" id="termsSection">
             <div class="section-title">
                 <span class="section-title-left"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> <span data-i18n="terms_title">قوانین و مقررات استفاده</span></span>
@@ -918,7 +966,7 @@
                 <p data-i18n="term_3_desc">ارسال هرگونه تبلیغات، لینک خارجی، معرفی سرویس‌های دیگر یا دعوت به کانال‌ها و گروه‌های شخصی، تحت هر شرایطی ممنوع بوده و موجب مسدودسازی اکانت خواهد شد.</p>
 
                 <h3><i class="bi bi-4-circle" aria-hidden="true"></i> <span data-i18n="term_4_title">حفاظت از کدهای بازی</span></h3>
-                <p><span data-i18n="term_4_desc">هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و در صورت لزوم از طریق مراجع قانونی پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید </span><i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i></p>
+                <p><span data-i18n="term_4_desc">هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و موجب مسدودسازی حساب بازی و در صورت لزوم پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید </span><i class="bi bi-heart-fill heart-icon" aria-hidden="true"></i></p>
 
                 <h3><i class="bi bi-5-circle" aria-hidden="true"></i> <span data-i18n="term_5_title">رعایت قوانین جمهوری اسلامی ایران</span></h3>
                 <p data-i18n="term_5_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.</p>
@@ -1041,7 +1089,7 @@
                     wheel: 'گردونه',
                     public_games: 'بازی‌های سراسری',
                     loading_games: 'در حال دریافت بازی‌ها...',
-                    game_rules: 'راهنمای بازی',
+                    game_guide: 'راهنمای بازی',
                     intro_title: 'معرفی بازی',
                     intro_desc: 'بازی «جاسوس مافیایی» یک بازی چالشی منحصربه‌فرد است که در طول ۳ شبانه‌روز انجام می‌شود و دارای ۲ فاز است: فاز روز و فاز شب.',
                     phases_title: 'فازهای بازی',
@@ -1084,6 +1132,16 @@
                     role_psycho: 'روانی',
                     role_psycho_desc: 'این بازیکن باید سعی کند خودش را حذف کند؛ یا با رای‌گیری یا با شلیک قاتل. اگر این بازیکن حذف شود، برنده می‌شود.',
                     coming_soon: 'به‌زودی',
+                    play_rules: 'قوانین بازی',
+                    play_rule_1_title: 'ظرفیت و تقسیم نقش‌ها',
+                    play_rule_1_desc: 'بازی از ۳ تا ۱۰ نفر تشکیل می‌شود و تقسیم نقش‌ها کاملاً تصادفی و خودکار انجام می‌گیرد تا بازی برای همه منصفانه باشد.',
+                    play_rule_2_title: 'خروج از بازی (ترک میز)',
+                    play_rule_2_desc: 'هر بازیکنی که در حین بازی از میز خارج شود، خودش و هم‌گروهی‌هایش بازنده حساب می‌شوند و امتیاز کسر می‌گردد. ۵۰ امتیاز از خود فرد و ۱۰ امتیاز از هر یک از هم‌گروهی‌هایش کسر خواهد شد.',
+                    play_rule_3_title: 'ممنوعیت لو دادن نقش‌ها',
+                    play_rule_3_desc: 'لو دادن نقش خود یا دیگران در طول بازی ممنوع است. کاربران در صورت مشاهده می‌توانند از طریق منوی بازی گزارش دهند. اگر ۵۰٪ یا بیشتر بازیکنان روی یک پیام گزارش بزنند، بازی به‌صورت خودکار متوقف و تیم متخلف بازنده محسوب می‌شود.',
+                    play_rule_4_title: 'گزارش محتوای خلاف قوانین',
+                    play_rule_4_desc: 'هر فرد موظف است در صورت مشاهده محتوای خلاف قوانین و مقررات استفاده، از طریق منوی بازی گزارش دهد.',
+                    play_rule_4_btn: 'مشاهده قوانین و مقررات استفاده',
                     terms_title: 'قوانین و مقررات استفاده',
                     term_1_title: 'بحث‌های غیرمرتبط و نظارت بر محتوا',
                     term_1_desc: 'در حین بازی، پرداختن به موضوعات غیرمرتبط با بازی ممنوع می‌باشد. تمامی گفتگوها و تعاملات در طول بازی توسط تیم ادمین بررسی می‌شوند تا محیطی سالم و لذت‌بخش برای همه فراهم شود. در صورت مشاهده تخلف، تیم مدیریت امکان اعمال محدودیت موقت یا دائم را برای کاربر متخلف خواهد داشت.',
@@ -1092,7 +1150,7 @@
                     term_3_title: 'ممنوعیت تبلیغات',
                     term_3_desc: 'ارسال هرگونه تبلیغات، لینک خارجی، معرفی سرویس‌های دیگر یا دعوت به کانال‌ها و گروه‌های شخصی، تحت هر شرایطی ممنوع بوده و موجب مسدودسازی اکانت خواهد شد.',
                     term_4_title: 'حفاظت از کدهای بازی',
-                    term_4_desc: 'هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و در صورت لزوم از طریق مراجع قانونی پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید ',
+                    term_4_desc: 'هرگونه تلاش برای سوءاستفاده از کدهای بازی، یا کوشش برای دسترسی و استفاده نادرست از آنها، غیرمجاز بوده و موجب مسدودسازی حساب بازی و در صورت لزوم پیگیری خواهد شد. لطفاً به‌جای این کارها، از تجربه بازی لذت ببرید ',
                     term_5_title: 'رعایت قوانین جمهوری اسلامی ایران',
                     term_5_desc: 'انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب مسدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.',
                     term_6_title: 'هدف سرگرمی و مالکیت معنوی',
@@ -1129,7 +1187,7 @@
                     wheel: 'Wheel',
                     public_games: 'Public Games',
                     loading_games: 'Loading games...',
-                    game_rules: 'Game Guide',
+                    game_guide: 'Game Guide',
                     intro_title: 'Introduction',
                     intro_desc: 'Mafia Spy is a unique challenging game played over 3 day-night cycles with 2 phases: day phase and night phase.',
                     phases_title: 'Game Phases',
@@ -1172,6 +1230,16 @@
                     role_psycho: 'Psycho',
                     role_psycho_desc: 'This player must try to get themselves eliminated; either by vote or by the killer\'s shot. If eliminated, they win.',
                     coming_soon: 'Coming Soon',
+                    play_rules: 'Game Rules',
+                    play_rule_1_title: 'Capacity & Role Distribution',
+                    play_rule_1_desc: 'The game is played with 3 to 10 players, and roles are distributed completely randomly and automatically to keep the game fair for everyone.',
+                    play_rule_2_title: 'Leaving the Game (Leaving the Table)',
+                    play_rule_2_desc: 'Any player who leaves the table during the game will cause themselves and their teammates to lose, and points will be deducted. 50 points will be deducted from the player themselves and 10 points from each of their teammates.',
+                    play_rule_3_title: 'Prohibition of Revealing Roles',
+                    play_rule_3_desc: 'Revealing your own role or others\' roles during the game is prohibited. Users can report via the game menu if they observe this. If 50% or more players report a message, the game will automatically stop and the offending team will be considered the loser.',
+                    play_rule_4_title: 'Reporting Content Violating Rules',
+                    play_rule_4_desc: 'Everyone must report any content violating the terms of use via the game menu.',
+                    play_rule_4_btn: 'View Terms & Conditions',
                     terms_title: 'Terms & Conditions',
                     term_1_title: 'Irrelevant Discussions & Content Monitoring',
                     term_1_desc: 'Discussing topics unrelated to the game during play is prohibited. All conversations and interactions during the game are reviewed by the admin team to ensure a safe and enjoyable environment for everyone. In case of violation, the management team may apply temporary or permanent restrictions.',
@@ -1180,7 +1248,7 @@
                     term_3_title: 'Prohibition of Advertising',
                     term_3_desc: 'Sending any advertisements, external links, introducing other services, or inviting to personal channels and groups is strictly prohibited and will result in account suspension.',
                     term_4_title: 'Protection of Game Codes',
-                    term_4_desc: 'Any attempt to exploit game codes is prohibited and will be pursued through legal authorities if necessary. Please enjoy the game instead ',
+                    term_4_desc: 'Any attempt to exploit game codes, or efforts to access and misuse them, is prohibited and will result in game account suspension and, if necessary, further action. Please enjoy the game instead ',
                     term_5_title: 'Compliance with Islamic Republic of Iran Laws',
                     term_5_desc: 'Any activity contrary to the laws of the Islamic Republic of Iran is prohibited and will result in account suspension. If necessary, violations will be reported to the relevant legal authorities.',
                     term_6_title: 'Entertainment Purpose & Intellectual Property',
@@ -1217,7 +1285,7 @@
                     wheel: 'العجلة',
                     public_games: 'الألعاب العامة',
                     loading_games: 'جار تحميل الألعاب...',
-                    game_rules: 'دليل اللعبة',
+                    game_guide: 'دليل اللعبة',
                     intro_title: 'مقدمة اللعبة',
                     intro_desc: 'جاسوس المافيا لعبة تحدٍ فريدة تُلعب على مدى 3 دورات ليل ونهار ولها مرحلتان: مرحلة النهار ومرحلة الليل.',
                     phases_title: 'مراحل اللعبة',
@@ -1260,6 +1328,16 @@
                     role_psycho: 'المختل',
                     role_psycho_desc: 'يجب على هذا اللاعب محاولة إقصاء نفسه؛ إما بالتصويت أو برصاصة القاتل. إذا أُقصي، يفوز.',
                     coming_soon: 'قريباً',
+                    play_rules: 'قوانين اللعبة',
+                    play_rule_1_title: 'السعة وتوزيع الأدوار',
+                    play_rule_1_desc: 'تُلعب اللعبة من 3 إلى 10 لاعبين، ويتم توزيع الأدوار بشكل عشوائي وآلي بالكامل لضمان العدالة للجميع.',
+                    play_rule_2_title: 'مغادرة اللعبة (ترك الطاولة)',
+                    play_rule_2_desc: 'أي لاعب يغادر الطاولة أثناء اللعبة، يخسر هو وزملاؤه وتُخصم النقاط. تُخصم 50 نقطة من اللاعب نفسه و 10 نقاط من كل من زملائه.',
+                    play_rule_3_title: 'حظر الكشف عن الأدوار',
+                    play_rule_3_desc: 'الكشف عن دورك أو أدوار الآخرين أثناء اللعبة محظور. يمكن للمستخدمين الإبلاغ عبر قائمة اللعبة عند ملاحظة ذلك. إذا أبلغ 50% أو أكثر من اللاعبين عن رسالة، يتم إيقاف اللعبة تلقائياً ويُعتبر الفريق المخالف خاسراً.',
+                    play_rule_4_title: 'الإبلاغ عن محتوى مخالف للقوانين',
+                    play_rule_4_desc: 'يجب على الجميع الإبلاغ عن أي محتوى مخالف لشروط الاستخدام عبر قائمة اللعبة.',
+                    play_rule_4_btn: 'عرض الشروط والأحكام',
                     terms_title: 'الشروط والأحكام',
                     term_1_title: 'المناقشات غير ذات الصلة ومراقبة المحتوى',
                     term_1_desc: 'يُحظر مناقشة مواضيع غير متعلقة باللعبة أثناء اللعب. تتم مراجعة جميع المحادثات من قبل فريق الإدارة لضمان بيئة آمنة وممتعة للجميع.',
@@ -1268,7 +1346,7 @@
                     term_3_title: 'حظر الإعلانات',
                     term_3_desc: 'يُحظر تماماً إرسال أي إعلانات أو روابط خارجية أو الترويج لخدمات أخرى، وسيؤدي إلى تعليق الحساب.',
                     term_4_title: 'حماية أكواد اللعبة',
-                    term_4_desc: 'أي محاولة لاستغلال أكواد اللعبة محظورة وسيتم متابعتها قانونياً إذا لزم الأمر. يرجى الاستمتاع باللعبة ',
+                    term_4_desc: 'أي محاولة لاستغلال أكواد اللعبة أو الوصول إليها وإساءة استخدامها محظورة وستؤدي إلى تعليق حساب اللعبة، وإذا لزم الأمر سيتم المتابعة. يرجى الاستمتاع باللعبة ',
                     term_5_title: 'الالتزام بقوانين جمهورية إيران الإسلامية',
                     term_5_desc: 'أي نشاط مخالف لقوانين جمهورية إيران الإسلامية محظور وسيؤدي إلى تعليق الحساب. في حالة الحاجة، سيتم الإبلاغ عن المخالفات للسلطات القانونية.',
                     term_6_title: 'غرض الترفيه والملكية الفكرية',
@@ -1565,12 +1643,9 @@
             window.closeTermsModal = closeTermsModal;
 
             function scrollToTerms() {
-                closeTermsModal();
                 var termsSection = document.getElementById('termsSection');
                 if (termsSection) {
-                    setTimeout(function() {
-                        termsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 200);
+                    termsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
                 triggerHaptic('light');
             }
