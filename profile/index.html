@@ -506,27 +506,19 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycby-MT3aVkVgQ_L_9SLQJdpMHbKgjP8NwG8tqHmy0UKz0a7c_yEBKuC6q--7ZtnChB3Z/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzJBOcNxa49vrlBYQmK9BWjZKtIth-M2yqyvYPW8V639Syi8VF3Te9QL05rW5tAmlG5/exec';
             var currentAvatar = 'default';
             var currentLang = 'fa';
             var userDiamonds = 0;
             var myUserId = '';
 
             var VALID_AVATAR_ID = /^[A-Za-z0-9_\-]{1,50}$/;
-            var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
+            var VALID_USER_ID = /^[A-Za-z0-9_\-@.]{1,64}$/;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
             document.addEventListener('copy', function(e) { e.preventDefault(); });
             document.addEventListener('cut', function(e) { e.preventDefault(); });
-
-            var fontMap = {
-                'Samim': "'Samim', Tahoma, sans-serif",
-                'Sahel': "'Sahel', Tahoma, sans-serif",
-                'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
-                'Estedad': "'Estedad', Tahoma, sans-serif",
-                'Gandom': "'Gandom', Tahoma, sans-serif"
-            };
 
             function escapeHtml(str) {
                 if (str === null || str === undefined) return '';
@@ -538,8 +530,11 @@
                     .replace(/'/g, '&#39;');
             }
 
-            function escapeAttr(str) {
-                return escapeHtml(str);
+            function escapeAttr(str) { return escapeHtml(str); }
+
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
             }
 
             function safeSetLocalStorage(key, value) {
@@ -547,19 +542,20 @@
                 catch(e) { return false; }
             }
 
-            function safeGetLocalStorage(key) {
-                try { return localStorage.getItem(key); }
-                catch(e) { return null; }
-            }
-
             function safeParseJSON(str, fallback) {
                 try {
                     var parsed = JSON.parse(str);
                     return parsed === null || parsed === undefined ? fallback : parsed;
-                } catch(e) {
-                    return fallback;
-                }
+                } catch(e) { return fallback; }
             }
+
+            var fontMap = {
+                'Samim': "'Samim', Tahoma, sans-serif",
+                'Sahel': "'Sahel', Tahoma, sans-serif",
+                'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
+            };
 
             var translations = {
                 fa: {
@@ -579,11 +575,13 @@
                     profile: 'پروفایل',
                     settings_nav: 'تنظیمات',
                     pack_1: 'پک تصویری ۱',
+                    icons: 'آیکون‌ها',
                     free: 'رایگان',
                     owned: 'خریداری شده',
                     not_enough_diamonds: 'الماس کافی نداری!',
                     avatar_bought: 'آواتار خریداری شد!',
                     avatar_buy_failed: 'خریداری نشد. دوباره تلاش کن.',
+                    avatar_select_failed: 'تغییر آواتار انجام نشد.',
                     first_game: 'اولین بازی',
                     '10_games': '۱۰ بازی',
                     '100_games': '۱۰۰ بازی',
@@ -618,11 +616,13 @@
                     profile: 'Profile',
                     settings_nav: 'Settings',
                     pack_1: 'Image Pack 1',
+                    icons: 'Icons',
                     free: 'Free',
                     owned: 'Owned',
                     not_enough_diamonds: 'Not enough diamonds!',
                     avatar_bought: 'Avatar purchased!',
                     avatar_buy_failed: 'Purchase failed. Try again.',
+                    avatar_select_failed: 'Avatar change failed.',
                     first_game: 'First Game',
                     '10_games': '10 Games',
                     '100_games': '100 Games',
@@ -657,11 +657,13 @@
                     profile: 'الملف',
                     settings_nav: 'الإعدادات',
                     pack_1: 'حزمة الصور ۱',
+                    icons: 'الأيقونات',
                     free: 'مجاني',
                     owned: 'مملوك',
                     not_enough_diamonds: 'لا تملك ما يكفي من الماس!',
                     avatar_bought: 'تم شراء الصورة!',
                     avatar_buy_failed: 'فشل الشراء. حاول مرة أخرى.',
+                    avatar_select_failed: 'فشل تغيير الصورة.',
                     first_game: 'أول مباراة',
                     '10_games': '۱۰ مباريات',
                     '100_games': '۱۰۰ مباراة',
@@ -887,7 +889,15 @@
                 return Array.isArray(arr) ? arr : [];
             }
 
+            function setOwnedAvatars(list) {
+                if (!Array.isArray(list)) return;
+                safeSetLocalStorage('ownedAvatars', JSON.stringify(list));
+            }
+
             function isAvatarOwned(itemId) {
+                if (currentAvatar === itemId) return true;
+                if (itemId === 'default') return true;
+                if (iconAvatars[itemId]) return true;
                 return getOwnedAvatars().indexOf(itemId) !== -1;
             }
 
@@ -895,7 +905,7 @@
                 var owned = getOwnedAvatars();
                 if (owned.indexOf(itemId) === -1) {
                     owned.push(itemId);
-                    safeSetLocalStorage('ownedAvatars', JSON.stringify(owned));
+                    setOwnedAvatars(owned);
                 }
             }
 
@@ -929,6 +939,7 @@
                 renderAvatarModal();
                 document.getElementById('avatarModalOverlay').classList.add('show');
             }
+
             function closeAvatarModal() {
                 document.getElementById('avatarModalOverlay').classList.remove('show');
             }
@@ -942,11 +953,16 @@
                 var owned = isAvatarOwned(itemId);
 
                 if (price === 0 || owned) {
-                    currentAvatar = itemId;
-                    updateProfileAvatar();
-                    closeAvatarModal();
-                    triggerHaptic('light');
-                    fetchData('updateUser', { avatar: itemId });
+                    var result = await fetchData('updateUser', { avatar: itemId });
+                    if (result && result.ok) {
+                        currentAvatar = itemId;
+                        updateProfileAvatar();
+                        closeAvatarModal();
+                        triggerHaptic('light');
+                    } else {
+                        if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_select_failed'));
+                        else alert(getTranslation('avatar_select_failed'));
+                    }
                     return;
                 }
 
@@ -956,22 +972,42 @@
                     return;
                 }
 
-                var result = await fetchData('buyAvatar', { avatarId: itemId, price: price });
-                if (!result || !result.ok) {
-                    if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_buy_failed'));
-                    else alert(getTranslation('avatar_buy_failed'));
+                var buyResult = await fetchData('buyAvatar', { avatarId: itemId });
+
+                if (!buyResult || !buyResult.ok) {
+                    var msg = buyResult && buyResult.error === 'Not enough diamonds'
+                        ? getTranslation('not_enough_diamonds')
+                        : getTranslation('avatar_buy_failed');
+                    if (webApp && webApp.showAlert) webApp.showAlert(msg);
+                    else alert(msg);
                     return;
                 }
 
-                userDiamonds = Math.max(0, userDiamonds - price);
-                document.getElementById('diamondsHeader').textContent = String(userDiamonds);
-                addOwnedAvatar(itemId);
-                currentAvatar = itemId;
-                updateProfileAvatar();
-                closeAvatarModal();
-                triggerHaptic('medium');
-                if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
-                else alert(getTranslation('avatar_bought'));
+                if (buyResult.data) {
+                    var newDiamonds = parseInt(buyResult.data.diamonds, 10);
+                    if (!isNaN(newDiamonds)) {
+                        userDiamonds = newDiamonds;
+                        document.getElementById('diamondsHeader').textContent = String(newDiamonds);
+                    }
+                    if (Array.isArray(buyResult.data.owned_avatars)) {
+                        setOwnedAvatars(buyResult.data.owned_avatars);
+                    }
+                }
+
+                var selectResult = await fetchData('updateUser', { avatar: itemId });
+                if (selectResult && selectResult.ok) {
+                    currentAvatar = itemId;
+                    updateProfileAvatar();
+                    closeAvatarModal();
+                    triggerHaptic('medium');
+                    if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
+                    else alert(getTranslation('avatar_bought'));
+                } else {
+                    closeAvatarModal();
+                    triggerHaptic('medium');
+                    if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
+                    else alert(getTranslation('avatar_bought'));
+                }
             }
 
             function updateProfileAvatar() {
@@ -1012,31 +1048,23 @@
                 }).join('');
             }
 
-            function didUserWinGame(game, myId) {
+            function didUserWinGame(game) {
                 if (!game || !game.final) return false;
-
                 var finalStr = String(game.final);
+                var myTeam = game.my_team || game.myTeam || '';
 
                 if (finalStr.indexOf('city_won') !== -1) {
-                    var myTeam = game.my_team || game.myTeam || '';
                     if (myTeam === 'city' || myTeam === 'citizens') return true;
-                    if (myTeam === 'mafia' || myTeam === 'free') return false;
                     return false;
                 }
-
                 if (finalStr.indexOf('mafia_won') !== -1) {
-                    var myTeam2 = game.my_team || game.myTeam || '';
-                    if (myTeam2 === 'mafia') return true;
-                    if (myTeam2 === 'city' || myTeam2 === 'citizens' || myTeam2 === 'free') return false;
+                    if (myTeam === 'mafia') return true;
                     return false;
                 }
-
                 if (finalStr.indexOf('free_won') !== -1) {
-                    var myTeam3 = game.my_team || game.myTeam || '';
-                    if (myTeam3 === 'free') return true;
+                    if (myTeam === 'free') return true;
                     return false;
                 }
-
                 return false;
             }
 
@@ -1054,7 +1082,7 @@
                     var g = recent[i];
                     var rawId = String(g.id == null ? '' : g.id);
                     var safeId = escapeHtml(rawId);
-                    var didWin = didUserWinGame(g, myUserId);
+                    var didWin = didUserWinGame(g);
                     var cls = didWin ? 'win' : 'loss';
                     var txt = didWin ? getTranslation('win') : getTranslation('lose');
                     html += '<div class="game-item">' +
@@ -1073,6 +1101,11 @@
                 if (userData && userData.ok && userData.data && typeof userData.data === 'object') {
                     var d = userData.data;
                     currentAvatar = typeof d.avatar === 'string' && VALID_AVATAR_ID.test(d.avatar) ? d.avatar : 'default';
+
+                    if (Array.isArray(d.owned_avatars)) {
+                        setOwnedAvatars(d.owned_avatars);
+                    }
+
                     var dia = parseInt(d.diamonds, 10);
                     userDiamonds = isNaN(dia) ? 0 : dia;
                     var sc = parseInt(d.score, 10);
@@ -1113,14 +1146,14 @@
 
                 if (gamesData && gamesData.ok && Array.isArray(gamesData.data)) {
                     var myGames = gamesData.data.filter(function(g) {
-                        return g && Array.isArray(g.players) && g.players.indexOf(myUserId) !== -1;
+                        return g && typeof g === 'object';
                     });
 
-                    finishedGames = myGames.filter(function(g) { return g && g.status === 'finish'; });
+                    finishedGames = myGames.filter(function(g) { return g.status === 'finish'; });
                     totalGames = finishedGames.length;
 
                     for (var i = 0; i < finishedGames.length; i++) {
-                        if (didUserWinGame(finishedGames[i], myUserId)) totalWins++;
+                        if (didUserWinGame(finishedGames[i])) totalWins++;
                     }
 
                     document.getElementById('totalGames').textContent = String(totalGames);
