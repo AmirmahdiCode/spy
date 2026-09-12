@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
@@ -394,8 +394,8 @@
                 </div>
             </div>
             <div class="header-currency">
-                <span class="currency-badge coins"><i class="bi bi-coin"></i> <span id="coinsHeader"><span class="mini-spinner"></span></span></span>
-                <span class="currency-badge diamonds"><i class="bi bi-gem"></i> <span id="diamondsHeader"><span class="mini-spinner"></span></span></span>
+                <span class="currency-badge coins"><i class="bi bi-coin" aria-hidden="true"></i> <span id="coinsHeader"><span class="mini-spinner"></span></span></span>
+                <span class="currency-badge diamonds"><i class="bi bi-gem" aria-hidden="true"></i> <span id="diamondsHeader"><span class="mini-spinner"></span></span></span>
             </div>
         </div>
     </header>
@@ -409,15 +409,15 @@
 
             <div class="profile-header-card" id="headerCard" style="display:none;">
                 <div class="profile-top">
-                    <div class="profile-avatar" id="profileAvatar" onclick="openAvatarModal()"><i class="fa-solid fa-user"></i></div>
+                    <div class="profile-avatar" id="profileAvatar"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
                     <div class="profile-info">
                         <div class="profile-name" id="profileName"></div>
                         <div class="profile-username" id="profileUsername"></div>
                     </div>
                 </div>
                 <div class="profile-actions-row">
-                    <button class="change-avatar-btn" onclick="openAvatarModal()"><i class="bi bi-camera"></i> <span data-i18n="change_avatar">تغییر آواتار</span></button>
-                    <span class="badge"><i class="bi bi-star"></i> <span class="badge-value" id="scoreValue">0</span></span>
+                    <button class="change-avatar-btn" id="btnChangeAvatar"><i class="bi bi-camera" aria-hidden="true"></i> <span data-i18n="change_avatar">تغییر آواتار</span></button>
+                    <span class="badge"><i class="bi bi-star" aria-hidden="true"></i> <span class="badge-value" id="scoreValue">0</span></span>
                 </div>
             </div>
 
@@ -428,17 +428,17 @@
 
             <div class="stats-grid" id="statsGrid" style="display:none;">
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-star"></i></div>
+                    <div class="stat-icon"><i class="bi bi-star" aria-hidden="true"></i></div>
                     <div class="stat-value" id="totalScore">0</div>
                     <div class="stat-label" data-i18n="total_score">امتیاز کل</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-controller"></i></div>
+                    <div class="stat-icon"><i class="bi bi-controller" aria-hidden="true"></i></div>
                     <div class="stat-value" id="totalGames">0</div>
                     <div class="stat-label" data-i18n="total_games">تعداد بازی</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                    <div class="stat-icon"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i></div>
                     <div class="stat-value" id="winRate">0%</div>
                     <div class="stat-label" data-i18n="win_rate">درصد برد</div>
                 </div>
@@ -450,7 +450,7 @@
             </div>
 
             <div class="achievements-card" id="achievementsCard" style="display:none;">
-                <div class="card-title"><i class="bi bi-award"></i> <span data-i18n="achievements">افتخارات</span></div>
+                <div class="card-title"><i class="bi bi-award" aria-hidden="true"></i> <span data-i18n="achievements">افتخارات</span></div>
                 <div class="achievements-grid" id="achievementsGrid"></div>
             </div>
 
@@ -460,7 +460,7 @@
             </div>
 
             <div class="games-history-card" id="historyCard" style="display:none;">
-                <div class="card-title"><i class="bi bi-clock-history"></i> <span data-i18n="game_history">تاریخچه بازی‌ها</span></div>
+                <div class="card-title"><i class="bi bi-clock-history" aria-hidden="true"></i> <span data-i18n="game_history">تاریخچه بازی‌ها</span></div>
                 <div class="games-list" id="gamesList"></div>
             </div>
         </div>
@@ -468,34 +468,34 @@
 
     <div class="avatar-modal-overlay" id="avatarModalOverlay">
         <div class="avatar-modal">
-            <div class="avatar-modal-close" onclick="closeAvatarModal()"><i class="bi bi-x-lg"></i></div>
+            <div class="avatar-modal-close" id="btnCloseAvatarModal"><i class="bi bi-x-lg" aria-hidden="true"></i></div>
             <div class="avatar-modal-title" data-i18n="select_avatar">انتخاب آواتار</div>
             <div id="avatarCategories"></div>
         </div>
     </div>
 
-    <div class="support-notification" id="supportNotification" onclick="openSupportLink()">
+    <div class="support-notification" id="supportNotification">
         <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         <div class="notif-info">
             <div class="notif-name">امیرمهدی | Amirmahdi</div>
         </div>
-        <i class="bi bi-chevron-left"></i>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='../dashboard/'">
+        <div class="nav-item" data-href="../dashboard/">
             <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="home">خانه</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../ranking/'">
+        <div class="nav-item" data-href="../ranking/">
             <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="ranking">رتبه</span>
         </div>
-        <div class="nav-item active" onclick="window.location.href='../profile/'">
+        <div class="nav-item active" data-href="../profile/">
             <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="profile">پروفایل</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../setting/'">
+        <div class="nav-item" data-href="../setting/">
             <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="settings_nav">تنظیمات</span>
         </div>
@@ -503,9 +503,17 @@
 
     <script>
         (function() {
-            var webApp = window.Eitaa?.WebApp;
+            'use strict';
+
+            var webApp = window.Eitaa && window.Eitaa.WebApp;
             var API_URL = 'https://script.google.com/macros/s/AKfycby-MT3aVkVgQ_L_9SLQJdpMHbKgjP8NwG8tqHmy0UKz0a7c_yEBKuC6q--7ZtnChB3Z/exec';
-            var currentAvatar = 'default', currentLang = 'fa', userDiamonds = 0;
+            var currentAvatar = 'default';
+            var currentLang = 'fa';
+            var userDiamonds = 0;
+            var myUserId = '';
+
+            var VALID_AVATAR_ID = /^[A-Za-z0-9_\-]{1,50}$/;
+            var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
@@ -515,10 +523,43 @@
             var fontMap = {
                 'Samim': "'Samim', Tahoma, sans-serif",
                 'Sahel': "'Sahel', Tahoma, sans-serif",
-                'IRANSans': "'IRANSans', Tahoma, sans-serif",
                 'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
-                'Estedad': "'Estedad', Tahoma, sans-serif"
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
             };
+
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function escapeAttr(str) {
+                return escapeHtml(str);
+            }
+
+            function safeSetLocalStorage(key, value) {
+                try { localStorage.setItem(key, value); return true; }
+                catch(e) { return false; }
+            }
+
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
+            }
+
+            function safeParseJSON(str, fallback) {
+                try {
+                    var parsed = JSON.parse(str);
+                    return parsed === null || parsed === undefined ? fallback : parsed;
+                } catch(e) {
+                    return fallback;
+                }
+            }
 
             var translations = {
                 fa: {
@@ -542,6 +583,7 @@
                     owned: 'خریداری شده',
                     not_enough_diamonds: 'الماس کافی نداری!',
                     avatar_bought: 'آواتار خریداری شد!',
+                    avatar_buy_failed: 'خریداری نشد. دوباره تلاش کن.',
                     first_game: 'اولین بازی',
                     '10_games': '۱۰ بازی',
                     '100_games': '۱۰۰ بازی',
@@ -556,7 +598,8 @@
                     '100000_score': '۱۰۰۰۰۰ امتیاز',
                     win: 'برد',
                     lose: 'باخت',
-                    no_games: 'بازی‌ای یافت نشد'
+                    no_games: 'بازی‌ای یافت نشد',
+                    unknown_user: 'کاربر'
                 },
                 en: {
                     loading: 'Loading...',
@@ -579,6 +622,7 @@
                     owned: 'Owned',
                     not_enough_diamonds: 'Not enough diamonds!',
                     avatar_bought: 'Avatar purchased!',
+                    avatar_buy_failed: 'Purchase failed. Try again.',
                     first_game: 'First Game',
                     '10_games': '10 Games',
                     '100_games': '100 Games',
@@ -593,7 +637,8 @@
                     '100000_score': '100000 Score',
                     win: 'Win',
                     lose: 'Loss',
-                    no_games: 'No games found'
+                    no_games: 'No games found',
+                    unknown_user: 'User'
                 },
                 ar: {
                     loading: 'جار التحميل...',
@@ -616,6 +661,7 @@
                     owned: 'مملوك',
                     not_enough_diamonds: 'لا تملك ما يكفي من الماس!',
                     avatar_bought: 'تم شراء الصورة!',
+                    avatar_buy_failed: 'فشل الشراء. حاول مرة أخرى.',
                     first_game: 'أول مباراة',
                     '10_games': '۱۰ مباريات',
                     '100_games': '۱۰۰ مباراة',
@@ -630,7 +676,8 @@
                     '100000_score': '۱۰۰۰۰۰ نقطة',
                     win: 'فوز',
                     lose: 'خسارة',
-                    no_games: 'لا توجد مباريات'
+                    no_games: 'لا توجد مباريات',
+                    unknown_user: 'مستخدم'
                 }
             };
 
@@ -669,9 +716,11 @@
             ];
 
             var allAvatarUrls = {};
+            var allAvatarPrices = {};
             avatarCategories.forEach(function(cat) {
                 cat.items.forEach(function(item) {
                     if (item.url) allAvatarUrls[item.id] = item.url;
+                    allAvatarPrices[item.id] = cat.price;
                 });
             });
 
@@ -692,9 +741,10 @@
 
             function getSettings() {
                 try {
-                    var raw = localStorage.getItem('mafiaSettings');
+                    var raw = safeGetLocalStorage('mafiaSettings');
                     if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
-                    var p = JSON.parse(raw);
+                    var p = safeParseJSON(raw, null);
+                    if (!p || typeof p !== 'object') throw new Error('bad');
                     if (!p.theme) p.theme = 'light';
                     if (!p.specialTheme) p.specialTheme = 'none';
                     if (p.animation === undefined) p.animation = true;
@@ -702,23 +752,22 @@
                     if (!p.font) p.font = 'Samim';
                     if (!p.language) p.language = 'fa';
                     return p;
-                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+                } catch(e) {
+                    return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                }
             }
 
             function updateHeaderTitle(lang) {
                 var titleEl = document.getElementById('headerTitle');
-                if (lang === 'en') {
-                    titleEl.textContent = 'Mafia Spy';
-                } else {
-                    titleEl.textContent = 'جاسوس مافیایی';
-                }
+                if (!titleEl) return;
+                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
             }
 
             function applyLanguage(lang) {
                 var t = translations[lang] || translations.fa;
                 document.querySelectorAll('[data-i18n]').forEach(function(el) {
                     var k = el.getAttribute('data-i18n');
-                    if (t[k]) el.textContent = t[k];
+                    if (t[k] !== undefined) el.textContent = t[k];
                 });
                 if (lang === 'en') {
                     document.documentElement.setAttribute('dir', 'ltr');
@@ -736,8 +785,11 @@
                 var f = s.font || 'Samim';
                 document.documentElement.setAttribute('data-theme', t);
                 document.documentElement.setAttribute('data-special-theme', st);
-                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
-                else { document.documentElement.removeAttribute('data-animation'); }
+                if (s.animation === false) {
+                    document.documentElement.setAttribute('data-animation', 'off');
+                } else {
+                    document.documentElement.removeAttribute('data-animation');
+                }
                 var fontFamily = fontMap[f] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
@@ -752,42 +804,99 @@
                 }
             }
 
-            function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
-            function getUserId(){var u=getEitaaUser();return u?(typeof u.id==='number'?u.id.toString():String(u.id||'')):'';}
-            function fetchData(action,params){
-                var payload={action:action,username:getUserId()};
-                if(params){for(var k in params){if(params.hasOwnProperty(k))payload[k]=params[k];}}
-                return Promise.race([
-                    fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(function(r){return r.json();}),
-                    new Promise(function(_,reject){setTimeout(function(){reject(new Error('timeout'));},10000);})
-                ]).catch(function(){return{ok:false};});
+            function getEitaaUser() {
+                return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
+            }
+
+            function getUserId() {
+                var u = getEitaaUser();
+                if (!u || u.id === undefined || u.id === null) return '';
+                return String(u.id);
+            }
+
+            async function fetchData(action, params, retryCount) {
+                retryCount = retryCount || 0;
+                var payload = { action: action, username: getUserId() };
+                if (params && typeof params === 'object') {
+                    for (var k in params) {
+                        if (Object.prototype.hasOwnProperty.call(params, k)) {
+                            payload[k] = params[k];
+                        }
+                    }
+                }
+                try {
+                    var controller = new AbortController();
+                    var timeoutId = setTimeout(function() { controller.abort(); }, 10000);
+                    var r = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+
+                    if (!r.ok) throw new Error('http_' + r.status);
+
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('application/json') === -1) {
+                        throw new Error('invalid_content_type');
+                    }
+
+                    var data = await r.json();
+                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
+                    return data;
+                } catch(err) {
+                    var isRetryable = err && (
+                        err.name === 'AbortError' ||
+                        err.message === 'Failed to fetch' ||
+                        err.message === 'NetworkError when attempting to fetch resource.' ||
+                        err.message === 'invalid_content_type' ||
+                        /^http_5/.test(err.message || '')
+                    );
+                    if (retryCount < 2 && isRetryable) {
+                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
+                        return fetchData(action, params, retryCount + 1);
+                    }
+                    return { ok: false, error: 'network' };
+                }
             }
 
             function renderEmpty(text) {
-                return '<div class="empty-state"><i class="bi bi-inbox"></i><p>' + text + '</p></div>';
+                return '<div class="empty-state"><i class="bi bi-inbox" aria-hidden="true"></i><p>' + escapeHtml(text) + '</p></div>';
             }
 
             function getAvatarHtml(avatarId) {
-                if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user"></i>';
-                if (iconAvatars[avatarId]) return '<i class="fa-solid ' + iconAvatars[avatarId] + '"></i>';
-                if (allAvatarUrls[avatarId]) return '<img src="' + allAvatarUrls[avatarId] + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
-                return '<i class="fa-solid fa-user"></i>';
+                if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user" aria-hidden="true"></i>';
+                if (iconAvatars[avatarId]) return '<i class="fa-solid ' + escapeAttr(iconAvatars[avatarId]) + '" aria-hidden="true"></i>';
+                if (allAvatarUrls[avatarId]) return '<img src="' + escapeAttr(allAvatarUrls[avatarId]) + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
+                return '<i class="fa-solid fa-user" aria-hidden="true"></i>';
             }
 
             function getUserTypeBadge(userType) {
                 if (userType === 'سازنده') {
                     return '<span class="badge-icon"><img src="https://cdn.imgurl.ir/uploads/h95014_InShot_20260909_113952033.png" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
                 } else if (userType === 'توسعه دهنده') {
-                    return '<span class="badge-icon"><i class="fa-solid fa-code"></i></span>';
+                    return '<span class="badge-icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>';
                 }
                 return '';
             }
 
+            function getOwnedAvatars() {
+                var raw = safeGetLocalStorage('ownedAvatars');
+                var arr = safeParseJSON(raw || '[]', []);
+                return Array.isArray(arr) ? arr : [];
+            }
+
             function isAvatarOwned(itemId) {
-                try {
-                    var owned = JSON.parse(localStorage.getItem('ownedAvatars') || '[]');
-                    return owned.indexOf(itemId) !== -1;
-                } catch(e) { return false; }
+                return getOwnedAvatars().indexOf(itemId) !== -1;
+            }
+
+            function addOwnedAvatar(itemId) {
+                var owned = getOwnedAvatars();
+                if (owned.indexOf(itemId) === -1) {
+                    owned.push(itemId);
+                    safeSetLocalStorage('ownedAvatars', JSON.stringify(owned));
+                }
             }
 
             function renderAvatarModal() {
@@ -795,13 +904,20 @@
                 avatarCategories.forEach(function(cat) {
                     var catLabel = getTranslation(cat.label);
                     var priceText = cat.price === 0 ? getTranslation('free') : cat.price + ' 💎';
-                    html += '<div class="avatar-category"><div class="avatar-category-title">' + catLabel + ' <span class="price-tag' + (cat.price === 0 ? ' free' : '') + '">' + priceText + '</span></div><div class="avatar-grid">';
+                    html += '<div class="avatar-category"><div class="avatar-category-title">' + escapeHtml(catLabel) + ' <span class="price-tag' + (cat.price === 0 ? ' free' : '') + '">' + escapeHtml(priceText) + '</span></div><div class="avatar-grid">';
                     cat.items.forEach(function(item) {
                         var isActive = currentAvatar === item.id;
                         var isOwned = isAvatarOwned(item.id);
-                        var imgHtml = item.icon ? '<i class="fa-solid ' + item.icon + '"></i>' : '<img src="' + item.url + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
-                        var priceHtml = (cat.price === 0 || isOwned) ? '<span class="avatar-item-price ' + (cat.price === 0 ? 'free' : 'owned') + '">' + (cat.price === 0 ? getTranslation('free') : getTranslation('owned')) + '</span>' : '<span class="avatar-item-price">' + cat.price + ' 💎</span>';
-                        html += '<div class="avatar-item' + (isActive ? ' active' : '') + (isOwned ? ' owned' : '') + '" onclick="selectAvatar(\'' + item.id + '\',' + cat.price + ')">';
+                        var imgHtml = item.icon
+                            ? '<i class="fa-solid ' + escapeAttr(item.icon) + '" aria-hidden="true"></i>'
+                            : '<img src="' + escapeAttr(item.url) + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
+                        var priceHtml;
+                        if (cat.price === 0 || isOwned) {
+                            priceHtml = '<span class="avatar-item-price ' + (cat.price === 0 ? 'free' : 'owned') + '">' + escapeHtml(cat.price === 0 ? getTranslation('free') : getTranslation('owned')) + '</span>';
+                        } else {
+                            priceHtml = '<span class="avatar-item-price">' + cat.price + ' 💎</span>';
+                        }
+                        html += '<div class="avatar-item' + (isActive ? ' active' : '') + (isOwned ? ' owned' : '') + '" data-avatar-id="' + escapeAttr(item.id) + '" role="button" tabindex="0">';
                         html += '<div class="avatar-item-img">' + imgHtml + '</div>' + priceHtml + '</div>';
                     });
                     html += '</div></div>';
@@ -813,167 +929,278 @@
                 renderAvatarModal();
                 document.getElementById('avatarModalOverlay').classList.add('show');
             }
-            function closeAvatarModal() { document.getElementById('avatarModalOverlay').classList.remove('show'); }
-            window.openAvatarModal = openAvatarModal;
-            window.closeAvatarModal = closeAvatarModal;
+            function closeAvatarModal() {
+                document.getElementById('avatarModalOverlay').classList.remove('show');
+            }
 
-            window.selectAvatar = function(itemId, price) {
+            async function selectAvatar(itemId) {
+                if (!itemId || !VALID_AVATAR_ID.test(itemId)) return;
+
+                var price = allAvatarPrices[itemId];
+                if (price === undefined) return;
+
                 var owned = isAvatarOwned(itemId);
+
                 if (price === 0 || owned) {
                     currentAvatar = itemId;
-                    fetchData('updateUser', {avatar: itemId});
                     updateProfileAvatar();
                     closeAvatarModal();
                     triggerHaptic('light');
+                    fetchData('updateUser', { avatar: itemId });
                     return;
                 }
+
                 if (userDiamonds < price) {
                     if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('not_enough_diamonds'));
                     else alert(getTranslation('not_enough_diamonds'));
                     return;
                 }
-                userDiamonds -= price;
-                fetchData('updateUser', {diamonds: userDiamonds});
-                document.getElementById('diamondsHeader').textContent = userDiamonds;
-                var ownedAvatars = [];
-                try { ownedAvatars = JSON.parse(localStorage.getItem('ownedAvatars') || '[]'); } catch(e) {}
-                if (ownedAvatars.indexOf(itemId) === -1) {
-                    ownedAvatars.push(itemId);
-                    localStorage.setItem('ownedAvatars', JSON.stringify(ownedAvatars));
+
+                var result = await fetchData('buyAvatar', { avatarId: itemId, price: price });
+                if (!result || !result.ok) {
+                    if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_buy_failed'));
+                    else alert(getTranslation('avatar_buy_failed'));
+                    return;
                 }
+
+                userDiamonds = Math.max(0, userDiamonds - price);
+                document.getElementById('diamondsHeader').textContent = String(userDiamonds);
+                addOwnedAvatar(itemId);
                 currentAvatar = itemId;
-                fetchData('updateUser', {avatar: itemId});
                 updateProfileAvatar();
                 closeAvatarModal();
                 triggerHaptic('medium');
                 if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
                 else alert(getTranslation('avatar_bought'));
-            };
+            }
 
             function updateProfileAvatar() {
-                document.getElementById('profileAvatar').innerHTML = getAvatarHtml(currentAvatar);
+                var el = document.getElementById('profileAvatar');
+                if (el) el.innerHTML = getAvatarHtml(currentAvatar);
             }
 
             function openSupportLink() {
-                if (webApp && webApp.openEitaaLink) { webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code'); }
-                else { window.open('https://eitaa.com/Amirmahdi_code', '_blank'); }
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
+                } else {
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
+                }
             }
-            window.openSupportLink = openSupportLink;
 
             function renderAchievements(gamesCount, winsCount, score) {
                 var grid = document.getElementById('achievementsGrid');
-                var earned = [];
-                if (gamesCount >= 1) earned.push('first_game');
-                if (gamesCount >= 10) earned.push('10_games');
-                if (gamesCount >= 100) earned.push('100_games');
-                if (gamesCount >= 1000) earned.push('1000_games');
-                if (winsCount >= 1) earned.push('first_win');
-                if (winsCount >= 10) earned.push('10_wins');
-                if (winsCount >= 100) earned.push('100_wins');
-                if (winsCount >= 1000) earned.push('1000_wins');
-                if (score >= 100) earned.push('100_score');
-                if (score >= 1000) earned.push('1000_score');
-                if (score >= 10000) earned.push('10000_score');
-                if (score >= 100000) earned.push('100000_score');
+                var earned = {};
+                if (gamesCount >= 1) earned['first_game'] = true;
+                if (gamesCount >= 10) earned['10_games'] = true;
+                if (gamesCount >= 100) earned['100_games'] = true;
+                if (gamesCount >= 1000) earned['1000_games'] = true;
+                if (winsCount >= 1) earned['first_win'] = true;
+                if (winsCount >= 10) earned['10_wins'] = true;
+                if (winsCount >= 100) earned['100_wins'] = true;
+                if (winsCount >= 1000) earned['1000_wins'] = true;
+                if (score >= 100) earned['100_score'] = true;
+                if (score >= 1000) earned['1000_score'] = true;
+                if (score >= 10000) earned['10000_score'] = true;
+                if (score >= 100000) earned['100000_score'] = true;
+
                 grid.innerHTML = allAchievements.map(function(a) {
-                    var unlocked = earned.indexOf(a.id) !== -1;
-                    return '<div class="achievement-item' + (unlocked ? '' : ' locked') + '"><span class="achievement-icon">' + a.icon + '</span><span class="achievement-name">' + getTranslation(a.name) + '</span></div>';
+                    var unlocked = !!earned[a.id];
+                    return '<div class="achievement-item' + (unlocked ? '' : ' locked') + '">' +
+                        '<span class="achievement-icon">' + escapeHtml(a.icon) + '</span>' +
+                        '<span class="achievement-name">' + escapeHtml(getTranslation(a.name)) + '</span>' +
+                        '</div>';
                 }).join('');
             }
 
+            function didUserWinGame(game, myId) {
+                if (!game || !game.final) return false;
+
+                var finalStr = String(game.final);
+
+                if (finalStr.indexOf('city_won') !== -1) {
+                    var myTeam = game.my_team || game.myTeam || '';
+                    if (myTeam === 'city' || myTeam === 'citizens') return true;
+                    if (myTeam === 'mafia' || myTeam === 'free') return false;
+                    return false;
+                }
+
+                if (finalStr.indexOf('mafia_won') !== -1) {
+                    var myTeam2 = game.my_team || game.myTeam || '';
+                    if (myTeam2 === 'mafia') return true;
+                    if (myTeam2 === 'city' || myTeam2 === 'citizens' || myTeam2 === 'free') return false;
+                    return false;
+                }
+
+                if (finalStr.indexOf('free_won') !== -1) {
+                    var myTeam3 = game.my_team || game.myTeam || '';
+                    if (myTeam3 === 'free') return true;
+                    return false;
+                }
+
+                return false;
+            }
+
+            function renderGameHistory(finishedGames) {
+                var list = document.getElementById('gamesList');
+                var recent = finishedGames.slice(-5).reverse();
+
+                if (recent.length === 0) {
+                    list.innerHTML = renderEmpty(getTranslation('no_games'));
+                    return;
+                }
+
+                var html = '';
+                for (var i = 0; i < recent.length; i++) {
+                    var g = recent[i];
+                    var rawId = String(g.id == null ? '' : g.id);
+                    var safeId = escapeHtml(rawId);
+                    var didWin = didUserWinGame(g, myUserId);
+                    var cls = didWin ? 'win' : 'loss';
+                    var txt = didWin ? getTranslation('win') : getTranslation('lose');
+                    html += '<div class="game-item">' +
+                        '<span class="game-players"><span class="game-avatar"><i class="fa-solid fa-users" aria-hidden="true"></i></span> ' + safeId + '</span>' +
+                        '<span class="game-score ' + cls + '">' + escapeHtml(txt) + '</span>' +
+                        '</div>';
+                }
+                list.innerHTML = html;
+            }
+
             async function loadProfile() {
-                var myId = getUserId();
-                
+                myUserId = getUserId();
+
                 var userData = await fetchData('getUser', {});
-                if (userData.ok && userData.data) {
+
+                if (userData && userData.ok && userData.data && typeof userData.data === 'object') {
                     var d = userData.data;
-                    currentAvatar = d.avatar || 'default';
-                    userDiamonds = d.diamonds || 0;
-                    document.getElementById('profileName').innerHTML = (d.name || 'کاربر') + ' ' + getUserTypeBadge(d.user_type);
-                    document.getElementById('profileUsername').textContent = 'ID: ' + myId;
-                    document.getElementById('totalScore').textContent = d.score || 0;
-                    document.getElementById('scoreValue').textContent = d.score || 0;
-                    document.getElementById('coinsHeader').textContent = d.coins || 0;
-                    document.getElementById('diamondsHeader').textContent = d.diamonds || 0;
+                    currentAvatar = typeof d.avatar === 'string' && VALID_AVATAR_ID.test(d.avatar) ? d.avatar : 'default';
+                    var dia = parseInt(d.diamonds, 10);
+                    userDiamonds = isNaN(dia) ? 0 : dia;
+                    var sc = parseInt(d.score, 10);
+                    var score = isNaN(sc) ? 0 : sc;
+                    var co = parseInt(d.coins, 10);
+                    var coins = isNaN(co) ? 0 : co;
+
+                    var nameEl = document.getElementById('profileName');
+                    var safeName = escapeHtml(d.name || getTranslation('unknown_user'));
+                    var badgeHtml = getUserTypeBadge(d.user_type);
+                    nameEl.innerHTML = safeName + ' ' + badgeHtml;
+
+                    document.getElementById('profileUsername').textContent = 'ID: ' + myUserId;
+                    document.getElementById('totalScore').textContent = String(score);
+                    document.getElementById('scoreValue').textContent = String(score);
+                    document.getElementById('coinsHeader').textContent = String(coins);
+                    document.getElementById('diamondsHeader').textContent = String(userDiamonds);
                     updateProfileAvatar();
+
                     document.getElementById('headerLoader').style.display = 'none';
                     document.getElementById('headerCard').style.display = 'block';
+                    document.getElementById('statsLoader').style.display = 'flex';
+                } else {
+                    document.getElementById('headerLoader').style.display = 'none';
+                    document.getElementById('headerCard').style.display = 'block';
+                    document.getElementById('profileName').textContent = getTranslation('unknown_user');
+                    document.getElementById('profileUsername').textContent = 'ID: ' + myUserId;
+                    document.getElementById('coinsHeader').textContent = '0';
+                    document.getElementById('diamondsHeader').textContent = '0';
+                    updateProfileAvatar();
                     document.getElementById('statsLoader').style.display = 'flex';
                 }
 
                 var gamesData = await fetchData('getGamesByPlayer', {});
-                var totalGames = 0, totalWins = 0;
-                
-                if (gamesData.ok && Array.isArray(gamesData.data)) {
+                var totalGames = 0;
+                var totalWins = 0;
+                var finishedGames = [];
+
+                if (gamesData && gamesData.ok && Array.isArray(gamesData.data)) {
                     var myGames = gamesData.data.filter(function(g) {
-                        return g.players && g.players.indexOf(myId) !== -1;
+                        return g && Array.isArray(g.players) && g.players.indexOf(myUserId) !== -1;
                     });
-                    
-                    var finishedGames = myGames.filter(function(g) { return g.status === 'finish'; });
-                    
+
+                    finishedGames = myGames.filter(function(g) { return g && g.status === 'finish'; });
                     totalGames = finishedGames.length;
-                    totalWins = 0;
-                    
-                    for (var wi = 0; wi < finishedGames.length; wi++) {
-                        var gr = finishedGames[wi].final;
-                        if (gr && gr.indexOf('city_won') !== -1) totalWins++;
+
+                    for (var i = 0; i < finishedGames.length; i++) {
+                        if (didUserWinGame(finishedGames[i], myUserId)) totalWins++;
                     }
-                    
-                    document.getElementById('totalGames').textContent = totalGames;
-                    document.getElementById('winRate').textContent = totalGames > 0 ? Math.round((totalWins / totalGames) * 100) + '%' : '0%';
-                    
-                    var list = document.getElementById('gamesList');
-                    
-                    var recentGames = finishedGames.slice(-5).reverse();
-                    
-                    if (recentGames.length === 0) {
-                        list.innerHTML = renderEmpty(getTranslation('no_games'));
-                    } else {
-                        var gamesHtml = '';
-                        for (var gi = 0; gi < recentGames.length; gi++) {
-                            var g = recentGames[gi];
-                            var cls = 'loss', txt = getTranslation('lose');
-                            
-                            if (g.final && g.final.indexOf('city_won') !== -1) {
-                                cls = 'win';
-                                txt = getTranslation('win');
-                            }
-                            
-                            gamesHtml += '<div class="game-item"><span class="game-players"><span class="game-avatar"><i class="fa-solid fa-users"></i></span> ' + g.id + '</span><span class="game-score ' + cls + '">' + txt + '</span></div>';
-                        }
-                        list.innerHTML = gamesHtml;
-                    }
-                    
+
+                    document.getElementById('totalGames').textContent = String(totalGames);
+                    document.getElementById('winRate').textContent = totalGames > 0
+                        ? Math.round((totalWins / totalGames) * 100) + '%'
+                        : '0%';
+
+                    renderGameHistory(finishedGames);
+
                     document.getElementById('statsLoader').style.display = 'none';
                     document.getElementById('statsGrid').style.display = 'grid';
-                    document.getElementById('achievementsLoader').style.display = 'flex';
+                } else {
+                    document.getElementById('totalGames').textContent = '0';
+                    document.getElementById('winRate').textContent = '0%';
+                    renderGameHistory([]);
+                    document.getElementById('statsLoader').style.display = 'none';
+                    document.getElementById('statsGrid').style.display = 'grid';
                 }
 
-                setTimeout(function() {
-                    document.getElementById('achievementsLoader').style.display = 'none';
-                    document.getElementById('achievementsCard').style.display = 'block';
-                    renderAchievements(totalGames, totalWins, userData.ok && userData.data ? userData.data.score || 0 : 0);
-                    document.getElementById('historyLoader').style.display = 'flex';
-                }, 800);
+                var finalScore = 0;
+                if (userData && userData.ok && userData.data && userData.data.score) {
+                    var pScore = parseInt(userData.data.score, 10);
+                    finalScore = isNaN(pScore) ? 0 : pScore;
+                }
 
-                setTimeout(function() {
-                    document.getElementById('historyLoader').style.display = 'none';
-                    document.getElementById('historyCard').style.display = 'block';
-                }, 1200);
+                renderAchievements(totalGames, totalWins, finalScore);
+                document.getElementById('achievementsCard').style.display = 'block';
+                document.getElementById('historyCard').style.display = 'block';
             }
 
+            document.getElementById('profileAvatar').addEventListener('click', openAvatarModal);
+            document.getElementById('btnChangeAvatar').addEventListener('click', openAvatarModal);
+            document.getElementById('btnCloseAvatarModal').addEventListener('click', closeAvatarModal);
+
+            document.getElementById('avatarCategories').addEventListener('click', function(e) {
+                var item = e.target.closest('.avatar-item');
+                if (item && item.dataset.avatarId) {
+                    selectAvatar(item.dataset.avatarId);
+                }
+            });
+            document.getElementById('avatarCategories').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    var item = e.target.closest('.avatar-item');
+                    if (item && item.dataset.avatarId) {
+                        e.preventDefault();
+                        selectAvatar(item.dataset.avatarId);
+                    }
+                }
+            });
+
+            document.getElementById('avatarModalOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeAvatarModal();
+            });
+
+            document.getElementById('supportNotification').addEventListener('click', openSupportLink);
+
+            document.querySelectorAll('.nav-item').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var href = el.getAttribute('data-href');
+                    if (href) window.location.href = href;
+                });
+            });
+
             if (webApp) {
-                webApp.ready();
-                webApp.expand();
-                webApp.BackButton.show();
-                webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                try {
+                    webApp.ready();
+                    webApp.expand();
+                    if (webApp.BackButton && webApp.BackButton.show) {
+                        webApp.BackButton.show();
+                        webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                    }
+                } catch(e) {}
             }
 
             applyTheme();
             loadProfile();
+
             setTimeout(function() {
                 var notif = document.getElementById('supportNotification');
-                if (notif) { notif.style.display = 'none'; }
+                if (notif) notif.style.display = 'none';
             }, 5000);
         })();
     </script>
