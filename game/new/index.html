@@ -31,6 +31,9 @@
             --border: 1px solid #000000;
             --gold: #f59e0b;
             --font: 'Samim', Tahoma, sans-serif;
+            --city-color: #10b981;
+            --mafia-color: #ef4444;
+            --free-color: #8b5cf6;
         }
 
         [data-theme="dark"] {
@@ -170,7 +173,7 @@
 
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px;
         }
         .options-grid.two { grid-template-columns: repeat(2, 1fr); }
@@ -182,7 +185,7 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            padding: 10px 6px;
+            padding: 10px 4px;
             border: var(--border);
             border-radius: 10px;
             background: var(--bg2);
@@ -204,7 +207,7 @@
         }
         .option-btn.active i { color: #fff; }
         .option-btn i { font-size: 16px; color: var(--primary); }
-        .option-btn .option-label { font-size: 10px; font-weight: 800; }
+        .option-btn .option-label { font-size: 9px; font-weight: 800; text-align: center; }
         .option-btn .option-sub {
             font-size: 7px;
             font-weight: 700;
@@ -281,10 +284,32 @@
             cursor: pointer;
         }
 
+        .role-group {
+            margin-bottom: 14px;
+        }
+        .role-group:last-child {
+            margin-bottom: 0;
+        }
+        .role-group-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .role-group-header i { font-size: 13px; }
+        .role-group-header.city { background: var(--city-color); }
+        .role-group-header.mafia { background: var(--mafia-color); }
+        .role-group-header.free { background: var(--free-color); }
+
         .roles-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
         .role-row {
             display: flex;
@@ -382,7 +407,7 @@
             font-size: 9px;
             font-weight: 700;
             color: var(--text-light);
-            margin-top: 10px;
+            margin-top: 14px;
         }
         .total-hint.error {
             color: #ef4444;
@@ -528,6 +553,10 @@
 
             <div class="sub-label"><i class="bi bi-broadcast" aria-hidden="true"></i> <span data-i18n="game_type">نوع بازی</span></div>
             <div class="options-grid" id="typeOptions">
+                <button class="option-btn" data-type="local" type="button">
+                    <i class="bi bi-phone" aria-hidden="true"></i>
+                    <span class="option-label" data-i18n="type_local">یک گوشی</span>
+                </button>
                 <button class="option-btn active" data-type="public" type="button">
                     <i class="bi bi-link-45deg" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="type_public">عمومی</span>
@@ -595,7 +624,30 @@
             <hr class="sub-divider">
 
             <div class="sub-label"><i class="bi bi-person-badge" aria-hidden="true"></i> <span data-i18n="roles_config">انتخاب نقش‌ها</span></div>
-            <div class="roles-list" id="rolesList"></div>
+
+            <div class="role-group">
+                <div class="role-group-header city">
+                    <i class="bi bi-buildings" aria-hidden="true"></i>
+                    <span data-i18n="team_city">گروه شهر</span>
+                </div>
+                <div class="roles-list" id="cityRolesList"></div>
+            </div>
+
+            <div class="role-group">
+                <div class="role-group-header mafia">
+                    <i class="bi bi-mask" aria-hidden="true"></i>
+                    <span data-i18n="team_mafia">گروه مافیا</span>
+                </div>
+                <div class="roles-list" id="mafiaRolesList"></div>
+            </div>
+
+            <div class="role-group">
+                <div class="role-group-header free">
+                    <i class="bi bi-person-fill-exclamation" aria-hidden="true"></i>
+                    <span data-i18n="team_free">گروه آزاد</span>
+                </div>
+                <div class="roles-list" id="freeRolesList"></div>
+            </div>
 
             <div class="total-hint" id="totalHint">
                 <span data-i18n="total_selected">جمع انتخاب‌شده:</span>
@@ -706,6 +758,7 @@
                     total_selected: 'جمع انتخاب‌شده:',
                     create_game: 'ساخت بازی',
                     creating: 'در حال ساخت...',
+                    type_local: 'یک گوشی',
                     type_public: 'عمومی',
                     type_server: 'سراسری',
                     type_private: 'خصوصی',
@@ -714,6 +767,9 @@
                     level_advanced: 'پیشرفته',
                     level_professional: 'حرفه‌ای',
                     level_legendary: 'افسانه‌ای',
+                    team_city: 'گروه شهر',
+                    team_mafia: 'گروه مافیا',
+                    team_free: 'گروه آزاد',
                     role_citizen: 'شهروند ساده',
                     role_detective: 'کارآگاه',
                     role_judge: 'قاضی',
@@ -749,6 +805,7 @@
                     total_selected: 'Selected Total:',
                     create_game: 'Create Game',
                     creating: 'Creating...',
+                    type_local: 'One Phone',
                     type_public: 'Public',
                     type_server: 'Server',
                     type_private: 'Private',
@@ -757,6 +814,9 @@
                     level_advanced: 'Advanced',
                     level_professional: 'Professional',
                     level_legendary: 'Legendary',
+                    team_city: 'City Group',
+                    team_mafia: 'Mafia Group',
+                    team_free: 'Free Group',
                     role_citizen: 'Citizen',
                     role_detective: 'Detective',
                     role_judge: 'Judge',
@@ -792,6 +852,7 @@
                     total_selected: 'المجموع المختار:',
                     create_game: 'إنشاء لعبة',
                     creating: 'جار الإنشاء...',
+                    type_local: 'هاتف واحد',
                     type_public: 'عام',
                     type_server: 'خادم',
                     type_private: 'خاص',
@@ -800,6 +861,9 @@
                     level_advanced: 'متقدم',
                     level_professional: 'محترف',
                     level_legendary: 'أسطوري',
+                    team_city: 'مجموعة المدينة',
+                    team_mafia: 'مجموعة المافيا',
+                    team_free: 'مجموعة الأحرار',
                     role_citizen: 'مواطن',
                     role_detective: 'محقق',
                     role_judge: 'قاضي',
@@ -839,65 +903,79 @@
                     nameKey: 'role_citizen',
                     image: 'https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png',
                     min: 1, max: 7,
-                    available: true
+                    available: true,
+                    group: 'city'
                 },
                 detective: {
                     nameKey: 'role_detective',
                     image: 'https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png',
                     min: 0, max: 1,
-                    available: true
+                    available: true,
+                    group: 'city'
                 },
                 judge: {
                     nameKey: 'role_judge',
                     image: 'https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png',
                     min: 1, max: 1,
-                    available: true
-                },
-                spy: {
-                    nameKey: 'role_spy',
-                    image: 'https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png',
-                    min: 1, max: 3,
-                    available: true
-                },
-                infiltrator: {
-                    nameKey: 'role_infiltrator',
-                    image: 'https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png',
-                    min: 0, max: 7,
-                    available: true
+                    available: true,
+                    group: 'city'
                 },
                 sheriff: {
                     nameKey: 'role_sheriff',
                     image: '',
                     min: 0, max: 1,
-                    available: false
+                    available: false,
+                    group: 'city'
+                },
+                spy: {
+                    nameKey: 'role_spy',
+                    image: 'https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png',
+                    min: 1, max: 3,
+                    available: true,
+                    group: 'mafia'
+                },
+                infiltrator: {
+                    nameKey: 'role_infiltrator',
+                    image: 'https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png',
+                    min: 0, max: 7,
+                    available: true,
+                    group: 'mafia'
                 },
                 silencer: {
                     nameKey: 'role_silencer',
                     image: '',
                     min: 0, max: 1,
-                    available: false
+                    available: false,
+                    group: 'mafia'
                 },
                 bait: {
                     nameKey: 'role_bait',
                     image: '',
                     min: 0, max: 1,
-                    available: false
+                    available: false,
+                    group: 'mafia'
                 },
                 killer: {
                     nameKey: 'role_killer',
                     image: '',
                     min: 0, max: 1,
-                    available: false
+                    available: false,
+                    group: 'free'
                 },
                 psycho: {
                     nameKey: 'role_psycho',
                     image: '',
                     min: 0, max: 1,
-                    available: false
+                    available: false,
+                    group: 'free'
                 }
             };
 
-            var ROLE_ORDER = ['citizen', 'detective', 'judge', 'sheriff', 'spy', 'infiltrator', 'silencer', 'bait', 'killer', 'psycho'];
+            var ROLE_GROUPS = {
+                city: ['citizen', 'detective', 'judge', 'sheriff'],
+                mafia: ['spy', 'infiltrator', 'silencer', 'bait'],
+                free: ['killer', 'psycho']
+            };
 
             var PRESETS = {
                 3:  { spy: 1, infiltrator: 0, detective: 0, judge: 1, citizen: 1 },
@@ -909,6 +987,8 @@
                 9:  { spy: 2, infiltrator: 1, detective: 1, judge: 1, citizen: 4 },
                 10: { spy: 2, infiltrator: 2, detective: 1, judge: 1, citizen: 4 }
             };
+
+            var ACTIVE_ROLES = ['citizen', 'detective', 'judge', 'spy', 'infiltrator'];
 
             var state = {
                 type: 'public',
@@ -965,7 +1045,7 @@
                     document.documentElement.setAttribute('dir', 'rtl');
                 }
                 updateHeaderTitle(lang);
-                renderRolesList();
+                renderAllRolesLists();
                 updateTotalBar();
             }
 
@@ -1053,50 +1133,60 @@
                 }
             }
 
-            function renderRolesList() {
-                var container = document.getElementById('rolesList');
-                if (!container) return;
-                var html = '';
+            function renderRoleRow(key) {
+                var def = ROLE_DEFS[key];
+                if (!def) return '';
 
-                ROLE_ORDER.forEach(function(key) {
-                    var def = ROLE_DEFS[key];
-                    if (!def) return;
+                var isLocked = !def.available;
+                var currentVal = state.roles[key] || 0;
 
-                    var isLocked = !def.available;
-                    var currentVal = state.roles[key] || 0;
+                var html = '<div class="role-row' + (isLocked ? ' locked' : '') + '" data-role="' + escapeAttr(key) + '">';
 
-                    html += '<div class="role-row' + (isLocked ? ' locked' : '') + '" data-role="' + escapeAttr(key) + '">';
+                if (def.image) {
+                    html += '<img class="role-row-img" src="' + escapeAttr(def.image) + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
+                } else {
+                    html += '<div class="role-row-img"><i class="bi bi-person" aria-hidden="true"></i></div>';
+                }
 
-                    if (def.image) {
-                        html += '<img class="role-row-img" src="' + escapeAttr(def.image) + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
-                    } else {
-                        html += '<div class="role-row-img"><i class="bi bi-person" aria-hidden="true"></i></div>';
-                    }
+                html += '<div class="role-row-info">';
+                html += '<div class="role-row-name">';
+                if (isLocked) {
+                    html += '<span class="role-row-coming">' + escapeHtml(getTranslation('coming_soon')) + '</span> ';
+                }
+                html += escapeHtml(getTranslation(def.nameKey));
+                html += '</div>';
+                html += '<div class="role-row-range">' + escapeHtml(rangeText(def.min, def.max)) + '</div>';
+                html += '</div>';
 
-                    html += '<div class="role-row-info">';
-                    html += '<div class="role-row-name">';
-                    if (isLocked) {
-                        html += '<span class="role-row-coming">' + escapeHtml(getTranslation('coming_soon')) + '</span> ';
-                    }
-                    html += escapeHtml(getTranslation(def.nameKey));
+                if (!isLocked) {
+                    html += '<div class="counter">';
+                    html += '<button class="counter-btn" data-role-dec="' + escapeAttr(key) + '" type="button" aria-label="کاهش">−</button>';
+                    html += '<span class="counter-value" id="role-val-' + escapeAttr(key) + '">' + currentVal + '</span>';
+                    html += '<button class="counter-btn" data-role-inc="' + escapeAttr(key) + '" type="button" aria-label="افزایش">+</button>';
                     html += '</div>';
-                    html += '<div class="role-row-range">' + escapeHtml(rangeText(def.min, def.max)) + '</div>';
-                    html += '</div>';
+                } else {
+                    html += '<div class="counter"><span class="counter-value">—</span></div>';
+                }
 
-                    if (!isLocked) {
-                        html += '<div class="counter">';
-                        html += '<button class="counter-btn" data-role-dec="' + escapeAttr(key) + '" type="button" aria-label="کاهش">−</button>';
-                        html += '<span class="counter-value" id="role-val-' + escapeAttr(key) + '">' + currentVal + '</span>';
-                        html += '<button class="counter-btn" data-role-inc="' + escapeAttr(key) + '" type="button" aria-label="افزایش">+</button>';
-                        html += '</div>';
-                    } else {
-                        html += '<div class="counter"><span class="counter-value">—</span></div>';
-                    }
+                html += '</div>';
+                return html;
+            }
 
-                    html += '</div>';
-                });
+            function renderAllRolesLists() {
+                var cityHtml = '';
+                ROLE_GROUPS.city.forEach(function(k) { cityHtml += renderRoleRow(k); });
+                var cityEl = document.getElementById('cityRolesList');
+                if (cityEl) cityEl.innerHTML = cityHtml;
 
-                container.innerHTML = html;
+                var mafiaHtml = '';
+                ROLE_GROUPS.mafia.forEach(function(k) { mafiaHtml += renderRoleRow(k); });
+                var mafiaEl = document.getElementById('mafiaRolesList');
+                if (mafiaEl) mafiaEl.innerHTML = mafiaHtml;
+
+                var freeHtml = '';
+                ROLE_GROUPS.free.forEach(function(k) { freeHtml += renderRoleRow(k); });
+                var freeEl = document.getElementById('freeRolesList');
+                if (freeEl) freeEl.innerHTML = freeHtml;
             }
 
             function updateRoleValueUI(roleKey) {
@@ -1106,7 +1196,7 @@
 
             function getAvailableTotal() {
                 var total = 0;
-                ['citizen', 'detective', 'judge', 'spy', 'infiltrator'].forEach(function(k) {
+                ACTIVE_ROLES.forEach(function(k) {
                     total += state.roles[k] || 0;
                 });
                 return total;
@@ -1116,7 +1206,7 @@
                 var total = getAvailableTotal();
                 var needMore = state.playerCount - total;
 
-                ['citizen', 'detective', 'judge', 'spy', 'infiltrator'].forEach(function(key) {
+                ACTIVE_ROLES.forEach(function(key) {
                     var def = ROLE_DEFS[key];
                     var val = state.roles[key] || 0;
 
@@ -1151,10 +1241,9 @@
                 if (total !== state.playerCount) return false;
                 if (state.playerCount < 3 || state.playerCount > 10) return false;
 
-                var keys = ['citizen', 'detective', 'judge', 'spy', 'infiltrator'];
-                for (var i = 0; i < keys.length; i++) {
-                    var def = ROLE_DEFS[keys[i]];
-                    var val = state.roles[keys[i]] || 0;
+                for (var i = 0; i < ACTIVE_ROLES.length; i++) {
+                    var def = ROLE_DEFS[ACTIVE_ROLES[i]];
+                    var val = state.roles[ACTIVE_ROLES[i]] || 0;
                     if (val < def.min || val > def.max) return false;
                 }
 
@@ -1178,7 +1267,7 @@
             }
 
             function refreshAllRolesUI() {
-                ['citizen', 'detective', 'judge', 'spy', 'infiltrator'].forEach(function(k) {
+                ACTIVE_ROLES.forEach(function(k) {
                     updateRoleValueUI(k);
                 });
                 updateTotalBar();
@@ -1269,6 +1358,14 @@
                     return;
                 }
 
+                if (state.type === 'local') {
+                    var localData = buildGameData();
+                    safeSetLocalStorage('mafiaLocalGame', JSON.stringify(localData));
+                    triggerHaptic('medium');
+                    window.location.href = '../game/local/';
+                    return;
+                }
+
                 isCreating = true;
                 var btn = document.getElementById('btnCreate');
                 var originalHtml = btn.innerHTML;
@@ -1330,15 +1427,20 @@
                 setDayDuration(this.value);
             });
 
-            document.getElementById('rolesList').addEventListener('click', function(e) {
-                var incBtn = e.target.closest('.counter-btn[data-role-inc]');
-                if (incBtn) {
-                    incRole(incBtn.dataset.roleInc);
-                    return;
-                }
-                var decBtn = e.target.closest('.counter-btn[data-role-dec]');
-                if (decBtn) {
-                    decRole(decBtn.dataset.roleDec);
+            ['cityRolesList', 'mafiaRolesList', 'freeRolesList'].forEach(function(id) {
+                var el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('click', function(e) {
+                        var incBtn = e.target.closest('.counter-btn[data-role-inc]');
+                        if (incBtn) {
+                            incRole(incBtn.dataset.roleInc);
+                            return;
+                        }
+                        var decBtn = e.target.closest('.counter-btn[data-role-dec]');
+                        if (decBtn) {
+                            decRole(decBtn.dataset.roleDec);
+                        }
+                    });
                 }
             });
 
@@ -1367,9 +1469,13 @@
             applyTheme();
 
             state.roles = { citizen: 1, detective: 1, judge: 1, spy: 1, infiltrator: 1, sheriff: 0, silencer: 0, bait: 0, killer: 0, psycho: 0 };
-            renderRolesList();
+            state.type = 'public';
             setPlayerCount(5);
             setDayDuration(3);
+
+            document.querySelectorAll('#typeOptions .option-btn').forEach(function(b) {
+                b.classList.toggle('active', b.dataset.type === 'public');
+            });
 
             setTimeout(function() {
                 var notif = document.getElementById('supportNotification');
