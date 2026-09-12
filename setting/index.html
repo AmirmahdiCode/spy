@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
@@ -267,72 +267,72 @@
     <main class="main-container">
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-translate"></i> <span data-i18n="language">زبان</span></div>
-            <div class="font-options">
-                <button class="font-btn" data-lang="fa" onclick="setLanguage('fa')"> فارسی</button>
-                <button class="font-btn" data-lang="ar" onclick="setLanguage('ar')"> العربية</button>
-                <button class="font-btn" data-lang="en" onclick="setLanguage('en')"> English</button>
+            <div class="settings-title"><i class="bi bi-translate" aria-hidden="true"></i> <span data-i18n="language">زبان</span></div>
+            <div class="font-options" id="langOptions">
+                <button class="font-btn" data-lang="fa" type="button">فارسی</button>
+                <button class="font-btn" data-lang="ar" type="button">العربية</button>
+                <button class="font-btn" data-lang="en" type="button">English</button>
             </div>
         </div>
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-fonts"></i> <span data-i18n="font">فونت</span></div>
-            <div class="font-options">
-                <button class="font-btn" data-font="Samim" style="font-family: 'Samim', Tahoma, sans-serif;" onclick="setFont('Samim')">صمیم</button>
-                <button class="font-btn" data-font="Sahel" style="font-family: 'Sahel', Tahoma, sans-serif;" onclick="setFont('Sahel')">ساحل</button>
-                <button class="font-btn" data-font="IRANSans" style="font-family: 'IRANSans', Tahoma, sans-serif;" onclick="setFont('IRANSans')">ایران‌سنس</button>
-                <button class="font-btn" data-font="Vazirmatn" style="font-family: 'Vazirmatn', Tahoma, sans-serif;" onclick="setFont('Vazirmatn')">وزیرمتن</button>
-                <button class="font-btn" data-font="Estedad" style="font-family: 'Estedad', Tahoma, sans-serif;" onclick="setFont('Estedad')">استعداد</button>
+            <div class="settings-title"><i class="bi bi-fonts" aria-hidden="true"></i> <span data-i18n="font">فونت</span></div>
+            <div class="font-options" id="fontOptions">
+                <button class="font-btn" data-font="Samim" style="font-family: 'Samim', Tahoma, sans-serif;" type="button">صمیم</button>
+                <button class="font-btn" data-font="Sahel" style="font-family: 'Sahel', Tahoma, sans-serif;" type="button">ساحل</button>
+                <button class="font-btn" data-font="Vazirmatn" style="font-family: 'Vazirmatn', Tahoma, sans-serif;" type="button">وزیرمتن</button>
+                <button class="font-btn" data-font="Estedad" style="font-family: 'Estedad', Tahoma, sans-serif;" type="button">استعداد</button>
+                <button class="font-btn" data-font="Gandom" style="font-family: 'Gandom', Tahoma, sans-serif;" type="button">گندم</button>
             </div>
         </div>
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-palette"></i> <span data-i18n="theme">تم</span></div>
-            <div class="theme-options">
-                <div class="theme-option" data-special-theme="none" onclick="setSpecialTheme('none')">
-                    <i class="bi bi-circle"></i>
+            <div class="settings-title"><i class="bi bi-palette" aria-hidden="true"></i> <span data-i18n="theme">تم</span></div>
+            <div class="theme-options" id="specialThemeOptions">
+                <div class="theme-option" data-special-theme="none" role="button" tabindex="0">
+                    <i class="bi bi-circle" aria-hidden="true"></i>
                     <div><div class="theme-option-label" data-i18n="classic">کلاسیک</div></div>
                 </div>
-                <div class="theme-option" data-special-theme="crime" onclick="setSpecialTheme('crime')">
-                    <i class="bi bi-droplet"></i>
+                <div class="theme-option" data-special-theme="crime" role="button" tabindex="0">
+                    <i class="bi bi-droplet" aria-hidden="true"></i>
                     <div><div class="theme-option-label" data-i18n="crime">جنایی</div></div>
                 </div>
             </div>
         </div>
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-moon-stars"></i> <span data-i18n="display_mode">حالت نمایش</span></div>
-            <div class="theme-options">
-                <div class="theme-option" data-theme-mode="light" onclick="setTheme('light')">
-                    <i class="bi bi-sun"></i>
+            <div class="settings-title"><i class="bi bi-moon-stars" aria-hidden="true"></i> <span data-i18n="display_mode">حالت نمایش</span></div>
+            <div class="theme-options" id="themeModeOptions">
+                <div class="theme-option" data-theme-mode="light" role="button" tabindex="0">
+                    <i class="bi bi-sun" aria-hidden="true"></i>
                     <div><div class="theme-option-label" data-i18n="light">حالت روشن</div></div>
                 </div>
-                <div class="theme-option" data-theme-mode="dark" onclick="setTheme('dark')">
-                    <i class="bi bi-moon"></i>
+                <div class="theme-option" data-theme-mode="dark" role="button" tabindex="0">
+                    <i class="bi bi-moon" aria-hidden="true"></i>
                     <div><div class="theme-option-label" data-i18n="dark">حالت تاریک</div></div>
                 </div>
             </div>
         </div>
 
         <div class="settings-card">
-            <div class="settings-title"><i class="bi bi-sliders"></i> <span data-i18n="other">سایر</span></div>
+            <div class="settings-title"><i class="bi bi-sliders" aria-hidden="true"></i> <span data-i18n="other">سایر</span></div>
             <div class="setting-item">
                 <div class="setting-info">
-                    <i class="bi bi-lightning-charge"></i>
+                    <i class="bi bi-lightning-charge" aria-hidden="true"></i>
                     <div><div class="setting-label" data-i18n="animation">انیمیشن‌ها</div></div>
                 </div>
-                <div class="toggle-switch active" id="animationToggle" onclick="toggleAnimation()"></div>
+                <div class="toggle-switch active" id="animationToggle" role="switch" tabindex="0" aria-checked="true"></div>
             </div>
             <div class="setting-item">
                 <div class="setting-info">
-                    <i class="bi bi-phone-vibrate"></i>
+                    <i class="bi bi-phone-vibrate" aria-hidden="true"></i>
                     <div><div class="setting-label" data-i18n="haptic">لرزش</div></div>
                 </div>
-                <div class="toggle-switch active" id="hapticToggle" onclick="toggleHaptic()"></div>
+                <div class="toggle-switch active" id="hapticToggle" role="switch" tabindex="0" aria-checked="true"></div>
             </div>
             <div class="setting-item disabled">
                 <div class="setting-info">
-                    <i class="bi bi-envelope"></i>
+                    <i class="bi bi-envelope" aria-hidden="true"></i>
                     <div>
                         <div class="setting-label">
                             <span data-i18n="invite_messages">دریافت پیام دعوت</span>
@@ -340,30 +340,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="toggle-switch" id="inviteToggle"></div>
+                <div class="toggle-switch" id="inviteToggle" aria-disabled="true"></div>
             </div>
         </div>
 
     </main>
 
-    <div class="support-notification" id="supportNotification" onclick="openSupportLink()">
+    <div class="support-notification" id="supportNotification">
         <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         <div class="notif-info">
             <div class="notif-name">امیرمهدی | Amirmahdi</div>
         </div>
-        <i class="bi bi-chevron-left"></i>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='../dashboard/'"><img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="home">خانه</span></div>
-        <div class="nav-item" onclick="window.location.href='../ranking/'"><img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="ranking">رتبه</span></div>
-        <div class="nav-item" onclick="window.location.href='../profile/'"><img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="profile">پروفایل</span></div>
-        <div class="nav-item active" onclick="window.location.href='../setting/'"><img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="settings_nav">تنظیمات</span></div>
+        <div class="nav-item" data-href="../dashboard/"><img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="home">خانه</span></div>
+        <div class="nav-item" data-href="../ranking/"><img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="ranking">رتبه</span></div>
+        <div class="nav-item" data-href="../profile/"><img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="profile">پروفایل</span></div>
+        <div class="nav-item active" data-href="../setting/"><img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;"><span data-i18n="settings_nav">تنظیمات</span></div>
     </nav>
 
     <script>
         (function() {
-            var webApp = window.Eitaa?.WebApp;
+            'use strict';
+
+            var webApp = window.Eitaa && window.Eitaa.WebApp;
             var currentLang = 'fa';
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
@@ -434,29 +436,70 @@
             var fontMap = {
                 'Samim': "'Samim', Tahoma, sans-serif",
                 'Sahel': "'Sahel', Tahoma, sans-serif",
-                'IRANSans': "'IRANSans', Tahoma, sans-serif",
                 'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
-                'Estedad': "'Estedad', Tahoma, sans-serif"
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
+            };
+
+            var validFonts = ['Samim', 'Sahel', 'Vazirmatn', 'Estedad', 'Gandom'];
+            var validLangs = ['fa', 'ar', 'en'];
+            var validThemes = ['light', 'dark'];
+            var validSpecialThemes = ['none', 'crime'];
+
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
+            }
+
+            function safeSetLocalStorage(key, value) {
+                try { localStorage.setItem(key, value); return true; }
+                catch(e) { return false; }
+            }
+
+            function safeParseJSON(str, fallback) {
+                try {
+                    var parsed = JSON.parse(str);
+                    return parsed === null || parsed === undefined ? fallback : parsed;
+                } catch(e) {
+                    return fallback;
+                }
+            }
+
+            var defaultSettings = {
+                theme: 'light',
+                specialTheme: 'none',
+                animation: true,
+                haptic: true,
+                font: 'Samim',
+                language: 'fa'
             };
 
             function getSettings() {
-                try {
-                    var raw = localStorage.getItem('mafiaSettings');
-                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
-                    var p = JSON.parse(raw);
-                    if (!p.theme) p.theme = 'light';
-                    if (!p.specialTheme) p.specialTheme = 'none';
-                    if (p.animation === undefined) p.animation = true;
-                    if (p.haptic === undefined) p.haptic = true;
-                    if (!p.font) p.font = 'Samim';
-                    if (!p.language) p.language = 'fa';
-                    return p;
-                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+                var raw = safeGetLocalStorage('mafiaSettings');
+                if (!raw) return Object.assign({}, defaultSettings);
+                var p = safeParseJSON(raw, null);
+                if (!p || typeof p !== 'object') return Object.assign({}, defaultSettings);
+
+                var out = Object.assign({}, defaultSettings);
+
+                if (validThemes.indexOf(p.theme) !== -1) out.theme = p.theme;
+                if (validSpecialThemes.indexOf(p.specialTheme) !== -1) out.specialTheme = p.specialTheme;
+                if (validFonts.indexOf(p.font) !== -1) out.font = p.font;
+                if (validLangs.indexOf(p.language) !== -1) out.language = p.language;
+                if (typeof p.animation === 'boolean') out.animation = p.animation;
+                if (typeof p.haptic === 'boolean') out.haptic = p.haptic;
+
+                return out;
             }
 
-            function saveSettings(s) { localStorage.setItem('mafiaSettings', JSON.stringify(s)); }
+            function saveSettings(s) {
+                return safeSetLocalStorage('mafiaSettings', JSON.stringify(s));
+            }
 
-            function getTranslation(k) { var t = translations[currentLang] || translations.fa; return t[k] || translations.fa[k] || k; }
+            function getTranslation(k) {
+                var t = translations[currentLang] || translations.fa;
+                return t[k] || translations.fa[k] || k;
+            }
 
             function triggerHaptic(style) {
                 var s = getSettings();
@@ -468,25 +511,24 @@
 
             function updateHeaderTitle(lang) {
                 var titleEl = document.getElementById('headerTitle');
-                if (lang === 'en') {
-                    titleEl.textContent = 'Mafia Spy';
-                } else {
-                    titleEl.textContent = 'جاسوس مافیایی';
-                }
+                if (!titleEl) return;
+                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
             }
 
             function applyFont(font) {
                 var fontFamily = fontMap[font] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
-                document.querySelectorAll('.font-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.font === font); });
+                document.querySelectorAll('.font-btn[data-font]').forEach(function(b) {
+                    b.classList.toggle('active', b.dataset.font === font);
+                });
             }
 
             function applyLanguage(lang) {
                 var t = translations[lang] || translations.fa;
                 document.querySelectorAll('[data-i18n]').forEach(function(el) {
                     var k = el.getAttribute('data-i18n');
-                    if (t[k]) el.textContent = t[k];
+                    if (t[k] !== undefined) el.textContent = t[k];
                 });
                 if (lang === 'en') {
                     document.documentElement.setAttribute('dir', 'ltr');
@@ -496,47 +538,170 @@
                 updateHeaderTitle(lang);
             }
 
+            function updateActiveStates(s) {
+                document.querySelectorAll('.theme-option[data-theme-mode]').forEach(function(b) {
+                    b.classList.toggle('active', b.dataset.themeMode === s.theme);
+                });
+                document.querySelectorAll('.theme-option[data-special-theme]').forEach(function(b) {
+                    b.classList.toggle('active', b.dataset.specialTheme === s.specialTheme);
+                });
+                document.querySelectorAll('.font-btn[data-lang]').forEach(function(b) {
+                    b.classList.toggle('active', b.dataset.lang === s.language);
+                });
+                var animToggle = document.getElementById('animationToggle');
+                animToggle.classList.toggle('active', s.animation !== false);
+                animToggle.setAttribute('aria-checked', s.animation !== false ? 'true' : 'false');
+                var hapToggle = document.getElementById('hapticToggle');
+                hapToggle.classList.toggle('active', s.haptic !== false);
+                hapToggle.setAttribute('aria-checked', s.haptic !== false ? 'true' : 'false');
+            }
+
             function applyTheme() {
                 var s = getSettings();
-                currentLang = s.language || 'fa';
-                var t = s.theme || 'light';
-                var st = s.specialTheme || 'none';
-                var f = s.font || 'Samim';
-                document.documentElement.setAttribute('data-theme', t);
-                document.documentElement.setAttribute('data-special-theme', st);
-                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
-                else { document.documentElement.removeAttribute('data-animation'); }
-                applyFont(f);
-                document.querySelectorAll('.theme-option[data-theme-mode]').forEach(function(b) { b.classList.toggle('active', b.dataset.themeMode === t); });
-                document.querySelectorAll('.theme-option[data-special-theme]').forEach(function(b) { b.classList.toggle('active', b.dataset.specialTheme === st); });
-                document.querySelectorAll('.font-btn[data-lang]').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === s.language); });
-                document.getElementById('animationToggle').classList.toggle('active', s.animation !== false);
-                document.getElementById('hapticToggle').classList.toggle('active', s.haptic !== false);
+                currentLang = s.language;
+
+                document.documentElement.setAttribute('data-theme', s.theme);
+                document.documentElement.setAttribute('data-special-theme', s.specialTheme);
+
+                if (s.animation === false) {
+                    document.documentElement.setAttribute('data-animation', 'off');
+                } else {
+                    document.documentElement.removeAttribute('data-animation');
+                }
+
+                applyFont(s.font);
                 applyLanguage(s.language);
+                updateActiveStates(s);
             }
 
-            window.setLanguage = function(l) { var s = getSettings(); s.language = l; saveSettings(s); applyTheme(); triggerHaptic('light'); };
-            window.setFont = function(f) { var s = getSettings(); s.font = f; saveSettings(s); applyTheme(); triggerHaptic('light'); };
-            window.setTheme = function(t) { var s = getSettings(); s.theme = t; saveSettings(s); applyTheme(); triggerHaptic('light'); };
-            window.setSpecialTheme = function(st) { var s = getSettings(); s.specialTheme = st; saveSettings(s); applyTheme(); triggerHaptic('light'); };
-            window.toggleAnimation = function() { var s = getSettings(); s.animation = !s.animation; saveSettings(s); applyTheme(); triggerHaptic('light'); };
-            window.toggleHaptic = function() { var s = getSettings(); s.haptic = !s.haptic; saveSettings(s); applyTheme(); if (s.haptic) triggerHaptic('medium'); };
-
-            function openSupportLink(){
-                if (webApp && webApp.openEitaaLink) { webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code'); }
-                else { window.open('https://eitaa.com/Amirmahdi_code', '_blank'); }
+            function setLanguage(l) {
+                if (validLangs.indexOf(l) === -1) return;
+                var s = getSettings();
+                s.language = l;
+                saveSettings(s);
+                applyTheme();
+                triggerHaptic('light');
             }
-            window.openSupportLink = openSupportLink;
+
+            function setFont(f) {
+                if (validFonts.indexOf(f) === -1) return;
+                var s = getSettings();
+                s.font = f;
+                saveSettings(s);
+                applyTheme();
+                triggerHaptic('light');
+            }
+
+            function setTheme(t) {
+                if (validThemes.indexOf(t) === -1) return;
+                var s = getSettings();
+                s.theme = t;
+                saveSettings(s);
+                applyTheme();
+                triggerHaptic('light');
+            }
+
+            function setSpecialTheme(st) {
+                if (validSpecialThemes.indexOf(st) === -1) return;
+                var s = getSettings();
+                s.specialTheme = st;
+                saveSettings(s);
+                applyTheme();
+                triggerHaptic('light');
+            }
+
+            function toggleAnimation() {
+                var s = getSettings();
+                s.animation = !s.animation;
+                saveSettings(s);
+                applyTheme();
+                triggerHaptic('light');
+            }
+
+            function toggleHaptic() {
+                var s = getSettings();
+                s.haptic = !s.haptic;
+                saveSettings(s);
+                applyTheme();
+                if (s.haptic) triggerHaptic('medium');
+            }
+
+            function openSupportLink() {
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
+                } else {
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
+                }
+            }
+
+            document.getElementById('langOptions').addEventListener('click', function(e) {
+                var btn = e.target.closest('.font-btn[data-lang]');
+                if (btn) setLanguage(btn.dataset.lang);
+            });
+
+            document.getElementById('fontOptions').addEventListener('click', function(e) {
+                var btn = e.target.closest('.font-btn[data-font]');
+                if (btn) setFont(btn.dataset.font);
+            });
+
+            document.getElementById('specialThemeOptions').addEventListener('click', function(e) {
+                var opt = e.target.closest('.theme-option[data-special-theme]');
+                if (opt) setSpecialTheme(opt.dataset.specialTheme);
+            });
+            document.getElementById('specialThemeOptions').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    var opt = e.target.closest('.theme-option[data-special-theme]');
+                    if (opt) { e.preventDefault(); setSpecialTheme(opt.dataset.specialTheme); }
+                }
+            });
+
+            document.getElementById('themeModeOptions').addEventListener('click', function(e) {
+                var opt = e.target.closest('.theme-option[data-theme-mode]');
+                if (opt) setTheme(opt.dataset.themeMode);
+            });
+            document.getElementById('themeModeOptions').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    var opt = e.target.closest('.theme-option[data-theme-mode]');
+                    if (opt) { e.preventDefault(); setTheme(opt.dataset.themeMode); }
+                }
+            });
+
+            document.getElementById('animationToggle').addEventListener('click', toggleAnimation);
+            document.getElementById('animationToggle').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleAnimation(); }
+            });
+
+            document.getElementById('hapticToggle').addEventListener('click', toggleHaptic);
+            document.getElementById('hapticToggle').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleHaptic(); }
+            });
+
+            document.getElementById('supportNotification').addEventListener('click', openSupportLink);
+
+            document.querySelectorAll('.nav-item').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var href = el.getAttribute('data-href');
+                    if (href) window.location.href = href;
+                });
+            });
 
             if (webApp) {
-                webApp.ready();
-                webApp.expand();
-                webApp.BackButton.show();
-                webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                try {
+                    webApp.ready();
+                    webApp.expand();
+                    if (webApp.BackButton && webApp.BackButton.show) {
+                        webApp.BackButton.show();
+                        webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                    }
+                } catch(e) {}
             }
 
             applyTheme();
-            setTimeout(function() { var notif = document.getElementById('supportNotification'); if (notif) { notif.style.display = 'none'; } }, 5000);
+
+            setTimeout(function() {
+                var notif = document.getElementById('supportNotification');
+                if (notif) notif.style.display = 'none';
+            }, 5000);
         })();
     </script>
 </body>
