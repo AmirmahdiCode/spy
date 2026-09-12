@@ -297,10 +297,28 @@
         .avatar-item {
             text-align: center; padding: 8px 4px; border: var(--border); border-radius: 8px;
             background: var(--bg2); cursor: pointer; transition: all .2s ease; box-shadow: 2px 2px 0 #000;
+            position: relative;
         }
         .avatar-item:active { transform: scale(.95); }
         .avatar-item.active { border-color: #f59e0b; border-width: 2px; }
         .avatar-item.owned { border-color: #10b981; }
+        .avatar-item.processing {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+        .avatar-item.processing::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            z-index: 5;
+        }
         .avatar-item-img {
             width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 4px;
             background: #fff; border: var(--border);
@@ -311,6 +329,36 @@
         .avatar-item-price { font-size: 7px; font-weight: 700; color: var(--text-light); }
         .avatar-item-price.free { color: #059669; }
         .avatar-item-price.owned { color: #10b981; }
+
+        .avatar-modal.loading { pointer-events: none; }
+        .avatar-modal.loading .avatar-modal-close,
+        .avatar-modal.loading .avatar-item { pointer-events: none; }
+        .avatar-modal.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            margin-top: -20px;
+            margin-left: -20px;
+            border: 4px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            z-index: 100;
+        }
+        .avatar-modal.loading::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: var(--radius);
+            z-index: 99;
+        }
+        [data-theme="dark"] .avatar-modal.loading::before {
+            background: rgba(0, 0, 0, 0.6);
+        }
 
         .support-notification {
             position: fixed; top: 75px; right: 5%; left: 5%;
@@ -467,7 +515,7 @@
     </main>
 
     <div class="avatar-modal-overlay" id="avatarModalOverlay">
-        <div class="avatar-modal">
+        <div class="avatar-modal" id="avatarModal">
             <div class="avatar-modal-close" id="btnCloseAvatarModal"><i class="bi bi-x-lg" aria-hidden="true"></i></div>
             <div class="avatar-modal-title" data-i18n="select_avatar">انتخاب آواتار</div>
             <div id="avatarCategories"></div>
@@ -511,6 +559,7 @@
             var currentLang = 'fa';
             var userDiamonds = 0;
             var myUserId = '';
+            var isProcessing = false;
 
             var VALID_AVATAR_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var VALID_USER_ID = /^[A-Za-z0-9_\-@.]{1,64}$/;
@@ -909,6 +958,21 @@
                 }
             }
 
+            function setModalLoading(loading) {
+                var modal = document.getElementById('avatarModal');
+                if (!modal) return;
+                if (loading) modal.classList.add('loading');
+                else modal.classList.remove('loading');
+            }
+
+            function setItemProcessing(itemId, processing) {
+                if (!itemId) return;
+                var el = document.querySelector('.avatar-item[data-avatar-id="' + itemId + '"]');
+                if (!el) return;
+                if (processing) el.classList.add('processing');
+                else el.classList.remove('processing');
+            }
+
             function renderAvatarModal() {
                 var html = '';
                 avatarCategories.forEach(function(cat) {
@@ -945,6 +1009,7 @@
             }
 
             async function selectAvatar(itemId) {
+                if (isProcessing) return;
                 if (!itemId || !VALID_AVATAR_ID.test(itemId)) return;
 
                 var price = allAvatarPrices[itemId];
@@ -952,8 +1017,18 @@
 
                 var owned = isAvatarOwned(itemId);
 
+                isProcessing = true;
+
                 if (price === 0 || owned) {
+                    setModalLoading(true);
+                    setItemProcessing(itemId, true);
+
                     var result = await fetchData('updateUser', { avatar: itemId });
+
+                    setItemProcessing(itemId, false);
+                    setModalLoading(false);
+                    isProcessing = false;
+
                     if (result && result.ok) {
                         currentAvatar = itemId;
                         updateProfileAvatar();
@@ -967,14 +1042,22 @@
                 }
 
                 if (userDiamonds < price) {
+                    isProcessing = false;
                     if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('not_enough_diamonds'));
                     else alert(getTranslation('not_enough_diamonds'));
                     return;
                 }
 
+                setModalLoading(true);
+                setItemProcessing(itemId, true);
+
                 var buyResult = await fetchData('buyAvatar', { avatarId: itemId });
 
                 if (!buyResult || !buyResult.ok) {
+                    setItemProcessing(itemId, false);
+                    setModalLoading(false);
+                    isProcessing = false;
+
                     var msg = buyResult && buyResult.error === 'Not enough diamonds'
                         ? getTranslation('not_enough_diamonds')
                         : getTranslation('avatar_buy_failed');
@@ -995,6 +1078,11 @@
                 }
 
                 var selectResult = await fetchData('updateUser', { avatar: itemId });
+
+                setItemProcessing(itemId, false);
+                setModalLoading(false);
+                isProcessing = false;
+
                 if (selectResult && selectResult.ok) {
                     currentAvatar = itemId;
                     updateProfileAvatar();
@@ -1003,6 +1091,8 @@
                     if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
                     else alert(getTranslation('avatar_bought'));
                 } else {
+                    currentAvatar = itemId;
+                    updateProfileAvatar();
                     closeAvatarModal();
                     triggerHaptic('medium');
                     if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
@@ -1205,7 +1295,7 @@
             });
 
             document.getElementById('avatarModalOverlay').addEventListener('click', function(e) {
-                if (e.target === this) closeAvatarModal();
+                if (e.target === this && !isProcessing) closeAvatarModal();
             });
 
             document.getElementById('supportNotification').addEventListener('click', openSupportLink);
