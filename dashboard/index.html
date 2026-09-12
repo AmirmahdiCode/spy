@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
     <style>
         :root {
             --bg: #ffffff;
@@ -548,7 +548,8 @@
             white-space: nowrap;
         }
 
-        .terms-modal-overlay {
+        .terms-modal-overlay,
+        .active-game-modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.7);
@@ -558,7 +559,8 @@
             justify-content: center;
             padding: 20px;
         }
-        .terms-modal-overlay.show { display: flex; }
+        .terms-modal-overlay.show,
+        .active-game-modal-overlay.show { display: flex; }
         .terms-modal {
             background: var(--card-bg);
             border: var(--border);
@@ -759,11 +761,11 @@
         </div>
 
         <div class="action-row">
-            <button class="btn-start-game" onclick="startNewGame()">
+            <button class="btn-start-game" id="btnStartGame">
                 <i class="bi bi-plus-circle" aria-hidden="true"></i>
                 <span data-i18n="start_new_game">شروع بازی جدید</span>
             </button>
-            <button class="btn-wheel" onclick="goToWheel()">
+            <button class="btn-wheel" id="btnWheel">
                 <i class="bi bi-stars" aria-hidden="true"></i>
                 <span data-i18n="wheel">گردونه</span>
             </button>
@@ -937,7 +939,7 @@
 
                 <h3><i class="bi bi-4-circle" aria-hidden="true"></i> <span data-i18n="play_rule_4_title">گزارش محتوای خلاف قوانین</span></h3>
                 <p data-i18n="play_rule_4_desc">هر فرد موظف است در صورت مشاهده محتوای خلاف قوانین و مقررات استفاده، از طریق منوی بازی گزارش دهد.</p>
-                <button class="terms-link-btn" onclick="scrollToTerms()">
+                <button class="terms-link-btn" id="btnScrollTerms">
                     <i class="bi bi-arrow-down-circle-fill" aria-hidden="true"></i>
                     <span data-i18n="play_rule_4_btn">مشاهده قوانین و مقررات استفاده</span>
                 </button>
@@ -966,7 +968,7 @@
                 <p data-i18n="term_5_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب محدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.</p>
 
                 <h3><i class="bi bi-6-circle" aria-hidden="true"></i> <span data-i18n="term_6_title">هدف سرگرمی و مالکیت معنوی</span></h3>
-                <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a onclick="openChannelLink()" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد. این سرویس با ❤️ به شما تقدیم می‌گردد.</span></p>
+                <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a id="linkChannel1" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد. این سرویس با ❤️ به شما تقدیم می‌گردد.</span></p>
 
                 <h3><i class="bi bi-7-circle" aria-hidden="true"></i> <span data-i18n="term_7_title">مسئولیت سرویس و قطع سرویس</span></h3>
                 <p data-i18n="term_7_desc">تیم فنی ما همواره در تلاش است تا بهترین تجربه را برای شما فراهم کند و به‌طور مستمر در حال بهبود و رفع ایرادات می‌باشد. همچنین تیم مدیریت حق قطع موقت سرویس را به‌منظور تعمیر، بروزرسانی یا دلایل فنی برای خود محفوظ می‌دارد. از صبر و همراهی شما سپاسگزاریم.</p>
@@ -978,7 +980,7 @@
 
     </main>
 
-    <div class="active-game-float" id="activeGameFloat" onclick="goToActiveGame()">
+    <div class="active-game-float" id="activeGameFloat">
         <div class="active-game-float-icon"><i class="bi bi-controller" aria-hidden="true"></i></div>
         <div class="active-game-float-info">
             <div class="active-game-float-title" data-i18n="active_game">بازی فعال داری</div>
@@ -996,20 +998,42 @@
             <div class="terms-modal-simple-text">
                 <span data-i18n="terms_modal_intro">برای استفاده از بازی، لطفاً ابتدا قوانین و مقررات را مطالعه فرمایید.</span>
                 <br>
-                <a onclick="scrollToTerms()" data-i18n="terms_modal_link">مشاهده قوانین و مقررات</a>
+                <a id="linkScrollTerms" data-i18n="terms_modal_link">مشاهده قوانین و مقررات</a>
             </div>
-            <div class="terms-checkbox-row" id="termsCheckboxRow" onclick="toggleTermsCheckbox()">
+            <div class="terms-checkbox-row" id="termsCheckboxRow">
                 <div class="terms-checkbox" id="termsCheckbox"></div>
                 <div class="terms-checkbox-label" data-i18n="terms_accept_label">قوانین و مقررات را مطالعه کرده و می‌پذیرم.</div>
             </div>
             <div class="terms-actions">
-                <button class="terms-btn cancel" onclick="closeTermsModal()" data-i18n="terms_cancel">انصراف</button>
-                <button class="terms-btn accept" id="termsAcceptBtn" onclick="acceptTerms()" disabled data-i18n="terms_continue">تایید و ادامه</button>
+                <button class="terms-btn cancel" id="btnTermsCancel" data-i18n="terms_cancel">انصراف</button>
+                <button class="terms-btn accept" id="termsAcceptBtn" disabled data-i18n="terms_continue">تایید و ادامه</button>
             </div>
         </div>
     </div>
 
-    <div class="support-notification" id="supportNotification" onclick="openSupportLink()">
+    <div class="active-game-modal-overlay" id="activeGameModalOverlay">
+        <div class="terms-modal">
+            <div class="terms-modal-header">
+                <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+                <span data-i18n="active_game_modal_title">شما یک بازی نیمه‌تمام دارید</span>
+            </div>
+            <div class="terms-modal-simple-text">
+                <div style="margin-bottom:8px;">
+                    <span data-i18n="active_game_modal_code">کد بازی:</span>
+                    <strong id="activeGameModalCode">---</strong>
+                </div>
+                <div>
+                    <span data-i18n="active_game_modal_warning">برای شروع بازی جدید، ابتدا باید بازی فعلی خود را ادامه دهید یا از داخل اتاق آن را ترک کنید.</span>
+                </div>
+            </div>
+            <div class="terms-actions">
+                <button class="terms-btn cancel" id="btnActiveGameCancel" data-i18n="terms_cancel">انصراف</button>
+                <button class="terms-btn accept" id="btnActiveGameContinue" data-i18n="active_game_modal_continue">ورود به بازی</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="support-notification" id="supportNotification">
         <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         <div class="notif-info">
             <div class="notif-name">امیرمهدی | Amirmahdi</div>
@@ -1018,19 +1042,19 @@
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="window.location.href='../dashboard/'">
+        <div class="nav-item active" data-href="../dashboard/">
             <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="home">خانه</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../ranking/'">
+        <div class="nav-item" data-href="../ranking/">
             <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="ranking">رتبه</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../profile/'">
+        <div class="nav-item" data-href="../profile/">
             <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="profile">پروفایل</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../setting/'">
+        <div class="nav-item" data-href="../setting/">
             <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="settings_nav">تنظیمات</span>
         </div>
@@ -1038,24 +1062,53 @@
 
     <script>
         (function() {
-            var webApp = window.Eitaa?.WebApp;
+            'use strict';
+
+            var webApp = window.Eitaa && window.Eitaa.WebApp;
             var API_URL = 'https://script.google.com/macros/s/AKfycby-MT3aVkVgQ_L_9SLQJdpMHbKgjP8NwG8tqHmy0UKz0a7c_yEBKuC6q--7ZtnChB3Z/exec';
             var currentLang = 'fa';
             var activeGameId = null;
             var hasHalfFinishedGame = false;
             var pendingAction = null;
 
+            var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
+            var TERMS_DURATION = 48 * 60 * 60 * 1000;
+
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
             document.addEventListener('copy', function(e) { e.preventDefault(); });
             document.addEventListener('cut', function(e) { e.preventDefault(); });
 
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function isValidGameId(id) {
+                return typeof id === 'string' && VALID_GAME_ID.test(id);
+            }
+
+            function safeSetLocalStorage(key, value) {
+                try { localStorage.setItem(key, value); return true; }
+                catch(e) { return false; }
+            }
+
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
+            }
+
             var fontMap = {
                 'Samim': "'Samim', Tahoma, sans-serif",
                 'Sahel': "'Sahel', Tahoma, sans-serif",
-                'IRANSans': "'IRANSans', Tahoma, sans-serif",
                 'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
-                'Estedad': "'Estedad', Tahoma, sans-serif"
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
             };
 
             var loadedFonts = { 'Samim': true };
@@ -1067,7 +1120,7 @@
                     'Vazirmatn': 'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css',
                     'Sahel': 'https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css',
                     'Estedad': 'https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css',
-                    'IRANSans': 'https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css'
+                    'Gandom': 'https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css'
                 };
                 if (fontFiles[fontName]) {
                     var link = document.createElement('link');
@@ -1167,6 +1220,10 @@
                     settings_nav: 'تنظیمات',
                     active_game: 'بازی فعال داری',
                     enter_room: 'ورود',
+                    active_game_modal_title: 'شما یک بازی نیمه‌تمام دارید',
+                    active_game_modal_code: 'کد بازی:',
+                    active_game_modal_warning: 'برای شروع بازی جدید، ابتدا باید بازی فعلی خود را ادامه دهید یا از داخل اتاق آن را ترک کنید.',
+                    active_game_modal_continue: 'ورود به بازی',
                     no_public_games: 'بازی سراسری فعالی وجود ندارد',
                     you_have_active_game: 'شما یک بازی نیمه‌تمام دارید! ابتدا آن را تمام کنید.',
                     players: 'بازیکن',
@@ -1264,6 +1321,10 @@
                     settings_nav: 'Settings',
                     active_game: 'You have an active game',
                     enter_room: 'Enter',
+                    active_game_modal_title: 'You have a half-finished game',
+                    active_game_modal_code: 'Game code:',
+                    active_game_modal_warning: 'To start a new game, first continue your current game or leave it from inside the room.',
+                    active_game_modal_continue: 'Enter Game',
                     no_public_games: 'No active public games',
                     you_have_active_game: 'You have a half-finished game! Finish it first.',
                     players: 'players',
@@ -1361,6 +1422,10 @@
                     settings_nav: 'الإعدادات',
                     active_game: 'لديك لعبة نشطة',
                     enter_room: 'دخول',
+                    active_game_modal_title: 'لديك لعبة غير مكتملة',
+                    active_game_modal_code: 'كود اللعبة:',
+                    active_game_modal_warning: 'لبدء لعبة جديدة، يجب أولاً متابعة لعبتك الحالية أو مغادرتها من داخل الغرفة.',
+                    active_game_modal_continue: 'دخول اللعبة',
                     no_public_games: 'لا توجد ألعاب عامة نشطة',
                     you_have_active_game: 'لديك لعبة غير مكتملة! أكملها أولاً.',
                     players: 'لاعبين',
@@ -1378,9 +1443,10 @@
 
             function getSettings() {
                 try {
-                    var raw = localStorage.getItem('mafiaSettings');
+                    var raw = safeGetLocalStorage('mafiaSettings');
                     if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
                     var p = JSON.parse(raw);
+                    if (!p || typeof p !== 'object') throw new Error('bad');
                     if (!p.theme) p.theme = 'light';
                     if (!p.specialTheme) p.specialTheme = 'none';
                     if (p.animation === undefined) p.animation = true;
@@ -1388,12 +1454,15 @@
                     if (!p.font) p.font = 'Samim';
                     if (!p.language) p.language = 'fa';
                     return p;
-                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+                } catch(e) {
+                    return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                }
             }
 
             function updateHeaderTitle(lang) {
                 var titleEl = document.getElementById('headerTitle');
                 var subtitleEl = document.getElementById('headerSubtitle');
+                if (!titleEl || !subtitleEl) return;
                 if (lang === 'en') {
                     titleEl.textContent = 'Mafia Spy';
                     subtitleEl.textContent = 'Find the city spy.';
@@ -1407,7 +1476,7 @@
                 var t = translations[lang] || translations.fa;
                 document.querySelectorAll('[data-i18n]').forEach(function(el) {
                     var k = el.getAttribute('data-i18n');
-                    if (t[k]) el.textContent = t[k];
+                    if (t[k] !== undefined) el.textContent = t[k];
                 });
                 if (lang === 'en') {
                     document.documentElement.setAttribute('dir', 'ltr');
@@ -1425,8 +1494,11 @@
                 var f = s.font || 'Samim';
                 document.documentElement.setAttribute('data-theme', t);
                 document.documentElement.setAttribute('data-special-theme', st);
-                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
-                else { document.documentElement.removeAttribute('data-animation'); }
+                if (s.animation === false) {
+                    document.documentElement.setAttribute('data-animation', 'off');
+                } else {
+                    document.documentElement.removeAttribute('data-animation');
+                }
                 loadFont(f);
                 var fontFamily = fontMap[f] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
@@ -1442,14 +1514,25 @@
                 }
             }
 
-            function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
-            function getUserId(){var u=getEitaaUser();return u?(typeof u.id==='number'?u.id.toString():String(u.id||'')):'';}
+            function getEitaaUser() {
+                return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
+            }
+
+            function getUserId() {
+                var u = getEitaaUser();
+                if (!u || u.id === undefined || u.id === null) return '';
+                return String(u.id);
+            }
 
             async function fetchData(action, params, retryCount) {
                 retryCount = retryCount || 0;
                 var payload = { action: action, username: getUserId() };
-                if (params) {
-                    for (var k in params) { if (params.hasOwnProperty(k)) payload[k] = params[k]; }
+                if (params && typeof params === 'object') {
+                    for (var k in params) {
+                        if (Object.prototype.hasOwnProperty.call(params, k)) {
+                            payload[k] = params[k];
+                        }
+                    }
                 }
                 try {
                     var controller = new AbortController();
@@ -1461,10 +1544,27 @@
                         signal: controller.signal
                     });
                     clearTimeout(timeoutId);
-                    return await r.json();
+
+                    if (!r.ok) throw new Error('http_' + r.status);
+
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('application/json') === -1) {
+                        throw new Error('invalid_content_type');
+                    }
+
+                    var data = await r.json();
+                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
+                    return data;
                 } catch(err) {
-                    if (retryCount < 2) {
-                        await new Promise(function(res) { setTimeout(res, 1000); });
+                    var isRetryable = err && (
+                        err.name === 'AbortError' ||
+                        err.message === 'Failed to fetch' ||
+                        err.message === 'NetworkError when attempting to fetch resource.' ||
+                        err.message === 'invalid_content_type' ||
+                        /^http_5/.test(err.message || '')
+                    );
+                    if (retryCount < 2 && isRetryable) {
+                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
                         return fetchData(action, params, retryCount + 1);
                     }
                     return { ok: false, error: 'network' };
@@ -1472,40 +1572,46 @@
             }
 
             function renderEmpty(text) {
-                return '<div class="empty-state"><i class="bi bi-inbox" aria-hidden="true"></i><p>' + text + '</p></div>';
+                return '<div class="empty-state"><i class="bi bi-inbox" aria-hidden="true"></i><p>' + escapeHtml(text) + '</p></div>';
             }
 
             function renderError() {
                 return '<div class="error-state">' +
                     '<i class="bi bi-wifi-off" aria-hidden="true"></i>' +
-                    '<div class="error-state-text">' + getTranslation('error_network') + '</div>' +
-                    '<button class="error-state-btn" data-retry="public">' + getTranslation('retry') + '</button>' +
+                    '<div class="error-state-text">' + escapeHtml(getTranslation('error_network')) + '</div>' +
+                    '<button class="error-state-btn" data-retry="public">' + escapeHtml(getTranslation('retry')) + '</button>' +
                     '</div>';
             }
 
             function countPlayers(playersStr) {
                 if (!playersStr) return 0;
+                if (Array.isArray(playersStr)) return playersStr.length;
                 try {
                     var parsed = JSON.parse(playersStr);
                     if (Array.isArray(parsed)) return parsed.length;
+                    if (parsed && typeof parsed === 'object') return Object.keys(parsed).length;
                 } catch(e) {}
                 var matches = String(playersStr).match(/\[/g);
                 return matches ? matches.length : 0;
             }
 
             async function loadUserCurrency() {
+                var coinsEl = document.getElementById('coinsHeader');
+                var diamondsEl = document.getElementById('diamondsHeader');
                 try {
                     var userData = await fetchData('getUser', {});
-                    if (userData.ok && userData.data) {
-                        document.getElementById('coinsHeader').textContent = userData.data.coins || 0;
-                        document.getElementById('diamondsHeader').textContent = userData.data.diamonds || 0;
+                    if (userData.ok && userData.data && typeof userData.data === 'object') {
+                        var c = parseInt(userData.data.coins, 10);
+                        var d = parseInt(userData.data.diamonds, 10);
+                        coinsEl.textContent = String(isNaN(c) ? 0 : c);
+                        diamondsEl.textContent = String(isNaN(d) ? 0 : d);
                     } else {
-                        document.getElementById('coinsHeader').textContent = '0';
-                        document.getElementById('diamondsHeader').textContent = '0';
+                        coinsEl.textContent = '0';
+                        diamondsEl.textContent = '0';
                     }
                 } catch(e) {
-                    document.getElementById('coinsHeader').textContent = '0';
-                    document.getElementById('diamondsHeader').textContent = '0';
+                    coinsEl.textContent = '0';
+                    diamondsEl.textContent = '0';
                 }
             }
 
@@ -1513,36 +1619,40 @@
                 var list = document.getElementById('publicList');
                 var loader = document.getElementById('publicLoader');
                 var errorBox = document.getElementById('publicError');
-                
+
                 loader.style.display = 'flex';
                 errorBox.style.display = 'none';
                 list.style.display = 'none';
-                
+
                 try {
                     var result = await fetchData('getPublicGames', {});
-                    
+
                     if (result.ok && Array.isArray(result.data)) {
-                        document.getElementById('publicCount').textContent = result.data.length;
-                        
+                        document.getElementById('publicCount').textContent = String(result.data.length);
+
                         if (result.data.length === 0) {
                             list.innerHTML = renderEmpty(getTranslation('no_public_games'));
                         } else {
                             var html = '';
                             for (var i = 0; i < result.data.length; i++) {
                                 var g = result.data[i];
+                                if (!g || typeof g !== 'object') continue;
+                                var rawId = String(g.id == null ? '' : g.id);
+                                if (!isValidGameId(rawId)) continue;
+                                var safeId = escapeHtml(rawId);
                                 var playerCount = countPlayers(g.players);
-                                html += '<div class="game-card" onclick="joinGame(\'' + g.id + '\')">' +
+                                html += '<div class="game-card" data-game-id="' + safeId + '" role="button" tabindex="0">' +
                                     '<div class="game-card-avatar"><i class="bi bi-people" aria-hidden="true"></i></div>' +
                                     '<div class="game-card-info">' +
-                                    '<div class="game-card-title">' + g.id + '</div>' +
-                                    '<div class="game-card-subtitle">' + playerCount + ' ' + getTranslation('players') + '</div>' +
+                                    '<div class="game-card-title">' + safeId + '</div>' +
+                                    '<div class="game-card-subtitle">' + playerCount + ' ' + escapeHtml(getTranslation('players')) + '</div>' +
                                     '</div>' +
-                                    '<span class="game-card-badge waiting">' + getTranslation('waiting') + '</span>' +
+                                    '<span class="game-card-badge waiting">' + escapeHtml(getTranslation('waiting')) + '</span>' +
                                     '</div>';
                             }
                             list.innerHTML = html;
                         }
-                        
+
                         loader.style.display = 'none';
                         list.style.display = 'flex';
                     } else {
@@ -1559,35 +1669,35 @@
                 }
             }
 
-            document.getElementById('publicError').addEventListener('click', function(e) {
-                if (e.target.classList.contains('error-state-btn')) {
-                    loadPublicGames();
-                }
-            });
-
             async function checkActiveGame() {
-                var result = await fetchData('getGamesByPlayer', {});
-                
-                if (result.ok && Array.isArray(result.data)) {
-                    var activeGame = null;
-                    var halfFinished = false;
-                    
-                    for (var i = 0; i < result.data.length; i++) {
-                        var g = result.data[i];
-                        if (g.status === 'waiting' || g.status === 'd1' || g.status === 'n1' || g.status === 'd2' || g.status === 'n2' || g.status === 'd3' || g.status === 'n3') {
-                            activeGame = g;
-                            if (g.status !== 'waiting') halfFinished = true;
-                            break;
+                try {
+                    var result = await fetchData('getGamesByPlayer', {});
+
+                    if (result.ok && Array.isArray(result.data)) {
+                        var activeGame = null;
+                        var halfFinished = false;
+
+                        for (var i = 0; i < result.data.length; i++) {
+                            var g = result.data[i];
+                            if (!g || typeof g !== 'object') continue;
+                            var rawId = String(g.id == null ? '' : g.id);
+                            if (!isValidGameId(rawId)) continue;
+                            var s = g.status;
+                            if (s === 'waiting' || s === 'd1' || s === 'n1' || s === 'd2' || s === 'n2' || s === 'd3' || s === 'n3') {
+                                activeGame = { id: rawId, status: s };
+                                if (s !== 'waiting') halfFinished = true;
+                                break;
+                            }
+                        }
+
+                        if (activeGame) {
+                            activeGameId = activeGame.id;
+                            hasHalfFinishedGame = halfFinished;
+                            document.getElementById('activeGameCode').textContent = activeGame.id;
+                            document.getElementById('activeGameFloat').classList.add('show');
                         }
                     }
-                    
-                    if (activeGame) {
-                        activeGameId = activeGame.id;
-                        hasHalfFinishedGame = halfFinished;
-                        document.getElementById('activeGameCode').textContent = activeGame.id;
-                        document.getElementById('activeGameFloat').classList.add('show');
-                    }
-                }
+                } catch(e) {}
             }
 
             function toggleTermsCheckbox() {
@@ -1597,30 +1707,29 @@
                 btn.disabled = !cb.classList.contains('checked');
                 triggerHaptic('light');
             }
-            window.toggleTermsCheckbox = toggleTermsCheckbox;
+
+            function isTermsAccepted() {
+                var raw = safeGetLocalStorage('mafiaTermsAccepted');
+                var ts = parseInt(raw, 10);
+                if (isNaN(ts) || ts <= 0) return false;
+                if (ts > Date.now()) return false;
+                return (Date.now() - ts) < TERMS_DURATION;
+            }
 
             function guardGameEntry(callback) {
                 triggerHaptic('medium');
                 if (hasHalfFinishedGame) {
-                    if (webApp && webApp.showAlert) {
-                        webApp.showAlert(getTranslation('you_have_active_game'));
-                    } else {
-                        alert(getTranslation('you_have_active_game'));
-                    }
+                    showActiveGameModal(callback);
                     return;
                 }
                 showTermsModal(callback);
             }
 
             function showTermsModal(callback) {
-                var lastAccepted = localStorage.getItem('mafiaTermsAccepted');
-                var fortyEightHours = 48 * 60 * 60 * 1000;
-                
-                if (lastAccepted && (Date.now() - parseInt(lastAccepted)) < fortyEightHours) {
+                if (isTermsAccepted()) {
                     if (callback) callback();
                     return;
                 }
-                
                 pendingAction = callback;
                 document.getElementById('termsCheckbox').classList.remove('checked');
                 document.getElementById('termsAcceptBtn').disabled = true;
@@ -1631,7 +1740,6 @@
                 document.getElementById('termsModalOverlay').classList.remove('show');
                 pendingAction = null;
             }
-            window.closeTermsModal = closeTermsModal;
 
             function scrollToTerms() {
                 var termsSection = document.getElementById('termsSection');
@@ -1640,71 +1748,142 @@
                 }
                 triggerHaptic('light');
             }
-            window.scrollToTerms = scrollToTerms;
 
             function acceptTerms() {
                 var cb = document.getElementById('termsCheckbox');
                 if (!cb.classList.contains('checked')) return;
-                localStorage.setItem('mafiaTermsAccepted', Date.now().toString());
+                safeSetLocalStorage('mafiaTermsAccepted', String(Date.now()));
                 document.getElementById('termsModalOverlay').classList.remove('show');
                 triggerHaptic('medium');
                 var action = pendingAction;
                 pendingAction = null;
-                if (action) {
-                    setTimeout(function() { action(); }, 200);
-                }
+                if (action) setTimeout(function() { action(); }, 200);
             }
-            window.acceptTerms = acceptTerms;
+
+            function showActiveGameModal(callback) {
+                pendingAction = callback;
+                document.getElementById('activeGameModalCode').textContent = activeGameId || '---';
+                document.getElementById('activeGameModalOverlay').classList.add('show');
+            }
+
+            function closeActiveGameModal() {
+                document.getElementById('activeGameModalOverlay').classList.remove('show');
+                pendingAction = null;
+            }
+
+            function continueActiveGame() {
+                document.getElementById('activeGameModalOverlay').classList.remove('show');
+                pendingAction = null;
+                triggerHaptic('medium');
+                if (!activeGameId || !isValidGameId(activeGameId)) return;
+                safeSetLocalStorage('mafiaRoomCode', activeGameId);
+                window.location.href = '../game/table/?room=' + encodeURIComponent(activeGameId);
+            }
 
             function openChannelLink() {
                 if (webApp && webApp.openEitaaLink) {
                     webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
                 } else {
-                    window.open('https://eitaa.com/Amirmahdi_code', '_blank');
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
                 }
             }
-            window.openChannelLink = openChannelLink;
 
-            window.startNewGame = function() {
+            function startNewGame() {
                 guardGameEntry(function() {
                     window.location.href = '../game/new/';
                 });
-            };
+            }
 
-            window.goToWheel = function() {
+            function goToWheel() {
                 triggerHaptic('light');
                 window.location.href = '../wheel/';
-            };
+            }
 
-            window.joinGame = function(gameId) {
+            function joinGame(gameId) {
+                if (!isValidGameId(gameId)) return;
                 guardGameEntry(function() {
-                    localStorage.setItem('mafiaRoomCode', gameId);
-                    window.location.href = '../game/table/?room=' + gameId;
+                    safeSetLocalStorage('mafiaRoomCode', gameId);
+                    window.location.href = '../game/table/?room=' + encodeURIComponent(gameId);
                 });
-            };
+            }
 
-            window.goToActiveGame = function() {
+            function goToActiveGame() {
                 triggerHaptic('light');
-                if (activeGameId) {
-                    guardGameEntry(function() {
-                        localStorage.setItem('mafiaRoomCode', activeGameId);
-                        window.location.href = '../game/table/?room=' + activeGameId;
-                    });
-                }
-            };
+                if (!activeGameId || !isValidGameId(activeGameId)) return;
+                guardGameEntry(function() {
+                    safeSetLocalStorage('mafiaRoomCode', activeGameId);
+                    window.location.href = '../game/table/?room=' + encodeURIComponent(activeGameId);
+                });
+            }
 
             function openSupportLink() {
                 var notif = document.getElementById('supportNotification');
                 if (notif) notif.style.display = 'none';
-                if (webApp && webApp.openEitaaLink) { webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code'); }
-                else { window.open('https://eitaa.com/Amirmahdi_code', '_blank'); }
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
+                } else {
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
+                }
             }
-            window.openSupportLink = openSupportLink;
+
+            document.getElementById('btnStartGame').addEventListener('click', startNewGame);
+            document.getElementById('btnWheel').addEventListener('click', goToWheel);
+
+            document.getElementById('btnScrollTerms').addEventListener('click', scrollToTerms);
+            document.getElementById('linkScrollTerms').addEventListener('click', function(e) {
+                e.preventDefault();
+                scrollToTerms();
+            });
+            document.getElementById('linkChannel1').addEventListener('click', function(e) {
+                e.preventDefault();
+                openChannelLink();
+            });
+
+            document.getElementById('termsCheckboxRow').addEventListener('click', toggleTermsCheckbox);
+            document.getElementById('btnTermsCancel').addEventListener('click', closeTermsModal);
+            document.getElementById('termsAcceptBtn').addEventListener('click', acceptTerms);
+
+            document.getElementById('btnActiveGameCancel').addEventListener('click', closeActiveGameModal);
+            document.getElementById('btnActiveGameContinue').addEventListener('click', continueActiveGame);
+
+            document.getElementById('activeGameFloat').addEventListener('click', goToActiveGame);
+            document.getElementById('supportNotification').addEventListener('click', openSupportLink);
+
+            document.getElementById('publicError').addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('error-state-btn')) {
+                    loadPublicGames();
+                }
+            });
+
+            document.getElementById('publicList').addEventListener('click', function(e) {
+                var card = e.target.closest('.game-card');
+                if (card && card.dataset.gameId) {
+                    joinGame(card.dataset.gameId);
+                }
+            });
+            document.getElementById('publicList').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    var card = e.target.closest('.game-card');
+                    if (card && card.dataset.gameId) {
+                        e.preventDefault();
+                        joinGame(card.dataset.gameId);
+                    }
+                }
+            });
+
+            document.querySelectorAll('.nav-item').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var href = el.getAttribute('data-href');
+                    if (href) window.location.href = href;
+                });
+            });
 
             if (webApp) {
-                webApp.ready();
-                webApp.expand();
-                webApp.BackButton.hide();
+                try {
+                    webApp.ready();
+                    webApp.expand();
+                    if (webApp.BackButton && webApp.BackButton.hide) webApp.BackButton.hide();
+                } catch(e) {}
             }
 
             applyTheme();
@@ -1714,7 +1893,7 @@
 
             setTimeout(function() {
                 var notif = document.getElementById('supportNotification');
-                if (notif) { notif.style.display = 'none'; }
+                if (notif) notif.style.display = 'none';
             }, 5000);
         })();
     </script>
