@@ -501,21 +501,30 @@
             margin-bottom: 4px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             flex-wrap: wrap;
         }
         .role-block-title i {
             color: var(--primary);
             font-size: 13px;
         }
+        .role-block-title .role-img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid var(--primary);
+            flex-shrink: 0;
+            background: var(--bg2);
+        }
 
         .role-block-desc {
             font-size: 10.5px;
             line-height: 1.9;
             color: var(--text);
-            padding-right: 18px;
+            padding-right: 30px;
         }
-        [dir="ltr"] .role-block-desc { padding-right: 0; padding-left: 18px; }
+        [dir="ltr"] .role-block-desc { padding-right: 0; padding-left: 30px; }
 
         .coming-soon-badge {
             font-size: 7px;
@@ -851,7 +860,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-incognito" aria-hidden="true"></i>
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png" alt="جاسوس" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_spy">جاسوس</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_spy_desc">تنها کسی است که کلمه را نمی‌داند و باید خود را مخفی نگه دارد تا لو نرود.</div>
@@ -859,7 +868,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png" alt="نفوذی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_infiltrator">نفوذی</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_infiltrator_desc">نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن دیگران، جاسوس را از دید شهروندان پنهان نگه دارد.</div>
@@ -867,18 +876,16 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-volume-mute-fill" aria-hidden="true"></i>
-                            <span data-i18n="role_silencer">سایلنتر</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            <span data-i18n="role_silencer">سایلنتر</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_silencer_desc">فقط یک‌بار می‌تواند یک نفر را انتخاب کند تا روز بعدش حق پرسش سوال نداشته باشد.</div>
                     </div>
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-bug-fill" aria-hidden="true"></i>
-                            <span data-i18n="role_bait">طعمه</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            <span data-i18n="role_bait">طعمه</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_bait_desc">جهت سردرگم کردن کارآگاه است تا مطمئن نباشد فرد استعلام‌شده جاسوس است یا نه.</div>
                     </div>
@@ -892,7 +899,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-person" aria-hidden="true"></i>
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png" alt="شهروند" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_citizen">شهروند ساده</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_citizen_desc">فعالیت خاصی ندارد؛ کلمه را می‌بیند، در بحث شرکت می‌کند و در رای‌گیری نظر خود را می‌گوید.</div>
@@ -900,7 +907,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-search" aria-hidden="true"></i>
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png" alt="کارآگاه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_detective">کارآگاه</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_detective_desc">در طول بازی فقط یک‌بار در یکی از ۳ شب می‌تواند استعلام بگیرد. استعلام جاسوس و طعمه مثبت است و بقیه منفی.</div>
@@ -908,7 +915,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-bank" aria-hidden="true"></i>
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png" alt="قاضی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_judge">قاضی</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_judge_desc">نظر نهایی هر رای‌گیری را قاضی می‌دهد. می‌تواند شهر را نجات دهد یا شبی را هدر دهد.</div>
@@ -916,9 +923,8 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-shield-fill" aria-hidden="true"></i>
-                            <span data-i18n="role_sheriff">کلانتر</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            <span data-i18n="role_sheriff">کلانتر</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_sheriff_desc">در شب قبل از همه بیدار می‌شود و یک نفر را زندانی می‌کند. فرد زندانی آن شب نمی‌تواند بیدار شود و هیچ کاری انجام دهد و روز بعد نیز حق رای دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قدرت استفاده کند.</div>
                     </div>
@@ -932,18 +938,16 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-slash-circle-fill" aria-hidden="true"></i>
-                            <span data-i18n="role_killer">قاتل</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            <span data-i18n="role_killer">قاتل</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_killer_desc">فقط یک‌بار می‌تواند یک نفر را بکشد. اگر فرد کشته‌شده جاسوس باشد، خودش برنده می‌شود. اگر فرد کشته‌شده شهروند باشد، از بازی حذف می‌شود.</div>
                     </div>
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <i class="bi bi-lightning-fill" aria-hidden="true"></i>
-                            <span data-i18n="role_psycho">روانی</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            <span data-i18n="role_psycho">روانی</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_psycho_desc">این بازیکن باید سعی کند خودش را حذف کند؛ یا با رای‌گیری یا با شلیک قاتل. اگر این بازیکن حذف شود، برنده می‌شود.</div>
                     </div>
