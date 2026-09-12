@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
@@ -126,9 +126,19 @@
             background: var(--bg2); border: var(--border); border-radius: 8px;
             padding: 4px 10px; font-size: 10px; font-weight: 700;
             color: var(--dark); box-shadow: 2px 2px 0 #000;
+            min-width: 50px;
+            justify-content: center;
         }
         .currency-badge.coins i { color: #f59e0b; }
         .currency-badge.diamonds i { color: #06b6d4; }
+        .mini-spinner {
+            width: 12px; height: 12px;
+            border: 2px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
 
         .main-container {
             position: relative; z-index: 5;
@@ -141,6 +151,7 @@
             background: var(--card-bg); border: var(--border); border-radius: var(--radius);
             padding: 20px; box-shadow: var(--shadow); text-align: center;
             display: flex; flex-direction: column; align-items: center;
+            position: relative;
         }
         .wheel-title {
             font-size: 14px; font-weight: 800; color: var(--dark); margin-bottom: 12px;
@@ -149,35 +160,65 @@
         .wheel-canvas { width: 100%; height: 100%; border-radius: 50%; border: 4px solid #000; transition: transform 4s cubic-bezier(.17,.67,.12,.99); }
         .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 32px; color: #f59e0b; z-index: 5; }
         .wheel-result { text-align: center; font-size: 12px; font-weight: 800; color: var(--primary); min-height: 25px; margin-top: 8px; }
-        
+
         .spin-btn {
             display: block; width: 100%; max-width: 250px; margin: 10px auto 0;
             padding: 10px; background: var(--gold); color: #fff; border: var(--border);
             border-radius: 12px; font-family: var(--font); font-size: 11px; font-weight: 800;
             cursor: pointer; box-shadow: 3px 3px 0 #000;
+            transition: all .2s ease;
         }
         .spin-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .spin-btn:disabled { opacity: .5; cursor: not-allowed; }
+        .spin-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
         .spin-btn.diamond-btn { background: #06b6d4; }
+
+        .wheel-card.processing { pointer-events: none; }
+        .wheel-card.processing::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: var(--radius);
+            z-index: 50;
+        }
+        [data-theme="dark"] .wheel-card.processing::after { background: rgba(0, 0, 0, 0.6); }
+        .wheel-card.processing::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            margin-top: -20px;
+            margin-left: -20px;
+            border: 4px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            z-index: 51;
+        }
 
         .confirm-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.7); z-index: 3000;
             display: none; align-items: center; justify-content: center;
+            padding: 20px;
         }
         .confirm-overlay.show { display: flex; }
         .confirm-box {
             background: var(--card-bg); border: var(--border); border-radius: var(--radius);
             padding: 24px; box-shadow: 5px 5px 0 #000; text-align: center;
-            max-width: 300px; width: 90%;
+            max-width: 300px; width: 100%;
         }
-        .confirm-text { font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 16px; }
+        .confirm-text { font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 16px; line-height: 1.7; }
         .confirm-btns { display: flex; gap: 10px; }
         .confirm-btn {
             flex: 1; padding: 10px; border: var(--border); border-radius: 8px;
             cursor: pointer; font-family: var(--font); font-size: 11px; font-weight: 700;
             box-shadow: 2px 2px 0 #000;
+            transition: all .2s ease;
         }
+        .confirm-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
         .confirm-btn.yes { background: #10b981; color: #fff; }
         .confirm-btn.no { background: #ef4444; color: #fff; }
 
@@ -209,6 +250,8 @@
 
         @keyframes slideDownNotif { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUpNotif { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 
         .bottom-nav {
             position: fixed; bottom: 8px; right: 5%; left: 5%; width: 90%; margin: 0 auto;
@@ -246,8 +289,6 @@
         }
         .nav-item span { font-size: 7px; font-weight: 600; }
         .nav-item.active { color: var(--primary); }
-
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     </style>
 </head>
 <body>
@@ -262,8 +303,8 @@
                 </div>
             </div>
             <div class="header-currency">
-                <span class="currency-badge coins"><i class="bi bi-coin"></i> <span id="coinsHeader">0</span></span>
-                <span class="currency-badge diamonds"><i class="bi bi-gem"></i> <span id="diamondsHeader">0</span></span>
+                <span class="currency-badge coins"><i class="bi bi-coin" aria-hidden="true"></i> <span id="coinsHeader"><span class="mini-spinner"></span></span></span>
+                <span class="currency-badge diamonds"><i class="bi bi-gem" aria-hidden="true"></i> <span id="diamondsHeader"><span class="mini-spinner"></span></span></span>
             </div>
         </div>
     </header>
@@ -274,34 +315,34 @@
         <div class="confirm-box">
             <div class="confirm-text" id="confirmText">مطمئنی؟</div>
             <div class="confirm-btns">
-                <button class="confirm-btn yes" id="confirmYes" onclick="confirmSpin()">بله</button>
-                <button class="confirm-btn no" onclick="closeConfirm()">خیر</button>
+                <button class="confirm-btn yes" id="confirmYes" type="button">بله</button>
+                <button class="confirm-btn no" id="confirmNo" type="button">خیر</button>
             </div>
         </div>
     </div>
 
-    <div class="support-notification" id="supportNotification" onclick="openSupportLink()">
+    <div class="support-notification" id="supportNotification">
         <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         <div class="notif-info">
             <div class="notif-name">امیرمهدی | Amirmahdi</div>
         </div>
-        <i class="bi bi-chevron-left"></i>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='../dashboard/'">
+        <div class="nav-item" data-href="../dashboard/">
             <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="home">خانه</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../ranking/'">
+        <div class="nav-item" data-href="../ranking/">
             <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="ranking">رتبه</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../profile/'">
+        <div class="nav-item" data-href="../profile/">
             <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="profile">پروفایل</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../setting/'">
+        <div class="nav-item" data-href="../setting/">
             <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="settings_nav">تنظیمات</span>
         </div>
@@ -309,9 +350,13 @@
 
     <script>
         (function() {
-            var webApp = window.Eitaa?.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycby-MT3aVkVgQ_L_9SLQJdpMHbKgjP8NwG8tqHmy0UKz0a7c_yEBKuC6q--7ZtnChB3Z/exec';
-            var userCoins = 0, userDiamonds = 0, currentLang = 'fa';
+            'use strict';
+
+            var webApp = window.Eitaa && window.Eitaa.WebApp;
+            var API_URL = 'https://script.google.com/macros/s/AKfycby6ySXv2Hggeeh9w2FMg27gFm1gQcQ9X8wtN7zzEon9Op0zGNX1G5dCQys9Ta33a8dz/exec';
+            var userCoins = 0;
+            var userDiamonds = 0;
+            var currentLang = 'fa';
             var isSpinning = false;
             var pendingSpin = null;
             var wheelStates = {};
@@ -321,12 +366,34 @@
             document.addEventListener('copy', function(e) { e.preventDefault(); });
             document.addEventListener('cut', function(e) { e.preventDefault(); });
 
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
+            }
+
+            function safeParseJSON(str, fallback) {
+                try {
+                    var parsed = JSON.parse(str);
+                    return parsed === null || parsed === undefined ? fallback : parsed;
+                } catch(e) { return fallback; }
+            }
+
             var fontMap = {
                 'Samim': "'Samim', Tahoma, sans-serif",
                 'Sahel': "'Sahel', Tahoma, sans-serif",
-                'IRANSans': "'IRANSans', Tahoma, sans-serif",
                 'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
-                'Estedad': "'Estedad', Tahoma, sans-serif"
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
             };
 
             var translations = {
@@ -350,9 +417,10 @@
                     no: 'خیر',
                     not_enough: 'سکه یا الماس کافی نداری!',
                     got_empty: 'پوچ!',
-                    got_coins: '+',
-                    got_diamonds: '+',
-                    got_retry: 'شانس دوباره!'
+                    got_retry: 'شانس دوباره!',
+                    error_spin: 'خطا در چرخوندن گردونه',
+                    error_network: 'اتصال اینترنت خود را بررسی کنید',
+                    unknown_user: 'کاربر'
                 },
                 en: {
                     home: 'Home',
@@ -374,9 +442,10 @@
                     no: 'No',
                     not_enough: 'Not enough coins or diamonds!',
                     got_empty: 'Empty!',
-                    got_coins: '+',
-                    got_diamonds: '+',
-                    got_retry: 'Retry!'
+                    got_retry: 'Retry!',
+                    error_spin: 'Error spinning wheel',
+                    error_network: 'Please check your internet connection',
+                    unknown_user: 'User'
                 },
                 ar: {
                     home: 'الرئيسية',
@@ -398,9 +467,10 @@
                     no: 'لا',
                     not_enough: 'عملات أو الماس غير كافي!',
                     got_empty: 'فارغ!',
-                    got_coins: '+',
-                    got_diamonds: '+',
-                    got_retry: 'إعادة!'
+                    got_retry: 'إعادة!',
+                    error_spin: 'خطأ في تدوير العجلة',
+                    error_network: 'يرجى التحقق من اتصالك بالإنترنت',
+                    unknown_user: 'مستخدم'
                 }
             };
 
@@ -411,9 +481,10 @@
 
             function getSettings() {
                 try {
-                    var raw = localStorage.getItem('mafiaSettings');
+                    var raw = safeGetLocalStorage('mafiaSettings');
                     if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
-                    var p = JSON.parse(raw);
+                    var p = safeParseJSON(raw, null);
+                    if (!p || typeof p !== 'object') throw new Error('bad');
                     if (!p.theme) p.theme = 'light';
                     if (!p.specialTheme) p.specialTheme = 'none';
                     if (p.animation === undefined) p.animation = true;
@@ -421,23 +492,22 @@
                     if (!p.font) p.font = 'Samim';
                     if (!p.language) p.language = 'fa';
                     return p;
-                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+                } catch(e) {
+                    return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                }
             }
 
             function updateHeaderTitle(lang) {
                 var titleEl = document.getElementById('headerTitle');
-                if (lang === 'en') {
-                    titleEl.textContent = 'Mafia Spy';
-                } else {
-                    titleEl.textContent = 'جاسوس مافیایی';
-                }
+                if (!titleEl) return;
+                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
             }
 
             function applyLanguage(lang) {
                 var t = translations[lang] || translations.fa;
                 document.querySelectorAll('[data-i18n]').forEach(function(el) {
                     var k = el.getAttribute('data-i18n');
-                    if (t[k]) el.textContent = t[k];
+                    if (t[k] !== undefined) el.textContent = t[k];
                 });
                 if (lang === 'en') {
                     document.documentElement.setAttribute('dir', 'ltr');
@@ -455,23 +525,80 @@
                 var f = s.font || 'Samim';
                 document.documentElement.setAttribute('data-theme', t);
                 document.documentElement.setAttribute('data-special-theme', st);
-                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
-                else { document.documentElement.removeAttribute('data-animation'); }
+                if (s.animation === false) {
+                    document.documentElement.setAttribute('data-animation', 'off');
+                } else {
+                    document.documentElement.removeAttribute('data-animation');
+                }
                 var fontFamily = fontMap[f] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
                 applyLanguage(currentLang);
             }
 
-            function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
-            function getUserId(){var u=getEitaaUser();return u?(typeof u.id==='number'?u.id.toString():String(u.id||'')):'';}
-            function fetchData(action,params){
-                var payload={action:action,username:getUserId()};
-                if(params){for(var k in params){if(params.hasOwnProperty(k))payload[k]=params[k];}}
-                return Promise.race([
-                    fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(function(r){return r.json();}),
-                    new Promise(function(_,reject){setTimeout(function(){reject(new Error('timeout'));},10000);})
-                ]).catch(function(){return{ok:false};});
+            function triggerHaptic(style) {
+                var s = getSettings();
+                if (s.haptic === false) return;
+                if (webApp && webApp.HapticFeedback && webApp.HapticFeedback.impactOccurred) {
+                    try { webApp.HapticFeedback.impactOccurred(style || 'light'); } catch(e) {}
+                }
+            }
+
+            function getEitaaUser() {
+                return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
+            }
+
+            function getUserId() {
+                var u = getEitaaUser();
+                if (!u || u.id === undefined || u.id === null) return '';
+                return String(u.id);
+            }
+
+            async function fetchData(action, params, retryCount) {
+                retryCount = retryCount || 0;
+                var payload = { action: action, username: getUserId() };
+                if (params && typeof params === 'object') {
+                    for (var k in params) {
+                        if (Object.prototype.hasOwnProperty.call(params, k)) {
+                            payload[k] = params[k];
+                        }
+                    }
+                }
+                try {
+                    var controller = new AbortController();
+                    var timeoutId = setTimeout(function() { controller.abort(); }, 15000);
+                    var r = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+
+                    if (!r.ok) throw new Error('http_' + r.status);
+
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('application/json') === -1) {
+                        throw new Error('invalid_content_type');
+                    }
+
+                    var data = await r.json();
+                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
+                    return data;
+                } catch(err) {
+                    var isRetryable = err && (
+                        err.name === 'AbortError' ||
+                        err.message === 'Failed to fetch' ||
+                        err.message === 'NetworkError when attempting to fetch resource.' ||
+                        err.message === 'invalid_content_type' ||
+                        /^http_5/.test(err.message || '')
+                    );
+                    if (retryCount < 2 && isRetryable) {
+                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
+                        return fetchData(action, params, retryCount + 1);
+                    }
+                    return { ok: false, error: 'network' };
+                }
             }
 
             var wheels = {
@@ -480,14 +607,14 @@
                     costType: 'coins',
                     cost: 30,
                     prizes: [
-                        {labelKey:'empty', type:'empty', value:0},
-                        {label:'۲۰', labelUnit:'coins', type:'coins', value:20},
-                        {labelKey:'empty', type:'empty', value:0},
-                        {label:'۱۰۰', labelUnit:'coins', type:'coins', value:100},
-                        {label:'۱', labelUnit:'diamonds', type:'diamonds', value:1},
-                        {label:'۲۰۰', labelUnit:'coins', type:'coins', value:200},
-                        {label:'۵', labelUnit:'diamonds', type:'diamonds', value:5},
-                        {label:'۱۰', labelUnit:'diamonds', type:'diamonds', value:10}
+                        { labelKey: 'empty', type: 'empty', value: 0 },
+                        { label: '20', labelUnit: 'coins', type: 'coins', value: 20 },
+                        { labelKey: 'empty', type: 'empty', value: 0 },
+                        { label: '100', labelUnit: 'coins', type: 'coins', value: 100 },
+                        { label: '1', labelUnit: 'diamonds', type: 'diamonds', value: 1 },
+                        { label: '200', labelUnit: 'coins', type: 'coins', value: 200 },
+                        { label: '5', labelUnit: 'diamonds', type: 'diamonds', value: 5 },
+                        { label: '10', labelUnit: 'diamonds', type: 'diamonds', value: 10 }
                     ]
                 },
                 skilled: {
@@ -495,14 +622,14 @@
                     costType: 'coins',
                     cost: 100,
                     prizes: [
-                        {labelKey:'empty', type:'empty', value:0},
-                        {labelKey:'empty', type:'empty', value:0},
-                        {label:'۱۰۰', labelUnit:'coins', type:'coins', value:100},
-                        {label:'۱۰۰۰', labelUnit:'coins', type:'coins', value:1000},
-                        {label:'۵', labelUnit:'diamonds', type:'diamonds', value:5},
-                        {label:'۱۰', labelUnit:'diamonds', type:'diamonds', value:10},
-                        {label:'۵۰', labelUnit:'diamonds', type:'diamonds', value:50},
-                        {labelKey:'retry', type:'retry', value:0}
+                        { labelKey: 'empty', type: 'empty', value: 0 },
+                        { labelKey: 'empty', type: 'empty', value: 0 },
+                        { label: '100', labelUnit: 'coins', type: 'coins', value: 100 },
+                        { label: '1000', labelUnit: 'coins', type: 'coins', value: 1000 },
+                        { label: '5', labelUnit: 'diamonds', type: 'diamonds', value: 5 },
+                        { label: '10', labelUnit: 'diamonds', type: 'diamonds', value: 10 },
+                        { label: '50', labelUnit: 'diamonds', type: 'diamonds', value: 50 },
+                        { labelKey: 'retry', type: 'retry', value: 0 }
                     ]
                 },
                 pro: {
@@ -510,14 +637,14 @@
                     costType: 'coins',
                     cost: 500,
                     prizes: [
-                        {labelKey:'empty', type:'empty', value:0},
-                        {label:'۴۰۰', labelUnit:'coins', type:'coins', value:400},
-                        {label:'۷۰۰', labelUnit:'coins', type:'coins', value:700},
-                        {label:'۱۰۰۰', labelUnit:'coins', type:'coins', value:1000},
-                        {label:'۲۰۰۰', labelUnit:'coins', type:'coins', value:2000},
-                        {label:'۳۰', labelUnit:'diamonds', type:'diamonds', value:30},
-                        {label:'۵۰', labelUnit:'diamonds', type:'diamonds', value:50},
-                        {labelKey:'retry', type:'retry', value:0}
+                        { labelKey: 'empty', type: 'empty', value: 0 },
+                        { label: '400', labelUnit: 'coins', type: 'coins', value: 400 },
+                        { label: '700', labelUnit: 'coins', type: 'coins', value: 700 },
+                        { label: '1000', labelUnit: 'coins', type: 'coins', value: 1000 },
+                        { label: '2000', labelUnit: 'coins', type: 'coins', value: 2000 },
+                        { label: '30', labelUnit: 'diamonds', type: 'diamonds', value: 30 },
+                        { label: '50', labelUnit: 'diamonds', type: 'diamonds', value: 50 },
+                        { labelKey: 'retry', type: 'retry', value: 0 }
                     ]
                 },
                 royal: {
@@ -526,14 +653,14 @@
                     costCoins: 1000,
                     costDiamonds: 50,
                     prizes: [
-                        {label:'۸۰۰', labelUnit:'coins', type:'coins', value:800},
-                        {label:'۱۵۰۰', labelUnit:'coins', type:'coins', value:1500},
-                        {label:'۲۰۰۰', labelUnit:'coins', type:'coins', value:2000},
-                        {label:'۳۰۰۰', labelUnit:'coins', type:'coins', value:3000},
-                        {label:'۵۰', labelUnit:'diamonds', type:'diamonds', value:50},
-                        {label:'۱۰۰', labelUnit:'diamonds', type:'diamonds', value:100},
-                        {label:'۱۵۰', labelUnit:'diamonds', type:'diamonds', value:150},
-                        {labelKey:'retry', type:'retry', value:0}
+                        { label: '800', labelUnit: 'coins', type: 'coins', value: 800 },
+                        { label: '1500', labelUnit: 'coins', type: 'coins', value: 1500 },
+                        { label: '2000', labelUnit: 'coins', type: 'coins', value: 2000 },
+                        { label: '3000', labelUnit: 'coins', type: 'coins', value: 3000 },
+                        { label: '50', labelUnit: 'diamonds', type: 'diamonds', value: 50 },
+                        { label: '100', labelUnit: 'diamonds', type: 'diamonds', value: 100 },
+                        { label: '150', labelUnit: 'diamonds', type: 'diamonds', value: 150 },
+                        { labelKey: 'retry', type: 'retry', value: 0 }
                     ]
                 },
                 imperial: {
@@ -541,14 +668,14 @@
                     costType: 'diamonds',
                     cost: 200,
                     prizes: [
-                        {label:'۱۰۰۰۰', labelUnit:'coins', type:'coins', value:10000},
-                        {label:'۲۰۰۰۰', labelUnit:'coins', type:'coins', value:20000},
-                        {label:'۳۰۰۰۰', labelUnit:'coins', type:'coins', value:30000},
-                        {label:'۵۰۰۰۰', labelUnit:'coins', type:'coins', value:50000},
-                        {label:'۱۵۰', labelUnit:'diamonds', type:'diamonds', value:150},
-                        {label:'۲۵۰', labelUnit:'diamonds', type:'diamonds', value:250},
-                        {label:'۳۵۰', labelUnit:'diamonds', type:'diamonds', value:350},
-                        {label:'۵۰۰', labelUnit:'diamonds', type:'diamonds', value:500}
+                        { label: '10000', labelUnit: 'coins', type: 'coins', value: 10000 },
+                        { label: '20000', labelUnit: 'coins', type: 'coins', value: 20000 },
+                        { label: '30000', labelUnit: 'coins', type: 'coins', value: 30000 },
+                        { label: '50000', labelUnit: 'coins', type: 'coins', value: 50000 },
+                        { label: '150', labelUnit: 'diamonds', type: 'diamonds', value: 150 },
+                        { label: '250', labelUnit: 'diamonds', type: 'diamonds', value: 250 },
+                        { label: '350', labelUnit: 'diamonds', type: 'diamonds', value: 350 },
+                        { label: '500', labelUnit: 'diamonds', type: 'diamonds', value: 500 }
                     ]
                 }
             };
@@ -568,27 +695,27 @@
                 var html = '';
                 for (var key in wheels) {
                     var w = wheels[key];
-                    html += '<div class="wheel-card" id="wheel-' + key + '">';
-                    html += '<div class="wheel-title">' + getTranslation(w.nameKey) + '</div>';
+                    html += '<div class="wheel-card" data-wheel="' + escapeHtml(key) + '">';
+                    html += '<div class="wheel-title">' + escapeHtml(getTranslation(w.nameKey)) + '</div>';
                     html += '<div class="wheel-container">';
-                    html += '<div class="wheel-pointer"><i class="bi bi-geo-alt-fill"></i></div>';
-                    html += '<canvas class="wheel-canvas" id="canvas-' + key + '" width="250" height="250"></canvas>';
+                    html += '<div class="wheel-pointer"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i></div>';
+                    html += '<canvas class="wheel-canvas" id="canvas-' + escapeHtml(key) + '" width="250" height="250"></canvas>';
                     html += '</div>';
                     if (w.costType === 'both') {
-                        html += '<button class="spin-btn" onclick="askSpin(\'' + key + '\',\'coins\')">' + w.costCoins + ' ' + getTranslation('coins') + '</button>';
-                        html += '<button class="spin-btn diamond-btn" style="margin-top:6px;" onclick="askSpin(\'' + key + '\',\'diamonds\')">' + w.costDiamonds + ' ' + getTranslation('diamonds') + '</button>';
+                        html += '<button class="spin-btn" data-wheel-key="' + escapeHtml(key) + '" data-pay-type="coins" type="button">' + w.costCoins + ' ' + escapeHtml(getTranslation('coins')) + '</button>';
+                        html += '<button class="spin-btn diamond-btn" style="margin-top:6px;" data-wheel-key="' + escapeHtml(key) + '" data-pay-type="diamonds" type="button">' + w.costDiamonds + ' ' + escapeHtml(getTranslation('diamonds')) + '</button>';
                     } else if (w.costType === 'coins') {
-                        html += '<button class="spin-btn" onclick="askSpin(\'' + key + '\',\'coins\')">' + w.cost + ' ' + getTranslation('coins') + '</button>';
+                        html += '<button class="spin-btn" data-wheel-key="' + escapeHtml(key) + '" data-pay-type="coins" type="button">' + w.cost + ' ' + escapeHtml(getTranslation('coins')) + '</button>';
                     } else {
-                        html += '<button class="spin-btn diamond-btn" onclick="askSpin(\'' + key + '\',\'diamonds\')">' + w.cost + ' ' + getTranslation('diamonds') + '</button>';
+                        html += '<button class="spin-btn diamond-btn" data-wheel-key="' + escapeHtml(key) + '" data-pay-type="diamonds" type="button">' + w.cost + ' ' + escapeHtml(getTranslation('diamonds')) + '</button>';
                     }
-                    html += '<div class="wheel-result" id="result-' + key + '"></div>';
+                    html += '<div class="wheel-result" id="result-' + escapeHtml(key) + '"></div>';
                     html += '</div>';
                 }
                 container.innerHTML = html;
-                
+
                 for (var k in wheels) {
-                    if (!wheelStates[k]) wheelStates[k] = {rotation: 0};
+                    if (!wheelStates[k]) wheelStates[k] = { rotation: 0 };
                     drawWheel(k);
                 }
             }
@@ -597,13 +724,15 @@
                 var canvas = document.getElementById('canvas-' + key);
                 if (!canvas) return;
                 var ctx = canvas.getContext('2d');
-                var cx = canvas.width / 2, cy = canvas.height / 2;
+                var cx = canvas.width / 2;
+                var cy = canvas.height / 2;
                 var radius = canvas.width / 2 - 10;
                 var w = wheels[key];
                 var seg = (2 * Math.PI) / w.prizes.length;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 for (var i = 0; i < w.prizes.length; i++) {
-                    var sa = i * seg, ea = sa + seg;
+                    var sa = i * seg;
+                    var ea = sa + seg;
                     ctx.beginPath();
                     ctx.moveTo(cx, cy);
                     ctx.arc(cx, cy, radius, sa, ea);
@@ -628,141 +757,203 @@
                 }
             }
 
-            window.askSpin = function(key, payType) {
+            function askSpin(key, payType) {
                 if (isSpinning) return;
                 var w = wheels[key];
+                if (!w) return;
+
                 var costText = '';
-                
-                if (payType === 'coins') {
-                    if (w.costType === 'both') costText = w.costCoins + ' ' + getTranslation('coins');
-                    else costText = w.cost + ' ' + getTranslation('coins');
+                if (w.costType === 'both') {
+                    if (payType === 'coins') costText = w.costCoins + ' ' + getTranslation('coins');
+                    else costText = w.costDiamonds + ' ' + getTranslation('diamonds');
+                } else if (w.costType === 'coins') {
+                    costText = w.cost + ' ' + getTranslation('coins');
                 } else {
-                    if (w.costType === 'both') costText = w.costDiamonds + ' ' + getTranslation('diamonds');
-                    else costText = w.cost + ' ' + getTranslation('diamonds');
+                    costText = w.cost + ' ' + getTranslation('diamonds');
                 }
-                
+
                 document.getElementById('confirmText').textContent = getTranslation('confirm_text') + costText + getTranslation('spend');
-                document.getElementById('confirmOverlay').classList.add('show');
                 document.getElementById('confirmYes').textContent = getTranslation('yes');
-                document.querySelector('.confirm-btn.no').textContent = getTranslation('no');
-                pendingSpin = {key: key, payType: payType};
-                window._pendingSpin = pendingSpin;
-            };
+                document.getElementById('confirmNo').textContent = getTranslation('no');
+                document.getElementById('confirmOverlay').classList.add('show');
+                pendingSpin = { key: key, payType: payType };
+                triggerHaptic('light');
+            }
 
-            window.confirmSpin = function() {
+            function closeConfirm() {
                 document.getElementById('confirmOverlay').classList.remove('show');
-                if (!window._pendingSpin) return;
-                var key = window._pendingSpin.key;
-                var payType = window._pendingSpin.payType;
-                window._pendingSpin = null;
-                executeSpin(key, payType);
-            };
+                pendingSpin = null;
+            }
 
-            window.closeConfirm = function() {
-                document.getElementById('confirmOverlay').classList.remove('show');
-                window._pendingSpin = null;
-            };
+            function setCardProcessing(key, processing) {
+                var card = document.querySelector('.wheel-card[data-wheel="' + key + '"]');
+                if (!card) return;
+                if (processing) card.classList.add('processing');
+                else card.classList.remove('processing');
+            }
 
-            function executeSpin(key, payType) {
+            async function executeSpin(key, payType) {
+                if (isSpinning) return;
                 var w = wheels[key];
-                var canSpin = false;
-                
-                if (w.costType === 'coins') {
-                    canSpin = userCoins >= w.cost;
-                } else if (w.costType === 'diamonds') {
-                    canSpin = userDiamonds >= w.cost;
-                } else if (w.costType === 'both') {
-                    if (payType === 'coins') canSpin = userCoins >= w.costCoins;
-                    else canSpin = userDiamonds >= w.costDiamonds;
-                }
-                
-                if (!canSpin) {
-                    document.getElementById('result-' + key).textContent = getTranslation('not_enough');
+                if (!w) return;
+
+                isSpinning = true;
+                triggerHaptic('medium');
+
+                var resultEl = document.getElementById('result-' + key);
+                resultEl.textContent = '';
+                setCardProcessing(key, true);
+
+                var response = await fetchData('spinWheel', { wheel: key, payType: payType });
+
+                setCardProcessing(key, false);
+
+                if (!response || !response.ok) {
+                    var errMsg = getTranslation('error_spin');
+                    if (response && response.error === 'Not enough coins') errMsg = getTranslation('not_enough');
+                    else if (response && response.error === 'Not enough diamonds') errMsg = getTranslation('not_enough');
+                    resultEl.textContent = errMsg;
+                    isSpinning = false;
                     return;
                 }
-                
-                if (w.costType === 'both') {
-                    if (payType === 'coins') userCoins -= w.costCoins;
-                    else userDiamonds -= w.costDiamonds;
-                } else if (w.costType === 'coins') {
-                    userCoins -= w.cost;
-                } else {
-                    userDiamonds -= w.cost;
+
+                var data = response.data;
+                var prizeIndex = parseInt(data.prizeIndex, 10);
+                if (isNaN(prizeIndex) || prizeIndex < 0 || prizeIndex >= w.prizes.length) {
+                    resultEl.textContent = getTranslation('error_spin');
+                    isSpinning = false;
+                    return;
                 }
-                
-                fetchData('updateUser', {coins: userCoins, diamonds: userDiamonds});
-                document.getElementById('coinsHeader').textContent = userCoins;
-                document.getElementById('diamondsHeader').textContent = userDiamonds;
-                document.getElementById('result-' + key).textContent = '';
-                
-                isSpinning = true;
+
+                var prize = w.prizes[prizeIndex];
+
+                var newCoins = parseInt(data.coins, 10);
+                if (!isNaN(newCoins)) {
+                    userCoins = newCoins;
+                    document.getElementById('coinsHeader').textContent = String(newCoins);
+                }
+                var newDiamonds = parseInt(data.diamonds, 10);
+                if (!isNaN(newDiamonds)) {
+                    userDiamonds = newDiamonds;
+                    document.getElementById('diamondsHeader').textContent = String(newDiamonds);
+                }
+
                 var seg = 360 / w.prizes.length;
-                var ri = Math.floor(Math.random() * w.prizes.length);
-                var target = -90 - (ri * seg + seg / 2);
-                var state = wheelStates[key] || {rotation: 0};
-                var ca = state.rotation % 360;
-                var rot = 1800 + (target - ca);
-                if (rot < 1800) rot += 360;
-                var nr = state.rotation + rot;
-                state.rotation = nr;
+                var targetAngle = -90 - (prizeIndex * seg + seg / 2);
+                var state = wheelStates[key] || { rotation: 0 };
+                var currentAngle = state.rotation % 360;
+                var delta = targetAngle - currentAngle;
+                delta = ((delta % 360) + 360) % 360;
+                var totalRotation = 1800 + delta;
+                var newRotation = state.rotation + totalRotation;
+                state.rotation = newRotation;
+                wheelStates[key] = state;
+
                 var canvas = document.getElementById('canvas-' + key);
-                canvas.style.transform = 'rotate(' + nr + 'deg)';
-                
+                if (canvas) {
+                    canvas.style.transform = 'rotate(' + newRotation + 'deg)';
+                }
+
                 setTimeout(function() {
-                    var prize = w.prizes[ri];
                     var resultText = '';
                     if (prize.type === 'empty') {
                         resultText = getTranslation('got_empty');
                     } else if (prize.type === 'coins') {
-                        userCoins += prize.value;
-                        resultText = getTranslation('got_coins') + prize.value + ' ' + getTranslation('coins');
-                        fetchData('updateUser', {coins: userCoins, diamonds: userDiamonds});
+                        resultText = '+' + prize.value + ' ' + getTranslation('coins');
                     } else if (prize.type === 'diamonds') {
-                        userDiamonds += prize.value;
-                        resultText = getTranslation('got_diamonds') + prize.value + ' ' + getTranslation('diamonds');
-                        fetchData('updateUser', {coins: userCoins, diamonds: userDiamonds});
+                        resultText = '+' + prize.value + ' ' + getTranslation('diamonds');
                     } else if (prize.type === 'retry') {
                         resultText = getTranslation('got_retry');
-                        if (w.costType === 'coins') userCoins += w.cost;
-                        else if (w.costType === 'diamonds') userDiamonds += w.cost;
-                        else if (w.costType === 'both') {
-                            if (payType === 'coins') userCoins += w.costCoins;
-                            else userDiamonds += w.costDiamonds;
-                        }
-                        fetchData('updateUser', {coins: userCoins, diamonds: userDiamonds});
                     }
-                    document.getElementById('result-' + key).textContent = resultText;
-                    document.getElementById('coinsHeader').textContent = userCoins;
-                    document.getElementById('diamondsHeader').textContent = userDiamonds;
+                    resultEl.textContent = resultText;
+                    triggerHaptic('heavy');
                     isSpinning = false;
                 }, 4200);
             }
 
             function openSupportLink() {
-                if (webApp && webApp.openEitaaLink) { webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code'); }
-                else { window.open('https://eitaa.com/Amirmahdi_code', '_blank'); }
+                var notif = document.getElementById('supportNotification');
+                if (notif) notif.style.display = 'none';
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
+                } else {
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
+                }
             }
-            window.openSupportLink = openSupportLink;
+
+            async function loadUserCurrency() {
+                var coinsEl = document.getElementById('coinsHeader');
+                var diamondsEl = document.getElementById('diamondsHeader');
+                try {
+                    var userData = await fetchData('getUser', {});
+                    if (userData && userData.ok && userData.data && typeof userData.data === 'object') {
+                        var c = parseInt(userData.data.coins, 10);
+                        var d = parseInt(userData.data.diamonds, 10);
+                        userCoins = isNaN(c) ? 0 : c;
+                        userDiamonds = isNaN(d) ? 0 : d;
+                        coinsEl.textContent = String(userCoins);
+                        diamondsEl.textContent = String(userDiamonds);
+                    } else {
+                        coinsEl.textContent = '0';
+                        diamondsEl.textContent = '0';
+                    }
+                } catch(e) {
+                    coinsEl.textContent = '0';
+                    diamondsEl.textContent = '0';
+                }
+            }
+
+            document.getElementById('wheelsContainer').addEventListener('click', function(e) {
+                var btn = e.target.closest('.spin-btn[data-wheel-key]');
+                if (btn && !isSpinning) {
+                    askSpin(btn.dataset.wheelKey, btn.dataset.payType);
+                }
+            });
+
+            document.getElementById('confirmYes').addEventListener('click', function() {
+                var pending = pendingSpin;
+                pendingSpin = null;
+                document.getElementById('confirmOverlay').classList.remove('show');
+                if (pending) {
+                    executeSpin(pending.key, pending.payType);
+                }
+            });
+
+            document.getElementById('confirmNo').addEventListener('click', closeConfirm);
+
+            document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeConfirm();
+            });
+
+            document.getElementById('supportNotification').addEventListener('click', openSupportLink);
+
+            document.querySelectorAll('.nav-item').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var href = el.getAttribute('data-href');
+                    if (href) window.location.href = href;
+                });
+            });
 
             async function init() {
                 applyTheme();
+
                 if (webApp) {
-                    webApp.ready();
-                    webApp.expand();
-                    webApp.BackButton.show();
-                    webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                    try {
+                        webApp.ready();
+                        webApp.expand();
+                        if (webApp.BackButton && webApp.BackButton.show) {
+                            webApp.BackButton.show();
+                            webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                        }
+                    } catch(e) {}
                 }
-                var userData = await fetchData('getUser', {});
-                if (userData.ok && userData.data) {
-                    userCoins = userData.data.coins || 0;
-                    userDiamonds = userData.data.diamonds || 0;
-                    document.getElementById('coinsHeader').textContent = userCoins;
-                    document.getElementById('diamondsHeader').textContent = userDiamonds;
-                }
+
                 renderAllWheels();
+                await loadUserCurrency();
+
                 setTimeout(function() {
                     var notif = document.getElementById('supportNotification');
-                    if (notif) { notif.style.display = 'none'; }
+                    if (notif) notif.style.display = 'none';
                 }, 5000);
             }
 
