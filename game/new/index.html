@@ -129,7 +129,7 @@
             position: relative; z-index: 5;
             flex: 1;
             max-width: 600px; width: 100%;
-            margin: 16px auto; padding: 0 12px 170px;
+            margin: 16px auto; padding: 0 12px 110px;
             display: flex; flex-direction: column; gap: 12px;
         }
 
@@ -423,7 +423,7 @@
 
         .floating-create-bar {
             position: fixed;
-            bottom: 60px;
+            bottom: 12px;
             right: 5%;
             left: 5%;
             width: 90%;
@@ -436,38 +436,69 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 14px;
-            background: var(--primary);
-            color: #fff;
-            border: var(--border);
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
             border-radius: 25px;
-            box-shadow: var(--shadow);
             font-family: var(--font);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
         }
-        .btn-create:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
+        [data-theme="dark"] .btn-create {
+            background: rgba(26, 26, 26, 0.35);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+        .btn-create::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            pointer-events: none;
+            border-radius: 25px 25px 0 0;
+        }
+        [data-theme="dark"] .btn-create::before {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+        }
+        .btn-create:active {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        [data-theme="dark"] .btn-create:active {
+            background: rgba(26, 26, 26, 0.5);
+        }
         .btn-create:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
             transform: none;
         }
-        .btn-create i { font-size: 18px; }
+        .btn-create i { font-size: 15px; position: relative; z-index: 1; }
+        .btn-create span { position: relative; z-index: 1; }
         .btn-create.loading {
             pointer-events: none;
             opacity: 0.7;
         }
         .btn-create .btn-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.4);
-            border-top-color: #fff;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(var(--primary-rgb), 0.3);
+            border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             display: inline-block;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -500,44 +531,6 @@
 
         @keyframes slideDownNotif { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUpNotif { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-        .bottom-nav {
-            position: fixed; bottom: 8px; right: 5%; left: 5%; width: 90%; margin: 0 auto;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
-            border-radius: 25px;
-            display: flex; justify-content: space-around; align-items: center;
-            padding: 4px 0; z-index: 999;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-        }
-        [data-theme="dark"] .bottom-nav {
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 1px;
-            cursor: pointer; text-decoration: none; color: var(--text-light);
-            padding: 4px 10px; font-family: var(--font); background: none; border: none; font-size: 12px;
-        }
-        .nav-item img {
-            width: 20px; height: 20px;
-            opacity: 0.5;
-            filter: brightness(0);
-        }
-        [data-theme="dark"] .nav-item img {
-            filter: brightness(0) invert(1);
-        }
-        .nav-item.active img {
-            opacity: 1;
-            animation: bounce 1.5s ease-in-out infinite;
-        }
-        .nav-item span { font-size: 7px; font-weight: 600; }
-        .nav-item.active { color: var(--primary); }
     </style>
 </head>
 <body>
@@ -683,25 +676,6 @@
         <i class="bi bi-chevron-left" aria-hidden="true"></i>
     </div>
 
-    <nav class="bottom-nav">
-        <div class="nav-item" data-href="../../dashboard/">
-            <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
-            <span data-i18n="home">خانه</span>
-        </div>
-        <div class="nav-item" data-href="../../ranking/">
-            <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
-            <span data-i18n="ranking">رتبه</span>
-        </div>
-        <div class="nav-item" data-href="../../profile/">
-            <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
-            <span data-i18n="profile">پروفایل</span>
-        </div>
-        <div class="nav-item" data-href="../../setting/">
-            <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
-            <span data-i18n="settings_nav">تنظیمات</span>
-        </div>
-    </nav>
-
     <script>
         (function() {
             'use strict';
@@ -796,11 +770,7 @@
                     range_format: '{min} تا {max} نفر',
                     fixed_one: 'دقیقاً ۱ نفر',
                     create_failed: 'ساخت بازی انجام نشد. دوباره تلاش کن.',
-                    error_network: 'اتصال اینترنت خود را بررسی کنید',
-                    home: 'خانه',
-                    ranking: 'رتبه',
-                    profile: 'پروفایل',
-                    settings_nav: 'تنظیمات'
+                    error_network: 'اتصال اینترنت خود را بررسی کنید'
                 },
                 en: {
                     new_game: 'Create New Game',
@@ -842,11 +812,7 @@
                     range_format: '{min} to {max}',
                     fixed_one: 'Exactly 1',
                     create_failed: 'Failed to create game. Try again.',
-                    error_network: 'Please check your internet connection',
-                    home: 'Home',
-                    ranking: 'Ranking',
-                    profile: 'Profile',
-                    settings_nav: 'Settings'
+                    error_network: 'Please check your internet connection'
                 },
                 ar: {
                     new_game: 'إنشاء لعبة جديدة',
@@ -888,11 +854,7 @@
                     range_format: '{min} إلى {max}',
                     fixed_one: 'بالضبط ۱',
                     create_failed: 'فشل إنشاء اللعبة. حاول مرة أخرى.',
-                    error_network: 'يرجى التحقق من اتصالك بالإنترنت',
-                    home: 'الرئيسية',
-                    ranking: 'الترتيب',
-                    profile: 'الملف',
-                    settings_nav: 'الإعدادات'
+                    error_network: 'يرجى التحقق من اتصالك بالإنترنت'
                 }
             };
 
@@ -908,76 +870,16 @@
             }
 
             var ROLE_DEFS = {
-                citizen: {
-                    nameKey: 'role_citizen',
-                    image: 'https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png',
-                    min: 1, max: 7,
-                    available: true,
-                    group: 'city'
-                },
-                detective: {
-                    nameKey: 'role_detective',
-                    image: 'https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png',
-                    min: 0, max: 1,
-                    available: true,
-                    group: 'city'
-                },
-                judge: {
-                    nameKey: 'role_judge',
-                    image: 'https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png',
-                    min: 1, max: 1,
-                    available: true,
-                    group: 'city'
-                },
-                sheriff: {
-                    nameKey: 'role_sheriff',
-                    image: '',
-                    min: 0, max: 1,
-                    available: false,
-                    group: 'city'
-                },
-                spy: {
-                    nameKey: 'role_spy',
-                    image: 'https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png',
-                    min: 1, max: 3,
-                    available: true,
-                    group: 'mafia'
-                },
-                infiltrator: {
-                    nameKey: 'role_infiltrator',
-                    image: 'https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png',
-                    min: 0, max: 7,
-                    available: true,
-                    group: 'mafia'
-                },
-                silencer: {
-                    nameKey: 'role_silencer',
-                    image: '',
-                    min: 0, max: 1,
-                    available: false,
-                    group: 'mafia'
-                },
-                bait: {
-                    nameKey: 'role_bait',
-                    image: '',
-                    min: 0, max: 1,
-                    available: false,
-                    group: 'mafia'
-                },
-                killer: {
-                    nameKey: 'role_killer',
-                    image: '',
-                    min: 0, max: 1,
-                    available: false,
-                    group: 'free'
-                },
-                psycho: {
-                    nameKey: 'role_psycho',
-                    image: '',
-                    min: 0, max: 1,
-                    available: false,
-                    group: 'free'
-                }
+                citizen: { nameKey: 'role_citizen', image: 'https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png', min: 1, max: 7, available: true, group: 'city' },
+                detective: { nameKey: 'role_detective', image: 'https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png', min: 0, max: 1, available: true, group: 'city' },
+                judge: { nameKey: 'role_judge', image: 'https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png', min: 1, max: 1, available: true, group: 'city' },
+                sheriff: { nameKey: 'role_sheriff', image: '', min: 0, max: 1, available: false, group: 'city' },
+                spy: { nameKey: 'role_spy', image: 'https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png', min: 1, max: 3, available: true, group: 'mafia' },
+                infiltrator: { nameKey: 'role_infiltrator', image: 'https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png', min: 0, max: 7, available: true, group: 'mafia' },
+                silencer: { nameKey: 'role_silencer', image: '', min: 0, max: 1, available: false, group: 'mafia' },
+                bait: { nameKey: 'role_bait', image: '', min: 0, max: 1, available: false, group: 'mafia' },
+                killer: { nameKey: 'role_killer', image: '', min: 0, max: 1, available: false, group: 'free' },
+                psycho: { nameKey: 'role_psycho', image: '', min: 0, max: 1, available: false, group: 'free' }
             };
 
             var ROLE_GROUPS = {
@@ -1004,18 +906,7 @@
                 level: 'beginner',
                 playerCount: 5,
                 dayDuration: 3,
-                roles: {
-                    citizen: 1,
-                    detective: 1,
-                    judge: 1,
-                    spy: 1,
-                    infiltrator: 1,
-                    sheriff: 0,
-                    silencer: 0,
-                    bait: 0,
-                    killer: 0,
-                    psycho: 0
-                }
+                roles: { citizen: 1, detective: 1, judge: 1, spy: 1, infiltrator: 1, sheriff: 0, silencer: 0, bait: 0, killer: 0, psycho: 0 }
             };
 
             function getSettings() {
@@ -1456,13 +1347,6 @@
             document.getElementById('btnCreate').addEventListener('click', createGame);
 
             document.getElementById('supportNotification').addEventListener('click', openSupportLink);
-
-            document.querySelectorAll('.nav-item').forEach(function(el) {
-                el.addEventListener('click', function() {
-                    var href = el.getAttribute('data-href');
-                    if (href) window.location.href = href;
-                });
-            });
 
             if (webApp) {
                 try {
