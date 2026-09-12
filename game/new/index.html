@@ -150,6 +150,24 @@
         }
         .section-title i { color: var(--primary); font-size: 14px; }
 
+        .sub-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sub-label i { font-size: 11px; color: var(--primary); }
+
+        .sub-divider {
+            border: none;
+            border-top: 1px dashed var(--text-light);
+            margin: 14px 0;
+            opacity: 0.5;
+        }
+
         .options-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -359,32 +377,22 @@
             color: var(--primary);
         }
 
-        .total-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px;
-            background: var(--bg2);
-            border: var(--border);
-            border-radius: 10px;
-            box-shadow: 2px 2px 0 #000;
+        .total-hint {
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-light);
             margin-top: 10px;
         }
-        .total-bar .total-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text);
+        .total-hint.error {
+            color: #ef4444;
         }
-        .total-bar .total-value {
-            font-size: 16px;
+        .total-hint .total-num {
             font-weight: 800;
             color: var(--primary);
+            font-size: 11px;
         }
-        .total-bar.error {
-            border-color: #ef4444;
-            box-shadow: 2px 2px 0 #ef4444;
-        }
-        .total-bar.error .total-value {
+        .total-hint.error .total-num {
             color: #ef4444;
         }
 
@@ -516,14 +524,16 @@
     <main class="main-container">
 
         <div class="section-card">
-            <div class="section-title"><i class="bi bi-broadcast" aria-hidden="true"></i> <span data-i18n="game_type">نوع بازی</span></div>
+            <div class="section-title"><i class="bi bi-broadcast" aria-hidden="true"></i> <span data-i18n="game_setup">تنظیمات کلی بازی</span></div>
+
+            <div class="sub-label"><i class="bi bi-broadcast" aria-hidden="true"></i> <span data-i18n="game_type">نوع بازی</span></div>
             <div class="options-grid" id="typeOptions">
                 <button class="option-btn active" data-type="public" type="button">
-                    <i class="bi bi-globe" aria-hidden="true"></i>
+                    <i class="bi bi-link-45deg" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="type_public">عمومی</span>
                 </button>
                 <button class="option-btn" data-type="server" type="button">
-                    <i class="bi bi-hdd-network" aria-hidden="true"></i>
+                    <i class="bi bi-wifi" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="type_server">سراسری</span>
                 </button>
                 <button class="option-btn disabled" data-type="private" type="button">
@@ -532,10 +542,10 @@
                     <span class="option-sub" data-i18n="coming_soon">به‌زودی</span>
                 </button>
             </div>
-        </div>
 
-        <div class="section-card">
-            <div class="section-title"><i class="bi bi-bar-chart" aria-hidden="true"></i> <span data-i18n="game_level">سطح بازی</span></div>
+            <hr class="sub-divider">
+
+            <div class="sub-label"><i class="bi bi-bar-chart" aria-hidden="true"></i> <span data-i18n="game_level">سطح بازی</span></div>
             <div class="options-grid five" id="levelOptions">
                 <button class="option-btn active" data-level="beginner" type="button">
                     <i class="bi bi-star" aria-hidden="true"></i>
@@ -558,35 +568,40 @@
                     <span class="option-label" data-i18n="level_legendary">افسانه‌ای</span>
                 </button>
             </div>
-        </div>
 
-        <div class="section-card">
-            <div class="section-title"><i class="bi bi-people" aria-hidden="true"></i> <span data-i18n="player_count">تعداد نفرات</span></div>
-            <div class="slider-row">
-                <i class="bi bi-people slider-icon" aria-hidden="true"></i>
-                <span class="slider-label" data-i18n="total_players">تعداد کل بازیکنان</span>
-                <span class="slider-value" id="playerCountValue">۵</span>
-            </div>
-            <input type="range" min="3" max="10" value="5" step="1" class="slider-input" id="playerCountSlider">
-        </div>
+            <hr class="sub-divider">
 
-        <div class="section-card">
-            <div class="section-title"><i class="bi bi-person-badge" aria-hidden="true"></i> <span data-i18n="roles_config">انتخاب نقش‌ها</span></div>
-            <div class="roles-list" id="rolesList"></div>
-            <div class="total-bar" id="totalBar">
-                <span class="total-label" data-i18n="total_selected">جمع انتخاب‌شده:</span>
-                <span class="total-value"><span id="totalSelected">5</span> / <span id="totalRequired">5</span></span>
-            </div>
-        </div>
-
-        <div class="section-card">
-            <div class="section-title"><i class="bi bi-clock" aria-hidden="true"></i> <span data-i18n="day_duration">مدت زمان هر روز</span></div>
+            <div class="sub-label"><i class="bi bi-clock" aria-hidden="true"></i> <span data-i18n="day_duration">مدت زمان هر روز</span></div>
             <div class="slider-row">
                 <i class="bi bi-sun slider-icon" aria-hidden="true"></i>
                 <span class="slider-label" data-i18n="day_minutes">دقیقه در هر روز</span>
                 <span class="slider-value" id="dayDurationValue">۳</span>
             </div>
             <input type="range" min="1" max="5" value="3" step="1" class="slider-input" id="dayDurationSlider">
+
+        </div>
+
+        <div class="section-card">
+            <div class="section-title"><i class="bi bi-people" aria-hidden="true"></i> <span data-i18n="players_and_roles">بازیکنان و نقش‌ها</span></div>
+
+            <div class="sub-label"><i class="bi bi-people" aria-hidden="true"></i> <span data-i18n="player_count">تعداد نفرات</span></div>
+            <div class="slider-row">
+                <i class="bi bi-people slider-icon" aria-hidden="true"></i>
+                <span class="slider-label" data-i18n="total_players">تعداد کل بازیکنان</span>
+                <span class="slider-value" id="playerCountValue">۵</span>
+            </div>
+            <input type="range" min="3" max="10" value="5" step="1" class="slider-input" id="playerCountSlider">
+
+            <hr class="sub-divider">
+
+            <div class="sub-label"><i class="bi bi-person-badge" aria-hidden="true"></i> <span data-i18n="roles_config">انتخاب نقش‌ها</span></div>
+            <div class="roles-list" id="rolesList"></div>
+
+            <div class="total-hint" id="totalHint">
+                <span data-i18n="total_selected">جمع انتخاب‌شده:</span>
+                <span class="total-num"><span id="totalSelected">5</span> / <span id="totalRequired">5</span></span>
+            </div>
+
         </div>
 
         <button class="btn-create" id="btnCreate" type="button">
@@ -605,19 +620,19 @@
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item" data-href="../dashboard/">
+        <div class="nav-item" data-href="../../dashboard/">
             <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="home">خانه</span>
         </div>
-        <div class="nav-item" data-href="../ranking/">
+        <div class="nav-item" data-href="../../ranking/">
             <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="ranking">رتبه</span>
         </div>
-        <div class="nav-item" data-href="../profile/">
+        <div class="nav-item" data-href="../../profile/">
             <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="profile">پروفایل</span>
         </div>
-        <div class="nav-item" data-href="../setting/">
+        <div class="nav-item" data-href="../../setting/">
             <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="settings_nav">تنظیمات</span>
         </div>
@@ -679,6 +694,8 @@
             var translations = {
                 fa: {
                     new_game: 'ساخت بازی جدید',
+                    game_setup: 'تنظیمات کلی بازی',
+                    players_and_roles: 'بازیکنان و نقش‌ها',
                     game_type: 'نوع بازی',
                     game_level: 'سطح بازی',
                     player_count: 'تعداد نفرات',
@@ -720,6 +737,8 @@
                 },
                 en: {
                     new_game: 'Create New Game',
+                    game_setup: 'General Game Settings',
+                    players_and_roles: 'Players & Roles',
                     game_type: 'Game Type',
                     game_level: 'Game Level',
                     player_count: 'Player Count',
@@ -761,6 +780,8 @@
                 },
                 ar: {
                     new_game: 'إنشاء لعبة جديدة',
+                    game_setup: 'إعدادات اللعبة العامة',
+                    players_and_roles: 'اللاعبون والأدوار',
                     game_type: 'نوع اللعبة',
                     game_level: 'مستوى اللعبة',
                     player_count: 'عدد اللاعبين',
@@ -944,6 +965,8 @@
                     document.documentElement.setAttribute('dir', 'rtl');
                 }
                 updateHeaderTitle(lang);
+                renderRolesList();
+                updateTotalBar();
             }
 
             function applyTheme() {
@@ -1032,6 +1055,7 @@
 
             function renderRolesList() {
                 var container = document.getElementById('rolesList');
+                if (!container) return;
                 var html = '';
 
                 ROLE_ORDER.forEach(function(key) {
@@ -1107,12 +1131,16 @@
             function updateTotalBar() {
                 var total = getAvailableTotal();
 
-                document.getElementById('totalSelected').textContent = String(total);
-                document.getElementById('totalRequired').textContent = String(state.playerCount);
+                var totalSelEl = document.getElementById('totalSelected');
+                var totalReqEl = document.getElementById('totalRequired');
+                if (totalSelEl) totalSelEl.textContent = String(total);
+                if (totalReqEl) totalReqEl.textContent = String(state.playerCount);
 
-                var bar = document.getElementById('totalBar');
-                if (total !== state.playerCount) bar.classList.add('error');
-                else bar.classList.remove('error');
+                var hint = document.getElementById('totalHint');
+                if (hint) {
+                    if (total !== state.playerCount) hint.classList.add('error');
+                    else hint.classList.remove('error');
+                }
 
                 updateCountersDisabled();
                 updateCreateButton();
@@ -1331,7 +1359,7 @@
                     webApp.expand();
                     if (webApp.BackButton && webApp.BackButton.show) {
                         webApp.BackButton.show();
-                        webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                        webApp.BackButton.onClick(function() { window.location.href = '../../dashboard/'; });
                     }
                 } catch(e) {}
             }
