@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
@@ -138,6 +138,19 @@
             max-width: 400px; width: 100%;
             min-height: 100px;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .message-card.locked {
+            border-color: #dc2626;
+            border-width: 2px;
+        }
+        .message-card.locked .message-icon {
+            color: #dc2626;
+            font-size: 42px;
+        }
+        .message-card.locked .message-text {
+            color: #dc2626;
+            font-size: 13px;
         }
         .message-icon { font-size: 30px; color: var(--primary); }
         .message-text { font-size: 12px; font-weight: 700; color: var(--dark); line-height: 1.8; }
@@ -153,12 +166,22 @@
             padding: 10px 16px;
             z-index: 999;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
         }
         [data-theme="dark"] .bottom-progress {
             background: rgba(26, 26, 26, 0.5);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--primary);
+        }
+        .bottom-progress.locked {
+            border-color: #dc2626;
+        }
+        .bottom-progress.locked .progress-bar {
+            background: #dc2626;
+        }
+        .bottom-progress.locked .progress-status {
+            color: #dc2626;
         }
         .progress-bar-container {
             background: var(--bg3);
@@ -172,7 +195,7 @@
             height: 100%;
             background: var(--primary);
             border-radius: 10px;
-            transition: width 0.3s ease;
+            transition: width 0.3s ease, background 0.3s ease;
         }
         .progress-status {
             text-align: center;
@@ -180,6 +203,11 @@
             font-weight: 700;
             color: var(--dark);
             margin-top: 6px;
+            transition: color 0.3s ease;
+        }
+
+        .bottom-progress.hidden {
+            display: none;
         }
     </style>
 </head>
@@ -199,14 +227,14 @@
     </header>
 
     <main class="main-container">
-        <div class="message-card">
-            <div class="message-icon" id="messageIcon"><i class="bi bi-people"></i></div>
+        <div class="message-card" id="messageCard">
+            <div class="message-icon" id="messageIcon"><i class="bi bi-people" aria-hidden="true"></i></div>
             <div class="message-text" id="messageText">در حال آماده‌سازی...</div>
             <div class="message-sub" id="messageSub">لطفاً صبر کنید</div>
         </div>
     </main>
 
-    <div class="bottom-progress">
+    <div class="bottom-progress" id="bottomProgress">
         <div class="progress-bar-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
@@ -215,33 +243,57 @@
 
     <script>
         (function() {
-            var webApp = window.Eitaa?.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbx_mJ5tDkGkwVhyGr5R_POJMBq2Y6AkI7HxJ82csk-NuaeFPl4sYm9COtlCoGFWnF7Y/exec';
+            'use strict';
+
+            var webApp = window.Eitaa && window.Eitaa.WebApp;
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzJBOcNxa49vrlBYQmK9BWjZKtIth-M2yqyvYPW8V639Syi8VF3Te9QL05rW5tAmlG5/exec';
 
             var progressBar = document.getElementById('progressBar');
             var progressStatus = document.getElementById('progressStatus');
             var messageText = document.getElementById('messageText');
             var messageSub = document.getElementById('messageSub');
             var messageIcon = document.getElementById('messageIcon');
+            var messageCard = document.getElementById('messageCard');
+            var bottomProgress = document.getElementById('bottomProgress');
+
+            var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
             document.addEventListener('copy', function(e) { e.preventDefault(); });
             document.addEventListener('cut', function(e) { e.preventDefault(); });
 
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
+            }
+
+            function safeSetLocalStorage(key, value) {
+                try { localStorage.setItem(key, value); return true; }
+                catch(e) { return false; }
+            }
+
+            function safeParseJSON(str, fallback) {
+                try {
+                    var parsed = JSON.parse(str);
+                    return parsed === null || parsed === undefined ? fallback : parsed;
+                } catch(e) { return fallback; }
+            }
+
             var fontMap = {
                 'Samim': "'Samim', Tahoma, sans-serif",
                 'Sahel': "'Sahel', Tahoma, sans-serif",
-                'IRANSans': "'IRANSans', Tahoma, sans-serif",
                 'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
-                'Estedad': "'Estedad', Tahoma, sans-serif"
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
             };
 
             function getSettings() {
                 try {
-                    var raw = localStorage.getItem('mafiaSettings');
+                    var raw = safeGetLocalStorage('mafiaSettings');
                     if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
-                    var p = JSON.parse(raw);
+                    var p = safeParseJSON(raw, null);
+                    if (!p || typeof p !== 'object') throw new Error('bad');
                     if (!p.theme) p.theme = 'light';
                     if (!p.specialTheme) p.specialTheme = 'none';
                     if (p.animation === undefined) p.animation = true;
@@ -249,16 +301,15 @@
                     if (!p.font) p.font = 'Samim';
                     if (!p.language) p.language = 'fa';
                     return p;
-                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+                } catch(e) {
+                    return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                }
             }
 
             function updateHeaderTitle(lang) {
                 var titleEl = document.getElementById('headerTitle');
-                if (lang === 'en') {
-                    titleEl.textContent = 'Mafia Spy';
-                } else {
-                    titleEl.textContent = 'جاسوس مافیایی';
-                }
+                if (!titleEl) return;
+                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
             }
 
             function applyTheme() {
@@ -268,12 +319,23 @@
                 var f = s.font || 'Samim';
                 document.documentElement.setAttribute('data-theme', t);
                 document.documentElement.setAttribute('data-special-theme', st);
-                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
-                else { document.documentElement.removeAttribute('data-animation'); }
+                if (s.animation === false) {
+                    document.documentElement.setAttribute('data-animation', 'off');
+                } else {
+                    document.documentElement.removeAttribute('data-animation');
+                }
                 var fontFamily = fontMap[f] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
                 updateHeaderTitle(s.language || 'fa');
+            }
+
+            function triggerHaptic(style) {
+                var s = getSettings();
+                if (s.haptic === false) return;
+                if (webApp && webApp.HapticFeedback && webApp.HapticFeedback.impactOccurred) {
+                    try { webApp.HapticFeedback.impactOccurred(style || 'light'); } catch(e) {}
+                }
             }
 
             var messages = [
@@ -292,7 +354,7 @@
 
             function showRandomMessage() {
                 var msg = messages[Math.floor(Math.random() * messages.length)];
-                messageIcon.innerHTML = '<i class="bi ' + msg.icon + '"></i>';
+                messageIcon.innerHTML = '<i class="bi ' + msg.icon + '" aria-hidden="true"></i>';
                 messageText.textContent = msg.text;
                 messageSub.textContent = msg.sub;
             }
@@ -302,41 +364,95 @@
                 messageInterval = setInterval(showRandomMessage, 4000);
             }
 
-            function getEitaaUser() {
-                if (webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user) {
-                    return webApp.initDataUnsafe.user;
+            function stopMessageRotation() {
+                if (messageInterval) {
+                    clearInterval(messageInterval);
+                    messageInterval = null;
                 }
-                return null;
+            }
+
+            function lockAccount() {
+                stopMessageRotation();
+                messageCard.classList.add('locked');
+                bottomProgress.classList.add('locked');
+                messageIcon.innerHTML = '<i class="bi bi-lock-fill" aria-hidden="true"></i>';
+                messageText.textContent = 'حساب کاربری شما اجازه ورود به بازی را ندارد';
+                messageSub.textContent = 'برای پیگیری با پشتیبانی در تماس باشید';
+                setProgress(100, 'دسترسی مسدود شد');
+                triggerHaptic('heavy');
+            }
+
+            function getEitaaUser() {
+                return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
             }
 
             function getUserId() {
-                var user = getEitaaUser();
-                if (!user) return '';
-                if (typeof user.id === 'number') return user.id.toString();
-                return String(user.id || '');
+                var u = getEitaaUser();
+                if (!u || u.id === undefined || u.id === null) return '';
+                return String(u.id);
             }
 
             function getStartParam() {
-                if (webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.start_param) {
-                    return webApp.initDataUnsafe.start_param;
+                var param = '';
+                try {
+                    if (webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.start_param) {
+                        param = String(webApp.initDataUnsafe.start_param);
+                    }
+                } catch(e) {}
+                if (!param) {
+                    try {
+                        var urlParams = new URLSearchParams(window.location.search);
+                        param = urlParams.get('startapp') || urlParams.get('start') || urlParams.get('room') || '';
+                    } catch(e) {}
                 }
-                return '';
+                return String(param).trim();
             }
 
-            async function fetchData(action, params) {
-                var payload = {
-                    action: action,
-                    username: getUserId()
-                };
-                if (params) {
-                    for (var key in params) { payload[key] = params[key]; }
+            async function fetchData(action, params, retryCount) {
+                retryCount = retryCount || 0;
+                var payload = { action: action, username: getUserId() };
+                if (params && typeof params === 'object') {
+                    for (var k in params) {
+                        if (Object.prototype.hasOwnProperty.call(params, k)) {
+                            payload[k] = params[k];
+                        }
+                    }
                 }
-                var response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
-                return await response.json();
+                try {
+                    var controller = new AbortController();
+                    var timeoutId = setTimeout(function() { controller.abort(); }, 10000);
+                    var r = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+
+                    if (!r.ok) throw new Error('http_' + r.status);
+
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('application/json') === -1) {
+                        throw new Error('invalid_content_type');
+                    }
+
+                    var data = await r.json();
+                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
+                    return data;
+                } catch(err) {
+                    var isRetryable = err && (
+                        err.name === 'AbortError' ||
+                        err.message === 'Failed to fetch' ||
+                        err.message === 'NetworkError when attempting to fetch resource.' ||
+                        err.message === 'invalid_content_type' ||
+                        /^http_5/.test(err.message || '')
+                    );
+                    if (retryCount < 2 && isRetryable) {
+                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
+                        return fetchData(action, params, retryCount + 1);
+                    }
+                    return { ok: false, error: 'network' };
+                }
             }
 
             async function init() {
@@ -344,9 +460,13 @@
                 startMessageRotation();
 
                 if (webApp) {
-                    webApp.ready();
-                    webApp.expand();
-                    webApp.BackButton.hide();
+                    try {
+                        webApp.ready();
+                        webApp.expand();
+                        if (webApp.BackButton && webApp.BackButton.hide) {
+                            webApp.BackButton.hide();
+                        }
+                    } catch(e) {}
                 }
 
                 var startParam = getStartParam();
@@ -354,42 +474,55 @@
                 var username = getUserId();
 
                 if (!user || !username) {
-                    setProgress(0, 'لطفاً از داخل ایتا وارد شوید');
+                    stopMessageRotation();
+                    bottomProgress.classList.add('hidden');
+                    messageCard.classList.add('locked');
+                    messageIcon.innerHTML = '<i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>';
                     messageText.textContent = 'لطفاً از داخل ایتا وارد شوید';
-                    messageSub.textContent = '';
+                    messageSub.textContent = 'این برنامک فقط در ایتا کار می‌کند';
                     return;
                 }
 
-                var fullName = (user.first_name || '') + ' ' + (user.last_name || '');
+                var fullName = ((user.first_name || '') + ' ' + (user.last_name || '')).trim() || 'کاربر';
 
                 setProgress(20, 'در حال بررسی اطلاعات...');
 
                 var check = await fetchData('getUser', {});
 
-                if (check.ok && check.data) {
+                if (check && check.ok && check.data && typeof check.data === 'object') {
+                    var userType = String(check.data.user_type || '').trim();
+                    if (userType === 'متخلف') {
+                        lockAccount();
+                        return;
+                    }
+
                     setProgress(50, 'به‌روزرسانی نام...');
-                    var currentName = check.data.name || '';
-                    var newName = fullName.trim() || 'کاربر';
-                    if (currentName !== newName) {
-                        await fetchData('updateUser', { name: newName });
+                    var currentName = String(check.data.name || '').trim();
+                    if (currentName !== fullName) {
+                        await fetchData('updateUser', { name: fullName });
                     }
                 } else {
                     setProgress(50, 'در حال ساخت حساب...');
-                    await fetchData('registerUser', {
-                        name: fullName.trim() || 'کاربر'
-                    });
+                    var regResult = await fetchData('registerUser', { name: fullName });
+                    if (regResult && regResult.data && typeof regResult.data === 'object') {
+                        var regType = String(regResult.data.user_type || '').trim();
+                        if (regType === 'متخلف') {
+                            lockAccount();
+                            return;
+                        }
+                    }
                 }
 
                 setProgress(80, 'آماده‌سازی کامل شد');
 
                 setTimeout(function() {
                     setProgress(100, 'خوش آمدید!');
-                    
+                    stopMessageRotation();
+
                     setTimeout(function() {
-                        clearInterval(messageInterval);
-                        if (startParam) {
-                            localStorage.setItem('mafiaRoomCode', startParam);
-                            window.location.href = './game/';
+                        if (startParam && VALID_GAME_ID.test(startParam)) {
+                            safeSetLocalStorage('mafiaRoomCode', startParam);
+                            window.location.href = './game/table/?room=' + encodeURIComponent(startParam);
                         } else {
                             window.location.href = './dashboard/';
                         }
