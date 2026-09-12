@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/iran-sans-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
@@ -495,8 +495,8 @@
 
     <main class="main-container">
         <div class="search-box">
-            <i class="bi bi-search"></i>
-            <input type="text" id="searchInput" placeholder="جستجوی کاربر..." data-i18n-placeholder="search_user" oninput="filterRankings()">
+            <i class="bi bi-search" aria-hidden="true"></i>
+            <input type="text" id="searchInput" placeholder="جستجوی کاربر..." data-i18n-placeholder="search_user">
         </div>
         <div class="section-loader" id="rankLoader">
             <div class="section-loader-spinner"></div>
@@ -505,19 +505,19 @@
         <div class="rank-list" id="rankList"></div>
     </main>
 
-    <div class="my-rank-float" id="myRankFloat" style="display:none;" onclick="scrollToMyRank()">
+    <div class="my-rank-float" id="myRankFloat" style="display:none;">
         <span class="my-rank-number" id="myRankFloatNumber">-</span>
-        <span class="my-rank-avatar" id="myRankFloatAvatar"><i class="fa-solid fa-user"></i></span>
+        <span class="my-rank-avatar" id="myRankFloatAvatar"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
         <span class="my-rank-name" id="myRankFloatName">...</span>
         <span class="my-rank-score" id="myRankFloatScore">0</span>
     </div>
 
     <div class="profile-modal-overlay" id="profileModalOverlay">
         <div class="profile-modal">
-            <div class="profile-modal-close" onclick="closeProfileModal()"><i class="bi bi-x-lg"></i></div>
+            <div class="profile-modal-close" id="btnCloseProfileModal"><i class="bi bi-x-lg" aria-hidden="true"></i></div>
             <div id="modalLoader" class="modal-loader"></div>
             <div id="modalContent" style="display:none;">
-                <div class="profile-modal-avatar" id="modalAvatar"><i class="fa-solid fa-user"></i></div>
+                <div class="profile-modal-avatar" id="modalAvatar"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
                 <div class="profile-modal-name" id="modalName"></div>
                 <div class="profile-modal-username" id="modalUsername"></div>
                 <div class="profile-modal-stats">
@@ -529,28 +529,28 @@
         </div>
     </div>
 
-    <div class="support-notification" id="supportNotification" onclick="openSupportLink()">
+    <div class="support-notification" id="supportNotification">
         <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         <div class="notif-info">
             <div class="notif-name">امیرمهدی | Amirmahdi</div>
         </div>
-        <i class="bi bi-chevron-left"></i>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='../dashboard/'">
+        <div class="nav-item" data-href="../dashboard/">
             <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="home">خانه</span>
         </div>
-        <div class="nav-item active" onclick="window.location.href='../ranking/'">
+        <div class="nav-item active" data-href="../ranking/">
             <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="ranking">رتبه</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../profile/'">
+        <div class="nav-item" data-href="../profile/">
             <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="profile">پروفایل</span>
         </div>
-        <div class="nav-item" onclick="window.location.href='../setting/'">
+        <div class="nav-item" data-href="../setting/">
             <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="settings_nav">تنظیمات</span>
         </div>
@@ -558,22 +558,52 @@
 
     <script>
         (function() {
-            var webApp = window.Eitaa?.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbx_mJ5tDkGkwVhyGr5R_POJMBq2Y6AkI7HxJ82csk-NuaeFPl4sYm9COtlCoGFWnF7Y/exec';
+            'use strict';
+
+            var webApp = window.Eitaa && window.Eitaa.WebApp;
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzJBOcNxa49vrlBYQmK9BWjZKtIth-M2yqyvYPW8V639Syi8VF3Te9QL05rW5tAmlG5/exec';
             var allRankings = [];
             var currentLang = 'fa';
+
+            var VALID_USER_ID = /^[A-Za-z0-9_\-@.]{1,64}$/;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
             document.addEventListener('copy', function(e) { e.preventDefault(); });
             document.addEventListener('cut', function(e) { e.preventDefault(); });
 
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function escapeAttr(str) { return escapeHtml(str); }
+
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
+            }
+
+            function safeParseJSON(str, fallback) {
+                try {
+                    var parsed = JSON.parse(str);
+                    return parsed === null || parsed === undefined ? fallback : parsed;
+                } catch(e) {
+                    return fallback;
+                }
+            }
+
             var fontMap = {
                 'Samim': "'Samim', Tahoma, sans-serif",
                 'Sahel': "'Sahel', Tahoma, sans-serif",
-                'IRANSans': "'IRANSans', Tahoma, sans-serif",
                 'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
-                'Estedad': "'Estedad', Tahoma, sans-serif"
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
             };
 
             var iconAvatars = {
@@ -609,7 +639,8 @@
                     profile: 'پروفایل',
                     settings_nav: 'تنظیمات',
                     you: 'شما',
-                    error_loading: 'خطا در دریافت اطلاعات'
+                    error_loading: 'خطا در دریافت اطلاعات',
+                    unknown_user: 'کاربر'
                 },
                 en: {
                     search_user: 'Search user...',
@@ -623,7 +654,8 @@
                     profile: 'Profile',
                     settings_nav: 'Settings',
                     you: 'You',
-                    error_loading: 'Error loading data'
+                    error_loading: 'Error loading data',
+                    unknown_user: 'User'
                 },
                 ar: {
                     search_user: 'ابحث عن مستخدم...',
@@ -637,7 +669,8 @@
                     profile: 'الملف',
                     settings_nav: 'الإعدادات',
                     you: 'أنت',
-                    error_loading: 'خطأ في تحميل البيانات'
+                    error_loading: 'خطأ في تحميل البيانات',
+                    unknown_user: 'مستخدم'
                 }
             };
 
@@ -648,9 +681,10 @@
 
             function getSettings() {
                 try {
-                    var raw = localStorage.getItem('mafiaSettings');
+                    var raw = safeGetLocalStorage('mafiaSettings');
                     if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
-                    var p = JSON.parse(raw);
+                    var p = safeParseJSON(raw, null);
+                    if (!p || typeof p !== 'object') throw new Error('bad');
                     if (!p.theme) p.theme = 'light';
                     if (!p.specialTheme) p.specialTheme = 'none';
                     if (p.animation === undefined) p.animation = true;
@@ -658,27 +692,26 @@
                     if (!p.font) p.font = 'Samim';
                     if (!p.language) p.language = 'fa';
                     return p;
-                } catch(e) { return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' }; }
+                } catch(e) {
+                    return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                }
             }
 
             function updateHeaderTitle(lang) {
                 var titleEl = document.getElementById('headerTitle');
-                if (lang === 'en') {
-                    titleEl.textContent = 'Mafia Spy';
-                } else {
-                    titleEl.textContent = 'جاسوس مافیایی';
-                }
+                if (!titleEl) return;
+                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
             }
 
             function applyLanguage(lang) {
                 var t = translations[lang] || translations.fa;
                 document.querySelectorAll('[data-i18n]').forEach(function(el) {
                     var k = el.getAttribute('data-i18n');
-                    if (t[k]) el.textContent = t[k];
+                    if (t[k] !== undefined) el.textContent = t[k];
                 });
                 document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
                     var k = el.getAttribute('data-i18n-placeholder');
-                    if (t[k]) el.placeholder = t[k];
+                    if (t[k] !== undefined) el.placeholder = t[k];
                 });
                 if (lang === 'en') {
                     document.documentElement.setAttribute('dir', 'ltr');
@@ -696,47 +729,105 @@
                 var f = s.font || 'Samim';
                 document.documentElement.setAttribute('data-theme', t);
                 document.documentElement.setAttribute('data-special-theme', st);
-                if (s.animation === false) { document.documentElement.setAttribute('data-animation', 'off'); }
-                else { document.documentElement.removeAttribute('data-animation'); }
+                if (s.animation === false) {
+                    document.documentElement.setAttribute('data-animation', 'off');
+                } else {
+                    document.documentElement.removeAttribute('data-animation');
+                }
                 var fontFamily = fontMap[f] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
                 applyLanguage(currentLang);
             }
 
-            function getEitaaUser(){return webApp&&webApp.initDataUnsafe&&webApp.initDataUnsafe.user?webApp.initDataUnsafe.user:null;}
-            function getUserId(){var u=getEitaaUser();return u?(typeof u.id==='number'?u.id.toString():String(u.id||'')):'';}
-            function fetchData(action,params){
-                var payload={action:action,username:getUserId()};
-                if(params){for(var k in params){if(params.hasOwnProperty(k))payload[k]=params[k];}}
-                return Promise.race([
-                    fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(function(r){return r.json();}),
-                    new Promise(function(_,reject){setTimeout(function(){reject(new Error('timeout'));},10000);})
-                ]).catch(function(){return{ok:false};});
+            function triggerHaptic(style) {
+                var s = getSettings();
+                if (s.haptic === false) return;
+                if (webApp && webApp.HapticFeedback && webApp.HapticFeedback.impactOccurred) {
+                    try { webApp.HapticFeedback.impactOccurred(style || 'light'); } catch(e) {}
+                }
+            }
+
+            function getEitaaUser() {
+                return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
+            }
+
+            function getUserId() {
+                var u = getEitaaUser();
+                if (!u || u.id === undefined || u.id === null) return '';
+                return String(u.id);
+            }
+
+            async function fetchData(action, params, retryCount) {
+                retryCount = retryCount || 0;
+                var payload = { action: action, username: getUserId() };
+                if (params && typeof params === 'object') {
+                    for (var k in params) {
+                        if (Object.prototype.hasOwnProperty.call(params, k)) {
+                            payload[k] = params[k];
+                        }
+                    }
+                }
+                try {
+                    var controller = new AbortController();
+                    var timeoutId = setTimeout(function() { controller.abort(); }, 10000);
+                    var r = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+
+                    if (!r.ok) throw new Error('http_' + r.status);
+
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('application/json') === -1) {
+                        throw new Error('invalid_content_type');
+                    }
+
+                    var data = await r.json();
+                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
+                    return data;
+                } catch(err) {
+                    var isRetryable = err && (
+                        err.name === 'AbortError' ||
+                        err.message === 'Failed to fetch' ||
+                        err.message === 'NetworkError when attempting to fetch resource.' ||
+                        err.message === 'invalid_content_type' ||
+                        /^http_5/.test(err.message || '')
+                    );
+                    if (retryCount < 2 && isRetryable) {
+                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
+                        return fetchData(action, params, retryCount + 1);
+                    }
+                    return { ok: false, error: 'network' };
+                }
             }
 
             function getAvatarHtml(avatarId) {
-                if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user"></i>';
-                if (iconAvatars[avatarId]) return '<i class="fa-solid ' + iconAvatars[avatarId] + '"></i>';
-                if (allAvatarUrls[avatarId]) return '<img src="' + allAvatarUrls[avatarId] + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
-                return '<i class="fa-solid fa-user"></i>';
+                if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user" aria-hidden="true"></i>';
+                if (iconAvatars[avatarId]) return '<i class="fa-solid ' + escapeAttr(iconAvatars[avatarId]) + '" aria-hidden="true"></i>';
+                if (allAvatarUrls[avatarId]) return '<img src="' + escapeAttr(allAvatarUrls[avatarId]) + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
+                return '<i class="fa-solid fa-user" aria-hidden="true"></i>';
             }
 
             function getUserTypeBadge(userType) {
                 if (userType === 'سازنده') {
                     return '<span class="badge-icon"><img src="https://cdn.imgurl.ir/uploads/h95014_InShot_20260909_113952033.png" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
                 } else if (userType === 'توسعه دهنده') {
-                    return '<span class="badge-icon"><i class="fa-solid fa-code"></i></span>';
+                    return '<span class="badge-icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>';
                 }
                 return '';
             }
 
             function getRankIcon(i) {
-                if (i === 0) return '<i class="fa-solid fa-crown" style="color:#f59e0b;"></i>';
-                if (i === 1) return '<i class="fa-solid fa-medal" style="color:#94a3b8;"></i>';
-                if (i === 2) return '<i class="fa-solid fa-medal" style="color:#d97706;"></i>';
+                if (i === 0) return '<i class="fa-solid fa-crown" style="color:#f59e0b;" aria-hidden="true"></i>';
+                if (i === 1) return '<i class="fa-solid fa-medal" style="color:#94a3b8;" aria-hidden="true"></i>';
+                if (i === 2) return '<i class="fa-solid fa-medal" style="color:#d97706;" aria-hidden="true"></i>';
                 return '#' + (i + 1);
             }
+
             function getRankClass(i) {
                 if (i === 0) return 'gold';
                 if (i === 1) return 'silver';
@@ -744,22 +835,33 @@
                 return '';
             }
 
+            function isMe(item, myId) {
+                if (!myId) return false;
+                return String(item.user_id) === String(myId) || String(item.username) === String(myId);
+            }
+
             function renderRankItem(item, index, myId) {
-                var isMe = String(item.user_id) === String(myId) || String(item.username) === String(myId);
+                var me = isMe(item, myId);
                 var avatarField = item.avatar || 'default';
                 var userType = item.user_type || '';
-                return '<div class="rank-item' + (isMe ? ' is-me' : '') + '" onclick="viewProfile(\'' + (item.user_id || item.username) + '\')">' +
+                var rawUserId = String(item.user_id || item.username || '');
+                var safeUserId = escapeAttr(rawUserId);
+                var displayName = escapeHtml(item.name || item.user_id || getTranslation('unknown_user'));
+                var score = parseInt(item.score, 10);
+                if (isNaN(score)) score = 0;
+
+                return '<div class="rank-item' + (me ? ' is-me' : '') + '" data-user-id="' + safeUserId + '" role="button" tabindex="0">' +
                     '<div class="rank-number ' + getRankClass(index) + '">' + getRankIcon(index) + '</div>' +
                     '<div class="rank-avatar">' + getAvatarHtml(avatarField) + '</div>' +
-                    '<div class="rank-info"><div class="rank-name">' + (item.name || item.user_id || '؟') + ' ' + getUserTypeBadge(userType) + '</div>' +
-                    '<div class="rank-score">' + getTranslation('score') + ': ' + (item.score || 0) + '</div></div>' +
-                    (isMe ? '<span class="rank-badge-me">' + getTranslation('you') + '</span>' : '') +
+                    '<div class="rank-info"><div class="rank-name">' + displayName + ' ' + getUserTypeBadge(userType) + '</div>' +
+                    '<div class="rank-score">' + escapeHtml(getTranslation('score')) + ': ' + score + '</div></div>' +
+                    (me ? '<span class="rank-badge-me">' + escapeHtml(getTranslation('you')) + '</span>' : '') +
                     '</div>';
             }
 
             function renderRankList(list, myId) {
                 if (list.length === 0) {
-                    return '<div class="section-loader"><div class="section-loader-text">' + getTranslation('no_users') + '</div></div>';
+                    return '<div class="section-loader"><div class="section-loader-text">' + escapeHtml(getTranslation('no_users')) + '</div></div>';
                 }
                 var html = '';
                 for (var i = 0; i < list.length; i++) {
@@ -768,36 +870,60 @@
                 return html;
             }
 
+            function findMyRank(list, myId) {
+                if (!myId) return -1;
+                for (var i = 0; i < list.length; i++) {
+                    if (isMe(list[i], myId)) return i;
+                }
+                return -1;
+            }
+
+            function updateMyRankFloat(list, myId) {
+                var myRank = findMyRank(list, myId);
+                if (myRank < 0) return;
+                var me = list[myRank];
+                document.getElementById('myRankFloatNumber').textContent = '#' + (myRank + 1);
+                document.getElementById('myRankFloatAvatar').innerHTML = getAvatarHtml(me.avatar || 'default');
+                var displayName = escapeHtml(me.name || getTranslation('unknown_user'));
+                document.getElementById('myRankFloatName').innerHTML = displayName + ' ' + getUserTypeBadge(me.user_type);
+                var score = parseInt(me.score, 10);
+                document.getElementById('myRankFloatScore').textContent = String(isNaN(score) ? 0 : score);
+                document.getElementById('myRankFloat').style.display = 'flex';
+            }
+
             async function loadRankings() {
-                var result = await fetchData('getAllUsers', {});
-                if (result.ok && Array.isArray(result.data) && result.data.length > 0) {
-                    allRankings = result.data.sort(function(a, b) { return (b.score || 0) - (a.score || 0); });
-                    document.getElementById('rankLoader').style.display = 'none';
-                    document.getElementById('rankList').innerHTML = renderRankList(allRankings, getUserId());
-                    
-                    var myId = getUserId();
-                    var myRank = -1;
-                    for (var i = 0; i < allRankings.length; i++) {
-                        if (String(allRankings[i].user_id) === String(myId) || String(allRankings[i].username) === String(myId)) {
-                            myRank = i;
-                            break;
-                        }
+                var loader = document.getElementById('rankLoader');
+                var listEl = document.getElementById('rankList');
+
+                try {
+                    var result = await fetchData('getAllUsers', {});
+
+                    if (result && result.ok && Array.isArray(result.data)) {
+                        allRankings = result.data
+                            .filter(function(item) { return item && typeof item === 'object'; })
+                            .sort(function(a, b) {
+                                var sa = parseInt(a.score, 10);
+                                var sb = parseInt(b.score, 10);
+                                if (isNaN(sa)) sa = 0;
+                                if (isNaN(sb)) sb = 0;
+                                return sb - sa;
+                            });
+
+                        var myId = getUserId();
+                        loader.style.display = 'none';
+                        listEl.innerHTML = renderRankList(allRankings, myId);
+                        updateMyRankFloat(allRankings, myId);
+                    } else {
+                        loader.style.display = 'none';
+                        listEl.innerHTML = '<div class="section-loader"><div class="section-loader-text">' + escapeHtml(getTranslation('no_users')) + '</div></div>';
                     }
-                    
-                    if (myRank >= 0) {
-                        document.getElementById('myRankFloatNumber').textContent = '#' + (myRank + 1);
-                        document.getElementById('myRankFloatAvatar').innerHTML = getAvatarHtml(allRankings[myRank].avatar || 'default');
-                        document.getElementById('myRankFloatName').innerHTML = (allRankings[myRank].name || '؟') + ' ' + getUserTypeBadge(allRankings[myRank].user_type);
-                        document.getElementById('myRankFloatScore').textContent = allRankings[myRank].score || 0;
-                        document.getElementById('myRankFloat').style.display = 'flex';
-                    }
-                } else {
-                    document.getElementById('rankLoader').style.display = 'none';
-                    document.getElementById('rankList').innerHTML = '<div class="section-loader"><div class="section-loader-text">' + getTranslation('no_users') + '</div></div>';
+                } catch(e) {
+                    loader.style.display = 'none';
+                    listEl.innerHTML = '<div class="section-loader"><div class="section-loader-text">' + escapeHtml(getTranslation('error_loading')) + '</div></div>';
                 }
             }
 
-            window.filterRankings = function() {
+            function filterRankings() {
                 var q = document.getElementById('searchInput').value.toLowerCase().trim();
                 var myId = getUserId();
                 if (!q) {
@@ -807,70 +933,114 @@
                 var filtered = allRankings.filter(function(item) {
                     var n = (item.name || '').toLowerCase();
                     var u = String(item.user_id || '').toLowerCase();
-                    return n.includes(q) || u.includes(q);
+                    return n.indexOf(q) !== -1 || u.indexOf(q) !== -1;
                 });
                 document.getElementById('rankList').innerHTML = renderRankList(filtered, myId);
-            };
+            }
 
-            window.viewProfile = async function(userId) {
-                document.getElementById('modalLoader').style.display = 'block';
-                document.getElementById('modalContent').style.display = 'none';
+            async function viewProfile(userId) {
+                if (!userId || !VALID_USER_ID.test(userId)) return;
+
+                var loader = document.getElementById('modalLoader');
+                var content = document.getElementById('modalContent');
+                loader.style.display = 'block';
+                content.style.display = 'none';
                 document.getElementById('profileModalOverlay').classList.add('show');
-                var result = await fetchData('getUser', { username: String(userId) });
-                setTimeout(function() {
-                    document.getElementById('modalLoader').style.display = 'none';
-                    document.getElementById('modalContent').style.display = 'block';
-                    if (result.ok && result.data) {
-                        var d = result.data;
-                        document.getElementById('modalAvatar').innerHTML = getAvatarHtml(d.avatar || 'default');
-                        document.getElementById('modalName').innerHTML = (d.name || 'کاربر') + ' ' + getUserTypeBadge(d.user_type);
-                        document.getElementById('modalUsername').textContent = 'ID: ' + (d.user_id || userId);
-                        document.getElementById('modalScore').textContent = d.score || 0;
-                        document.getElementById('modalCoins').textContent = d.coins || 0;
-                        document.getElementById('modalDiamonds').textContent = d.diamonds || 0;
-                    } else {
-                        document.getElementById('modalName').textContent = getTranslation('error_loading');
-                        document.getElementById('modalUsername').textContent = 'ID: ' + userId;
-                        document.getElementById('modalScore').textContent = '0';
-                        document.getElementById('modalCoins').textContent = '0';
-                        document.getElementById('modalDiamonds').textContent = '0';
-                    }
-                }, 500);
-            };
 
-            window.closeProfileModal = function() {
+                var result = await fetchData('getUser', { username: userId });
+
+                loader.style.display = 'none';
+                content.style.display = 'block';
+
+                if (result && result.ok && result.data && typeof result.data === 'object') {
+                    var d = result.data;
+                    document.getElementById('modalAvatar').innerHTML = getAvatarHtml(d.avatar || 'default');
+                    var displayName = escapeHtml(d.name || getTranslation('unknown_user'));
+                    document.getElementById('modalName').innerHTML = displayName + ' ' + getUserTypeBadge(d.user_type);
+                    document.getElementById('modalUsername').textContent = 'ID: ' + escapeHtml(String(d.user_id || userId));
+                    var sc = parseInt(d.score, 10);
+                    var co = parseInt(d.coins, 10);
+                    var di = parseInt(d.diamonds, 10);
+                    document.getElementById('modalScore').textContent = String(isNaN(sc) ? 0 : sc);
+                    document.getElementById('modalCoins').textContent = String(isNaN(co) ? 0 : co);
+                    document.getElementById('modalDiamonds').textContent = String(isNaN(di) ? 0 : di);
+                } else {
+                    document.getElementById('modalName').textContent = getTranslation('error_loading');
+                    document.getElementById('modalUsername').textContent = 'ID: ' + escapeHtml(userId);
+                    document.getElementById('modalScore').textContent = '0';
+                    document.getElementById('modalCoins').textContent = '0';
+                    document.getElementById('modalDiamonds').textContent = '0';
+                }
+            }
+
+            function closeProfileModal() {
                 document.getElementById('profileModalOverlay').classList.remove('show');
-            };
+            }
 
-            window.scrollToMyRank = function() {
+            function scrollToMyRank() {
                 var items = document.querySelectorAll('.rank-item.is-me');
                 if (items.length > 0) {
                     items[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-            };
+            }
 
-            function openSupportLink(){
+            function openSupportLink() {
                 if (webApp && webApp.openEitaaLink) {
                     webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
                 } else {
-                    window.open('https://eitaa.com/Amirmahdi_code', '_blank');
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
                 }
             }
-            window.openSupportLink = openSupportLink;
+
+            document.getElementById('searchInput').addEventListener('input', filterRankings);
+
+            document.getElementById('rankList').addEventListener('click', function(e) {
+                var item = e.target.closest('.rank-item');
+                if (item && item.dataset.userId) {
+                    viewProfile(item.dataset.userId);
+                }
+            });
+            document.getElementById('rankList').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    var item = e.target.closest('.rank-item');
+                    if (item && item.dataset.userId) {
+                        e.preventDefault();
+                        viewProfile(item.dataset.userId);
+                    }
+                }
+            });
+
+            document.getElementById('myRankFloat').addEventListener('click', scrollToMyRank);
+            document.getElementById('btnCloseProfileModal').addEventListener('click', closeProfileModal);
+            document.getElementById('profileModalOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeProfileModal();
+            });
+            document.getElementById('supportNotification').addEventListener('click', openSupportLink);
+
+            document.querySelectorAll('.nav-item').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    var href = el.getAttribute('data-href');
+                    if (href) window.location.href = href;
+                });
+            });
 
             if (webApp) {
-                webApp.ready();
-                webApp.expand();
-                webApp.BackButton.show();
-                webApp.BackButton.onClick(function(){ window.location.href = '../dashboard/'; });
+                try {
+                    webApp.ready();
+                    webApp.expand();
+                    if (webApp.BackButton && webApp.BackButton.show) {
+                        webApp.BackButton.show();
+                        webApp.BackButton.onClick(function() { window.location.href = '../dashboard/'; });
+                    }
+                } catch(e) {}
             }
 
             applyTheme();
             loadRankings();
-            
+
             setTimeout(function() {
                 var notif = document.getElementById('supportNotification');
-                if (notif) { notif.style.display = 'none'; }
+                if (notif) notif.style.display = 'none';
             }, 5000);
         })();
     </script>
