@@ -561,7 +561,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbzJBOcNxa49vrlBYQmK9BWjZKtIth-M2yqyvYPW8V639Syi8VF3Te9QL05rW5tAmlG5/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzZDPiemnlOl-byo1Zp153we2-zpuNanVKPcaFxG6D_hoo38yeoQwVR-8HB1_svdb-p/exec';
             var allRankings = [];
             var currentLang = 'fa';
 
@@ -813,12 +813,34 @@
             }
 
             function getUserTypeBadge(userType) {
-                if (userType === 'سازنده') {
-                    return '<span class="badge-icon"><img src="https://cdn.imgurl.ir/uploads/h95014_InShot_20260909_113952033.png" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
-                } else if (userType === 'توسعه دهنده') {
-                    return '<span class="badge-icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>';
+                var t = String(userType || '').trim();
+                if (!t) return '';
+
+                var parts = t.split(',').map(function(s) { return s.trim(); });
+                var html = '';
+
+                for (var i = 0; i < parts.length; i++) {
+                    var p = parts[i];
+                    if (p === 'رسمی' || p === 'سازنده') {
+                        html += '<span class="badge-icon"><img src="https://cdn.imgurl.ir/uploads/h95014_InShot_20260909_113952033.png" alt="رسمی" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
+                    } else if (p === 'توسعه دهنده') {
+                        html += '<span class="badge-icon"><img src="https://uploadkon.ir/uploads/b27b13_26laptop-iconbase.svg" alt="توسعه دهنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
+                    } else if (p === 'پرومیوم') {
+                        html += '<span class="badge-icon"><img src="https://uploadkon.ir/uploads/40e113_26premium-service-iconbase.svg" alt="پرومیوم" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
+                    }
                 }
-                return '';
+
+                return html;
+            }
+
+            function isBlockedUser(userType) {
+                var t = String(userType || '').trim();
+                if (!t) return false;
+                var parts = t.split(',').map(function(s) { return s.trim(); });
+                for (var i = 0; i < parts.length; i++) {
+                    if (parts[i] === 'متخلف') return true;
+                }
+                return false;
             }
 
             function getRankIcon(i) {
@@ -900,7 +922,11 @@
 
                     if (result && result.ok && Array.isArray(result.data)) {
                         allRankings = result.data
-                            .filter(function(item) { return item && typeof item === 'object'; })
+                            .filter(function(item) {
+                                if (!item || typeof item !== 'object') return false;
+                                if (isBlockedUser(item.user_type)) return false;
+                                return true;
+                            })
                             .sort(function(a, b) {
                                 var sa = parseInt(a.score, 10);
                                 var sb = parseInt(b.score, 10);
