@@ -236,7 +236,7 @@
             flex: 1;
             max-width: 600px; width: 100%;
             margin: 0 auto;
-            padding: 40px 24px 160px;
+            padding: 40px 24px 220px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -273,39 +273,50 @@
             opacity: 0;
         }
 
+        .message-desc a {
+            color: var(--primary);
+            font-weight: 800;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary);
+            cursor: pointer;
+        }
+
         .user-card {
+            position: fixed;
+            bottom: 65px;
+            right: 5%;
+            left: 5%;
+            max-width: 400px;
+            margin: 0 auto;
             background: var(--card-bg);
             border: var(--border);
             border-radius: var(--radius);
-            padding: 20px 24px;
+            padding: 12px 16px;
             box-shadow: var(--shadow);
             display: none;
-            flex-direction: column;
             align-items: center;
             gap: 12px;
-            max-width: 340px;
-            width: 100%;
-            text-align: center;
+            z-index: 997;
             animation: cardIn 0.5s ease forwards;
         }
         .user-card.show {
             display: flex;
         }
         @keyframes cardIn {
-            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            from { opacity: 0; transform: translateY(15px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .user-card-avatar {
-            width: 70px;
-            height: 70px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: var(--bg2);
             border: var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
+            font-size: 18px;
             color: var(--primary);
             overflow: hidden;
             flex-shrink: 0;
@@ -316,20 +327,26 @@
             object-fit: cover;
         }
 
+        .user-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
         .user-card-name {
-            font-size: 15px;
+            font-size: 12px;
             font-weight: 800;
             color: var(--dark);
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 5px;
-            flex-wrap: wrap;
-            line-height: 1.4;
+            gap: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 3px;
         }
         .user-card-name .badge-icon {
-            width: 16px;
-            height: 16px;
+            width: 13px;
+            height: 13px;
             flex-shrink: 0;
             display: inline-flex;
             align-items: center;
@@ -344,32 +361,34 @@
         .user-card-stats {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 16px;
+            gap: 10px;
             flex-wrap: wrap;
         }
         .user-card-stat {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 11px;
+            gap: 3px;
+            font-size: 9px;
             font-weight: 700;
-            color: var(--dark);
+            color: var(--text-light);
         }
         .user-card-stat i {
             color: var(--primary);
-            font-size: 13px;
+            font-size: 10px;
         }
         .user-card-stat .stat-value {
             font-weight: 800;
+            color: var(--dark);
         }
 
         .user-card-status {
-            font-size: 10px;
+            font-size: 8px;
             font-weight: 600;
             color: var(--text-light);
-            margin-top: 4px;
-            line-height: 1.7;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .loading-footer {
@@ -446,14 +465,16 @@
     <main class="main-container">
         <h1 class="message-title" id="messageTitle">در حال آماده‌سازی...</h1>
         <p class="message-desc" id="messageDesc">لطفاً چند لحظه صبر کنید</p>
+    </main>
 
-        <div class="user-card" id="userCard">
-            <div class="user-card-avatar" id="userCardAvatar"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
+    <div class="user-card" id="userCard">
+        <div class="user-card-avatar" id="userCardAvatar"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
+        <div class="user-card-info">
             <div class="user-card-name" id="userCardName"></div>
             <div class="user-card-stats" id="userCardStats"></div>
             <div class="user-card-status" id="userCardStatus"></div>
         </div>
-    </main>
+    </div>
 
     <div class="loading-footer" id="loadingFooter">
         <div class="progress-bar-container">
@@ -482,6 +503,8 @@
             var loadingFooter = document.getElementById('loadingFooter');
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
+            var messageInterval = null;
+            var currentMsgIndex = 0;
             var isRedirecting = false;
             var currentLang = 'fa';
             var supportTimer = null;
@@ -569,7 +592,9 @@
                     no_itaa: 'لطفاً از داخل ایتا وارد شوید',
                     no_itaa_desc: 'این برنامک فقط در ایتا کار می‌کند',
                     blocked: 'حساب کاربری شما اجازه ورود به بازی را ندارد',
-                    blocked_desc: 'برای پیگیری با پشتیبانی در تماس باشید',
+                    blocked_desc_1: 'برای پیگیری با ',
+                    blocked_desc_link: 'پشتیبانی',
+                    blocked_desc_2: ' در تماس باشید',
                     unknown_user: 'کاربر'
                 },
                 en: {
@@ -592,7 +617,9 @@
                     no_itaa: 'Please open from within Eitaa',
                     no_itaa_desc: 'This app works only in Eitaa',
                     blocked: 'Your account is not allowed to enter the game',
-                    blocked_desc: 'Contact support for more information',
+                    blocked_desc_1: 'Please contact ',
+                    blocked_desc_link: 'support',
+                    blocked_desc_2: '',
                     unknown_user: 'User'
                 },
                 ar: {
@@ -615,7 +642,9 @@
                     no_itaa: 'يرجى الفتح من داخل إيتا',
                     no_itaa_desc: 'هذا التطبيق يعمل فقط في إيتا',
                     blocked: 'حسابك غير مسموح له بالدخول إلى اللعبة',
-                    blocked_desc: 'اتصل بالدعم للمزيد من المعلومات',
+                    blocked_desc_1: 'يرجى التواصل مع ',
+                    blocked_desc_link: 'الدعم',
+                    blocked_desc_2: '',
                     unknown_user: 'مستخدم'
                 }
             };
@@ -729,10 +758,66 @@
                 return html;
             }
 
-            function showUserCard(userData, statusText) {
-                messageTitle.style.display = 'none';
-                messageDesc.style.display = 'none';
+            var messages = {
+                fa: [
+                    { title: 'یک نفر میان شما جاسوس هست', desc: 'باید قبل از اینکه دیر بشه پیداش کنید. به حرف‌ها و رفتار بقیه دقیق باش.' },
+                    { title: 'بپرس، بشناس، لو بده', desc: 'با سوال‌های هوشمندانه از پاسخ‌ها فاصله بگیر و جاسوس رو تشخیص بده.' },
+                    { title: 'از شهر دفاع کن', desc: 'مافیا در کمین شهره. با هم متحد باشید تا شهر رو نجات بدید.' },
+                    { title: 'حقیقت رو کشف کن', desc: 'با استدلال و منطق، بین راست و دروغ فرق بذار و جاسوس رو لو بده.' }
+                ],
+                en: [
+                    { title: 'One of you is a spy', desc: 'You must find them before it\'s too late. Pay close attention to words and behavior.' },
+                    { title: 'Ask, know, expose', desc: 'Use smart questions to distance from answers and identify the spy.' },
+                    { title: 'Defend the city', desc: 'Mafia is lurking. Unite together to save the city.' },
+                    { title: 'Discover the truth', desc: 'Use logic and reasoning to tell truth from lies and expose the spy.' }
+                ],
+                ar: [
+                    { title: 'أحدكم جاسوس', desc: 'يجب أن تجدوه قبل فوات الأوان. كونوا منتبهين للكلام والسلوك.' },
+                    { title: 'اسأل، اعرف، اكشف', desc: 'بأسئلة ذكية اقترب من الحقيقة وحدد الجاسوس.' },
+                    { title: 'دافع عن المدينة', desc: 'المافيا تترصد. اتحدوا معاً لإنقاذ المدينة.' },
+                    { title: 'اكتشف الحقيقة', desc: 'بمنطق واستدلال، ميّز بين الصدق والكذب واكشف الجاسوس.' }
+                ]
+            };
 
+            function getCurrentMessages() {
+                return messages[currentLang] || messages.fa;
+            }
+
+            function showMessage(index) {
+                if (isRedirecting) return;
+                var msgs = getCurrentMessages();
+                var msg = msgs[index % msgs.length];
+                messageTitle.classList.add('fading');
+                messageDesc.classList.add('fading');
+
+                setTimeout(function() {
+                    messageTitle.textContent = msg.title;
+                    messageDesc.textContent = msg.desc;
+                    messageTitle.classList.remove('fading');
+                    messageDesc.classList.remove('fading');
+                }, 400);
+            }
+
+            function startMessageRotation() {
+                var msgs = getCurrentMessages();
+                currentMsgIndex = 0;
+                messageTitle.textContent = msgs[0].title;
+                messageDesc.textContent = msgs[0].desc;
+
+                messageInterval = setInterval(function() {
+                    currentMsgIndex++;
+                    showMessage(currentMsgIndex);
+                }, 4000);
+            }
+
+            function stopMessageRotation() {
+                if (messageInterval) {
+                    clearInterval(messageInterval);
+                    messageInterval = null;
+                }
+            }
+
+            function showUserCard(userData, statusText) {
                 userCardAvatar.innerHTML = getAvatarHtml(userData.avatar || 'default');
                 var safeName = escapeHtml(userData.name || getTranslation('unknown_user'));
                 var badgeHtml = getUserTypeBadge(userData.user_type);
@@ -757,6 +842,10 @@
 
             function updateUserCardStatus(statusText) {
                 if (userCardStatus) userCardStatus.textContent = statusText || '';
+            }
+
+            function hideUserCard() {
+                if (userCard) userCard.classList.remove('show');
             }
 
             function showSupport() {
@@ -851,16 +940,19 @@
 
             function goToDashboard() {
                 isRedirecting = true;
+                stopMessageRotation();
                 window.location.href = './dashboard/';
             }
 
             function goToWaiting(gameId) {
                 isRedirecting = true;
+                stopMessageRotation();
                 safeSetLocalStorage('mafiaRoomCode', gameId);
                 window.location.href = './game/waiting/?room=' + encodeURIComponent(gameId);
             }
 
             function showToastAndRedirect(msgKey) {
+                stopMessageRotation();
                 setProgress(100, getTranslation('loading_welcome'));
                 showToast(getTranslation(msgKey), 4000);
                 updateUserCardStatus(getTranslation('going_dashboard'));
@@ -898,17 +990,38 @@
                 }
             }
 
-            function showBlockedMessage(titleKey, descKey) {
-                if (userCard) userCard.classList.remove('show');
-                messageTitle.style.display = '';
-                messageDesc.style.display = '';
-                messageTitle.textContent = getTranslation(titleKey);
-                messageDesc.textContent = getTranslation(descKey);
+            function openSupport() {
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Mr_Program');
+                } else {
+                    window.open('https://eitaa.com/Mr_Program', '_blank', 'noopener,noreferrer');
+                }
+            }
+
+            function showBlockedMessage() {
+                hideUserCard();
+                stopMessageRotation();
                 hideLoadingFooter();
+                setProgress(100, '');
+
+                messageTitle.textContent = getTranslation('blocked');
+                messageDesc.innerHTML = escapeHtml(getTranslation('blocked_desc_1')) +
+                    '<a id="supportLink">' + escapeHtml(getTranslation('blocked_desc_link')) + '</a>' +
+                    escapeHtml(getTranslation('blocked_desc_2'));
+
+                var link = document.getElementById('supportLink');
+                if (link) {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        triggerHaptic('light');
+                        openSupport();
+                    });
+                }
             }
 
             async function init() {
                 applyTheme();
+                startMessageRotation();
 
                 if (supportNotification) showSupport();
 
@@ -933,7 +1046,10 @@
                 var username = getUserId();
 
                 if (!user || !username) {
-                    showBlockedMessage('no_itaa', 'no_itaa_desc');
+                    stopMessageRotation();
+                    hideLoadingFooter();
+                    messageTitle.textContent = getTranslation('no_itaa');
+                    messageDesc.textContent = getTranslation('no_itaa_desc');
                     return;
                 }
 
@@ -948,7 +1064,7 @@
                     userData = check.data;
                     var userType = String(check.data.user_type || '').trim();
                     if (userType.indexOf('متخلف') !== -1) {
-                        showBlockedMessage('blocked', 'blocked_desc');
+                        showBlockedMessage();
                         return;
                     }
 
@@ -959,7 +1075,7 @@
                     }
                 } else {
                     setProgress(40, getTranslation('loading_register'));
-                    var regResult = await fetchData('registerUser', { name: fullName });
+                    await fetchData('registerUser', { name: fullName });
                     userData = {
                         name: fullName,
                         avatar: 'default',
@@ -971,7 +1087,6 @@
                 }
 
                 setProgress(60, getTranslation('loading_ready'));
-
                 showUserCard(userData, getTranslation('loading_ready'));
 
                 if (startParam && VALID_GAME_ID.test(startParam)) {
