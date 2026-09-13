@@ -173,7 +173,7 @@
             flex: 1;
             max-width: 600px; width: 100%;
             margin: 0 auto;
-            padding: 40px 24px 120px;
+            padding: 40px 24px 160px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -199,76 +199,71 @@
             transition: opacity 0.4s ease;
         }
 
+        [dir="ltr"] .main-container {
+            align-items: flex-start;
+            text-align: left;
+        }
+        [dir="ltr"] .message-title,
+        [dir="ltr"] .message-desc {
+            text-align: left;
+        }
+
         .message-title.fading,
         .message-desc.fading {
             opacity: 0;
         }
 
-        .support-bar {
+        .support-notification {
             position: fixed;
-            bottom: 12px;
+            bottom: 65px;
             right: 5%;
             left: 5%;
-            width: 90%;
-            max-width: 600px;
+            max-width: 400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1.5px solid var(--primary);
-            border-radius: 25px;
-            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 10px 14px;
             display: none;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 10px;
             z-index: 998;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            transition: all 0.25s ease;
-            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        [data-theme="dark"] .support-bar {
-            background: rgba(26, 26, 26, 0.35);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        [data-theme="dark"] .support-notification {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
         }
-        .support-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
-            pointer-events: none;
-            border-radius: 25px 25px 0 0;
-        }
-        [data-theme="dark"] .support-bar::before {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
-        }
-        .support-bar.show {
+        .support-notification.show {
             display: flex;
             animation: supportIn 0.5s ease forwards;
         }
-        .support-bar.hiding {
+        .support-notification.hiding {
             animation: supportOut 0.5s ease forwards;
         }
-        .support-bar:active {
-            transform: scale(0.98);
+        .support-notification img {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--primary);
+            object-fit: cover;
+            flex-shrink: 0;
         }
-        .support-bar span {
-            font-size: 11px;
+        .support-notification .notif-info { flex: 1; min-width: 0; }
+        .support-notification .notif-name {
+            font-size: 10px;
             font-weight: 800;
-            color: var(--primary);
-            position: relative;
-            z-index: 1;
+            color: var(--dark);
         }
-        .support-bar .channel-name {
-            color: var(--primary);
-            font-weight: 900;
-            direction: ltr;
-            display: inline-block;
-            margin-right: 4px;
+        .support-notification i {
+            color: var(--text-light);
+            font-size: 10px;
+            flex-shrink: 0;
         }
 
         @keyframes supportIn {
@@ -278,6 +273,51 @@
         @keyframes supportOut {
             from { opacity: 1; transform: translateY(0) scale(1); }
             to { opacity: 0; transform: translateY(20px) scale(0.95); }
+        }
+
+        .loading-footer {
+            position: fixed;
+            bottom: 8px;
+            right: 5%;
+            left: 5%;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 25px;
+            padding: 10px 16px;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+        [data-theme="dark"] .loading-footer {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+        }
+        .progress-bar-container {
+            background: var(--bg3);
+            border: var(--border);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .progress-status {
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-top: 6px;
         }
     </style>
 </head>
@@ -303,9 +343,19 @@
         <p class="message-desc" id="messageDesc">لطفاً چند لحظه صبر کنید</p>
     </main>
 
-    <div class="support-bar" id="supportBar">
-        <span data-i18n="support_text">حمایت از سازنده</span>
-        <span class="channel-name">@amirmahdi_code</span>
+    <div class="support-notification" id="supportNotification">
+        <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="notif-info">
+            <div class="notif-name">امیرمهدی | Amirmahdi</div>
+        </div>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+    </div>
+
+    <div class="loading-footer" id="loadingFooter">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-status" id="progressStatus">در حال آماده‌سازی...</div>
     </div>
 
     <script>
@@ -317,7 +367,10 @@
 
             var messageTitle = document.getElementById('messageTitle');
             var messageDesc = document.getElementById('messageDesc');
-            var supportBar = document.getElementById('supportBar');
+            var supportNotification = document.getElementById('supportNotification');
+            var progressBar = document.getElementById('progressBar');
+            var progressStatus = document.getElementById('progressStatus');
+            var loadingFooter = document.getElementById('loadingFooter');
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var messageInterval = null;
@@ -366,21 +419,39 @@
 
             var translations = {
                 fa: {
-                    support_text: 'حمایت از سازنده',
+                    loading_start: 'در حال آماده‌سازی...',
+                    loading_user: 'در حال بررسی اطلاعات...',
+                    loading_register: 'در حال ساخت حساب...',
+                    loading_ready: 'آماده‌سازی کامل شد',
+                    loading_welcome: 'خوش آمدید!',
+                    loading_join: 'در حال ورود به بازی...',
+                    loading_check: 'در حال بررسی وضعیت...',
                     toast_has_active_game: 'ابتدا بازی فعال خود را تمام کنید',
                     toast_join_failed: 'ورود به بازی ممکن نشد',
                     toast_game_started: 'این بازی شروع شده است و اجازه ورود ندارید',
                     toast_game_full: 'ظرفیت این بازی پر شده است'
                 },
                 en: {
-                    support_text: 'Support Developer',
+                    loading_start: 'Preparing...',
+                    loading_user: 'Checking your info...',
+                    loading_register: 'Creating account...',
+                    loading_ready: 'Ready',
+                    loading_welcome: 'Welcome!',
+                    loading_join: 'Joining the game...',
+                    loading_check: 'Checking status...',
                     toast_has_active_game: 'Please finish your active game first',
                     toast_join_failed: 'Failed to join the game',
                     toast_game_started: 'This game has already started',
                     toast_game_full: 'This game is full'
                 },
                 ar: {
-                    support_text: 'دعم المطور',
+                    loading_start: 'جار التحضير...',
+                    loading_user: 'جار التحقق من معلوماتك...',
+                    loading_register: 'جار إنشاء الحساب...',
+                    loading_ready: 'جاهز',
+                    loading_welcome: 'مرحباً!',
+                    loading_join: 'جار الانضمام إلى اللعبة...',
+                    loading_check: 'جار التحقق من الحالة...',
                     toast_has_active_game: 'يرجى إنهاء لعبتك النشطة أولاً',
                     toast_join_failed: 'فشل الانضمام إلى اللعبة',
                     toast_game_started: 'هذه اللعبة قد بدأت بالفعل',
@@ -431,11 +502,6 @@
             }
 
             function applyLanguage(lang) {
-                var t = translations[lang] || translations.fa;
-                document.querySelectorAll('[data-i18n]').forEach(function(el) {
-                    var k = el.getAttribute('data-i18n');
-                    if (t[k] !== undefined) el.textContent = t[k];
-                });
                 if (lang === 'en') {
                     document.documentElement.setAttribute('dir', 'ltr');
                 } else {
@@ -469,30 +535,42 @@
                 }, duration);
             }
 
-            var messages = [
-                {
-                    title: 'یک نفر میان شما جاسوس هست',
-                    desc: 'باید قبل از اینکه دیر بشه پیداش کنید. به حرف‌ها و رفتار بقیه دقیق باش.'
-                },
-                {
-                    title: 'بپرس، بشناس، لو بده',
-                    desc: 'با سوال‌های هوشمندانه از پاسخ‌ها فاصله بگیر و جاسوس رو تشخیص بده.'
-                },
-                {
-                    title: 'از شهر دفاع کن',
-                    desc: 'مافیا در کمین شهره. با هم متحد باشید تا شهر رو نجات بدید.'
-                },
-                {
-                    title: 'حقیقت رو کشف کن',
-                    desc: 'با استدلال و منطق، بین راست و دروغ فرق بذار و جاسوس رو لو بده.'
-                }
-            ];
+            function setProgress(pct, status) {
+                if (progressBar) progressBar.style.width = pct + '%';
+                if (status && progressStatus) progressStatus.textContent = status;
+            }
+
+            var messages = {
+                fa: [
+                    { title: 'یک نفر میان شما جاسوس هست', desc: 'باید قبل از اینکه دیر بشه پیداش کنید. به حرف‌ها و رفتار بقیه دقیق باش.' },
+                    { title: 'بپرس، بشناس، لو بده', desc: 'با سوال‌های هوشمندانه از پاسخ‌ها فاصله بگیر و جاسوس رو تشخیص بده.' },
+                    { title: 'از شهر دفاع کن', desc: 'مافیا در کمین شهره. با هم متحد باشید تا شهر رو نجات بدید.' },
+                    { title: 'حقیقت رو کشف کن', desc: 'با استدلال و منطق، بین راست و دروغ فرق بذار و جاسوس رو لو بده.' }
+                ],
+                en: [
+                    { title: 'One of you is a spy', desc: 'You must find them before it\'s too late. Pay close attention to words and behavior.' },
+                    { title: 'Ask, know, expose', desc: 'Use smart questions to distance from answers and identify the spy.' },
+                    { title: 'Defend the city', desc: 'Mafia is lurking. Unite together to save the city.' },
+                    { title: 'Discover the truth', desc: 'Use logic and reasoning to tell truth from lies and expose the spy.' }
+                ],
+                ar: [
+                    { title: 'أحدكم جاسوس', desc: 'يجب أن تجدوه قبل فوات الأوان. كونوا منتبهين للكلام والسلوك.' },
+                    { title: 'اسأل، اعرف، اكشف', desc: 'بأسئلة ذكية اقترب من الحقيقة وحدد الجاسوس.' },
+                    { title: 'دافع عن المدينة', desc: 'المافيا تترصد. اتحدوا معاً لإنقاذ المدينة.' },
+                    { title: 'اكتشف الحقيقة', desc: 'بمنطق واستدلال، ميّز بين الصدق والكذب واكشف الجاسوس.' }
+                ]
+            };
 
             var currentMsgIndex = 0;
 
+            function getCurrentMessages() {
+                return messages[currentLang] || messages.fa;
+            }
+
             function showMessage(index) {
                 if (isRedirecting) return;
-                var msg = messages[index % messages.length];
+                var msgs = getCurrentMessages();
+                var msg = msgs[index % msgs.length];
                 messageTitle.classList.add('fading');
                 messageDesc.classList.add('fading');
 
@@ -505,9 +583,10 @@
             }
 
             function startMessageRotation() {
+                var msgs = getCurrentMessages();
                 currentMsgIndex = 0;
-                messageTitle.textContent = messages[0].title;
-                messageDesc.textContent = messages[0].desc;
+                messageTitle.textContent = msgs[0].title;
+                messageDesc.textContent = msgs[0].desc;
 
                 messageInterval = setInterval(function() {
                     currentMsgIndex++;
@@ -522,9 +601,13 @@
                 }
             }
 
-            function showSupportBar() {
-                supportBar.classList.add('show');
-                supportBar.classList.remove('hiding');
+            function showSupport() {
+                supportNotification.classList.add('show');
+                supportNotification.classList.remove('hiding');
+            }
+
+            function hideLoadingFooter() {
+                if (loadingFooter) loadingFooter.style.display = 'none';
             }
 
             function getEitaaUser() {
@@ -615,6 +698,7 @@
 
             function showToastAndRedirect(msgKey) {
                 stopMessageRotation();
+                setProgress(100, getTranslation('loading_welcome'));
                 showToast(getTranslation(msgKey), 4000);
                 setTimeout(function() {
                     goToDashboard();
@@ -653,6 +737,8 @@
                 applyTheme();
                 startMessageRotation();
 
+                setProgress(10, getTranslation('loading_start'));
+
                 if (webApp) {
                     try {
                         webApp.ready();
@@ -669,6 +755,7 @@
 
                 if (!user || !username) {
                     stopMessageRotation();
+                    hideLoadingFooter();
                     messageTitle.textContent = 'لطفاً از داخل ایتا وارد شوید';
                     messageDesc.textContent = 'این برنامک فقط در ایتا کار می‌کند';
                     return;
@@ -676,12 +763,15 @@
 
                 var fullName = ((user.first_name || '') + ' ' + (user.last_name || '')).trim() || 'کاربر';
 
+                setProgress(25, getTranslation('loading_user'));
+
                 var check = await fetchData('getUser', {});
 
                 if (check && check.ok && check.data && typeof check.data === 'object') {
                     var userType = String(check.data.user_type || '').trim();
                     if (userType.indexOf('متخلف') !== -1) {
                         stopMessageRotation();
+                        hideLoadingFooter();
                         messageTitle.textContent = 'حساب کاربری شما اجازه ورود به بازی را ندارد';
                         messageDesc.textContent = 'برای پیگیری با پشتیبانی در تماس باشید';
                         return;
@@ -692,16 +782,22 @@
                         await fetchData('updateUser', { name: fullName });
                     }
                 } else {
+                    setProgress(40, getTranslation('loading_register'));
                     await fetchData('registerUser', { name: fullName });
                 }
 
-                showSupportBar();
+                setProgress(60, getTranslation('loading_ready'));
+
+                showSupport();
 
                 if (startParam && VALID_GAME_ID.test(startParam)) {
+                    setProgress(70, getTranslation('loading_check'));
+
                     var activeGame = await checkActiveGame();
 
                     if (activeGame) {
                         if (activeGame.id === startParam) {
+                            setProgress(100, getTranslation('loading_join'));
                             goToWaiting(startParam);
                             return;
                         } else {
@@ -710,9 +806,12 @@
                         }
                     }
 
+                    setProgress(85, getTranslation('loading_join'));
+
                     var joinResult = await fetchData('joinGame', { gameId: startParam });
 
                     if (joinResult && joinResult.ok) {
+                        setProgress(100, getTranslation('loading_welcome'));
                         goToWaiting(startParam);
                         return;
                     }
@@ -740,12 +839,14 @@
                     return;
                 }
 
+                setProgress(100, getTranslation('loading_welcome'));
+
                 setTimeout(function() {
                     goToDashboard();
                 }, 1500);
             }
 
-            supportBar.addEventListener('click', openChannelLink);
+            supportNotification.addEventListener('click', openChannelLink);
 
             init();
         })();
