@@ -298,7 +298,6 @@
         }
         .btn-start-game:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
         .btn-start-game i { font-size: 16px; }
-        .btn-start-game.disabled,
         .btn-start-game.loading-games {
             opacity: 0.5;
             cursor: not-allowed;
@@ -464,24 +463,6 @@
         [dir="ltr"] .rules-article ul { padding-right: 0; padding-left: 18px; }
         .rules-article li { margin-bottom: 4px; }
         .rules-article .highlight { font-weight: 800; color: var(--primary); }
-        .rules-article .warning {
-            background: rgba(var(--primary-rgb), 0.1);
-            border-right: 3px solid var(--primary);
-            padding: 8px 10px;
-            border-radius: 6px;
-            margin: 8px 0;
-            font-weight: 700;
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-        }
-        [dir="ltr"] .rules-article .warning { border-right: none; border-left: 3px solid var(--primary); }
-        .rules-article .warning i {
-            color: #dc2626;
-            font-size: 14px;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
         .rules-article a {
             color: var(--primary);
             font-weight: 800;
@@ -1114,9 +1095,10 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbxmE6UOD2rNLPSjujplTY8PjZKoZiE11KP4wRwLTM339CjABsA9RDNHpN97-vlp9REa/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzZDPiemnlOl-byo1Zp153we2-zpuNanVKPcaFxG6D_hoo38yeoQwVR-8HB1_svdb-p/exec';
             var currentLang = 'fa';
             var activeGameId = null;
+            var activeGameStatus = null;
             var hasHalfFinishedGame = false;
             var pendingAction = null;
             var isGamesLoading = false;
@@ -1309,7 +1291,7 @@
                 en: {
                     start_new_game: 'Start New Game',
                     wheel: 'Wheel',
-                    public_games: 'Public Games',
+                    public_games: 'Server Games',
                     loading_games: 'Loading games...',
                     game_guide: 'Game Guide',
                     intro_title: 'Introduction',
@@ -1395,7 +1377,7 @@
                     settings_nav: 'Settings',
                     active_game: 'You have an active game',
                     enter_room: 'Enter',
-                    no_public_games: 'No active public games',
+                    no_public_games: 'No active server games',
                     players: 'players',
                     waiting: 'Waiting',
                     error_loading: 'Error loading data',
@@ -1722,11 +1704,13 @@
                                 if (!isValidGameId(rawId)) continue;
                                 var safeId = escapeHtml(rawId);
                                 var playerCount = countPlayers(g.players);
+                                var maxPlayers = parseInt(g.maxPlayers, 10);
+                                var subText = playerCount + (isNaN(maxPlayers) ? '' : (' / ' + maxPlayers)) + ' ' + escapeHtml(getTranslation('players'));
                                 html += '<div class="game-card" data-game-id="' + safeId + '" role="button" tabindex="0">' +
                                     '<div class="game-card-avatar"><i class="bi bi-people" aria-hidden="true"></i></div>' +
                                     '<div class="game-card-info">' +
                                     '<div class="game-card-title">' + safeId + '</div>' +
-                                    '<div class="game-card-subtitle">' + playerCount + ' ' + escapeHtml(getTranslation('players')) + '</div>' +
+                                    '<div class="game-card-subtitle">' + subText + '</div>' +
                                     '</div>' +
                                     '<span class="game-card-badge waiting">' + escapeHtml(getTranslation('waiting')) + '</span>' +
                                     '</div>';
@@ -1774,6 +1758,7 @@
 
                         if (activeGame) {
                             activeGameId = activeGame.id;
+                            activeGameStatus = activeGame.status;
                             hasHalfFinishedGame = true;
                             document.getElementById('activeGameCode').textContent = activeGame.id;
                             document.getElementById('activeGameFloat').classList.add('show');
@@ -1892,7 +1877,14 @@
                 if (!activeGameId || !isValidGameId(activeGameId)) return;
 
                 safeSetLocalStorage('mafiaRoomCode', activeGameId);
-                window.location.href = '../game/waiting/?room=' + encodeURIComponent(activeGameId);
+
+                var target;
+                if (activeGameStatus === 'waiting') {
+                    target = '../game/waiting/?room=';
+                } else {
+                    target = '../game/table/?room=';
+                }
+                window.location.href = target + encodeURIComponent(activeGameId);
             }
 
             function openSupportLink() {
