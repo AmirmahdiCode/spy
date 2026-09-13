@@ -145,6 +145,55 @@
             display: inline-block;
         }
 
+        .toast-container {
+            position: fixed;
+            top: 75px;
+            right: 5%;
+            left: 5%;
+            max-width: 400px;
+            margin: 0 auto;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #ef4444;
+            color: #fff;
+            border: 1px solid #b91c1c;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            animation: toastIn 0.4s ease forwards;
+        }
+        .toast.hiding {
+            animation: toastOut 0.4s ease forwards;
+        }
+        .toast i {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .toast .toast-text {
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        }
+
         .main-container {
             position: relative; z-index: 5;
             max-width: 600px; width: 100%;
@@ -245,9 +294,19 @@
             font-weight: 800;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
         }
         .btn-start-game:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
         .btn-start-game i { font-size: 16px; }
+        .btn-start-game.disabled,
+        .btn-start-game.loading-games {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-start-game.loading-games:active {
+            transform: none;
+            box-shadow: var(--shadow);
+        }
 
         .btn-wheel {
             flex: 1;
@@ -398,12 +457,8 @@
             font-weight: 800;
             color: var(--dark);
             margin: 16px 0 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
         .rules-article h3:first-child { margin-top: 0; }
-        .rules-article h3 i { color: var(--primary); font-size: 14px; }
         .rules-article p { margin-bottom: 8px; }
         .rules-article ul { padding-right: 18px; margin-bottom: 8px; }
         [dir="ltr"] .rules-article ul { padding-right: 0; padding-left: 18px; }
@@ -440,14 +495,6 @@
             display: inline-block;
             vertical-align: middle;
         }
-        .rules-article .phase-icon {
-            color: var(--primary);
-            font-size: 12px;
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: 4px;
-        }
-        [dir="ltr"] .rules-article .phase-icon { margin-left: 0; margin-right: 4px; }
 
         .terms-link-btn {
             display: inline-flex;
@@ -477,9 +524,7 @@
         .role-category:last-child { margin-bottom: 0; }
 
         .role-category-title {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: block;
             font-size: 12px;
             font-weight: 800;
             color: var(--primary);
@@ -487,7 +532,6 @@
             margin-bottom: 10px;
             border-bottom: 1.5px solid var(--primary);
         }
-        .role-category-title i { font-size: 14px; }
 
         .role-block {
             margin-bottom: 12px;
@@ -503,10 +547,6 @@
             align-items: center;
             gap: 6px;
             flex-wrap: wrap;
-        }
-        .role-block-title i {
-            color: var(--primary);
-            font-size: 13px;
         }
         .role-block-title .role-img {
             width: 24px;
@@ -587,8 +627,7 @@
             white-space: nowrap;
         }
 
-        .terms-modal-overlay,
-        .active-game-modal-overlay {
+        .terms-modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.7);
@@ -598,8 +637,7 @@
             justify-content: center;
             padding: 20px;
         }
-        .terms-modal-overlay.show,
-        .active-game-modal-overlay.show { display: flex; }
+        .terms-modal-overlay.show { display: flex; }
         .terms-modal {
             background: var(--card-bg);
             border: var(--border);
@@ -777,6 +815,8 @@
 
     <div class="bg-animation"></div>
 
+    <div class="toast-container" id="toastContainer"></div>
+
     <header class="header">
         <div class="header-inner">
             <div class="header-right">
@@ -829,17 +869,17 @@
             </div>
             <div class="rules-article">
                 
-                <h3><i class="bi bi-bullseye" aria-hidden="true"></i> <span data-i18n="intro_title">معرفی بازی</span></h3>
+                <h3 data-i18n="intro_title">معرفی بازی</h3>
                 <p data-i18n="intro_desc">بازی «جاسوس مافیایی» یک بازی چالشی منحصربه‌فرد است که در طول ۳ شبانه‌روز انجام می‌شود و دارای ۲ فاز است: فاز روز و فاز شب.</p>
 
-                <h3><i class="bi bi-arrow-repeat" aria-hidden="true"></i> <span data-i18n="phases_title">فازهای بازی</span></h3>
-                <p><i class="bi bi-moon-stars-fill phase-icon" aria-hidden="true"></i> <span class="highlight" data-i18n="night_phase">فاز شب:</span> <span data-i18n="phase_night_desc">در طول شب، اعضای گروه مافیا یکدیگر را می‌شناسند و نقش‌های همدیگر را متوجه می‌شوند. نقش‌های ویژه نیز توانایی‌های خود را ایفا می‌کنند.</span></p>
-                <p><i class="bi bi-sun-fill phase-icon" aria-hidden="true"></i> <span class="highlight" data-i18n="day_phase">فاز روز:</span> <span data-i18n="phase_day_desc">در طول روز، همه بازیکنان درباره‌ی کلمه پرسش و پاسخ می‌کنند و در نهایت یک رای‌گیری انجام می‌شود که جاسوس کیست.</span></p>
+                <h3 data-i18n="phases_title">فازهای بازی</h3>
+                <p><span class="highlight" data-i18n="night_phase">فاز شب:</span> <span data-i18n="phase_night_desc">در طول شب، اعضای گروه مافیا یکدیگر را می‌شناسند و نقش‌های همدیگر را متوجه می‌شوند. نقش‌های ویژه نیز توانایی‌های خود را ایفا می‌کنند.</span></p>
+                <p><span class="highlight" data-i18n="day_phase">فاز روز:</span> <span data-i18n="phase_day_desc">در طول روز، همه بازیکنان درباره‌ی کلمه پرسش و پاسخ می‌کنند و در نهایت یک رای‌گیری انجام می‌شود که جاسوس کیست.</span></p>
 
-                <h3><i class="bi bi-people-fill" aria-hidden="true"></i> <span data-i18n="categories_title">دسته‌بندی بازیکنان</span></h3>
+                <h3 data-i18n="categories_title">دسته‌بندی بازیکنان</h3>
                 <p data-i18n="categories_desc">بازیکنان در سه دسته‌ی کلی قرار می‌گیرند: شهروندان، مافیا و آزاد.</p>
 
-                <h3><i class="bi bi-list-ol" aria-hidden="true"></i> <span data-i18n="flow_title">روند کلی بازی</span></h3>
+                <h3 data-i18n="flow_title">روند کلی بازی</h3>
                 <ul>
                     <li data-i18n="flow_1">در ابتدای بازی، کلمه‌ای به همه نشان داده می‌شود به‌جز جاسوس.</li>
                     <li data-i18n="flow_2">در طول روز، همه بازیکنان درباره‌ی کلمه پرسش و پاسخ می‌کنند و جاسوس باید خود را مخفی نگه دارد.</li>
@@ -850,11 +890,10 @@
                     <li data-i18n="flow_7">این روند تا پایان سومین نظرسنجی، یا لو رفتن جاسوس، یا برنده شدن یکی از نقش‌های آزاد ادامه دارد.</li>
                 </ul>
 
-                <h3><i class="bi bi-person-badge-fill" aria-hidden="true"></i> <span data-i18n="roles_title">نقش‌ها و وظایف</span></h3>
+                <h3 data-i18n="roles_title">نقش‌ها و وظایف</h3>
 
                 <div class="role-category">
                     <div class="role-category-title">
-                        <i class="bi bi-mask" aria-hidden="true"></i>
                         <span data-i18n="team_mafia">گروه مافیا</span>
                     </div>
 
@@ -893,7 +932,6 @@
 
                 <div class="role-category">
                     <div class="role-category-title">
-                        <i class="bi bi-people-fill" aria-hidden="true"></i>
                         <span data-i18n="team_citizens">گروه شهر</span>
                     </div>
 
@@ -932,7 +970,6 @@
 
                 <div class="role-category">
                     <div class="role-category-title">
-                        <i class="bi bi-person-fill-exclamation" aria-hidden="true"></i>
                         <span data-i18n="team_free">گروه آزاد</span>
                     </div>
 
@@ -1045,28 +1082,6 @@
         </div>
     </div>
 
-    <div class="active-game-modal-overlay" id="activeGameModalOverlay">
-        <div class="terms-modal">
-            <div class="terms-modal-header">
-                <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
-                <span data-i18n="active_game_modal_title">شما یک بازی نیمه‌تمام دارید</span>
-            </div>
-            <div class="terms-modal-simple-text">
-                <div style="margin-bottom:8px;">
-                    <span data-i18n="active_game_modal_code">کد بازی:</span>
-                    <strong id="activeGameModalCode">---</strong>
-                </div>
-                <div>
-                    <span data-i18n="active_game_modal_warning">برای شروع بازی جدید، ابتدا باید بازی فعلی خود را ادامه دهید یا از داخل اتاق آن را ترک کنید.</span>
-                </div>
-            </div>
-            <div class="terms-actions">
-                <button class="terms-btn cancel" id="btnActiveGameCancel" data-i18n="terms_cancel">انصراف</button>
-                <button class="terms-btn accept" id="btnActiveGameContinue" data-i18n="active_game_modal_continue">ورود به بازی</button>
-            </div>
-        </div>
-    </div>
-
     <div class="support-notification" id="supportNotification">
         <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         <div class="notif-info">
@@ -1099,11 +1114,12 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbzJBOcNxa49vrlBYQmK9BWjZKtIth-M2yqyvYPW8V639Syi8VF3Te9QL05rW5tAmlG5/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbxmE6UOD2rNLPSjujplTY8PjZKoZiE11KP4wRwLTM339CjABsA9RDNHpN97-vlp9REa/exec';
             var currentLang = 'fa';
             var activeGameId = null;
             var hasHalfFinishedGame = false;
             var pendingAction = null;
+            var isGamesLoading = false;
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var TERMS_DURATION = 48 * 60 * 60 * 1000;
@@ -1144,6 +1160,24 @@
                 } catch(e) {
                     return fallback;
                 }
+            }
+
+            function showToast(message, duration) {
+                duration = duration || 4000;
+                var container = document.getElementById('toastContainer');
+                if (!container) return;
+
+                var toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerHTML = '<i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span class="toast-text">' + escapeHtml(message) + '</span>';
+                container.appendChild(toast);
+
+                setTimeout(function() {
+                    toast.classList.add('hiding');
+                    setTimeout(function() {
+                        if (toast.parentNode) toast.parentNode.removeChild(toast);
+                    }, 400);
+                }, duration);
             }
 
             var fontMap = {
@@ -1263,17 +1297,14 @@
                     settings_nav: 'تنظیمات',
                     active_game: 'بازی فعال داری',
                     enter_room: 'ورود',
-                    active_game_modal_title: 'شما یک بازی نیمه‌تمام دارید',
-                    active_game_modal_code: 'کد بازی:',
-                    active_game_modal_warning: 'برای شروع بازی جدید، ابتدا باید بازی فعلی خود را ادامه دهید یا از داخل اتاق آن را ترک کنید.',
-                    active_game_modal_continue: 'ورود به بازی',
                     no_public_games: 'بازی سراسری فعالی وجود ندارد',
-                    you_have_active_game: 'شما یک بازی نیمه‌تمام دارید! ابتدا آن را تمام کنید.',
                     players: 'بازیکن',
                     waiting: 'در انتظار',
                     error_loading: 'خطا در دریافت اطلاعات',
                     error_network: 'اتصال اینترنت خود را بررسی کنید',
-                    retry: 'تلاش مجدد'
+                    retry: 'تلاش مجدد',
+                    toast_loading_games: 'در حال دریافت لیست بازی‌ها، لطفاً صبر کنید',
+                    toast_has_active_game: 'ابتدا بازی فعال خود را تمام کنید'
                 },
                 en: {
                     start_new_game: 'Start New Game',
@@ -1364,17 +1395,14 @@
                     settings_nav: 'Settings',
                     active_game: 'You have an active game',
                     enter_room: 'Enter',
-                    active_game_modal_title: 'You have a half-finished game',
-                    active_game_modal_code: 'Game code:',
-                    active_game_modal_warning: 'To start a new game, first continue your current game or leave it from inside the room.',
-                    active_game_modal_continue: 'Enter Game',
                     no_public_games: 'No active public games',
-                    you_have_active_game: 'You have a half-finished game! Finish it first.',
                     players: 'players',
                     waiting: 'Waiting',
                     error_loading: 'Error loading data',
                     error_network: 'Please check your internet connection',
-                    retry: 'Retry'
+                    retry: 'Retry',
+                    toast_loading_games: 'Loading games list, please wait',
+                    toast_has_active_game: 'Please finish your active game first'
                 },
                 ar: {
                     start_new_game: 'ابدأ لعبة جديدة',
@@ -1465,17 +1493,14 @@
                     settings_nav: 'الإعدادات',
                     active_game: 'لديك لعبة نشطة',
                     enter_room: 'دخول',
-                    active_game_modal_title: 'لديك لعبة غير مكتملة',
-                    active_game_modal_code: 'كود اللعبة:',
-                    active_game_modal_warning: 'لبدء لعبة جديدة، يجب أولاً متابعة لعبتك الحالية أو مغادرتها من داخل الغرفة.',
-                    active_game_modal_continue: 'دخول اللعبة',
                     no_public_games: 'لا توجد ألعاب عامة نشطة',
-                    you_have_active_game: 'لديك لعبة غير مكتملة! أكملها أولاً.',
                     players: 'لاعبين',
                     waiting: 'في الانتظار',
                     error_loading: 'خطأ في تحميل البيانات',
                     error_network: 'يرجى التحقق من اتصالك بالإنترنت',
-                    retry: 'إعادة المحاولة'
+                    retry: 'إعادة المحاولة',
+                    toast_loading_games: 'جار تحميل قائمة الألعاب، يرجى الانتظار',
+                    toast_has_active_game: 'يرجى إنهاء لعبتك النشطة أولاً'
                 }
             };
 
@@ -1638,6 +1663,16 @@
                 return matches ? matches.length : 0;
             }
 
+            function updateStartButtonState() {
+                var btn = document.getElementById('btnStartGame');
+                if (!btn) return;
+                if (isGamesLoading) {
+                    btn.classList.add('loading-games');
+                } else {
+                    btn.classList.remove('loading-games');
+                }
+            }
+
             async function loadUserCurrency() {
                 var coinsEl = document.getElementById('coinsHeader');
                 var diamondsEl = document.getElementById('diamondsHeader');
@@ -1662,6 +1697,9 @@
                 var list = document.getElementById('publicList');
                 var loader = document.getElementById('publicLoader');
                 var errorBox = document.getElementById('publicError');
+
+                isGamesLoading = true;
+                updateStartButtonState();
 
                 loader.style.display = 'flex';
                 errorBox.style.display = 'none';
@@ -1709,6 +1747,9 @@
                     loader.style.display = 'none';
                     errorBox.innerHTML = renderError();
                     errorBox.style.display = 'block';
+                } finally {
+                    isGamesLoading = false;
+                    updateStartButtonState();
                 }
             }
 
@@ -1718,7 +1759,6 @@
 
                     if (result.ok && Array.isArray(result.data)) {
                         var activeGame = null;
-                        var halfFinished = false;
 
                         for (var i = 0; i < result.data.length; i++) {
                             var g = result.data[i];
@@ -1728,14 +1768,13 @@
                             var s = g.status;
                             if (s === 'waiting' || s === 'd1' || s === 'n1' || s === 'd2' || s === 'n2' || s === 'd3' || s === 'n3') {
                                 activeGame = { id: rawId, status: s };
-                                if (s !== 'waiting') halfFinished = true;
                                 break;
                             }
                         }
 
                         if (activeGame) {
                             activeGameId = activeGame.id;
-                            hasHalfFinishedGame = halfFinished;
+                            hasHalfFinishedGame = true;
                             document.getElementById('activeGameCode').textContent = activeGame.id;
                             document.getElementById('activeGameFloat').classList.add('show');
                         }
@@ -1762,7 +1801,7 @@
             function guardGameEntry(callback) {
                 triggerHaptic('medium');
                 if (hasHalfFinishedGame) {
-                    showActiveGameModal(callback);
+                    showToast(getTranslation('toast_has_active_game'), 4000);
                     return;
                 }
                 showTermsModal(callback);
@@ -1803,26 +1842,6 @@
                 if (action) setTimeout(function() { action(); }, 200);
             }
 
-            function showActiveGameModal(callback) {
-                pendingAction = callback;
-                document.getElementById('activeGameModalCode').textContent = activeGameId || '---';
-                document.getElementById('activeGameModalOverlay').classList.add('show');
-            }
-
-            function closeActiveGameModal() {
-                document.getElementById('activeGameModalOverlay').classList.remove('show');
-                pendingAction = null;
-            }
-
-            function continueActiveGame() {
-                document.getElementById('activeGameModalOverlay').classList.remove('show');
-                pendingAction = null;
-                triggerHaptic('medium');
-                if (!activeGameId || !isValidGameId(activeGameId)) return;
-                safeSetLocalStorage('mafiaRoomCode', activeGameId);
-                window.location.href = '../game/table/?room=' + encodeURIComponent(activeGameId);
-            }
-
             function openChannelLink() {
                 if (webApp && webApp.openEitaaLink) {
                     webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
@@ -1832,6 +1851,11 @@
             }
 
             function startNewGame() {
+                if (isGamesLoading) {
+                    triggerHaptic('heavy');
+                    showToast(getTranslation('toast_loading_games'), 4000);
+                    return;
+                }
                 guardGameEntry(function() {
                     window.location.href = '../game/new/';
                 });
@@ -1844,19 +1868,31 @@
 
             function joinGame(gameId) {
                 if (!isValidGameId(gameId)) return;
+
+                if (isGamesLoading) {
+                    triggerHaptic('heavy');
+                    showToast(getTranslation('toast_loading_games'), 4000);
+                    return;
+                }
+
+                if (hasHalfFinishedGame) {
+                    triggerHaptic('heavy');
+                    showToast(getTranslation('toast_has_active_game'), 4000);
+                    return;
+                }
+
                 guardGameEntry(function() {
                     safeSetLocalStorage('mafiaRoomCode', gameId);
-                    window.location.href = '../game/table/?room=' + encodeURIComponent(gameId);
+                    window.location.href = '../game/waiting/?room=' + encodeURIComponent(gameId);
                 });
             }
 
             function goToActiveGame() {
                 triggerHaptic('light');
                 if (!activeGameId || !isValidGameId(activeGameId)) return;
-                guardGameEntry(function() {
-                    safeSetLocalStorage('mafiaRoomCode', activeGameId);
-                    window.location.href = '../game/table/?room=' + encodeURIComponent(activeGameId);
-                });
+
+                safeSetLocalStorage('mafiaRoomCode', activeGameId);
+                window.location.href = '../game/waiting/?room=' + encodeURIComponent(activeGameId);
             }
 
             function openSupportLink() {
@@ -1885,9 +1921,6 @@
             document.getElementById('termsCheckboxRow').addEventListener('click', toggleTermsCheckbox);
             document.getElementById('btnTermsCancel').addEventListener('click', closeTermsModal);
             document.getElementById('termsAcceptBtn').addEventListener('click', acceptTerms);
-
-            document.getElementById('btnActiveGameCancel').addEventListener('click', closeActiveGameModal);
-            document.getElementById('btnActiveGameContinue').addEventListener('click', continueActiveGame);
 
             document.getElementById('activeGameFloat').addEventListener('click', goToActiveGame);
             document.getElementById('supportNotification').addEventListener('click', openSupportLink);
