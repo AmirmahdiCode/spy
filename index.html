@@ -322,6 +322,7 @@
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var messageInterval = null;
             var isRedirecting = false;
+            var currentLang = 'fa';
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
@@ -367,17 +368,23 @@
                 fa: {
                     support_text: 'حمایت از سازنده',
                     toast_has_active_game: 'ابتدا بازی فعال خود را تمام کنید',
-                    toast_join_failed: 'ورود به بازی ممکن نشد'
+                    toast_join_failed: 'ورود به بازی ممکن نشد',
+                    toast_game_started: 'این بازی شروع شده است و اجازه ورود ندارید',
+                    toast_game_full: 'ظرفیت این بازی پر شده است'
                 },
                 en: {
                     support_text: 'Support Developer',
                     toast_has_active_game: 'Please finish your active game first',
-                    toast_join_failed: 'Failed to join the game'
+                    toast_join_failed: 'Failed to join the game',
+                    toast_game_started: 'This game has already started',
+                    toast_game_full: 'This game is full'
                 },
                 ar: {
                     support_text: 'دعم المطور',
                     toast_has_active_game: 'يرجى إنهاء لعبتك النشطة أولاً',
-                    toast_join_failed: 'فشل الانضمام إلى اللعبة'
+                    toast_join_failed: 'فشل الانضمام إلى اللعبة',
+                    toast_game_started: 'هذه اللعبة قد بدأت بالفعل',
+                    toast_game_full: 'هذه اللعبة ممتلئة'
                 }
             };
 
@@ -385,8 +392,6 @@
                 var t = translations[currentLang] || translations.fa;
                 return t[k] || translations.fa[k] || k;
             }
-
-            var currentLang = 'fa';
 
             function getSettings() {
                 try {
@@ -522,14 +527,6 @@
                 supportBar.classList.remove('hiding');
             }
 
-            function hideSupportBar() {
-                supportBar.classList.add('hiding');
-                setTimeout(function() {
-                    supportBar.classList.remove('show');
-                    supportBar.classList.remove('hiding');
-                }, 500);
-            }
-
             function getEitaaUser() {
                 return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
             }
@@ -616,6 +613,14 @@
                 window.location.href = './game/waiting/?room=' + encodeURIComponent(gameId);
             }
 
+            function showToastAndRedirect(msgKey) {
+                stopMessageRotation();
+                showToast(getTranslation(msgKey), 4000);
+                setTimeout(function() {
+                    goToDashboard();
+                }, 4300);
+            }
+
             async function checkActiveGame() {
                 try {
                     var result = await fetchData('getGamesByPlayer', {});
@@ -700,11 +705,7 @@
                             goToWaiting(startParam);
                             return;
                         } else {
-                            stopMessageRotation();
-                            showToast(getTranslation('toast_has_active_game'), 4000);
-                            setTimeout(function() {
-                                goToDashboard();
-                            }, 4500);
+                            showToastAndRedirect('toast_has_active_game');
                             return;
                         }
                     }
@@ -716,11 +717,26 @@
                         return;
                     }
 
-                    stopMessageRotation();
-                    showToast(getTranslation('toast_join_failed'), 4000);
-                    setTimeout(function() {
-                        goToDashboard();
-                    }, 4500);
+                    var errCode = joinResult ? String(joinResult.error || '') : '';
+
+                    if (errCode === 'Game already started') {
+                        showToastAndRedirect('toast_game_started');
+                        return;
+                    }
+                    if (errCode === 'Game is full') {
+                        showToastAndRedirect('toast_game_full');
+                        return;
+                    }
+                    if (errCode === 'Active game exists') {
+                        showToastAndRedirect('toast_has_active_game');
+                        return;
+                    }
+                    if (errCode === 'Game not found') {
+                        showToastAndRedirect('toast_game_started');
+                        return;
+                    }
+
+                    showToastAndRedirect('toast_join_failed');
                     return;
                 }
 
