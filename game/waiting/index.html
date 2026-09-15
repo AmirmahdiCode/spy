@@ -280,7 +280,12 @@
             border: var(--border);
             border-radius: 10px;
             box-shadow: 2px 2px 0 #000;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            animation: playerIn 0.4s ease forwards;
+        }
+        @keyframes playerIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .player-row.is-me {
             border-color: var(--primary);
@@ -673,7 +678,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbzZDPiemnlOl-byo1Zp153we2-zpuNanVKPcaFxG6D_hoo38yeoQwVR-8HB1_svdb-p/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzt7V8CSoduK5Tcwbn9WsXsMyiP5NYLX8Sx-qUCHXsLEiDLGHVIMlD9aEuw4oSZ8XE7/exec';
             var INVITE_BASE = 'https://eitaa.com/gameland_app/Spy?startapp=';
 
             var currentLang = 'fa';
@@ -685,6 +690,7 @@
             var isLeaving = false;
             var lastPlayersJson = '';
             var isLoading = false;
+            var playersRendered = false;
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
 
@@ -771,6 +777,7 @@
                     leave_failed: 'خروج از اتاق انجام نشد',
                     start_failed: 'شروع بازی انجام نشد',
                     start_min_players: 'حداقل ۳ بازیکن برای شروع لازمه',
+                    start_not_creator: 'فقط سازنده می‌تونه بازی رو شروع کنه',
                     kick_failed: 'کیک کردن انجام نشد',
                     kick_confirm: 'این بازیکن رو از بازی بیرون بندازم؟',
                     game_cancelled: 'بازی لغو شد',
@@ -802,6 +809,7 @@
                     leave_failed: 'Failed to leave',
                     start_failed: 'Failed to start game',
                     start_min_players: 'At least 3 players required to start',
+                    start_not_creator: 'Only host can start the game',
                     kick_failed: 'Failed to kick',
                     kick_confirm: 'Kick this player from the game?',
                     game_cancelled: 'Game cancelled',
@@ -833,6 +841,7 @@
                     leave_failed: 'فشل الخروج',
                     start_failed: 'فشل بدء اللعبة',
                     start_min_players: 'مطلوب 3 لاعبين على الأقل للبدء',
+                    start_not_creator: 'فقط المضيف يمكنه بدء اللعبة',
                     kick_failed: 'فشل الطرد',
                     kick_confirm: 'هل تريد طرد هذا اللاعب؟',
                     game_cancelled: 'تم إلغاء اللعبة',
@@ -1076,7 +1085,37 @@
                 }
             }
 
-            function renderPlayers(players, playerCount) {
+            function renderPlayerRow(p, index) {
+                var isMe = String(p.user_id) === String(myUserId);
+                var isHost = index === 0;
+
+                var classes = 'player-row';
+                if (isMe) classes += ' is-me';
+                if (isHost) classes += ' is-creator';
+
+                var score = parseInt(p.score, 10);
+                if (isNaN(score)) score = 0;
+
+                var html = '<div class="' + classes + '" data-player-id="' + escapeAttr(String(p.user_id)) + '">';
+                html += '<div class="player-avatar">' + getAvatarHtml(p.avatar || 'default') + '</div>';
+                html += '<div class="player-info">';
+                html += '<div class="player-name">' + escapeHtml(p.name || 'کاربر') + ' ' + getUserTypeBadge(p.user_type);
+                if (isMe) html += ' <span style="font-size:8px;color:var(--primary);font-weight:800;">(' + escapeHtml(getTranslation('you')) + ')</span>';
+                html += '</div>';
+                html += '<div class="player-score"><i class="bi bi-star-fill" aria-hidden="true"></i> ' + score + ' ' + escapeHtml(getTranslation('score_label')) + '</div>';
+                html += '</div>';
+
+                if (isCreator && !isMe) {
+                    html += '<button class="player-kick-btn" data-kick="' + escapeAttr(String(p.user_id)) + '" type="button" title="' + escapeAttr(getTranslation('kick')) + '">';
+                    html += '<i class="bi bi-x-lg" aria-hidden="true"></i>';
+                    html += '</button>';
+                }
+
+                html += '</div>';
+                return html;
+            }
+
+            function updatePlayersList(players, playerCount) {
                 var listEl = document.getElementById('playersList');
                 var countEl = document.getElementById('playersCount');
                 if (!listEl) return;
@@ -1092,35 +1131,8 @@
 
                 var html = '';
                 for (var i = 0; i < players.length; i++) {
-                    var p = players[i];
-                    var isMe = String(p.user_id) === String(myUserId);
-                    var isHost = i === 0;
-
-                    var classes = 'player-row';
-                    if (isMe) classes += ' is-me';
-                    if (isHost) classes += ' is-creator';
-
-                    var score = parseInt(p.score, 10);
-                    if (isNaN(score)) score = 0;
-
-                    html += '<div class="' + classes + '" data-player-id="' + escapeAttr(String(p.user_id)) + '">';
-                    html += '<div class="player-avatar">' + getAvatarHtml(p.avatar || 'default') + '</div>';
-                    html += '<div class="player-info">';
-                    html += '<div class="player-name">' + escapeHtml(p.name || 'کاربر') + ' ' + getUserTypeBadge(p.user_type);
-                    if (isMe) html += ' <span style="font-size:8px;color:var(--primary);font-weight:800;">(' + escapeHtml(getTranslation('you')) + ')</span>';
-                    html += '</div>';
-                    html += '<div class="player-score"><i class="bi bi-star-fill" aria-hidden="true"></i> ' + score + ' ' + escapeHtml(getTranslation('score_label')) + '</div>';
-                    html += '</div>';
-
-                    if (isCreator && !isMe) {
-                        html += '<button class="player-kick-btn" data-kick="' + escapeAttr(String(p.user_id)) + '" type="button" title="' + escapeAttr(getTranslation('kick')) + '">';
-                        html += '<i class="bi bi-x-lg" aria-hidden="true"></i>';
-                        html += '</button>';
-                    }
-
-                    html += '</div>';
+                    html += renderPlayerRow(players[i], i);
                 }
-
                 listEl.innerHTML = html;
             }
 
@@ -1207,7 +1219,7 @@
                     var playersJson = JSON.stringify(players);
                     if (playersJson !== lastPlayersJson) {
                         lastPlayersJson = playersJson;
-                        renderPlayers(players, game.playerCount || 5);
+                        updatePlayersList(players, game.playerCount || 5);
                         updateActionBar();
                     }
 
@@ -1221,7 +1233,7 @@
                 stopPolling();
                 pollingInterval = setInterval(function() {
                     if (!isLeaving) loadGame(false);
-                }, 2500);
+                }, 5000);
             }
 
             function stopPolling() {
@@ -1262,7 +1274,7 @@
                 }
             }
 
-            async function handleLeave() {
+            function handleLeave() {
                 if (isLeaving) return;
 
                 var confirmMsg = getTranslation('leave_confirm');
@@ -1272,8 +1284,6 @@
                     });
                 } else if (window.confirm(confirmMsg)) {
                     doLeave();
-                } else {
-                    return;
                 }
             }
 
@@ -1297,6 +1307,11 @@
             }
 
             async function handleStart() {
+                if (!isCreator) {
+                    showToast(getTranslation('start_not_creator'));
+                    return;
+                }
+
                 var playersArr = currentGame && currentGame.players ? currentGame.players : [];
                 if (playersArr.length < 3) {
                     showToast(getTranslation('start_min_players'));
@@ -1306,7 +1321,7 @@
                 showLoading();
                 triggerHaptic('medium');
 
-                var result = await fetchData('updateGameStatus', { gameId: roomId, status: 'n1' });
+                var result = await fetchData('startGame', { gameId: roomId });
 
                 hideLoading();
 
@@ -1317,11 +1332,15 @@
                         window.location.href = '../table/?room=' + encodeURIComponent(roomId);
                     }, 800);
                 } else {
-                    showToast(getTranslation('start_failed'));
+                    var errCode = result ? String(result.error || '') : '';
+                    var msg = getTranslation('start_failed');
+                    if (errCode === 'Only the creator can start') msg = getTranslation('start_not_creator');
+                    else if (errCode === 'Not enough players') msg = getTranslation('start_min_players');
+                    showToast(msg);
                 }
             }
 
-            async function handleKick(playerId) {
+            function handleKick(playerId) {
                 if (!isCreator) return;
                 if (!playerId) return;
                 if (String(playerId) === String(myUserId)) return;
@@ -1340,11 +1359,15 @@
                 showLoading();
                 triggerHaptic('medium');
 
-                var result = await fetchData('leaveGame', { gameId: roomId, targetUser: playerId });
+                var result = await fetchData('kickPlayer', {
+                    gameId: roomId,
+                    targetUserId: playerId
+                });
 
                 hideLoading();
 
                 if (result && result.ok) {
+                    lastPlayersJson = '';
                     await loadGame(false);
                 } else {
                     showToast(getTranslation('kick_failed'));
@@ -1393,8 +1416,9 @@
                     try {
                         webApp.ready();
                         webApp.expand();
-                        if (webApp.BackButton && webApp.BackButton.hide) {
-                            webApp.BackButton.hide();
+                        if (webApp.BackButton && webApp.BackButton.show) {
+                            webApp.BackButton.show();
+                            webApp.BackButton.onClick(function() { window.location.href = '../../dashboard/'; });
                         }
                     } catch(e) {}
                 }
