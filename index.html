@@ -417,7 +417,25 @@
             function updateHeaderTitle(lang) {
                 var titleEl = document.getElementById('headerTitle');
                 if (!titleEl) return;
-                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
+                if (lang === 'en') {
+                    titleEl.textContent = 'Mafia Spy';
+                } else {
+                    titleEl.textContent = 'جاسوس مافیایی';
+                }
+            }
+
+            function applyLanguage(lang) {
+                var t = translations[lang] || translations.fa;
+                document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                    var k = el.getAttribute('data-i18n');
+                    if (t[k] !== undefined) el.textContent = t[k];
+                });
+                if (lang === 'en') {
+                    document.documentElement.setAttribute('dir', 'ltr');
+                } else {
+                    document.documentElement.setAttribute('dir', 'rtl');
+                }
+                updateHeaderTitle(lang);
             }
 
             function applyTheme() {
@@ -437,20 +455,6 @@
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
                 applyLanguage(currentLang);
-            }
-
-            function applyLanguage(lang) {
-                var t = translations[lang] || translations.fa;
-                document.querySelectorAll('[data-i18n]').forEach(function(el) {
-                    var k = el.getAttribute('data-i18n');
-                    if (t[k] !== undefined) el.textContent = t[k];
-                });
-                if (lang === 'en') {
-                    document.documentElement.setAttribute('dir', 'ltr');
-                } else {
-                    document.documentElement.setAttribute('dir', 'rtl');
-                }
-                updateHeaderTitle(lang);
             }
 
             function triggerHaptic(style) {
@@ -479,30 +483,37 @@
                 }, duration);
             }
 
-            var messages = [
-                {
-                    title: 'یک نفر میان شما جاسوس هست',
-                    desc: 'باید قبل از اینکه دیر بشه پیداش کنید. به حرف‌ها و رفتار بقیه دقیق باش.'
-                },
-                {
-                    title: 'بپرس، بشناس، لو بده',
-                    desc: 'با سوال‌های هوشمندانه از پاسخ‌ها فاصله بگیر و جاسوس رو تشخیص بده.'
-                },
-                {
-                    title: 'از شهر دفاع کن',
-                    desc: 'مافیا در کمین شهره. با هم متحد باشید تا شهر رو نجات بدید.'
-                },
-                {
-                    title: 'حقیقت رو کشف کن',
-                    desc: 'با استدلال و منطق، بین راست و دروغ فرق بذار و جاسوس رو لو بده.'
-                }
-            ];
+            var messages = {
+                fa: [
+                    { title: 'یک نفر میان شما جاسوس هست', desc: 'باید قبل از اینکه دیر بشه پیداش کنید. به حرف‌ها و رفتار بقیه دقیق باش.' },
+                    { title: 'بپرس، بشناس، لو بده', desc: 'با سوال‌های هوشمندانه از پاسخ‌ها فاصله بگیر و جاسوس رو تشخیص بده.' },
+                    { title: 'از شهر دفاع کن', desc: 'مافیا در کمین شهره. با هم متحد باشید تا شهر رو نجات بدید.' },
+                    { title: 'حقیقت رو کشف کن', desc: 'با استدلال و منطق، بین راست و دروغ فرق بذار و جاسوس رو لو بده.' }
+                ],
+                en: [
+                    { title: 'One of you is a spy', desc: 'You must find them before it\'s too late. Pay close attention to words and behavior.' },
+                    { title: 'Ask, know, expose', desc: 'Use smart questions to distance from answers and identify the spy.' },
+                    { title: 'Defend the city', desc: 'Mafia is lurking. Unite together to save the city.' },
+                    { title: 'Discover the truth', desc: 'Use logic and reasoning to tell truth from lies and expose the spy.' }
+                ],
+                ar: [
+                    { title: 'أحدكم جاسوس', desc: 'يجب أن تجدوه قبل فوات الأوان. كونوا منتبهين للكلام والسلوك.' },
+                    { title: 'اسأل، اعرف، اكشف', desc: 'بأسئلة ذكية اقترب من الحقيقة وحدد الجاسوس.' },
+                    { title: 'دافع عن المدينة', desc: 'المافيا تترصد. اتحدوا معاً لإنقاذ المدينة.' },
+                    { title: 'اكتشف الحقيقة', desc: 'بمنطق واستدلال، ميّز بين الصدق والكذب واكشف الجاسوس.' }
+                ]
+            };
 
             var currentMsgIndex = 0;
 
+            function getCurrentMessages() {
+                return messages[currentLang] || messages.fa;
+            }
+
             function showMessage(index) {
                 if (isRedirecting) return;
-                var msg = messages[index % messages.length];
+                var msgs = getCurrentMessages();
+                var msg = msgs[index % msgs.length];
                 messageTitle.classList.add('fading');
                 messageDesc.classList.add('fading');
 
@@ -515,9 +526,10 @@
             }
 
             function startMessageRotation() {
+                var msgs = getCurrentMessages();
                 currentMsgIndex = 0;
-                messageTitle.textContent = messages[0].title;
-                messageDesc.textContent = messages[0].desc;
+                messageTitle.textContent = msgs[0].title;
+                messageDesc.textContent = msgs[0].desc;
 
                 messageInterval = setInterval(function() {
                     currentMsgIndex++;
