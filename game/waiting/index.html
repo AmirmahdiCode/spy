@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتاق انتظار | جاسوس مافیایی</title>
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg2: #f5f5f5;
+            --bg3: #e0e0e0;
+            --primary: #000000;
+            --primary-dark: #333333;
+            --primary-light: #666666;
+            --primary-rgb: 0, 0, 0;
+            --dark: #000000;
+            --text: #333333;
+            --text-light: #999999;
+            --white: #ffffff;
+            --card-bg: #ffffff;
+            --shadow: 3px 3px 0 #000000;
+            --radius: 12px;
+            --border: 1px solid #000000;
+            --gold: #f59e0b;
+            --font: 'Samim', Tahoma, sans-serif;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        [data-theme="dark"] {
+            --bg: #000000;
+            --bg2: #1a1a1a;
+            --bg3: #333333;
+            --primary: #666666;
+            --primary-dark: #999999;
+            --primary-light: #444444;
+            --primary-rgb: 102, 102, 102;
+            --dark: #ffffff;
+            --text: #cccccc;
+            --text-light: #888888;
+            --white: #1a1a1a;
+            --card-bg: #1a1a1a;
+            --shadow: 3px 3px 0 #000000;
+            --border: 1px solid #666666;
+        }
+
+        [data-special-theme="crime"] {
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --primary-light: #fca5a5;
+            --primary-rgb: 220, 38, 38;
+            --border: 1px solid #dc2626;
+        }
+
+        [data-theme="dark"][data-special-theme="crime"] {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #fca5a5;
+            --primary-rgb: 239, 68, 68;
+            --border: 1px solid #ef4444;
+        }
+
+        [data-animation="off"] * { animation: none !important; transition: none !important; }
+
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+            -webkit-user-drag: none; user-drag: none;
+        }
+        img { pointer-events: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; user-drag: none; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: font-family 0.3s ease;
+        }
+
+        .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+
+        .header-logo {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: none;
+            box-shadow: none;
+            flex-shrink: 0;
+        }
+        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
+        .header-subtitle { font-size: 8px; color: var(--text-light); }
+
+        .main-container {
+            position: relative; z-index: 5;
+            flex: 1;
+            max-width: 600px; width: 100%;
+            margin: 16px auto; padding: 0 12px 150px;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+
+        .waiting-banner {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .waiting-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--bg2);
+            border: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: var(--primary);
+            margin-bottom: 4px;
+            position: relative;
+        }
+        .waiting-icon::after {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border: 2px dashed var(--primary);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: spinSlow 8s linear infinite;
+        }
+        @keyframes spinSlow { to { transform: rotate(360deg); } }
+
+        .waiting-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .waiting-desc {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-light);
+            line-height: 1.8;
+            max-width: 320px;
+        }
+
+        .room-code-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--dark);
+            box-shadow: 2px 2px 0 #000;
+            direction: ltr;
+            letter-spacing: 2px;
+        }
+
+        .copy-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--primary);
+            color: #fff;
+            border: var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            font-family: var(--font);
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            max-width: 320px;
+        }
+        .copy-link-btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
+        .copy-link-btn i { font-size: 15px; }
+        .copy-link-btn.copied {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .players-card {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .players-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed var(--text-light);
+            padding-bottom: 10px;
+        }
+
+        .players-card-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .players-card-title i { color: var(--primary); font-size: 13px; }
+
+        .players-count {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--primary);
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 8px;
+            padding: 3px 10px;
+            box-shadow: 2px 2px 0 #000;
+        }
+
+        .players-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .player-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 10px;
+            box-shadow: 2px 2px 0 #000;
+            transition: all 0.2s ease;
+        }
+        .player-row.is-me {
+            border-color: var(--primary);
+            border-width: 2px;
+            background: var(--bg3);
+        }
+        .player-row.is-creator {
+            position: relative;
+        }
+        .player-row.is-creator::before {
+            content: '👑';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            font-size: 14px;
+            background: var(--gold);
+            border: 1px solid #000;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .player-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--primary);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .player-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        .player-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .player-name {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .player-name .badge-icon {
+            width: 13px; height: 13px; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .player-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .player-score {
+            font-size: 8px;
+            color: var(--text-light);
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .player-score i { font-size: 9px; color: var(--gold); }
+
+        .player-kick-btn {
+            width: 28px;
+            height: 28px;
+            border: var(--border);
+            border-radius: 8px;
+            background: var(--danger);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+            box-shadow: 2px 2px 0 #000;
+            flex-shrink: 0;
+            transition: all 0.15s ease;
+            padding: 0;
+        }
+        .player-kick-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+
+        .empty-players {
+            text-align: center;
+            padding: 12px;
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        .floating-action-bar {
+            position: fixed;
+            bottom: 12px;
+            right: 5%;
+            left: 5%;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            z-index: 998;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+            border-radius: 25px;
+            font-family: var(--font);
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            flex: 1;
+        }
+        [data-theme="dark"] .btn-action {
+            background: rgba(26, 26, 26, 0.35);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            pointer-events: none;
+            border-radius: 25px 25px 0 0;
+        }
+        [data-theme="dark"] .btn-action::before {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+        }
+        .btn-action:active:not(:disabled) {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .btn-action:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-action i { font-size: 15px; position: relative; z-index: 1; }
+        .btn-action span { position: relative; z-index: 1; }
+
+        .btn-leave {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.35);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+        [data-theme="dark"] .btn-leave { background: rgba(26, 26, 26, 0.35); }
+        .btn-leave::before {
+            background: linear-gradient(to bottom, rgba(239, 68, 68, 0.15), transparent);
+        }
+
+        .btn-start {
+            flex: 2;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border-color: var(--success);
+        }
+        [data-theme="dark"] .btn-start { background: rgba(16, 185, 129, 0.1); }
+        .btn-start::before {
+            background: linear-gradient(to bottom, rgba(16, 185, 129, 0.2), transparent);
+        }
+
+        .waiting-action-info {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            color: var(--text-light);
+            border: 1.5px dashed var(--text-light);
+            border-radius: 25px;
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+        [data-theme="dark"] .waiting-action-info {
+            background: rgba(26, 26, 26, 0.35);
+        }
+        .waiting-action-info i {
+            font-size: 14px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 75px;
+            right: 5%;
+            left: 5%;
+            max-width: 400px;
+            margin: 0 auto;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #ef4444;
+            color: #fff;
+            border: 1px solid #b91c1c;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            animation: toastIn 0.4s ease forwards;
+        }
+        .toast.success {
+            background: #10b981;
+            border-color: #059669;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+        .toast.hiding { animation: toastOut 0.4s ease forwards; }
+        .toast i { font-size: 16px; flex-shrink: 0; }
+        .toast .toast-text { flex: 1; line-height: 1.5; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        }
+
+        .support-notification {
+            position: fixed; top: 75px; right: 5%; left: 5%;
+            max-width: 400px; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 10px 14px;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 2000;
+            animation: slideDownNotif 0.5s ease forwards, slideUpNotif 0.5s ease 4.5s forwards;
+            cursor: pointer;
+        }
+        [data-theme="dark"] .support-notification {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+        }
+        .support-notification img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary); object-fit: cover; }
+        .support-notification .notif-info { flex: 1; }
+        .support-notification .notif-name { font-size: 10px; font-weight: 800; color: var(--dark); }
+        .support-notification i { color: var(--text-light); font-size: 10px; }
+
+        @keyframes slideDownNotif { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpNotif { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 4000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-overlay.show { display: flex; }
+        .loading-overlay-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-right">
+                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="Mafia Spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
+                <div>
+                    <div class="header-title" id="headerTitle">جاسوس مافیایی</div>
+                    <div class="header-subtitle" data-i18n="waiting_room">اتاق انتظار</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+
+        <div class="waiting-banner">
+            <div class="waiting-icon">
+                <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+            </div>
+            <div class="waiting-title" data-i18n="waiting_title">در انتظار ورود بازیکن‌ها</div>
+            <div class="waiting-desc" data-i18n="waiting_desc">لینک رو کپی کن و بقیه رو دعوت کن به بازی</div>
+            <div class="room-code-badge" id="roomCodeBadge">------</div>
+            <button class="copy-link-btn" id="btnCopyLink" type="button">
+                <i class="bi bi-link-45deg" aria-hidden="true"></i>
+                <span data-i18n="copy_link">کپی کردن لینک دعوت</span>
+            </button>
+        </div>
+
+        <div class="players-card">
+            <div class="players-card-header">
+                <div class="players-card-title">
+                    <i class="bi bi-people-fill" aria-hidden="true"></i>
+                    <span data-i18n="players_list">لیست بازیکنان</span>
+                </div>
+                <span class="players-count" id="playersCount">0 / 5</span>
+            </div>
+            <div class="players-list" id="playersList">
+                <div class="empty-players" data-i18n="loading_players">در حال دریافت بازیکنان...</div>
+            </div>
+        </div>
+
+    </main>
+
+    <div class="floating-action-bar" id="actionBar">
+        <button class="btn-action btn-leave" id="btnLeave" type="button">
+            <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+            <span data-i18n="leave_room">خروج</span>
+        </button>
+        <button class="btn-action btn-start" id="btnStart" type="button" disabled style="display:none;">
+            <i class="bi bi-play-fill" aria-hidden="true"></i>
+            <span data-i18n="start_game">شروع بازی</span>
+        </button>
+        <div class="waiting-action-info" id="waitingInfo" style="display:none;">
+            <i class="bi bi-hourglass-split" aria-hidden="true"></i>
+            <span data-i18n="waiting_start">در انتظار شروع بازی...</span>
+        </div>
+    </div>
+
+    <div class="support-notification" id="supportNotification">
+        <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="notif-info">
+            <div class="notif-name">امیرمهدی | Amirmahdi</div>
+        </div>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-overlay-spinner"></div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            var webApp = window.Eitaa && window.Eitaa.WebApp;
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzZDPiemnlOl-byo1Zp153we2-zpuNanVKPcaFxG6D_hoo38yeoQwVR-8HB1_svdb-p/exec';
+            var INVITE_BASE = 'https://eitaa.com/gameland_app/Spy?startapp=';
+
+            var currentLang = 'fa';
+            var roomId = '';
+            var myUserId = '';
+            var currentGame = null;
+            var isCreator = false;
+            var pollingInterval = null;
+            var isLeaving = false;
+            var lastPlayersJson = '';
+            var isLoading = false;
+
+            var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
+
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+            document.addEventListener('copy', function(e) { e.preventDefault(); });
+            document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function escapeAttr(str) { return escapeHtml(str); }
+
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
+            }
+
+            function safeSetLocalStorage(key, value) {
+                try { localStorage.setItem(key, value); return true; }
+                catch(e) { return false; }
+            }
+
+            function safeParseJSON(str, fallback) {
+                try {
+                    var parsed = JSON.parse(str);
+                    return parsed === null || parsed === undefined ? fallback : parsed;
+                } catch(e) { return fallback; }
+            }
+
+            var fontMap = {
+                'Samim': "'Samim', Tahoma, sans-serif",
+                'Sahel': "'Sahel', Tahoma, sans-serif",
+                'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
+            };
+
+            var iconAvatars = {
+                'icon_game': 'fa-gamepad', 'icon_trophy': 'fa-trophy', 'icon_star': 'fa-star',
+                'icon_bolt': 'fa-bolt', 'icon_fire': 'fa-fire', 'icon_crown': 'fa-crown',
+                'icon_medal': 'fa-medal', 'icon_ghost': 'fa-ghost',
+                'icon_hat': 'fa-hat-wizard', 'icon_shield': 'fa-shield-halved'
+            };
+
+            var allAvatarUrls = {
+                'pack1_1': 'https://cdn.imgurl.ir/uploads/w54346_lIQr-ezB9TyDFznBX3EieIvKLKM-CdpmSV-OSA2l26jhWCDcIA.png',
+                'pack1_2': 'https://cdn.imgurl.ir/uploads/d045472_45mp0V0r9zSquRAopHTdR59Od_o-L60GmINsTj2gUswx-2AmsQ.png',
+                'pack1_3': 'https://cdn.imgurl.ir/uploads/d114583_ftWUHkzgH4A2JymrtJgRp63obmk-8-j-mwqcSiacnVXLLkp0hA.png',
+                'pack1_4': 'https://cdn.imgurl.ir/uploads/w41443_xNi0R1rJosqzhzhbLnQzYQHn2fw-XhSRfdtbSTe4-1WdpJFA2w.png',
+                'pack1_5': 'https://cdn.imgurl.ir/uploads/n160157_D0pfZYH_Qyviui_DHs7nz-Ov8ok-9QNBVHKnRPi3pACDH8ybJw.png',
+                'pack1_6': 'https://cdn.imgurl.ir/uploads/z506541_xNi0R1rJosqzhzhbLnQzYQHn2fw-XhSRfdtbSTe4-1WdpJFA2w.png',
+                'pack1_7': 'https://cdn.imgurl.ir/uploads/o90527_iXRzLE_NMWaY3YWS7NVyWsLAnKc-5FHSha4aSI-iAd9SZcXZuA.png',
+                'pack1_8': 'https://cdn.imgurl.ir/uploads/x98720_ip7QxGUh5btN7O3bJEWpsCVMFcc-ior1jq1JT4yr8KBbjEEGNw.png',
+                'pack1_9': 'https://cdn.imgurl.ir/uploads/m835437_pGirYQXoRTm0dS72qKE41Rzrhwc-OrCH6A2LS7eVKdUmFciPEA.png',
+                'pack1_10': 'https://cdn.imgurl.ir/uploads/n589870_n1TPqxlnhdfs8om-ovlEjYGgBIM-LwT9XNfyQQSttH7PhHi5iQ.png'
+            };
+
+            var translations = {
+                fa: {
+                    waiting_room: 'اتاق انتظار',
+                    waiting_title: 'در انتظار ورود بازیکن‌ها',
+                    waiting_desc: 'لینک رو کپی کن و بقیه رو دعوت کن به بازی',
+                    copy_link: 'کپی کردن لینک دعوت',
+                    link_copied: 'لینک کپی شد!',
+                    copy_failed: 'کپی نشد. دستی کپی کن.',
+                    players_list: 'لیست بازیکنان',
+                    loading_players: 'در حال دریافت بازیکنان...',
+                    leave_room: 'خروج',
+                    start_game: 'شروع بازی',
+                    waiting_start: 'در انتظار شروع بازی...',
+                    you: 'شما',
+                    creator: 'سازنده',
+                    score_label: 'امتیاز',
+                    kick: 'کیک',
+                    leave_confirm: 'مطمئنی می‌خوای از اتاق خارج بشی؟',
+                    leave_failed: 'خروج از اتاق انجام نشد',
+                    start_failed: 'شروع بازی انجام نشد',
+                    start_min_players: 'حداقل ۳ بازیکن برای شروع لازمه',
+                    kick_failed: 'کیک کردن انجام نشد',
+                    kick_confirm: 'این بازیکن رو از بازی بیرون بندازم؟',
+                    game_cancelled: 'بازی لغو شد',
+                    game_started: 'بازی شروع شد!',
+                    error_network: 'اتصال اینترنت خود را بررسی کنید',
+                    room_not_found: 'اتاق پیدا نشد',
+                    room_full: 'ظرفیت اتاق پر شده',
+                    cannot_join_started: 'این بازی شروع شده است',
+                    user_kicked: 'شما از بازی خارج شدید',
+                    empty_players: 'هنوز کسی وارد نشده'
+                },
+                en: {
+                    waiting_room: 'Waiting Room',
+                    waiting_title: 'Waiting for players',
+                    waiting_desc: 'Copy the link and invite others to the game',
+                    copy_link: 'Copy Invite Link',
+                    link_copied: 'Link copied!',
+                    copy_failed: 'Copy failed. Copy manually.',
+                    players_list: 'Players List',
+                    loading_players: 'Loading players...',
+                    leave_room: 'Leave',
+                    start_game: 'Start Game',
+                    waiting_start: 'Waiting for host to start...',
+                    you: 'You',
+                    creator: 'Host',
+                    score_label: 'Score',
+                    kick: 'Kick',
+                    leave_confirm: 'Are you sure you want to leave?',
+                    leave_failed: 'Failed to leave',
+                    start_failed: 'Failed to start game',
+                    start_min_players: 'At least 3 players required to start',
+                    kick_failed: 'Failed to kick',
+                    kick_confirm: 'Kick this player from the game?',
+                    game_cancelled: 'Game cancelled',
+                    game_started: 'Game started!',
+                    error_network: 'Please check your internet connection',
+                    room_not_found: 'Room not found',
+                    room_full: 'Room is full',
+                    cannot_join_started: 'This game has already started',
+                    user_kicked: 'You were kicked from the game',
+                    empty_players: 'No one has joined yet'
+                },
+                ar: {
+                    waiting_room: 'غرفة الانتظار',
+                    waiting_title: 'في انتظار انضمام اللاعبين',
+                    waiting_desc: 'انسخ الرابط وادعُ الآخرين للعبة',
+                    copy_link: 'انسخ رابط الدعوة',
+                    link_copied: 'تم نسخ الرابط!',
+                    copy_failed: 'فشل النسخ. انسخ يدوياً.',
+                    players_list: 'قائمة اللاعبين',
+                    loading_players: 'جار تحميل اللاعبين...',
+                    leave_room: 'خروج',
+                    start_game: 'بدء اللعبة',
+                    waiting_start: 'في انتظار بدء اللعبة...',
+                    you: 'أنت',
+                    creator: 'المضيف',
+                    score_label: 'النقاط',
+                    kick: 'طرد',
+                    leave_confirm: 'هل أنت متأكد من مغادرة الغرفة؟',
+                    leave_failed: 'فشل الخروج',
+                    start_failed: 'فشل بدء اللعبة',
+                    start_min_players: 'مطلوب 3 لاعبين على الأقل للبدء',
+                    kick_failed: 'فشل الطرد',
+                    kick_confirm: 'هل تريد طرد هذا اللاعب؟',
+                    game_cancelled: 'تم إلغاء اللعبة',
+                    game_started: 'بدأت اللعبة!',
+                    error_network: 'يرجى التحقق من اتصالك بالإنترنت',
+                    room_not_found: 'لم يتم العثور على الغرفة',
+                    room_full: 'الغرفة ممتلئة',
+                    cannot_join_started: 'هذه اللعبة قد بدأت بالفعل',
+                    user_kicked: 'تم طردك من اللعبة',
+                    empty_players: 'لم ينضم أحد بعد'
+                }
+            };
+
+            function getTranslation(k) {
+                var t = translations[currentLang] || translations.fa;
+                return t[k] || translations.fa[k] || k;
+            }
+
+            function getSettings() {
+                try {
+                    var raw = safeGetLocalStorage('mafiaSettings');
+                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                    var p = safeParseJSON(raw, null);
+                    if (!p || typeof p !== 'object') throw new Error('bad');
+                    if (!p.theme) p.theme = 'light';
+                    if (!p.specialTheme) p.specialTheme = 'none';
+                    if (p.animation === undefined) p.animation = true;
+                    if (p.haptic === undefined) p.haptic = true;
+                    if (!p.font) p.font = 'Samim';
+                    if (!p.language) p.language = 'fa';
+                    return p;
+                } catch(e) {
+                    return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                }
+            }
+
+            function updateHeaderTitle(lang) {
+                var titleEl = document.getElementById('headerTitle');
+                if (!titleEl) return;
+                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
+            }
+
+            function applyLanguage(lang) {
+                var t = translations[lang] || translations.fa;
+                document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                    var k = el.getAttribute('data-i18n');
+                    if (t[k] !== undefined) el.textContent = t[k];
+                });
+                if (lang === 'en') {
+                    document.documentElement.setAttribute('dir', 'ltr');
+                } else {
+                    document.documentElement.setAttribute('dir', 'rtl');
+                }
+                updateHeaderTitle(lang);
+            }
+
+            function applyTheme() {
+                var s = getSettings();
+                currentLang = s.language || 'fa';
+                var t = s.theme || 'light';
+                var st = s.specialTheme || 'none';
+                var f = s.font || 'Samim';
+                document.documentElement.setAttribute('data-theme', t);
+                document.documentElement.setAttribute('data-special-theme', st);
+                if (s.animation === false) {
+                    document.documentElement.setAttribute('data-animation', 'off');
+                } else {
+                    document.documentElement.removeAttribute('data-animation');
+                }
+                var fontFamily = fontMap[f] || fontMap['Samim'];
+                document.documentElement.style.setProperty('--font', fontFamily);
+                document.body.style.fontFamily = fontFamily;
+                applyLanguage(currentLang);
+            }
+
+            function triggerHaptic(style) {
+                var s = getSettings();
+                if (s.haptic === false) return;
+                if (webApp && webApp.HapticFeedback && webApp.HapticFeedback.impactOccurred) {
+                    try { webApp.HapticFeedback.impactOccurred(style || 'light'); } catch(e) {}
+                }
+            }
+
+            function showToast(message, type, duration) {
+                duration = duration || 4000;
+                var container = document.getElementById('toastContainer');
+                if (!container) return;
+
+                var toast = document.createElement('div');
+                toast.className = 'toast' + (type === 'success' ? ' success' : '');
+                var icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
+                toast.innerHTML = '<i class="bi ' + icon + '" aria-hidden="true"></i><span class="toast-text">' + escapeHtml(message) + '</span>';
+                container.appendChild(toast);
+
+                setTimeout(function() {
+                    toast.classList.add('hiding');
+                    setTimeout(function() {
+                        if (toast.parentNode) toast.parentNode.removeChild(toast);
+                    }, 400);
+                }, duration);
+            }
+
+            function showLoading() {
+                var el = document.getElementById('loadingOverlay');
+                if (el) el.classList.add('show');
+            }
+
+            function hideLoading() {
+                var el = document.getElementById('loadingOverlay');
+                if (el) el.classList.remove('show');
+            }
+
+            function getAvatarHtml(avatarId) {
+                if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user" aria-hidden="true"></i>';
+                if (iconAvatars[avatarId]) return '<i class="fa-solid ' + escapeAttr(iconAvatars[avatarId]) + '" aria-hidden="true"></i>';
+                if (allAvatarUrls[avatarId]) return '<img src="' + escapeAttr(allAvatarUrls[avatarId]) + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
+                return '<i class="fa-solid fa-user" aria-hidden="true"></i>';
+            }
+
+            function getUserTypeBadge(userType) {
+                var t = String(userType || '').trim();
+                if (!t) return '';
+
+                var parts = t.split(',').map(function(s) { return s.trim(); });
+                var html = '';
+
+                for (var i = 0; i < parts.length; i++) {
+                    var p = parts[i];
+                    if (p === 'رسمی' || p === 'سازنده') {
+                        html += '<span class="badge-icon"><img src="https://cdn.imgurl.ir/uploads/h95014_InShot_20260909_113952033.png" alt="رسمی" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
+                    } else if (p === 'توسعه دهنده') {
+                        html += '<span class="badge-icon"><img src="https://uploadkon.ir/uploads/b27b13_26laptop-iconbase.svg" alt="توسعه دهنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
+                    } else if (p === 'پرومیوم') {
+                        html += '<span class="badge-icon"><img src="https://uploadkon.ir/uploads/40e113_26premium-service-iconbase.svg" alt="پرومیوم" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></span>';
+                    }
+                }
+
+                return html;
+            }
+
+            function getEitaaUser() {
+                return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
+            }
+
+            function getUserId() {
+                var u = getEitaaUser();
+                if (!u || u.id === undefined || u.id === null) return '';
+                return String(u.id);
+            }
+
+            function getRoomFromUrl() {
+                try {
+                    var urlParams = new URLSearchParams(window.location.search);
+                    var room = urlParams.get('room') || '';
+                    if (room && VALID_GAME_ID.test(room)) return room;
+                } catch(e) {}
+                var stored = safeGetLocalStorage('mafiaRoomCode');
+                if (stored && VALID_GAME_ID.test(stored)) return stored;
+                return '';
+            }
+
+            async function fetchData(action, params, retryCount) {
+                retryCount = retryCount || 0;
+                var payload = { action: action, username: getUserId() };
+                if (params && typeof params === 'object') {
+                    for (var k in params) {
+                        if (Object.prototype.hasOwnProperty.call(params, k)) {
+                            payload[k] = params[k];
+                        }
+                    }
+                }
+                try {
+                    var controller = new AbortController();
+                    var timeoutId = setTimeout(function() { controller.abort(); }, 10000);
+                    var r = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+
+                    if (!r.ok) throw new Error('http_' + r.status);
+
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('application/json') === -1) {
+                        throw new Error('invalid_content_type');
+                    }
+
+                    var data = await r.json();
+                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
+                    return data;
+                } catch(err) {
+                    var isRetryable = err && (
+                        err.name === 'AbortError' ||
+                        err.message === 'Failed to fetch' ||
+                        err.message === 'NetworkError when attempting to fetch resource.' ||
+                        err.message === 'invalid_content_type' ||
+                        /^http_5/.test(err.message || '')
+                    );
+                    if (retryCount < 2 && isRetryable) {
+                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
+                        return fetchData(action, params, retryCount + 1);
+                    }
+                    return { ok: false, error: 'network' };
+                }
+            }
+
+            function getInviteLink() {
+                var suffix = '';
+                try {
+                    suffix = encodeURIComponent('بزن.بریم.🕵️‍♂️');
+                } catch(e) {
+                    suffix = 'btn';
+                }
+                return INVITE_BASE + encodeURIComponent(roomId) + '&btn=' + suffix;
+            }
+
+            async function copyToClipboard(text) {
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(text);
+                        return true;
+                    }
+                } catch(e) {}
+
+                try {
+                    var textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    textarea.style.position = 'fixed';
+                    textarea.style.top = '-9999px';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    var ok = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    return ok;
+                } catch(e) {
+                    return false;
+                }
+            }
+
+            function renderPlayers(players, playerCount) {
+                var listEl = document.getElementById('playersList');
+                var countEl = document.getElementById('playersCount');
+                if (!listEl) return;
+
+                if (countEl) {
+                    countEl.textContent = players.length + ' / ' + playerCount;
+                }
+
+                if (players.length === 0) {
+                    listEl.innerHTML = '<div class="empty-players">' + escapeHtml(getTranslation('empty_players')) + '</div>';
+                    return;
+                }
+
+                var html = '';
+                for (var i = 0; i < players.length; i++) {
+                    var p = players[i];
+                    var isMe = String(p.user_id) === String(myUserId);
+                    var isHost = i === 0;
+
+                    var classes = 'player-row';
+                    if (isMe) classes += ' is-me';
+                    if (isHost) classes += ' is-creator';
+
+                    var score = parseInt(p.score, 10);
+                    if (isNaN(score)) score = 0;
+
+                    html += '<div class="' + classes + '" data-player-id="' + escapeAttr(String(p.user_id)) + '">';
+                    html += '<div class="player-avatar">' + getAvatarHtml(p.avatar || 'default') + '</div>';
+                    html += '<div class="player-info">';
+                    html += '<div class="player-name">' + escapeHtml(p.name || 'کاربر') + ' ' + getUserTypeBadge(p.user_type);
+                    if (isMe) html += ' <span style="font-size:8px;color:var(--primary);font-weight:800;">(' + escapeHtml(getTranslation('you')) + ')</span>';
+                    html += '</div>';
+                    html += '<div class="player-score"><i class="bi bi-star-fill" aria-hidden="true"></i> ' + score + ' ' + escapeHtml(getTranslation('score_label')) + '</div>';
+                    html += '</div>';
+
+                    if (isCreator && !isMe) {
+                        html += '<button class="player-kick-btn" data-kick="' + escapeAttr(String(p.user_id)) + '" type="button" title="' + escapeAttr(getTranslation('kick')) + '">';
+                        html += '<i class="bi bi-x-lg" aria-hidden="true"></i>';
+                        html += '</button>';
+                    }
+
+                    html += '</div>';
+                }
+
+                listEl.innerHTML = html;
+            }
+
+            function updateActionBar() {
+                var startBtn = document.getElementById('btnStart');
+                var waitingInfo = document.getElementById('waitingInfo');
+
+                if (isCreator) {
+                    if (startBtn) startBtn.style.display = 'flex';
+                    if (waitingInfo) waitingInfo.style.display = 'none';
+
+                    var playersArr = currentGame && currentGame.players ? currentGame.players : [];
+                    var canStart = playersArr.length >= 3;
+                    if (startBtn) startBtn.disabled = !canStart;
+                } else {
+                    if (startBtn) startBtn.style.display = 'none';
+                    if (waitingInfo) waitingInfo.style.display = 'flex';
+                }
+            }
+
+            async function loadGame(isInitial) {
+                if (isLoading) return;
+                isLoading = true;
+
+                try {
+                    var result = await fetchData('getGame', { gameId: roomId });
+
+                    if (!result || !result.ok || !result.data) {
+                        if (isInitial) {
+                            showToast(getTranslation('room_not_found'));
+                            setTimeout(function() { goToDashboard(); }, 2500);
+                        }
+                        isLoading = false;
+                        return;
+                    }
+
+                    var game = result.data;
+                    currentGame = game;
+
+                    var status = String(game.status || '');
+
+                    if (status === 'cancelled') {
+                        stopPolling();
+                        showToast(getTranslation('game_cancelled'));
+                        setTimeout(function() { goToDashboard(); }, 2500);
+                        isLoading = false;
+                        return;
+                    }
+
+                    if (status !== 'waiting') {
+                        stopPolling();
+                        showToast(getTranslation('game_started'), 'success');
+                        setTimeout(function() {
+                            window.location.href = '../table/?room=' + encodeURIComponent(roomId);
+                        }, 800);
+                        isLoading = false;
+                        return;
+                    }
+
+                    var players = [];
+                    if (Array.isArray(game.players)) {
+                        players = game.players;
+                    }
+
+                    var creatorId = players.length > 0 ? String(players[0].user_id) : '';
+                    isCreator = (creatorId === String(myUserId));
+
+                    var stillIn = false;
+                    for (var i = 0; i < players.length; i++) {
+                        if (String(players[i].user_id) === String(myUserId)) {
+                            stillIn = true;
+                            break;
+                        }
+                    }
+
+                    if (!stillIn && !isInitial) {
+                        stopPolling();
+                        showToast(getTranslation('user_kicked'));
+                        setTimeout(function() { goToDashboard(); }, 2500);
+                        isLoading = false;
+                        return;
+                    }
+
+                    var playersJson = JSON.stringify(players);
+                    if (playersJson !== lastPlayersJson) {
+                        lastPlayersJson = playersJson;
+                        renderPlayers(players, game.playerCount || 5);
+                        updateActionBar();
+                    }
+
+                    isLoading = false;
+                } catch(e) {
+                    isLoading = false;
+                }
+            }
+
+            function startPolling() {
+                stopPolling();
+                pollingInterval = setInterval(function() {
+                    if (!isLeaving) loadGame(false);
+                }, 2500);
+            }
+
+            function stopPolling() {
+                if (pollingInterval) {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                }
+            }
+
+            function goToDashboard() {
+                stopPolling();
+                window.location.href = '../../dashboard/';
+            }
+
+            async function handleCopyLink() {
+                triggerHaptic('light');
+                var link = getInviteLink();
+                var ok = await copyToClipboard(link);
+                var btn = document.getElementById('btnCopyLink');
+
+                if (ok) {
+                    if (btn) {
+                        btn.classList.add('copied');
+                        var span = btn.querySelector('span');
+                        if (span) span.textContent = getTranslation('link_copied');
+                    }
+                    showToast(getTranslation('link_copied'), 'success', 2500);
+
+                    setTimeout(function() {
+                        if (btn) {
+                            btn.classList.remove('copied');
+                            var span = btn.querySelector('span');
+                            if (span) span.textContent = getTranslation('copy_link');
+                        }
+                    }, 2500);
+                } else {
+                    showToast(getTranslation('copy_failed'));
+                }
+            }
+
+            async function handleLeave() {
+                if (isLeaving) return;
+
+                var confirmMsg = getTranslation('leave_confirm');
+                if (webApp && webApp.showConfirm) {
+                    webApp.showConfirm(confirmMsg, function(confirmed) {
+                        if (confirmed) doLeave();
+                    });
+                } else if (window.confirm(confirmMsg)) {
+                    doLeave();
+                } else {
+                    return;
+                }
+            }
+
+            async function doLeave() {
+                isLeaving = true;
+                stopPolling();
+                showLoading();
+
+                var result = await fetchData('leaveGame', { gameId: roomId });
+
+                hideLoading();
+
+                if (result && result.ok) {
+                    safeSetLocalStorage('mafiaRoomCode', '');
+                    goToDashboard();
+                } else {
+                    isLeaving = false;
+                    showToast(getTranslation('leave_failed'));
+                    startPolling();
+                }
+            }
+
+            async function handleStart() {
+                var playersArr = currentGame && currentGame.players ? currentGame.players : [];
+                if (playersArr.length < 3) {
+                    showToast(getTranslation('start_min_players'));
+                    return;
+                }
+
+                showLoading();
+                triggerHaptic('medium');
+
+                var result = await fetchData('updateGameStatus', { gameId: roomId, status: 'n1' });
+
+                hideLoading();
+
+                if (result && result.ok) {
+                    stopPolling();
+                    showToast(getTranslation('game_started'), 'success');
+                    setTimeout(function() {
+                        window.location.href = '../table/?room=' + encodeURIComponent(roomId);
+                    }, 800);
+                } else {
+                    showToast(getTranslation('start_failed'));
+                }
+            }
+
+            async function handleKick(playerId) {
+                if (!isCreator) return;
+                if (!playerId) return;
+                if (String(playerId) === String(myUserId)) return;
+
+                var confirmMsg = getTranslation('kick_confirm');
+                if (webApp && webApp.showConfirm) {
+                    webApp.showConfirm(confirmMsg, function(confirmed) {
+                        if (confirmed) doKick(playerId);
+                    });
+                } else if (window.confirm(confirmMsg)) {
+                    doKick(playerId);
+                }
+            }
+
+            async function doKick(playerId) {
+                showLoading();
+                triggerHaptic('medium');
+
+                var result = await fetchData('leaveGame', { gameId: roomId, targetUser: playerId });
+
+                hideLoading();
+
+                if (result && result.ok) {
+                    await loadGame(false);
+                } else {
+                    showToast(getTranslation('kick_failed'));
+                }
+            }
+
+            function openSupportLink() {
+                var notif = document.getElementById('supportNotification');
+                if (notif) notif.style.display = 'none';
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
+                } else {
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
+                }
+            }
+
+            function setupEventListeners() {
+                var copyBtn = document.getElementById('btnCopyLink');
+                if (copyBtn) copyBtn.addEventListener('click', handleCopyLink);
+
+                var leaveBtn = document.getElementById('btnLeave');
+                if (leaveBtn) leaveBtn.addEventListener('click', handleLeave);
+
+                var startBtn = document.getElementById('btnStart');
+                if (startBtn) startBtn.addEventListener('click', handleStart);
+
+                var playersList = document.getElementById('playersList');
+                if (playersList) {
+                    playersList.addEventListener('click', function(e) {
+                        var kickBtn = e.target.closest('.player-kick-btn[data-kick]');
+                        if (kickBtn) {
+                            handleKick(kickBtn.dataset.kick);
+                        }
+                    });
+                }
+
+                var notif = document.getElementById('supportNotification');
+                if (notif) notif.addEventListener('click', openSupportLink);
+            }
+
+            async function init() {
+                applyTheme();
+                setupEventListeners();
+
+                if (webApp) {
+                    try {
+                        webApp.ready();
+                        webApp.expand();
+                        if (webApp.BackButton && webApp.BackButton.hide) {
+                            webApp.BackButton.hide();
+                        }
+                    } catch(e) {}
+                }
+
+                myUserId = getUserId();
+                roomId = getRoomFromUrl();
+
+                if (!myUserId || !roomId) {
+                    showToast(getTranslation('room_not_found'));
+                    setTimeout(function() { goToDashboard(); }, 2500);
+                    return;
+                }
+
+                var badge = document.getElementById('roomCodeBadge');
+                if (badge) badge.textContent = roomId;
+
+                await loadGame(true);
+                startPolling();
+
+                setTimeout(function() {
+                    var notif = document.getElementById('supportNotification');
+                    if (notif) notif.style.display = 'none';
+                }, 5000);
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>
