@@ -344,15 +344,40 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            min-width: 0;
+        }
+        .player-name-text {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            flex-shrink: 1;
+            min-width: 0;
         }
-        .player-name .badge-icon {
-            width: 13px; height: 13px; flex-shrink: 0;
-            display: inline-flex; align-items: center; justify-content: center;
+        .player-name-badges {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            flex-shrink: 0;
         }
-        .player-name .badge-icon img { width: 100%; height: 100%; object-fit: contain; }
+        .player-name-badges .badge-icon {
+            width: 13px;
+            height: 13px;
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .player-name-badges .badge-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .player-name-me {
+            font-size: 8px;
+            color: var(--primary);
+            font-weight: 800;
+            flex-shrink: 0;
+        }
         .player-score {
             font-size: 8px;
             color: var(--text-light);
@@ -695,7 +720,6 @@
             var isLeaving = false;
             var lastPlayersJson = '';
             var isLoading = false;
-            var userTypesCache = {};
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
 
@@ -775,7 +799,6 @@
                     start_game: 'شروع بازی',
                     waiting_start: 'در انتظار شروع بازی...',
                     you: 'شما',
-                    creator: 'سازنده',
                     score_label: 'امتیاز',
                     kick: 'کیک',
                     leave_confirm: 'مطمئنی می‌خوای از اتاق خارج بشی؟',
@@ -804,7 +827,6 @@
                     start_game: 'Start Game',
                     waiting_start: 'Waiting for host to start...',
                     you: 'You',
-                    creator: 'Host',
                     score_label: 'Score',
                     kick: 'Kick',
                     leave_confirm: 'Are you sure you want to leave?',
@@ -833,7 +855,6 @@
                     start_game: 'بدء اللعبة',
                     waiting_start: 'في انتظار بدء اللعبة...',
                     you: 'أنت',
-                    creator: 'المضيف',
                     score_label: 'النقاط',
                     kick: 'طرد',
                     leave_confirm: 'هل أنت متأكد من مغادرة الغرفة؟',
@@ -978,16 +999,6 @@
                 return html;
             }
 
-            function getUserTypeFor(user) {
-                var t = String(user.user_type || '').trim();
-                if (t) return t;
-
-                var cached = userTypesCache[String(user.user_id)];
-                if (cached) return cached;
-
-                return '';
-            }
-
             function getEitaaUser() {
                 return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
             }
@@ -1056,18 +1067,40 @@
                 }
             }
 
-            async function loadUserTypesCache() {
-                try {
-                    var result = await fetchData('getAllUsers', {});
-                    if (result && result.ok && Array.isArray(result.data)) {
-                        for (var i = 0; i < result.data.length; i++) {
-                            var u = result.data[i];
-                            if (u && u.user_id) {
-                                userTypesCache[String(u.user_id)] = String(u.user_type || '');
-                            }
-                        }
+            async function fetchUserTypesForPlayers(players) {
+                var types = {};
+                var promises = [];
+
+                for (var i = 0; i < players.length; i++) {
+                    var uid = String(players[i].user_id);
+                    var directType = String(players[i].user_type || '').trim();
+
+                    if (directType) {
+                        types[uid] = directType;
+                        continue;
                     }
-                } catch(e) {}
+
+                    promises.push(
+                        (async function(id) {
+                            try {
+                                var result = await fetchData('getUser', { username: id });
+                                if (result && result.ok && result.data && result.data.user_type !== undefined) {
+                                    types[id] = String(result.data.user_type || '');
+                                } else {
+                                    types[id] = '';
+                                }
+                            } catch(e) {
+                                types[id] = '';
+                            }
+                        })(uid)
+                    );
+                }
+
+                if (promises.length > 0) {
+                    await Promise.all(promises);
+                }
+
+                return types;
             }
 
             function getInviteLink() {
@@ -1105,7 +1138,7 @@
                 }
             }
 
-            function renderPlayerRow(p, index) {
+            function renderPlayerRow(p, index, typesMap) {
                 var isMe = String(p.user_id) === String(myUserId);
                 var isHost = index === 0;
 
@@ -1116,19 +1149,27 @@
                 var score = parseInt(p.score, 10);
                 if (isNaN(score)) score = 0;
 
-                var userType = getUserTypeFor(p);
+                var uid = String(p.user_id);
+                var userType = '';
+                if (typesMap && typesMap[uid] !== undefined) {
+                    userType = typesMap[uid];
+                } else {
+                    userType = String(p.user_type || '').trim();
+                }
 
-                var html = '<div class="' + classes + '" data-player-id="' + escapeAttr(String(p.user_id)) + '">';
+                var html = '<div class="' + classes + '" data-player-id="' + escapeAttr(uid) + '">';
                 html += '<div class="player-avatar">' + getAvatarHtml(p.avatar || 'default') + '</div>';
                 html += '<div class="player-info">';
-                html += '<div class="player-name">' + escapeHtml(p.name || 'کاربر') + ' ' + getUserTypeBadge(userType);
-                if (isMe) html += ' <span style="font-size:8px;color:var(--primary);font-weight:800;">(' + escapeHtml(getTranslation('you')) + ')</span>';
+                html += '<div class="player-name">';
+                html += '<span class="player-name-text">' + escapeHtml(p.name || 'کاربر') + '</span>';
+                html += '<span class="player-name-badges">' + getUserTypeBadge(userType) + '</span>';
+                if (isMe) html += '<span class="player-name-me">(' + escapeHtml(getTranslation('you')) + ')</span>';
                 html += '</div>';
                 html += '<div class="player-score"><i class="bi bi-star-fill" aria-hidden="true"></i> ' + score + ' ' + escapeHtml(getTranslation('score_label')) + '</div>';
                 html += '</div>';
 
                 if (isCreator && !isMe) {
-                    html += '<button class="player-kick-btn" data-kick="' + escapeAttr(String(p.user_id)) + '" type="button" title="' + escapeAttr(getTranslation('kick')) + '">';
+                    html += '<button class="player-kick-btn" data-kick="' + escapeAttr(uid) + '" type="button" title="' + escapeAttr(getTranslation('kick')) + '">';
                     html += '<i class="bi bi-x-lg" aria-hidden="true"></i>';
                     html += '</button>';
                 }
@@ -1137,7 +1178,7 @@
                 return html;
             }
 
-            function updatePlayersList(players, playerCount) {
+            function updatePlayersList(players, playerCount, typesMap) {
                 var listEl = document.getElementById('playersList');
                 var countEl = document.getElementById('playersCount');
                 if (!listEl) return;
@@ -1158,7 +1199,7 @@
 
                 var html = '';
                 for (var i = 0; i < players.length; i++) {
-                    html += renderPlayerRow(players[i], i);
+                    html += renderPlayerRow(players[i], i, typesMap);
                 }
                 listEl.innerHTML = html;
             }
@@ -1244,12 +1285,9 @@
                         return;
                     }
 
-                    var playersJson = JSON.stringify(players);
-                    if (playersJson !== lastPlayersJson) {
-                        lastPlayersJson = playersJson;
-                        updatePlayersList(players, game.playerCount || 5);
-                        updateActionBar();
-                    }
+                    var typesMap = await fetchUserTypesForPlayers(players);
+                    updatePlayersList(players, game.playerCount || 5, typesMap);
+                    updateActionBar();
 
                     isLoading = false;
                 } catch(e) {
@@ -1470,7 +1508,6 @@
                 var badge = document.getElementById('roomCodeBadge');
                 if (badge) badge.textContent = roomId;
 
-                await loadUserTypesCache();
                 await loadGame(true);
                 startPolling();
 
