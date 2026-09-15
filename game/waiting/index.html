@@ -264,6 +264,11 @@
             padding: 3px 10px;
             box-shadow: 2px 2px 0 #000;
         }
+        .players-count.full {
+            color: #fff;
+            background: var(--success);
+            border-color: var(--success);
+        }
 
         .players-list {
             display: flex;
@@ -690,7 +695,7 @@
             var isLeaving = false;
             var lastPlayersJson = '';
             var isLoading = false;
-            var playersRendered = false;
+            var userTypesCache = {};
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
 
@@ -776,7 +781,7 @@
                     leave_confirm: 'مطمئنی می‌خوای از اتاق خارج بشی؟',
                     leave_failed: 'خروج از اتاق انجام نشد',
                     start_failed: 'شروع بازی انجام نشد',
-                    start_min_players: 'حداقل ۳ بازیکن برای شروع لازمه',
+                    start_not_full: 'هنوز {n} نفر دیگه باید بیان',
                     start_not_creator: 'فقط سازنده می‌تونه بازی رو شروع کنه',
                     kick_failed: 'کیک کردن انجام نشد',
                     kick_confirm: 'این بازیکن رو از بازی بیرون بندازم؟',
@@ -784,9 +789,6 @@
                     game_started: 'بازی شروع شد!',
                     error_network: 'اتصال اینترنت خود را بررسی کنید',
                     room_not_found: 'اتاق پیدا نشد',
-                    room_full: 'ظرفیت اتاق پر شده',
-                    cannot_join_started: 'این بازی شروع شده است',
-                    user_kicked: 'شما از بازی خارج شدید',
                     empty_players: 'هنوز کسی وارد نشده'
                 },
                 en: {
@@ -808,7 +810,7 @@
                     leave_confirm: 'Are you sure you want to leave?',
                     leave_failed: 'Failed to leave',
                     start_failed: 'Failed to start game',
-                    start_min_players: 'At least 3 players required to start',
+                    start_not_full: '{n} more players needed',
                     start_not_creator: 'Only host can start the game',
                     kick_failed: 'Failed to kick',
                     kick_confirm: 'Kick this player from the game?',
@@ -816,9 +818,6 @@
                     game_started: 'Game started!',
                     error_network: 'Please check your internet connection',
                     room_not_found: 'Room not found',
-                    room_full: 'Room is full',
-                    cannot_join_started: 'This game has already started',
-                    user_kicked: 'You were kicked from the game',
                     empty_players: 'No one has joined yet'
                 },
                 ar: {
@@ -840,7 +839,7 @@
                     leave_confirm: 'هل أنت متأكد من مغادرة الغرفة؟',
                     leave_failed: 'فشل الخروج',
                     start_failed: 'فشل بدء اللعبة',
-                    start_min_players: 'مطلوب 3 لاعبين على الأقل للبدء',
+                    start_not_full: '{n} لاعبين آخرين مطلوبين',
                     start_not_creator: 'فقط المضيف يمكنه بدء اللعبة',
                     kick_failed: 'فشل الطرد',
                     kick_confirm: 'هل تريد طرد هذا اللاعب؟',
@@ -848,9 +847,6 @@
                     game_started: 'بدأت اللعبة!',
                     error_network: 'يرجى التحقق من اتصالك بالإنترنت',
                     room_not_found: 'لم يتم العثور على الغرفة',
-                    room_full: 'الغرفة ممتلئة',
-                    cannot_join_started: 'هذه اللعبة قد بدأت بالفعل',
-                    user_kicked: 'تم طردك من اللعبة',
                     empty_players: 'لم ينضم أحد بعد'
                 }
             };
@@ -982,6 +978,16 @@
                 return html;
             }
 
+            function getUserTypeFor(user) {
+                var t = String(user.user_type || '').trim();
+                if (t) return t;
+
+                var cached = userTypesCache[String(user.user_id)];
+                if (cached) return cached;
+
+                return '';
+            }
+
             function getEitaaUser() {
                 return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
             }
@@ -1050,6 +1056,20 @@
                 }
             }
 
+            async function loadUserTypesCache() {
+                try {
+                    var result = await fetchData('getAllUsers', {});
+                    if (result && result.ok && Array.isArray(result.data)) {
+                        for (var i = 0; i < result.data.length; i++) {
+                            var u = result.data[i];
+                            if (u && u.user_id) {
+                                userTypesCache[String(u.user_id)] = String(u.user_type || '');
+                            }
+                        }
+                    }
+                } catch(e) {}
+            }
+
             function getInviteLink() {
                 var suffix = '';
                 try {
@@ -1096,10 +1116,12 @@
                 var score = parseInt(p.score, 10);
                 if (isNaN(score)) score = 0;
 
+                var userType = getUserTypeFor(p);
+
                 var html = '<div class="' + classes + '" data-player-id="' + escapeAttr(String(p.user_id)) + '">';
                 html += '<div class="player-avatar">' + getAvatarHtml(p.avatar || 'default') + '</div>';
                 html += '<div class="player-info">';
-                html += '<div class="player-name">' + escapeHtml(p.name || 'کاربر') + ' ' + getUserTypeBadge(p.user_type);
+                html += '<div class="player-name">' + escapeHtml(p.name || 'کاربر') + ' ' + getUserTypeBadge(userType);
                 if (isMe) html += ' <span style="font-size:8px;color:var(--primary);font-weight:800;">(' + escapeHtml(getTranslation('you')) + ')</span>';
                 html += '</div>';
                 html += '<div class="player-score"><i class="bi bi-star-fill" aria-hidden="true"></i> ' + score + ' ' + escapeHtml(getTranslation('score_label')) + '</div>';
@@ -1122,6 +1144,11 @@
 
                 if (countEl) {
                     countEl.textContent = players.length + ' / ' + playerCount;
+                    if (players.length >= playerCount) {
+                        countEl.classList.add('full');
+                    } else {
+                        countEl.classList.remove('full');
+                    }
                 }
 
                 if (players.length === 0) {
@@ -1145,7 +1172,8 @@
                     if (waitingInfo) waitingInfo.style.display = 'none';
 
                     var playersArr = currentGame && currentGame.players ? currentGame.players : [];
-                    var canStart = playersArr.length >= 3;
+                    var requiredCount = currentGame && currentGame.playerCount ? currentGame.playerCount : 5;
+                    var canStart = playersArr.length >= requiredCount;
                     if (startBtn) startBtn.disabled = !canStart;
                 } else {
                     if (startBtn) startBtn.style.display = 'none';
@@ -1313,8 +1341,12 @@
                 }
 
                 var playersArr = currentGame && currentGame.players ? currentGame.players : [];
-                if (playersArr.length < 3) {
-                    showToast(getTranslation('start_min_players'));
+                var requiredCount = currentGame && currentGame.playerCount ? currentGame.playerCount : 5;
+
+                if (playersArr.length < requiredCount) {
+                    var remaining = requiredCount - playersArr.length;
+                    var msg = getTranslation('start_not_full').replace('{n}', remaining);
+                    showToast(msg);
                     return;
                 }
 
@@ -1333,10 +1365,13 @@
                     }, 800);
                 } else {
                     var errCode = result ? String(result.error || '') : '';
-                    var msg = getTranslation('start_failed');
-                    if (errCode === 'Only the creator can start') msg = getTranslation('start_not_creator');
-                    else if (errCode === 'Not enough players') msg = getTranslation('start_min_players');
-                    showToast(msg);
+                    var failMsg = getTranslation('start_failed');
+                    if (errCode === 'Only the creator can start') failMsg = getTranslation('start_not_creator');
+                    else if (errCode === 'Not enough players') {
+                        var rem = requiredCount - playersArr.length;
+                        failMsg = getTranslation('start_not_full').replace('{n}', rem);
+                    }
+                    showToast(failMsg);
                 }
             }
 
@@ -1435,6 +1470,7 @@
                 var badge = document.getElementById('roomCodeBadge');
                 if (badge) badge.textContent = roomId;
 
+                await loadUserTypesCache();
                 await loadGame(true);
                 startPolling();
 
