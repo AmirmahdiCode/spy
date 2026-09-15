@@ -129,7 +129,7 @@
             position: relative; z-index: 5;
             flex: 1;
             max-width: 600px; width: 100%;
-            margin: 16px auto; padding: 0 12px 110px;
+            margin: 16px auto; padding: 0 12px 170px;
             display: flex; flex-direction: column; gap: 12px;
         }
 
@@ -503,6 +503,47 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        .toast-container {
+            position: fixed;
+            top: 75px;
+            right: 5%;
+            left: 5%;
+            max-width: 400px;
+            margin: 0 auto;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #ef4444;
+            color: #fff;
+            border: 1px solid #b91c1c;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            animation: toastIn 0.4s ease forwards;
+        }
+        .toast.hiding { animation: toastOut 0.4s ease forwards; }
+        .toast i { font-size: 16px; flex-shrink: 0; }
+        .toast .toast-text { flex: 1; line-height: 1.5; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        }
+
         .support-notification {
             position: fixed; top: 75px; right: 5%; left: 5%;
             max-width: 400px; margin: 0 auto;
@@ -536,6 +577,8 @@
 <body>
 
     <div class="bg-animation"></div>
+
+    <div class="toast-container" id="toastContainer"></div>
 
     <header class="header">
         <div class="header-inner">
@@ -595,10 +638,9 @@
                     <i class="bi bi-trophy" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="level_professional">حرفه‌ای</span>
                 </button>
-                <button class="option-btn disabled" data-level="legendary" type="button">
+                <button class="option-btn" data-level="legendary" type="button">
                     <i class="bi bi-gem" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="level_legendary">افسانه‌ای</span>
-                    <span class="option-sub" data-i18n="coming_soon">به‌زودی</span>
                 </button>
             </div>
 
@@ -771,6 +813,7 @@
                     range_format: '{min} تا {max} نفر',
                     fixed_one: 'دقیقاً ۱ نفر',
                     create_failed: 'ساخت بازی انجام نشد. دوباره تلاش کن.',
+                    create_active_game: 'ابتدا بازی فعال خود را تمام کنید',
                     error_network: 'اتصال اینترنت خود را بررسی کنید'
                 },
                 en: {
@@ -813,6 +856,7 @@
                     range_format: '{min} to {max}',
                     fixed_one: 'Exactly 1',
                     create_failed: 'Failed to create game. Try again.',
+                    create_active_game: 'Please finish your active game first',
                     error_network: 'Please check your internet connection'
                 },
                 ar: {
@@ -855,6 +899,7 @@
                     range_format: '{min} إلى {max}',
                     fixed_one: 'بالضبط ۱',
                     create_failed: 'فشل إنشاء اللعبة. حاول مرة أخرى.',
+                    create_active_game: 'يرجى إنهاء لعبتك النشطة أولاً',
                     error_network: 'يرجى التحقق من اتصالك بالإنترنت'
                 }
             };
@@ -975,6 +1020,24 @@
                 if (webApp && webApp.HapticFeedback && webApp.HapticFeedback.impactOccurred) {
                     try { webApp.HapticFeedback.impactOccurred(style || 'light'); } catch(e) {}
                 }
+            }
+
+            function showToast(message, duration) {
+                duration = duration || 4000;
+                var container = document.getElementById('toastContainer');
+                if (!container) return;
+
+                var toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerHTML = '<i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span class="toast-text">' + escapeHtml(message) + '</span>';
+                container.appendChild(toast);
+
+                setTimeout(function() {
+                    toast.classList.add('hiding');
+                    setTimeout(function() {
+                        if (toast.parentNode) toast.parentNode.removeChild(toast);
+                    }, 400);
+                }, duration);
             }
 
             function getEitaaUser() {
@@ -1186,8 +1249,6 @@
 
             function setLevel(l) {
                 if (state.level === l) return;
-                var btn = document.querySelector('#levelOptions .option-btn[data-level="' + l + '"]');
-                if (btn && btn.classList.contains('disabled')) return;
                 state.level = l;
                 document.querySelectorAll('#levelOptions .option-btn').forEach(function(b) {
                     b.classList.toggle('active', b.dataset.level === l);
@@ -1265,7 +1326,7 @@
                     var localData = buildGameData();
                     safeSetLocalStorage('mafiaLocalGame', JSON.stringify(localData));
                     triggerHaptic('medium');
-                    window.location.href = '../game/local/';
+                    window.location.href = '../../game/local/';
                     return;
                 }
 
@@ -1283,7 +1344,7 @@
                     if (gameId && VALID_GAME_ID.test(gameId)) {
                         safeSetLocalStorage('mafiaRoomCode', gameId);
                         triggerHaptic('medium');
-                        window.location.href = '../game/waiting/?room=' + encodeURIComponent(gameId);
+                        window.location.href = '../../game/waiting/?room=' + encodeURIComponent(gameId);
                         return;
                     }
                 }
@@ -1293,9 +1354,12 @@
                 isCreating = false;
 
                 var msg = getTranslation('create_failed');
-                if (result && result.error === 'network') msg = getTranslation('error_network');
-                if (webApp && webApp.showAlert) webApp.showAlert(msg);
-                else alert(msg);
+                if (result && result.error === 'Active game exists') {
+                    msg = getTranslation('create_active_game');
+                } else if (result && result.error === 'network') {
+                    msg = getTranslation('error_network');
+                }
+                showToast(msg, 4000);
             }
 
             function openSupportLink() {
@@ -1348,7 +1412,6 @@
             });
 
             document.getElementById('btnCreate').addEventListener('click', createGame);
-
             document.getElementById('supportNotification').addEventListener('click', openSupportLink);
 
             if (webApp) {
