@@ -595,9 +595,10 @@
                     <i class="bi bi-trophy" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="level_professional">حرفه‌ای</span>
                 </button>
-                <button class="option-btn" data-level="legendary" type="button">
+                <button class="option-btn disabled" data-level="legendary" type="button">
                     <i class="bi bi-gem" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="level_legendary">افسانه‌ای</span>
+                    <span class="option-sub" data-i18n="coming_soon">به‌زودی</span>
                 </button>
             </div>
 
@@ -681,7 +682,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbxmE6UOD2rNLPSjujplTY8PjZKoZiE11KP4wRwLTM339CjABsA9RDNHpN97-vlp9REa/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzZDPiemnlOl-byo1Zp153we2-zpuNanVKPcaFxG6D_hoo38yeoQwVR-8HB1_svdb-p/exec';
             var currentLang = 'fa';
             var isCreating = false;
 
@@ -1185,6 +1186,8 @@
 
             function setLevel(l) {
                 if (state.level === l) return;
+                var btn = document.querySelector('#levelOptions .option-btn[data-level="' + l + '"]');
+                if (btn && btn.classList.contains('disabled')) return;
                 state.level = l;
                 document.querySelectorAll('#levelOptions .option-btn').forEach(function(b) {
                     b.classList.toggle('active', b.dataset.level === l);
