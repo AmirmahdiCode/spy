@@ -708,7 +708,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbzt7V8CSoduK5Tcwbn9WsXsMyiP5NYLX8Sx-qUCHXsLEiDLGHVIMlD9aEuw4oSZ8XE7/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbxGsZ-W1ZI1EN2ylFmgxrGdqWlEYDk_5SNkHGuvNga4XRQArAR5d9o0ArxHDlXE7QW1/exec';
             var INVITE_BASE = 'https://eitaa.com/gameland_app/Spy?startapp=';
 
             var currentLang = 'fa';
@@ -1066,58 +1066,6 @@
                 }
             }
 
-            // ✅ دقیقاً مثل پروفایل: getUser بدون پارامتر اضافه
-            async function fetchUserTypeById(userId) {
-                try {
-                    // نکته: fetchData خودش username رو از getUserId() می‌گیره
-                    // ولی ما می‌خوایم برای یه کاربر دیگه بگیریم
-                    // پس مستقیم fetch می‌زنیم
-                    var r = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify({ action: 'getUser', username: String(userId) })
-                    });
-                    if (!r.ok) return null;
-                    var ct = r.headers.get('content-type') || '';
-                    if (ct.indexOf('application/json') === -1) return null;
-                    var data = await r.json();
-                    if (data && data.ok && data.data && data.data.user_type !== undefined) {
-                        return String(data.data.user_type || '');
-                    }
-                    return null;
-                } catch(e) {
-                    return null;
-                }
-            }
-
-            async function enrichPlayersWithTypes(players) {
-                var promises = [];
-                var results = {};
-
-                for (var i = 0; i < players.length; i++) {
-                    var uid = String(players[i].user_id);
-                    var directType = String(players[i].user_type || '').trim();
-
-                    if (directType) {
-                        results[uid] = directType;
-                        continue;
-                    }
-
-                    promises.push(
-                        (async function(id) {
-                            var t = await fetchUserTypeById(id);
-                            results[id] = (t === null) ? '' : t;
-                        })(uid)
-                    );
-                }
-
-                if (promises.length > 0) {
-                    await Promise.all(promises);
-                }
-
-                return results;
-            }
-
             function getInviteLink() {
                 var suffix = '';
                 try {
@@ -1153,7 +1101,7 @@
                 }
             }
 
-            function renderPlayerRow(p, index, typesMap) {
+            function renderPlayerRow(p, index) {
                 var isMe = String(p.user_id) === String(myUserId);
                 var isHost = index === 0;
 
@@ -1164,15 +1112,9 @@
                 var score = parseInt(p.score, 10);
                 if (isNaN(score)) score = 0;
 
-                var uid = String(p.user_id);
-                var userType = '';
-                if (typesMap && typesMap[uid] !== undefined) {
-                    userType = typesMap[uid];
-                } else {
-                    userType = String(p.user_type || '').trim();
-                }
+                var userType = String(p.user_type || '').trim();
 
-                var html = '<div class="' + classes + '" data-player-id="' + escapeAttr(uid) + '">';
+                var html = '<div class="' + classes + '" data-player-id="' + escapeAttr(String(p.user_id)) + '">';
                 html += '<div class="player-avatar">' + getAvatarHtml(p.avatar || 'default') + '</div>';
                 html += '<div class="player-info">';
                 html += '<div class="player-name">';
@@ -1184,7 +1126,7 @@
                 html += '</div>';
 
                 if (isCreator && !isMe) {
-                    html += '<button class="player-kick-btn" data-kick="' + escapeAttr(uid) + '" type="button" title="' + escapeAttr(getTranslation('kick')) + '">';
+                    html += '<button class="player-kick-btn" data-kick="' + escapeAttr(String(p.user_id)) + '" type="button" title="' + escapeAttr(getTranslation('kick')) + '">';
                     html += '<i class="bi bi-x-lg" aria-hidden="true"></i>';
                     html += '</button>';
                 }
@@ -1193,7 +1135,7 @@
                 return html;
             }
 
-            function updatePlayersList(players, playerCount, typesMap) {
+            function updatePlayersList(players, playerCount) {
                 var listEl = document.getElementById('playersList');
                 var countEl = document.getElementById('playersCount');
                 if (!listEl) return;
@@ -1214,7 +1156,7 @@
 
                 var html = '';
                 for (var i = 0; i < players.length; i++) {
-                    html += renderPlayerRow(players[i], i, typesMap);
+                    html += renderPlayerRow(players[i], i);
                 }
                 listEl.innerHTML = html;
             }
@@ -1300,10 +1242,7 @@
                         return;
                     }
 
-                    // دریافت user_type برای هر بازیکن (مثل پروفایل)
-                    var typesMap = await enrichPlayersWithTypes(players);
-
-                    updatePlayersList(players, game.playerCount || 5, typesMap);
+                    updatePlayersList(players, game.playerCount || 5);
                     updateActionBar();
 
                     isLoading = false;
