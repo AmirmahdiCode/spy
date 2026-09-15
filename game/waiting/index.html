@@ -360,8 +360,8 @@
             flex-shrink: 0;
         }
         .player-name-badges .badge-icon {
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
             flex-shrink: 0;
             display: inline-flex;
             align-items: center;
@@ -718,7 +718,6 @@
             var isCreator = false;
             var pollingInterval = null;
             var isLeaving = false;
-            var lastPlayersJson = '';
             var isLoading = false;
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
@@ -1067,31 +1066,47 @@
                 }
             }
 
-            async function fetchUserTypesForPlayers(players) {
-                var types = {};
+            // ✅ دقیقاً مثل پروفایل: getUser بدون پارامتر اضافه
+            async function fetchUserTypeById(userId) {
+                try {
+                    // نکته: fetchData خودش username رو از getUserId() می‌گیره
+                    // ولی ما می‌خوایم برای یه کاربر دیگه بگیریم
+                    // پس مستقیم fetch می‌زنیم
+                    var r = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: 'getUser', username: String(userId) })
+                    });
+                    if (!r.ok) return null;
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('application/json') === -1) return null;
+                    var data = await r.json();
+                    if (data && data.ok && data.data && data.data.user_type !== undefined) {
+                        return String(data.data.user_type || '');
+                    }
+                    return null;
+                } catch(e) {
+                    return null;
+                }
+            }
+
+            async function enrichPlayersWithTypes(players) {
                 var promises = [];
+                var results = {};
 
                 for (var i = 0; i < players.length; i++) {
                     var uid = String(players[i].user_id);
                     var directType = String(players[i].user_type || '').trim();
 
                     if (directType) {
-                        types[uid] = directType;
+                        results[uid] = directType;
                         continue;
                     }
 
                     promises.push(
                         (async function(id) {
-                            try {
-                                var result = await fetchData('getUser', { username: id });
-                                if (result && result.ok && result.data && result.data.user_type !== undefined) {
-                                    types[id] = String(result.data.user_type || '');
-                                } else {
-                                    types[id] = '';
-                                }
-                            } catch(e) {
-                                types[id] = '';
-                            }
+                            var t = await fetchUserTypeById(id);
+                            results[id] = (t === null) ? '' : t;
                         })(uid)
                     );
                 }
@@ -1100,7 +1115,7 @@
                     await Promise.all(promises);
                 }
 
-                return types;
+                return results;
             }
 
             function getInviteLink() {
@@ -1285,7 +1300,9 @@
                         return;
                     }
 
-                    var typesMap = await fetchUserTypesForPlayers(players);
+                    // دریافت user_type برای هر بازیکن (مثل پروفایل)
+                    var typesMap = await enrichPlayersWithTypes(players);
+
                     updatePlayersList(players, game.playerCount || 5, typesMap);
                     updateActionBar();
 
@@ -1440,7 +1457,6 @@
                 hideLoading();
 
                 if (result && result.ok) {
-                    lastPlayersJson = '';
                     await loadGame(false);
                 } else {
                     showToast(getTranslation('kick_failed'));
