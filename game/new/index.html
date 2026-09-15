@@ -305,6 +305,13 @@
         .role-group-header.city { background: var(--city-color); }
         .role-group-header.mafia { background: var(--mafia-color); }
         .role-group-header.free { background: var(--free-color); }
+        .role-group-header .group-count {
+            margin-right: auto;
+            font-size: 10px;
+            padding: 1px 8px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.25);
+        }
 
         .roles-list {
             display: flex;
@@ -408,6 +415,7 @@
             font-weight: 700;
             color: var(--text-light);
             margin-top: 14px;
+            line-height: 1.8;
         }
         .total-hint.error {
             color: #ef4444;
@@ -419,6 +427,11 @@
         }
         .total-hint.error .total-num {
             color: #ef4444;
+        }
+        .total-hint .error-msg {
+            display: block;
+            font-size: 9px;
+            margin-top: 4px;
         }
 
         .floating-create-bar {
@@ -675,6 +688,7 @@
                 <div class="role-group-header city">
                     <i class="bi bi-buildings" aria-hidden="true"></i>
                     <span data-i18n="team_city">گروه شهر</span>
+                    <span class="group-count" id="cityCount">۰</span>
                 </div>
                 <div class="roles-list" id="cityRolesList"></div>
             </div>
@@ -683,6 +697,7 @@
                 <div class="role-group-header mafia">
                     <i class="bi bi-mask" aria-hidden="true"></i>
                     <span data-i18n="team_mafia">گروه مافیا</span>
+                    <span class="group-count" id="mafiaCount">۰</span>
                 </div>
                 <div class="roles-list" id="mafiaRolesList"></div>
             </div>
@@ -698,6 +713,7 @@
             <div class="total-hint" id="totalHint">
                 <span data-i18n="total_selected">جمع انتخاب‌شده:</span>
                 <span class="total-num"><span id="totalSelected">5</span> / <span id="totalRequired">5</span></span>
+                <span class="error-msg" id="errorMsg" style="display:none;"></span>
             </div>
 
         </div>
@@ -814,7 +830,9 @@
                     fixed_one: 'دقیقاً ۱ نفر',
                     create_failed: 'ساخت بازی انجام نشد. دوباره تلاش کن.',
                     create_active_game: 'ابتدا بازی فعال خود را تمام کنید',
-                    error_network: 'اتصال اینترنت خود را بررسی کنید'
+                    error_network: 'اتصال اینترنت خود را بررسی کنید',
+                    mafia_must_be_less: 'تعداد مافیا باید کمتر از شهر باشه',
+                    total_mismatch: 'جمع نقش‌ها با تعداد نفرات برابر نیست'
                 },
                 en: {
                     new_game: 'Create New Game',
@@ -857,7 +875,9 @@
                     fixed_one: 'Exactly 1',
                     create_failed: 'Failed to create game. Try again.',
                     create_active_game: 'Please finish your active game first',
-                    error_network: 'Please check your internet connection'
+                    error_network: 'Please check your internet connection',
+                    mafia_must_be_less: 'Mafia must be less than City',
+                    total_mismatch: 'Role total does not match player count'
                 },
                 ar: {
                     new_game: 'إنشاء لعبة جديدة',
@@ -900,7 +920,9 @@
                     fixed_one: 'بالضبط ۱',
                     create_failed: 'فشل إنشاء اللعبة. حاول مرة أخرى.',
                     create_active_game: 'يرجى إنهاء لعبتك النشطة أولاً',
-                    error_network: 'يرجى التحقق من اتصالك بالإنترنت'
+                    error_network: 'يرجى التحقق من اتصالك بالإنترنت',
+                    mafia_must_be_less: 'يجب أن تكون المافيا أقل من المدينة',
+                    total_mismatch: 'مجموع الأدوار لا يتطابق مع عدد اللاعبين'
                 }
             };
 
@@ -946,6 +968,8 @@
             };
 
             var ACTIVE_ROLES = ['citizen', 'detective', 'judge', 'spy', 'infiltrator'];
+            var CITY_ROLES = ['citizen', 'detective', 'judge', 'sheriff'];
+            var MAFIA_ROLES = ['spy', 'infiltrator', 'silencer', 'bait'];
 
             var state = {
                 type: 'public',
@@ -1097,6 +1121,40 @@
                 }
             }
 
+            function getCityCount() {
+                var total = 0;
+                CITY_ROLES.forEach(function(k) {
+                    total += state.roles[k] || 0;
+                });
+                return total;
+            }
+
+            function getMafiaCount() {
+                var total = 0;
+                MAFIA_ROLES.forEach(function(k) {
+                    total += state.roles[k] || 0;
+                });
+                return total;
+            }
+
+            function isMafiaCityValid() {
+                return getMafiaCount() < getCityCount();
+            }
+
+            function updateGroupCounts() {
+                var cityEl = document.getElementById('cityCount');
+                var mafiaEl = document.getElementById('mafiaCount');
+                if (cityEl) cityEl.textContent = toPersianDigits(getCityCount());
+                if (mafiaEl) mafiaEl.textContent = toPersianDigits(getMafiaCount());
+            }
+
+            function toPersianDigits(n) {
+                var s = String(n);
+                if (currentLang === 'en') return s;
+                var faDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+                return s.replace(/\d/g, function(d) { return faDigits[parseInt(d, 10)]; });
+            }
+
             function renderRoleRow(key) {
                 var def = ROLE_DEFS[key];
                 if (!def) return '';
@@ -1125,7 +1183,7 @@
                 if (!isLocked) {
                     html += '<div class="counter">';
                     html += '<button class="counter-btn" data-role-dec="' + escapeAttr(key) + '" type="button" aria-label="کاهش">−</button>';
-                    html += '<span class="counter-value" id="role-val-' + escapeAttr(key) + '">' + currentVal + '</span>';
+                    html += '<span class="counter-value" id="role-val-' + escapeAttr(key) + '">' + toPersianDigits(currentVal) + '</span>';
                     html += '<button class="counter-btn" data-role-inc="' + escapeAttr(key) + '" type="button" aria-label="افزایش">+</button>';
                     html += '</div>';
                 } else {
@@ -1151,11 +1209,13 @@
                 ROLE_GROUPS.free.forEach(function(k) { freeHtml += renderRoleRow(k); });
                 var freeEl = document.getElementById('freeRolesList');
                 if (freeEl) freeEl.innerHTML = freeHtml;
+
+                updateGroupCounts();
             }
 
             function updateRoleValueUI(roleKey) {
                 var el = document.getElementById('role-val-' + roleKey);
-                if (el) el.textContent = String(state.roles[roleKey] || 0);
+                if (el) el.textContent = toPersianDigits(state.roles[roleKey] || 0);
             }
 
             function getAvailableTotal() {
@@ -1178,7 +1238,21 @@
                     var incBtn = document.querySelector('.counter-btn[data-role-inc="' + key + '"]');
 
                     if (decBtn) decBtn.disabled = (val <= def.min);
-                    if (incBtn) incBtn.disabled = (val >= def.max || needMore <= 0);
+
+                    if (incBtn) {
+                        var canInc = (val < def.max) && (needMore > 0);
+
+                        var isMafia = MAFIA_ROLES.indexOf(key) !== -1;
+                        if (canInc && isMafia) {
+                            var mafiaAfter = getMafiaCount() + 1;
+                            var cityNow = getCityCount();
+                            if (mafiaAfter >= cityNow) {
+                                canInc = false;
+                            }
+                        }
+
+                        incBtn.disabled = !canInc;
+                    }
                 });
             }
 
@@ -1187,15 +1261,39 @@
 
                 var totalSelEl = document.getElementById('totalSelected');
                 var totalReqEl = document.getElementById('totalRequired');
-                if (totalSelEl) totalSelEl.textContent = String(total);
-                if (totalReqEl) totalReqEl.textContent = String(state.playerCount);
+                if (totalSelEl) totalSelEl.textContent = toPersianDigits(total);
+                if (totalReqEl) totalReqEl.textContent = toPersianDigits(state.playerCount);
 
                 var hint = document.getElementById('totalHint');
+                var errorMsg = document.getElementById('errorMsg');
+
+                var hasError = false;
+                var msg = '';
+
+                if (total !== state.playerCount) {
+                    hasError = true;
+                    msg = getTranslation('total_mismatch');
+                } else if (!isMafiaCityValid()) {
+                    hasError = true;
+                    msg = getTranslation('mafia_must_be_less');
+                }
+
                 if (hint) {
-                    if (total !== state.playerCount) hint.classList.add('error');
+                    if (hasError) hint.classList.add('error');
                     else hint.classList.remove('error');
                 }
 
+                if (errorMsg) {
+                    if (msg) {
+                        errorMsg.textContent = msg;
+                        errorMsg.style.display = 'block';
+                    } else {
+                        errorMsg.textContent = '';
+                        errorMsg.style.display = 'none';
+                    }
+                }
+
+                updateGroupCounts();
                 updateCountersDisabled();
                 updateCreateButton();
             }
@@ -1210,6 +1308,8 @@
                     var val = state.roles[ACTIVE_ROLES[i]] || 0;
                     if (val < def.min || val > def.max) return false;
                 }
+
+                if (!isMafiaCityValid()) return false;
 
                 return true;
             }
@@ -1260,7 +1360,7 @@
                 n = parseInt(n, 10);
                 if (isNaN(n) || n < 3 || n > 10) return;
                 state.playerCount = n;
-                document.getElementById('playerCountValue').textContent = String(n);
+                document.getElementById('playerCountValue').textContent = toPersianDigits(n);
                 document.getElementById('playerCountSlider').value = n;
                 applyPreset();
                 refreshAllRolesUI();
@@ -1270,7 +1370,7 @@
                 n = parseInt(n, 10);
                 if (isNaN(n) || n < 1 || n > 5) return;
                 state.dayDuration = n;
-                document.getElementById('dayDurationValue').textContent = String(n);
+                document.getElementById('dayDurationValue').textContent = toPersianDigits(n);
                 document.getElementById('dayDurationSlider').value = n;
             }
 
@@ -1281,6 +1381,15 @@
                 var total = getAvailableTotal();
                 if (total >= state.playerCount) return;
                 if (state.roles[key] >= def.max) return;
+
+                if (MAFIA_ROLES.indexOf(key) !== -1) {
+                    var mafiaAfter = getMafiaCount() + 1;
+                    var cityNow = getCityCount();
+                    if (mafiaAfter >= cityNow) {
+                        showToast(getTranslation('mafia_must_be_less'));
+                        return;
+                    }
+                }
 
                 state.roles[key]++;
                 updateRoleValueUI(key);
@@ -1319,6 +1428,9 @@
                 if (isCreating) return;
                 if (!isConfigValid()) {
                     triggerHaptic('heavy');
+                    if (!isMafiaCityValid()) {
+                        showToast(getTranslation('mafia_must_be_less'));
+                    }
                     return;
                 }
 
