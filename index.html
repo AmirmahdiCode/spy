@@ -296,6 +296,7 @@
             color: var(--primary);
             cursor: pointer;
             direction: ltr;
+            text-decoration: none;
         }
         .blocked-contact:active {
             transform: translate(1px, 1px);
@@ -909,7 +910,7 @@
 
             function scheduleAutoRedirect(target) {
                 if (redirectTimeout) clearTimeout(redirectTimeout);
-                var remaining = 5;
+                var remaining = Math.floor(REDIRECT_DELAY / 1000);
                 updateRedirectCountdown(remaining);
 
                 var interval = setInterval(function() {
@@ -981,8 +982,6 @@
                         openSupportProfile();
                     });
                 }
-
-                scheduleAutoRedirect('dashboard');
             }
 
             function handleNotInEitaa() {
