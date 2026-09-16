@@ -29,6 +29,8 @@
             --radius: 12px;
             --border: 1px solid #000000;
             --font: 'Samim', Tahoma, sans-serif;
+            --success: #10b981;
+            --danger: #ef4444;
         }
 
         [data-theme="dark"] {
@@ -168,12 +170,87 @@
             to { opacity: 0; transform: translateY(-20px) scale(0.95); }
         }
 
+        .support-bar {
+            position: fixed;
+            top: 78px;
+            right: 5%;
+            left: 5%;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1.5px solid var(--primary);
+            border-radius: 25px;
+            padding: 8px 16px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 2000;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            transition: all 0.25s ease;
+            overflow: hidden;
+        }
+        [data-theme="dark"] .support-bar {
+            background: rgba(26, 26, 26, 0.35);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+        .support-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            pointer-events: none;
+            border-radius: 25px 25px 0 0;
+        }
+        [data-theme="dark"] .support-bar::before {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+        }
+        .support-bar.show {
+            display: flex;
+            animation: supportIn 0.5s ease forwards;
+        }
+        .support-bar:active {
+            transform: scale(0.98);
+        }
+        .support-bar span {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+        .support-bar .channel-name {
+            color: var(--primary);
+            font-weight: 900;
+            direction: ltr;
+            display: inline-block;
+            margin-right: 4px;
+        }
+        .support-bar i {
+            color: var(--primary);
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes supportIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
         .main-container {
             position: relative; z-index: 5;
             flex: 1;
             max-width: 600px; width: 100%;
             margin: 0 auto;
-            padding: 40px 24px 120px;
+            padding: 60px 24px 160px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -204,7 +281,28 @@
             opacity: 0;
         }
 
-        .support-bar {
+        .blocked-contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 8px 14px;
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 10px;
+            box-shadow: 2px 2px 0 #000;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            cursor: pointer;
+            direction: ltr;
+        }
+        .blocked-contact:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .progress-card {
             position: fixed;
             bottom: 12px;
             right: 5%;
@@ -212,72 +310,117 @@
             width: 90%;
             max-width: 600px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1.5px solid var(--primary);
-            border-radius: 25px;
-            padding: 10px 16px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            z-index: 998;
-            cursor: pointer;
+            border-radius: 20px;
+            padding: 14px 16px;
+            z-index: 2000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            transition: all 0.25s ease;
-            overflow: hidden;
+            transition: all 0.4s ease;
         }
-        [data-theme="dark"] .support-bar {
-            background: rgba(26, 26, 26, 0.35);
+        [data-theme="dark"] .progress-card {
+            background: rgba(26, 26, 26, 0.6);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
-        .support-bar::before {
+        .progress-card.error {
+            border-color: var(--danger);
+        }
+        .progress-card.error .progress-bar-fill {
+            background: var(--danger);
+        }
+        .progress-card.error .progress-step-text {
+            color: var(--danger);
+        }
+        .progress-card.error .progress-percent {
+            color: var(--danger);
+        }
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .progress-icon {
+            font-size: 14px;
+            color: var(--primary);
+            flex-shrink: 0;
+            transition: color 0.3s ease;
+        }
+        .progress-card.error .progress-icon {
+            color: var(--danger);
+        }
+        .progress-step-text {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--dark);
+            flex: 1;
+            text-align: right;
+            transition: color 0.3s ease, opacity 0.3s ease;
+        }
+        [dir="ltr"] .progress-step-text { text-align: left; }
+        .progress-step-text.fading { opacity: 0; }
+        .progress-percent {
+            font-size: 11px;
+            font-weight: 900;
+            color: var(--primary);
+            min-width: 38px;
+            text-align: left;
+            direction: ltr;
+            transition: color 0.3s ease;
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 8px;
+            background: var(--bg3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="dark"] .progress-bar-track {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(.17,.67,.12,.99), background 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-bar-fill::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 50%;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
-            pointer-events: none;
-            border-radius: 25px 25px 0 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 1.5s ease-in-out infinite;
         }
-        [data-theme="dark"] .support-bar::before {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
-        .support-bar.show {
-            display: flex;
-            animation: supportIn 0.5s ease forwards;
-        }
-        .support-bar.hiding {
-            animation: supportOut 0.5s ease forwards;
-        }
-        .support-bar:active {
-            transform: scale(0.98);
-        }
-        .support-bar span {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--primary);
-            position: relative;
-            z-index: 1;
-        }
-        .support-bar .channel-name {
-            color: var(--primary);
-            font-weight: 900;
-            direction: ltr;
-            display: inline-block;
-            margin-right: 4px;
+        .progress-card.error .progress-bar-fill::after {
+            display: none;
         }
 
-        @keyframes supportIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .progress-redirect {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-top: 6px;
+            text-align: center;
+            display: none;
         }
-        @keyframes supportOut {
-            from { opacity: 1; transform: translateY(0) scale(1); }
-            to { opacity: 0; transform: translateY(20px) scale(0.95); }
+        .progress-card.error .progress-redirect {
+            display: block;
         }
     </style>
 </head>
@@ -298,14 +441,27 @@
         </div>
     </header>
 
-    <main class="main-container">
-        <h1 class="message-title" id="messageTitle">در حال آماده‌سازی...</h1>
-        <p class="message-desc" id="messageDesc">لطفاً چند لحظه صبر کنید</p>
-    </main>
-
     <div class="support-bar" id="supportBar">
+        <i class="bi bi-heart-fill" aria-hidden="true"></i>
         <span data-i18n="support_text">حمایت از سازنده</span>
         <span class="channel-name">@amirmahdi_code</span>
+    </div>
+
+    <main class="main-container">
+        <h1 class="message-title" id="messageTitle" data-i18n="preparing_title">در حال آماده‌سازی...</h1>
+        <p class="message-desc" id="messageDesc" data-i18n="preparing_desc">لطفاً چند لحظه صبر کنید</p>
+    </main>
+
+    <div class="progress-card" id="progressCard">
+        <div class="progress-header">
+            <i class="bi bi-hourglass-split progress-icon" id="progressIcon" aria-hidden="true"></i>
+            <span class="progress-step-text" id="progressStepText">در حال آماده‌سازی...</span>
+            <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+        <div class="progress-redirect" id="progressRedirect" data-i18n="redirect_auto"></div>
     </div>
 
     <script>
@@ -318,11 +474,20 @@
             var messageTitle = document.getElementById('messageTitle');
             var messageDesc = document.getElementById('messageDesc');
             var supportBar = document.getElementById('supportBar');
+            var progressCard = document.getElementById('progressCard');
+            var progressIcon = document.getElementById('progressIcon');
+            var progressStepText = document.getElementById('progressStepText');
+            var progressPercent = document.getElementById('progressPercent');
+            var progressBarFill = document.getElementById('progressBarFill');
+            var progressRedirect = document.getElementById('progressRedirect');
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
+            var REDIRECT_DELAY = 5000;
             var messageInterval = null;
             var isRedirecting = false;
             var currentLang = 'fa';
+            var currentProgress = 0;
+            var redirectTimeout = null;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
@@ -366,28 +531,112 @@
 
             var translations = {
                 fa: {
+                    preparing_title: 'در حال آماده‌سازی...',
+                    preparing_desc: 'لطفاً چند لحظه صبر کنید',
                     support_text: 'حمایت از سازنده',
-                    toast_has_active_game: 'ابتدا بازی فعال خود را تمام کنید',
-                    toast_join_failed: 'ورود به بازی ممکن نشد',
-                    toast_game_started: 'این بازی شروع شده است و اجازه ورود ندارید',
-                    toast_game_full: 'ظرفیت این بازی پر شده است',
-                    toast_kicked: 'شما از این بازی اخراج شده‌اید و اجازه ورود ندارید'
+                    redirect_auto: 'بازگشت خودکار به داشبورد در چند ثانیه...',
+
+                    step_user_info: 'در حال دریافت اطلاعات کاربری...',
+                    step_check_status: 'در حال بررسی وضعیت حساب کاربری...',
+                    step_update_info: 'در حال بروزرسانی اطلاعات کاربری...',
+                    step_register: 'در حال ثبت‌نام کاربر...',
+                    step_check_active: 'در حال بررسی بازی‌های فعال...',
+                    step_check_target: 'در حال بررسی بازی هدف...',
+                    step_join_game: 'در حال پیوستن به بازی...',
+                    step_preparing: 'در حال آماده‌سازی...',
+                    step_redirect_dashboard: 'در حال هدایت به داشبورد...',
+                    step_redirect_waiting: 'در حال هدایت به اتاق انتظار...',
+                    step_blocked: 'حساب کاربری شما مسدود شده است',
+                    step_retry: 'در حال تلاش مجدد...',
+
+                    blocked_title: 'حساب کاربری شما مسدود شده است',
+                    blocked_desc: 'برای کسب اطلاعات بیشتر با پشتیبانی در تماس باشید',
+                    blocked_contact: 'پشتیبانی: @mr_program',
+
+                    not_in_eitaa_title: 'لطفاً از داخل ایتا وارد شوید',
+                    not_in_eitaa_desc: 'این برنامک فقط در ایتا کار می‌کند',
+
+                    err_active_game: 'ابتدا بازی فعال خود را تمام کنید',
+                    err_join_failed: 'ورود به بازی ممکن نشد',
+                    err_game_started: 'این بازی از قبل شروع شده است',
+                    err_game_full: 'ظرفیت این بازی پر شده است',
+                    err_game_finished: 'این بازی به پایان رسیده است',
+                    err_game_cancelled: 'این بازی لغو شده است',
+                    err_game_not_found: 'این بازی وجود ندارد یا حذف شده است',
+                    err_kicked: 'شما از این بازی اخراج شده‌اید',
+                    err_network: 'اتصال اینترنت خود را بررسی کنید'
                 },
                 en: {
+                    preparing_title: 'Preparing...',
+                    preparing_desc: 'Please wait a moment',
                     support_text: 'Support Developer',
-                    toast_has_active_game: 'Please finish your active game first',
-                    toast_join_failed: 'Failed to join the game',
-                    toast_game_started: 'This game has already started',
-                    toast_game_full: 'This game is full',
-                    toast_kicked: 'You have been kicked from this game'
+                    redirect_auto: 'Auto-redirect to dashboard in a few seconds...',
+
+                    step_user_info: 'Loading user info...',
+                    step_check_status: 'Checking account status...',
+                    step_update_info: 'Updating user info...',
+                    step_register: 'Registering user...',
+                    step_check_active: 'Checking active games...',
+                    step_check_target: 'Checking target game...',
+                    step_join_game: 'Joining the game...',
+                    step_preparing: 'Preparing...',
+                    step_redirect_dashboard: 'Redirecting to dashboard...',
+                    step_redirect_waiting: 'Redirecting to waiting room...',
+                    step_blocked: 'Your account has been blocked',
+                    step_retry: 'Retrying...',
+
+                    blocked_title: 'Your account has been blocked',
+                    blocked_desc: 'Please contact support for more information',
+                    blocked_contact: 'Support: @mr_program',
+
+                    not_in_eitaa_title: 'Please open from Eitaa',
+                    not_in_eitaa_desc: 'This app only works inside Eitaa',
+
+                    err_active_game: 'Please finish your active game first',
+                    err_join_failed: 'Failed to join the game',
+                    err_game_started: 'This game has already started',
+                    err_game_full: 'This game is full',
+                    err_game_finished: 'This game has already ended',
+                    err_game_cancelled: 'This game has been cancelled',
+                    err_game_not_found: 'This game does not exist or was removed',
+                    err_kicked: 'You have been kicked from this game',
+                    err_network: 'Please check your internet connection'
                 },
                 ar: {
+                    preparing_title: 'جار التحضير...',
+                    preparing_desc: 'يرجى الانتظار لحظة',
                     support_text: 'دعم المطور',
-                    toast_has_active_game: 'يرجى إنهاء لعبتك النشطة أولاً',
-                    toast_join_failed: 'فشل الانضمام إلى اللعبة',
-                    toast_game_started: 'هذه اللعبة قد بدأت بالفعل',
-                    toast_game_full: 'هذه اللعبة ممتلئة',
-                    toast_kicked: 'لقد تم طردك من هذه اللعبة'
+                    redirect_auto: 'العودة التلقائية إلى لوحة التحكم خلال ثوانٍ...',
+
+                    step_user_info: 'جار تحميل معلومات المستخدم...',
+                    step_check_status: 'جار التحقق من حالة الحساب...',
+                    step_update_info: 'جار تحديث معلومات المستخدم...',
+                    step_register: 'جار تسجيل المستخدم...',
+                    step_check_active: 'جار التحقق من الألعاب النشطة...',
+                    step_check_target: 'جار التحقق من اللعبة المستهدفة...',
+                    step_join_game: 'جار الانضمام إلى اللعبة...',
+                    step_preparing: 'جار التحضير...',
+                    step_redirect_dashboard: 'جار التوجيه إلى لوحة التحكم...',
+                    step_redirect_waiting: 'جار التوجيه إلى غرفة الانتظار...',
+                    step_blocked: 'تم حظر حسابك',
+                    step_retry: 'جار إعادة المحاولة...',
+
+                    blocked_title: 'تم حظر حسابك',
+                    blocked_desc: 'يرجى التواصل مع الدعم لمزيد من المعلومات',
+                    blocked_contact: 'الدعم: @mr_program',
+
+                    not_in_eitaa_title: 'يرجى الدخول من إيتا',
+                    not_in_eitaa_desc: 'هذا التطبيق يعمل فقط داخل إيتا',
+
+                    err_active_game: 'يرجى إنهاء لعبتك النشطة أولاً',
+                    err_join_failed: 'فشل الانضمام إلى اللعبة',
+                    err_game_started: 'هذه اللعبة قد بدأت بالفعل',
+                    err_game_full: 'هذه اللعبة ممتلئة',
+                    err_game_finished: 'هذه اللعبة قد انتهت بالفعل',
+                    err_game_cancelled: 'تم إلغاء هذه اللعبة',
+                    err_game_not_found: 'هذه اللعبة غير موجودة أو تم حذفها',
+                    err_kicked: 'لقد تم طردك من هذه اللعبة',
+                    err_network: 'يرجى التحقق من اتصالك بالإنترنت'
                 }
             };
 
@@ -417,11 +666,7 @@
             function updateHeaderTitle(lang) {
                 var titleEl = document.getElementById('headerTitle');
                 if (!titleEl) return;
-                if (lang === 'en') {
-                    titleEl.textContent = 'Mafia Spy';
-                } else {
-                    titleEl.textContent = 'جاسوس مافیایی';
-                }
+                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
             }
 
             function applyLanguage(lang) {
@@ -481,6 +726,34 @@
                         if (toast.parentNode) toast.parentNode.removeChild(toast);
                     }, 400);
                 }, duration);
+            }
+
+            function setProgress(percent, stepKey, isError) {
+                currentProgress = percent;
+                progressBarFill.style.width = percent + '%';
+                progressPercent.textContent = toPersianDigits(percent) + '%';
+
+                if (stepKey) {
+                    progressStepText.classList.add('fading');
+                    setTimeout(function() {
+                        progressStepText.textContent = getTranslation(stepKey);
+                        progressStepText.classList.remove('fading');
+                    }, 200);
+                }
+
+                if (isError) {
+                    progressCard.classList.add('error');
+                    progressIcon.className = 'bi bi-x-circle-fill progress-icon';
+                } else {
+                    progressCard.classList.remove('error');
+                }
+            }
+
+            function toPersianDigits(n) {
+                var s = String(n);
+                if (currentLang === 'en') return s;
+                var digits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+                return s.replace(/\d/g, function(d) { return digits[parseInt(d, 10)]; });
             }
 
             var messages = {
@@ -546,7 +819,6 @@
 
             function showSupportBar() {
                 supportBar.classList.add('show');
-                supportBar.classList.remove('hiding');
             }
 
             function getEitaaUser() {
@@ -635,12 +907,107 @@
                 window.location.href = './game/waiting/?room=' + encodeURIComponent(gameId);
             }
 
-            function showToastAndRedirect(msgKey) {
+            function scheduleAutoRedirect(target) {
+                if (redirectTimeout) clearTimeout(redirectTimeout);
+                var remaining = 5;
+                updateRedirectCountdown(remaining);
+
+                var interval = setInterval(function() {
+                    remaining--;
+                    if (remaining > 0) {
+                        updateRedirectCountdown(remaining);
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 1000);
+
+                redirectTimeout = setTimeout(function() {
+                    clearInterval(interval);
+                    if (target === 'waiting') {
+                        var gameId = safeGetLocalStorage('mafiaRoomCode') || '';
+                        if (gameId) goToWaiting(gameId);
+                        else goToDashboard();
+                    } else {
+                        goToDashboard();
+                    }
+                }, REDIRECT_DELAY);
+            }
+
+            function updateRedirectCountdown(n) {
+                var t = getTranslation('redirect_auto');
+                progressRedirect.textContent = t;
+            }
+
+            function handleJoinError(errCode) {
                 stopMessageRotation();
-                showToast(getTranslation(msgKey), 4000);
-                setTimeout(function() {
-                    goToDashboard();
-                }, 4300);
+                var msg = getTranslation('err_join_failed');
+
+                if (errCode === 'Game already started') msg = getTranslation('err_game_started');
+                else if (errCode === 'Game is full') msg = getTranslation('err_game_full');
+                else if (errCode === 'Active game exists') msg = getTranslation('err_active_game');
+                else if (errCode === 'Game not found') msg = getTranslation('err_game_not_found');
+                else if (errCode === 'You were kicked from this game') msg = getTranslation('err_kicked');
+                else if (errCode === 'Game is finished' || errCode === 'Game finished') msg = getTranslation('err_game_finished');
+                else if (errCode === 'Game is cancelled' || errCode === 'Game cancelled') msg = getTranslation('err_game_cancelled');
+                else if (errCode === 'network') msg = getTranslation('err_network');
+
+                setProgress(currentProgress, null, true);
+                progressStepText.textContent = msg;
+                progressStepText.classList.remove('fading');
+
+                messageTitle.textContent = msg;
+                messageDesc.textContent = getTranslation('blocked_desc');
+
+                showToast(msg, 4500);
+
+                scheduleAutoRedirect('dashboard');
+            }
+
+            function handleBlocked() {
+                stopMessageRotation();
+                setProgress(100, null, true);
+                progressStepText.textContent = getTranslation('step_blocked');
+
+                messageTitle.textContent = getTranslation('blocked_title');
+                messageDesc.innerHTML = escapeHtml(getTranslation('blocked_desc')) +
+                    '<br><a class="blocked-contact" id="blockedContact" href="javascript:void(0);">' +
+                    '<i class="bi bi-telegram" aria-hidden="true"></i> ' +
+                    escapeHtml(getTranslation('blocked_contact')) +
+                    '</a>';
+
+                var contact = document.getElementById('blockedContact');
+                if (contact) {
+                    contact.addEventListener('click', function() {
+                        openSupportProfile();
+                    });
+                }
+
+                scheduleAutoRedirect('dashboard');
+            }
+
+            function handleNotInEitaa() {
+                stopMessageRotation();
+                setProgress(100, null, true);
+                progressStepText.textContent = getTranslation('not_in_eitaa_title');
+                messageTitle.textContent = getTranslation('not_in_eitaa_title');
+                messageDesc.textContent = getTranslation('not_in_eitaa_desc');
+            }
+
+            function openSupportProfile() {
+                triggerHaptic('light');
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/mr_program');
+                } else {
+                    window.open('https://eitaa.com/mr_program', '_blank', 'noopener,noreferrer');
+                }
+            }
+
+            function openChannelLink() {
+                if (webApp && webApp.openEitaaLink) {
+                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
+                } else {
+                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
+                }
             }
 
             async function checkActiveGame() {
@@ -663,17 +1030,10 @@
                 return null;
             }
 
-            function openChannelLink() {
-                if (webApp && webApp.openEitaaLink) {
-                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
-                } else {
-                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
-                }
-            }
-
             async function init() {
                 applyTheme();
                 startMessageRotation();
+                setProgress(5, 'step_user_info');
 
                 if (webApp) {
                     try {
@@ -690,85 +1050,122 @@
                 var username = getUserId();
 
                 if (!user || !username) {
-                    stopMessageRotation();
-                    messageTitle.textContent = 'لطفاً از داخل ایتا وارد شوید';
-                    messageDesc.textContent = 'این برنامک فقط در ایتا کار می‌کند';
+                    handleNotInEitaa();
                     return;
                 }
 
-                var fullName = ((user.first_name || '') + ' ' + (user.last_name || '')).trim() || 'کاربر';
+                var fullName = ((user.first_name || '') + ' ' + (user.last_name || '')).trim() || getTranslation('preparing_title');
+
+                setProgress(25, 'step_check_status');
 
                 var check = await fetchData('getUser', {});
 
                 if (check && check.ok && check.data && typeof check.data === 'object') {
                     var userType = String(check.data.user_type || '').trim();
                     if (userType.indexOf('متخلف') !== -1) {
-                        stopMessageRotation();
-                        messageTitle.textContent = 'حساب کاربری شما اجازه ورود به بازی را ندارد';
-                        messageDesc.textContent = 'برای پیگیری با پشتیبانی در تماس باشید';
+                        handleBlocked();
                         return;
                     }
 
                     var currentName = String(check.data.name || '').trim();
                     if (currentName !== fullName) {
+                        setProgress(45, 'step_update_info');
                         await fetchData('updateUser', { name: fullName });
                     }
                 } else {
+                    setProgress(45, 'step_register');
                     await fetchData('registerUser', { name: fullName });
                 }
 
                 showSupportBar();
 
+                setProgress(60, 'step_check_active');
+
                 if (startParam && VALID_GAME_ID.test(startParam)) {
                     var activeGame = await checkActiveGame();
 
-                    if (activeGame) {
-                        if (activeGame.id === startParam) {
-                            goToWaiting(startParam);
-                            return;
-                        } else {
-                            showToastAndRedirect('toast_has_active_game');
-                            return;
+                    if (activeGame && activeGame.id !== startParam) {
+                        handleJoinError('Active game exists');
+                        return;
+                    }
+
+                    setProgress(75, 'step_check_target');
+
+                    var targetGame = await fetchData('getGame', { gameId: startParam });
+
+                    if (!targetGame || !targetGame.ok || !targetGame.data) {
+                        handleJoinError('Game not found');
+                        return;
+                    }
+
+                    var gameStatus = String(targetGame.data.status || '');
+
+                    if (gameStatus === 'finish' || gameStatus === 'finished') {
+                        handleJoinError('Game is finished');
+                        return;
+                    }
+                    if (gameStatus === 'cancelled') {
+                        handleJoinError('Game is cancelled');
+                        return;
+                    }
+
+                    if (activeGame && activeGame.id === startParam) {
+                        setProgress(95, 'step_redirect_waiting');
+                        goToWaiting(startParam);
+                        return;
+                    }
+
+                    var players = Array.isArray(targetGame.data.players) ? targetGame.data.players : [];
+                    var maxPlayers = parseInt(targetGame.data.playerCount, 10) || 0;
+
+                    var kicked = false;
+                    if (Array.isArray(targetGame.data.kicked_users)) {
+                        for (var i = 0; i < targetGame.data.kicked_users.length; i++) {
+                            if (String(targetGame.data.kicked_users[i]) === String(username)) {
+                                kicked = true;
+                                break;
+                            }
                         }
                     }
+
+                    if (kicked && gameStatus === 'waiting') {
+                        handleJoinError('You were kicked from this game');
+                        return;
+                    }
+
+                    if (gameStatus !== 'waiting') {
+                        handleJoinError('Game already started');
+                        return;
+                    }
+
+                    if (maxPlayers > 0 && players.length >= maxPlayers) {
+                        handleJoinError('Game is full');
+                        return;
+                    }
+
+                    setProgress(85, 'step_join_game');
 
                     var joinResult = await fetchData('joinGame', { gameId: startParam });
 
                     if (joinResult && joinResult.ok) {
+                        setProgress(95, 'step_redirect_waiting');
                         goToWaiting(startParam);
                         return;
                     }
 
                     var errCode = joinResult ? String(joinResult.error || '') : '';
-
-                    if (errCode === 'Game already started') {
-                        showToastAndRedirect('toast_game_started');
-                        return;
-                    }
-                    if (errCode === 'Game is full') {
-                        showToastAndRedirect('toast_game_full');
-                        return;
-                    }
-                    if (errCode === 'Active game exists') {
-                        showToastAndRedirect('toast_has_active_game');
-                        return;
-                    }
-                    if (errCode === 'Game not found') {
-                        showToastAndRedirect('toast_game_started');
-                        return;
-                    }
-                    if (errCode === 'You were kicked from this game') {
-                        showToastAndRedirect('toast_kicked');
-                        return;
-                    }
-
-                    showToastAndRedirect('toast_join_failed');
+                    handleJoinError(errCode);
                     return;
                 }
 
+                setProgress(90, 'step_preparing');
+
                 setTimeout(function() {
-                    goToDashboard();
-                }, 1500);
+                    setProgress(100, 'step_redirect_dashboard');
+                    setTimeout(function() {
+                        goToDashboard();
+                    }, 600);
+                }, 500);
             }
 
             supportBar.addEventListener('click', openChannelLink);
