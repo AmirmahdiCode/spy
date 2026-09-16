@@ -411,18 +411,6 @@
         .progress-card.error .progress-bar-fill::after {
             display: none;
         }
-
-        .progress-redirect {
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--text-light);
-            margin-top: 6px;
-            text-align: center;
-            display: none;
-        }
-        .progress-card.error .progress-redirect {
-            display: block;
-        }
     </style>
 </head>
 <body>
@@ -462,7 +450,6 @@
         <div class="progress-bar-track">
             <div class="progress-bar-fill" id="progressBarFill"></div>
         </div>
-        <div class="progress-redirect" id="progressRedirect" data-i18n="redirect_auto"></div>
     </div>
 
     <script>
@@ -480,15 +467,13 @@
             var progressStepText = document.getElementById('progressStepText');
             var progressPercent = document.getElementById('progressPercent');
             var progressBarFill = document.getElementById('progressBarFill');
-            var progressRedirect = document.getElementById('progressRedirect');
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
-            var REDIRECT_DELAY = 5000;
+            var ERROR_REDIRECT_DELAY = 5000;
             var messageInterval = null;
             var isRedirecting = false;
             var currentLang = 'fa';
             var currentProgress = 0;
-            var redirectTimeout = null;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
@@ -535,7 +520,6 @@
                     preparing_title: 'در حال آماده‌سازی...',
                     preparing_desc: 'لطفاً چند لحظه صبر کنید',
                     support_text: 'حمایت از سازنده',
-                    redirect_auto: 'بازگشت خودکار به داشبورد در چند ثانیه...',
 
                     step_user_info: 'در حال دریافت اطلاعات کاربری...',
                     step_check_status: 'در حال بررسی وضعیت حساب کاربری...',
@@ -548,7 +532,6 @@
                     step_redirect_dashboard: 'در حال هدایت به داشبورد...',
                     step_redirect_waiting: 'در حال هدایت به اتاق انتظار...',
                     step_blocked: 'حساب کاربری شما مسدود شده است',
-                    step_retry: 'در حال تلاش مجدد...',
 
                     blocked_title: 'حساب کاربری شما مسدود شده است',
                     blocked_desc: 'برای کسب اطلاعات بیشتر با پشتیبانی در تماس باشید',
@@ -571,7 +554,6 @@
                     preparing_title: 'Preparing...',
                     preparing_desc: 'Please wait a moment',
                     support_text: 'Support Developer',
-                    redirect_auto: 'Auto-redirect to dashboard in a few seconds...',
 
                     step_user_info: 'Loading user info...',
                     step_check_status: 'Checking account status...',
@@ -584,7 +566,6 @@
                     step_redirect_dashboard: 'Redirecting to dashboard...',
                     step_redirect_waiting: 'Redirecting to waiting room...',
                     step_blocked: 'Your account has been blocked',
-                    step_retry: 'Retrying...',
 
                     blocked_title: 'Your account has been blocked',
                     blocked_desc: 'Please contact support for more information',
@@ -607,7 +588,6 @@
                     preparing_title: 'جار التحضير...',
                     preparing_desc: 'يرجى الانتظار لحظة',
                     support_text: 'دعم المطور',
-                    redirect_auto: 'العودة التلقائية إلى لوحة التحكم خلال ثوانٍ...',
 
                     step_user_info: 'جار تحميل معلومات المستخدم...',
                     step_check_status: 'جار التحقق من حالة الحساب...',
@@ -620,7 +600,6 @@
                     step_redirect_dashboard: 'جار التوجيه إلى لوحة التحكم...',
                     step_redirect_waiting: 'جار التوجيه إلى غرفة الانتظار...',
                     step_blocked: 'تم حظر حسابك',
-                    step_retry: 'جار إعادة المحاولة...',
 
                     blocked_title: 'تم حظر حسابك',
                     blocked_desc: 'يرجى التواصل مع الدعم لمزيد من المعلومات',
@@ -908,37 +887,6 @@
                 window.location.href = './game/waiting/?room=' + encodeURIComponent(gameId);
             }
 
-            function scheduleAutoRedirect(target) {
-                if (redirectTimeout) clearTimeout(redirectTimeout);
-                var remaining = Math.floor(REDIRECT_DELAY / 1000);
-                updateRedirectCountdown(remaining);
-
-                var interval = setInterval(function() {
-                    remaining--;
-                    if (remaining > 0) {
-                        updateRedirectCountdown(remaining);
-                    } else {
-                        clearInterval(interval);
-                    }
-                }, 1000);
-
-                redirectTimeout = setTimeout(function() {
-                    clearInterval(interval);
-                    if (target === 'waiting') {
-                        var gameId = safeGetLocalStorage('mafiaRoomCode') || '';
-                        if (gameId) goToWaiting(gameId);
-                        else goToDashboard();
-                    } else {
-                        goToDashboard();
-                    }
-                }, REDIRECT_DELAY);
-            }
-
-            function updateRedirectCountdown(n) {
-                var t = getTranslation('redirect_auto');
-                progressRedirect.textContent = t;
-            }
-
             function handleJoinError(errCode) {
                 stopMessageRotation();
                 var msg = getTranslation('err_join_failed');
@@ -961,7 +909,9 @@
 
                 showToast(msg, 4500);
 
-                scheduleAutoRedirect('dashboard');
+                setTimeout(function() {
+                    goToDashboard();
+                }, ERROR_REDIRECT_DELAY);
             }
 
             function handleBlocked() {
