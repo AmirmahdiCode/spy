@@ -872,8 +872,12 @@
                 var score = parseInt(item.score, 10);
                 if (isNaN(score)) score = 0;
 
+                // استفاده از رتبه‌ی واقعی ذخیره‌شده در _rank (1-based)
+                var rank = (typeof item._rank === 'number' && item._rank > 0) ? item._rank : (index + 1);
+                var rankIdx = rank - 1;
+
                 return '<div class="rank-item' + (me ? ' is-me' : '') + '" data-user-id="' + safeUserId + '" role="button" tabindex="0">' +
-                    '<div class="rank-number ' + getRankClass(index) + '">' + getRankIcon(index) + '</div>' +
+                    '<div class="rank-number ' + getRankClass(rankIdx) + '">' + getRankIcon(rankIdx) + '</div>' +
                     '<div class="rank-avatar">' + getAvatarHtml(avatarField) + '</div>' +
                     '<div class="rank-info"><div class="rank-name">' + displayName + ' ' + getUserTypeBadge(userType) + '</div>' +
                     '<div class="rank-score">' + escapeHtml(getTranslation('score')) + ': ' + score + '</div></div>' +
@@ -904,7 +908,9 @@
                 var myRank = findMyRank(list, myId);
                 if (myRank < 0) return;
                 var me = list[myRank];
-                document.getElementById('myRankFloatNumber').textContent = '#' + (myRank + 1);
+                // استفاده از رتبه‌ی واقعی
+                var realRank = (typeof me._rank === 'number' && me._rank > 0) ? me._rank : (myRank + 1);
+                document.getElementById('myRankFloatNumber').textContent = '#' + realRank;
                 document.getElementById('myRankFloatAvatar').innerHTML = getAvatarHtml(me.avatar || 'default');
                 var displayName = escapeHtml(me.name || getTranslation('unknown_user'));
                 document.getElementById('myRankFloatName').innerHTML = displayName + ' ' + getUserTypeBadge(me.user_type);
@@ -933,6 +939,10 @@
                                 if (isNaN(sa)) sa = 0;
                                 if (isNaN(sb)) sb = 0;
                                 return sb - sa;
+                            })
+                            .map(function(item, idx) {
+                                item._rank = idx + 1;   // ← رتبه‌ی واقعی (1-based)
+                                return item;
                             });
 
                         var myId = getUserId();
