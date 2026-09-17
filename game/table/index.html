@@ -469,15 +469,13 @@
         .report-paper {
             position: relative;
             background: #f5e6c8;
-            background-image: 
-                repeating-linear-gradient(0deg, transparent 0px, transparent 27px, rgba(139, 90, 43, 0.15) 27px, rgba(139, 90, 43, 0.15) 28px);
             border-radius: 3px;
             padding: 26px 22px 22px;
             box-shadow: 
                 0 2px 4px rgba(0,0,0,0.15),
                 0 8px 16px rgba(0,0,0,0.12),
                 inset 0 0 80px rgba(139, 90, 43, 0.08);
-            transform: rotate(-5deg);
+            transform: rotate(-3deg);
             font-family: 'Lalezar', var(--font);
             color: #3d2817;
             line-height: 28px;
@@ -516,7 +514,6 @@
             color: #8b1e1e;
             margin-bottom: 12px;
             padding-bottom: 8px;
-            border-bottom: 2px dashed rgba(139, 30, 30, 0.3);
         }
 
         .report-line {
@@ -541,7 +538,6 @@
         .report-signature {
             margin-top: 14px;
             padding-top: 8px;
-            border-top: 1px dashed rgba(139, 90, 43, 0.3);
             font-size: 13px;
             text-align: left;
             color: rgba(61, 40, 23, 0.6);
@@ -784,6 +780,21 @@
         .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .action-btn.danger { background: var(--danger); }
         .action-btn.success { background: var(--success); }
+
+        .workstation-actions-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .workstation-actions-row .action-btn {
+            flex: 1;
+        }
+
+        .action-btn.secondary {
+            background: var(--bg2);
+            color: var(--text);
+            border: var(--border);
+        }
 
         .result-box {
             background: var(--bg2);
@@ -1149,12 +1160,12 @@
                     <span class="role-badge" id="myRoleBadge">-</span>
                 </div>
                 <div class="word-display" id="wordDisplay" style="display:none;">
-                    <div class="word-label" data-i18n="your_word">کلمه‌ی شما</div>
+                    <div class="word-label" data-i18n="your_word">کلمهی شما</div>
                     <div class="word-value" id="myWord">----</div>
                 </div>
                 <div class="empty-state" id="noWordMsg" style="display:none;">
                     <i class="bi bi-eye-slash" aria-hidden="true"></i>
-                    <span data-i18n="no_word_spy">شما کلمه را نمی‌دانید. مخفی بمانید!</span>
+                    <span data-i18n="no_word_spy">شما کلمه را نمیدانید. مخفی بمانید!</span>
                 </div>
             </div>
 
@@ -1225,9 +1236,9 @@
         <div class="modal">
             <div class="modal-header">
                 <i class="bi bi-check2-square" aria-hidden="true"></i>
-                <span data-i18n="vote_title">رأی‌گیری</span>
+                <span data-i18n="vote_title">رأیگیری</span>
             </div>
-            <div class="modal-info" id="voteInfo" data-i18n="vote_info">فکر می‌کنی جاسوس کیه؟</div>
+            <div class="modal-info" id="voteInfo" data-i18n="vote_info">فکر میکنی جاسوس کیه؟</div>
             <div id="voteOptions"></div>
             <div class="modal-actions">
                 <button class="modal-btn cancel" id="voteCancel" type="button" data-i18n="cancel">انصراف</button>
@@ -1242,7 +1253,7 @@
                 <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
                 <span data-i18n="leave_confirm_title">خروج از بازی</span>
             </div>
-            <div class="leave-warning" id="leaveWarning" data-i18n="leave_warning">اگه خارج بشی، ۵۰ امتیاز از خودت و ۱۰ امتیاز از هم‌گروهی‌هات کم می‌شه. مطمئنی؟</div>
+            <div class="leave-warning" id="leaveWarning" data-i18n="leave_warning">اگه خارج بشی، ۵۰ امتیاز از خودت و ۱۰ امتیاز از همگروهیهات کم میشه. مطمئنی؟</div>
             <div class="modal-actions">
                 <button class="modal-btn cancel" id="leaveCancel" type="button" data-i18n="cancel">انصراف</button>
                 <button class="modal-btn danger" id="leaveConfirm" type="button" data-i18n="leave_room">خروج</button>
@@ -1256,7 +1267,7 @@
                 <i class="bi bi-flag-fill" aria-hidden="true"></i>
                 <span data-i18n="report_confirm_title">گزارش پیام</span>
             </div>
-            <div class="report-warning" data-i18n="report_confirm">این پیام رو گزارش می‌دی؟ اگه ۵۰٪ بازیکنان گزارش بدن، بازی متوقف می‌شه.</div>
+            <div class="report-warning" data-i18n="report_confirm">این پیام رو گزارش میدی؟ اگه ۵۰٪ بازیکنان گزارش بدن، بازی متوقف میشه.</div>
             <div class="modal-actions">
                 <button class="modal-btn cancel" id="reportCancel" type="button" data-i18n="cancel">انصراف</button>
                 <button class="modal-btn danger" id="reportConfirm" type="button" data-i18n="report_btn">گزارش</button>
@@ -1274,6 +1285,7 @@
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
             var API_URL = 'https://script.google.com/macros/s/AKfycbw9nDbVgZbizANGbJVtfl1d3BS7AIOqepTsrSO5SCw7_k0KBr_nB_LeVPFa2D_cgWBM/exec';
+            var API_URL_NIGHT = 'https://script.google.com/macros/s/AKfycbx1wQopm51Z8Gr0_8smkyLaslhgZNPZsMtX9Lak1AkQL_61dS-qRdrmmeMBVD3OyoC0/exec';
 
             var IMG_DAY = 'https://cdn.imgurl.ir/uploads/f78633_vx-b-wH4SnJpzY971o_K_dAk8To-Vwj1dHF-RtCld33FwJDrLw.png';
             var IMG_NIGHT = 'https://cdn.imgurl.ir/uploads/i743040_ld_dMMFV4JP2Sq-SynjLGi66hLw-ehnPP0nZSxOOgn8tf_5lMQ.png';
@@ -1495,7 +1507,10 @@
                     phase_cancelled: 'لغو شده',
                     bad_language: 'محتوای ارسالی حاوی کلمه یا کلمات نامناسب است',
                     secret_word: 'نمی‌توانید کلمه‌ی مخفی بازی را در متن استفاده کنید',
-                    back_to_dashboard: 'بازگشت به داشبورد'
+                    back_to_dashboard: 'بازگشت به داشبورد',
+                    decline_tonight: 'امشب نمی‌خواهم',
+                    declined: 'امشب انصراف دادی',
+                    declined_success: 'انصراف ثبت شد'
                 },
                 en: {
                     table_title: 'Game Table',
@@ -1642,7 +1657,10 @@
                     phase_cancelled: 'Cancelled',
                     bad_language: 'Your message contains inappropriate language',
                     secret_word: 'You cannot use the secret word',
-                    back_to_dashboard: 'Back to Dashboard'
+                    back_to_dashboard: 'Back to Dashboard',
+                    decline_tonight: 'Skip Tonight',
+                    declined: 'You skipped tonight',
+                    declined_success: 'Skipped successfully'
                 },
                 ar: {
                     table_title: 'طاولة اللعب',
@@ -1789,7 +1807,10 @@
                     phase_cancelled: 'ملغاة',
                     bad_language: 'رسالتك تحتوي على كلمات غير لائقة',
                     secret_word: 'لا يمكنك استخدام الكلمة السرية',
-                    back_to_dashboard: 'العودة إلى لوحة التحكم'
+                    back_to_dashboard: 'العودة إلى لوحة التحكم',
+                    decline_tonight: 'تخطّي الليلة',
+                    declined: 'تخطّيت هذه الليلة',
+                    declined_success: 'تم التخطي'
                 }
             };
 
@@ -2041,6 +2062,20 @@
                         await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
                         return fetchData(action, params, retryCount + 1);
                     }
+                    return { ok: false, error: 'network' };
+                }
+            }
+
+            async function checkNightActionsAPI() {
+                try {
+                    var payload = { action: 'checkNightActions', gameId: roomId };
+                    var r = await fetch(API_URL_NIGHT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+                    return await r.json();
+                } catch(e) {
                     return { ok: false, error: 'network' };
                 }
             }
@@ -2501,6 +2536,13 @@
                     return html;
                 }
 
+                var nightData = game.nightData || {};
+                if (nightData.detective_declined) {
+                    html += '<div class="result-box">' + escapeHtml(getTranslation('declined')) + '</div>';
+                    html += '</div></div>';
+                    return html;
+                }
+
                 html += '<div class="workstation-desc">' + escapeHtml(getTranslation('detective_desc')) + '</div>';
                 html += '<div class="modal-label">' + escapeHtml(getTranslation('detective_select')) + '</div>';
                 html += '<select class="action-select" id="detectiveSelect">';
@@ -2511,7 +2553,10 @@
                     html += '<option value="' + escapeAttr(p.user_id) + '">' + escapeHtml(p.name) + '</option>';
                 }
                 html += '</select>';
+                html += '<div class="workstation-actions-row">';
                 html += '<button class="action-btn" id="detectiveSubmitBtn" type="button"><i class="bi bi-search" aria-hidden="true"></i> ' + escapeHtml(getTranslation('detective_submit')) + '</button>';
+                html += '<button class="action-btn secondary" id="detectiveDeclineBtn" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i> ' + escapeHtml(getTranslation('decline_tonight')) + '</button>';
+                html += '</div>';
                 html += '</div></div>';
                 return html;
             }
@@ -2533,10 +2578,19 @@
                     return html;
                 }
 
+                if (nightData.spy_guess_declined) {
+                    html += '<div class="result-box">' + escapeHtml(getTranslation('declined')) + '</div>';
+                    html += '</div></div>';
+                    return html;
+                }
+
                 html += '<div class="workstation-desc">' + escapeHtml(getTranslation('spy_desc')) + '</div>';
                 html += '<div class="modal-label">' + escapeHtml(getTranslation('spy_guess_submit')) + '</div>';
                 html += '<input type="text" class="action-select" id="spyGuessInput" placeholder="' + escapeAttr(getTranslation('spy_guess_placeholder')) + '" maxlength="50">';
+                html += '<div class="workstation-actions-row">';
                 html += '<button class="action-btn danger" id="spyGuessSubmitBtn" type="button"><i class="bi bi-send-fill" aria-hidden="true"></i> ' + escapeHtml(getTranslation('spy_guess_submit')) + '</button>';
+                html += '<button class="action-btn secondary" id="spyDeclineBtn" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i> ' + escapeHtml(getTranslation('decline_tonight')) + '</button>';
+                html += '</div>';
                 html += '</div></div>';
                 return html;
             }
@@ -2703,8 +2757,14 @@
                 var detectiveBtn = document.getElementById('detectiveSubmitBtn');
                 if (detectiveBtn) detectiveBtn.addEventListener('click', submitDetectiveCheck);
 
+                var detectiveDeclineBtn = document.getElementById('detectiveDeclineBtn');
+                if (detectiveDeclineBtn) detectiveDeclineBtn.addEventListener('click', declineDetectiveCheck);
+
                 var spyBtn = document.getElementById('spyGuessSubmitBtn');
                 if (spyBtn) spyBtn.addEventListener('click', submitSpyGuess);
+
+                var spyDeclineBtn = document.getElementById('spyDeclineBtn');
+                if (spyDeclineBtn) spyDeclineBtn.addEventListener('click', declineSpyGuess);
             }
 
             function updateFloatingBar() {
@@ -2803,6 +2863,31 @@
                 }
             }
 
+            async function checkAndAutoAdvance() {
+                if (!isCreator) return;
+                if (!gameData) return;
+                if (isActionInProgress) return;
+
+                var status = gameData.status;
+
+                if (isDay(status)) {
+                    if (dayTimerDuration > 0 && dayTimerStart > 0) {
+                        var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
+                        var remaining = dayTimerDuration - elapsed;
+                        if (remaining <= 0) {
+                            await advancePhase();
+                        }
+                    }
+                }
+
+                if (isNight(status)) {
+                    var check = await checkNightActionsAPI();
+                    if (check && check.ok && check.data && check.data.allDone) {
+                        await advancePhase();
+                    }
+                }
+            }
+
             async function loadGame(isInitial) {
                 if (isLoading) return;
                 isLoading = true;
@@ -2845,6 +2930,10 @@
                     updateFloatingBar();
 
                     isLoading = false;
+
+                    if (isCreator) {
+                        checkAndAutoAdvance();
+                    }
                 } catch(e) {
                     isLoading = false;
                 }
@@ -3154,6 +3243,34 @@
                 }
             }
 
+            async function declineDetectiveCheck() {
+                if (isActionInProgress) return;
+                if (!gameData) return;
+
+                isActionInProgress = true;
+                showLoading();
+
+                var nightData = gameData.nightData || {};
+                nightData.detective_declined = true;
+                nightData.detective_declined_at = Date.now();
+
+                var status = gameData.status;
+                var payload = { gameId: roomId };
+                payload[status] = JSON.stringify(nightData);
+
+                var result = await fetchData('updateGame', payload);
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    showToast(getTranslation('declined_success'), 'info', 3000);
+                    await loadGame(false);
+                } else {
+                    showToast(getTranslation('error_network'));
+                }
+            }
+
             async function submitSpyGuess() {
                 if (isActionInProgress) return;
                 var input = document.getElementById('spyGuessInput');
@@ -3178,6 +3295,34 @@
                     } else {
                         showToast(getTranslation('spy_guess_wrong'), 'info', 5000);
                     }
+                    await loadGame(false);
+                } else {
+                    showToast(getTranslation('error_network'));
+                }
+            }
+
+            async function declineSpyGuess() {
+                if (isActionInProgress) return;
+                if (!gameData) return;
+
+                isActionInProgress = true;
+                showLoading();
+
+                var nightData = gameData.nightData || {};
+                nightData.spy_guess_declined = true;
+                nightData.spy_declined_at = Date.now();
+
+                var status = gameData.status;
+                var payload = { gameId: roomId };
+                payload[status] = JSON.stringify(nightData);
+
+                var result = await fetchData('updateGame', payload);
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    showToast(getTranslation('declined_success'), 'info', 3000);
                     await loadGame(false);
                 } else {
                     showToast(getTranslation('error_network'));
