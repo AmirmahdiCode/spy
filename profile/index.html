@@ -522,7 +522,7 @@
                 </div>
             </div>
 
-            <div class="friends-card" id="friendsCard">
+            <div class="friends-card" id="friendsCard" style="display:none;">
                 <div class="card-title">
                     <i class="bi bi-people-fill" aria-hidden="true"></i>
                     <span data-i18n="my_friends">دوستان من</span>
@@ -605,6 +605,21 @@
 
             var VALID_AVATAR_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var VALID_USER_ID = /^[A-Za-z0-9_\-@.]{1,64}$/;
+
+            var ROLE_GROUPS = {
+                'citizen': 'city',
+                'detective': 'city',
+                'judge': 'city',
+                'sheriff': 'city',
+                'doctor': 'city',
+                'spy': 'mafia',
+                'infiltrator': 'mafia',
+                'silencer': 'mafia',
+                'bait': 'mafia',
+                'gunner': 'mafia',
+                'killer': 'free',
+                'psycho': 'free'
+            };
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
@@ -1013,14 +1028,6 @@
                 return getOwnedAvatars().indexOf(itemId) !== -1;
             }
 
-            function addOwnedAvatar(itemId) {
-                var owned = getOwnedAvatars();
-                if (owned.indexOf(itemId) === -1) {
-                    owned.push(itemId);
-                    setOwnedAvatars(owned);
-                }
-            }
-
             function setModalLoading(loading) {
                 var modal = document.getElementById('avatarModal');
                 if (!modal) return;
@@ -1146,21 +1153,12 @@
                 setModalLoading(false);
                 isProcessing = false;
 
-                if (selectResult && selectResult.ok) {
-                    currentAvatar = itemId;
-                    updateProfileAvatar();
-                    closeAvatarModal();
-                    triggerHaptic('medium');
-                    if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
-                    else alert(getTranslation('avatar_bought'));
-                } else {
-                    currentAvatar = itemId;
-                    updateProfileAvatar();
-                    closeAvatarModal();
-                    triggerHaptic('medium');
-                    if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
-                    else alert(getTranslation('avatar_bought'));
-                }
+                currentAvatar = itemId;
+                updateProfileAvatar();
+                closeAvatarModal();
+                triggerHaptic('medium');
+                if (webApp && webApp.showAlert) webApp.showAlert(getTranslation('avatar_bought'));
+                else alert(getTranslation('avatar_bought'));
             }
 
             function updateProfileAvatar() {
@@ -1201,23 +1199,35 @@
                 }).join('');
             }
 
+            function getMyTeamFromPlayers(playersRaw, myId) {
+                if (!playersRaw || !myId) return '';
+                var arr;
+                try {
+                    arr = JSON.parse(String(playersRaw));
+                } catch(e) {
+                    return '';
+                }
+                if (!Array.isArray(arr)) return '';
+                for (var i = 0; i < arr.length; i++) {
+                    if (String(arr[i].user_id) === String(myId)) {
+                        return ROLE_GROUPS[arr[i].role] || '';
+                    }
+                }
+                return '';
+            }
+
             function didUserWinGame(game) {
                 if (!game || !game.final) return false;
                 var finalStr = String(game.final);
-                var myTeam = game.my_team || game.myTeam || '';
+                if (finalStr === 'cancelled' || finalStr === 'draw') return false;
 
-                if (finalStr.indexOf('city_won') !== -1) {
-                    if (myTeam === 'city' || myTeam === 'citizens') return true;
-                    return false;
-                }
-                if (finalStr.indexOf('mafia_won') !== -1) {
-                    if (myTeam === 'mafia') return true;
-                    return false;
-                }
-                if (finalStr.indexOf('free_won') !== -1) {
-                    if (myTeam === 'free') return true;
-                    return false;
-                }
+                var myTeam = getMyTeamFromPlayers(game.players, myUserId);
+                if (!myTeam) return false;
+
+                if (finalStr.indexOf('city_won') !== -1) return myTeam === 'city';
+                if (finalStr.indexOf('mafia_won') !== -1) return myTeam === 'mafia';
+                if (finalStr.indexOf('free_won') !== -1) return myTeam === 'free';
+
                 return false;
             }
 
@@ -1302,7 +1312,11 @@
                         return g && typeof g === 'object';
                     });
 
-                    finishedGames = myGames.filter(function(g) { return g.status === 'finish'; });
+                    finishedGames = myGames.filter(function(g) {
+                        if (g.status !== 'finish') return false;
+                        if (g.final === 'draw' || g.final === 'cancelled') return false;
+                        return true;
+                    });
                     totalGames = finishedGames.length;
 
                     for (var i = 0; i < finishedGames.length; i++) {
@@ -1333,6 +1347,7 @@
                 }
 
                 renderAchievements(totalGames, totalWins, finalScore);
+                document.getElementById('friendsCard').style.display = 'block';
                 document.getElementById('achievementsCard').style.display = 'block';
                 document.getElementById('historyCard').style.display = 'block';
             }
