@@ -205,30 +205,87 @@
             position: relative; z-index: 5;
             flex: 1;
             max-width: 600px; width: 100%;
-            margin: 16px auto;
-            padding: 0 12px 130px;
+            margin: 0 auto;
+            padding: 0 0 130px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 0;
         }
 
         .game-banner {
             position: relative;
             width: 100%;
-            height: 220px;
-            border-radius: var(--radius);
+            height: 280px;
             overflow: hidden;
-            border: var(--border);
-            box-shadow: var(--shadow);
-            background: var(--card-bg);
-            transition: all 0.4s ease;
+            margin-top: 8px;
+            background: transparent;
+            -webkit-mask-image: linear-gradient(to bottom,
+                black 0%,
+                black 71.4%,
+                rgba(0, 0, 0, 0.99) 74%,
+                rgba(0, 0, 0, 0.96) 77%,
+                rgba(0, 0, 0, 0.92) 80%,
+                rgba(0, 0, 0, 0.86) 83%,
+                rgba(0, 0, 0, 0.78) 86%,
+                rgba(0, 0, 0, 0.68) 89%,
+                rgba(0, 0, 0, 0.56) 92%,
+                rgba(0, 0, 0, 0.42) 95%,
+                rgba(0, 0, 0, 0.25) 98%,
+                transparent 100%);
+            mask-image: linear-gradient(to bottom,
+                black 0%,
+                black 71.4%,
+                rgba(0, 0, 0, 0.99) 74%,
+                rgba(0, 0, 0, 0.96) 77%,
+                rgba(0, 0, 0, 0.92) 80%,
+                rgba(0, 0, 0, 0.86) 83%,
+                rgba(0, 0, 0, 0.78) 86%,
+                rgba(0, 0, 0, 0.68) 89%,
+                rgba(0, 0, 0, 0.56) 92%,
+                rgba(0, 0, 0, 0.42) 95%,
+                rgba(0, 0, 0, 0.25) 98%,
+                transparent 100%);
         }
         .game-banner img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center 15%;
             display: block;
             transition: opacity 0.6s ease;
+            -webkit-mask-image: linear-gradient(to bottom,
+                black 0%,
+                black 71.4%,
+                rgba(0, 0, 0, 0.99) 74%,
+                rgba(0, 0, 0, 0.96) 77%,
+                rgba(0, 0, 0, 0.92) 80%,
+                rgba(0, 0, 0, 0.86) 83%,
+                rgba(0, 0, 0, 0.78) 86%,
+                rgba(0, 0, 0, 0.68) 89%,
+                rgba(0, 0, 0, 0.56) 92%,
+                rgba(0, 0, 0, 0.42) 95%,
+                rgba(0, 0, 0, 0.25) 98%,
+                transparent 100%);
+            mask-image: linear-gradient(to bottom,
+                black 0%,
+                black 71.4%,
+                rgba(0, 0, 0, 0.99) 74%,
+                rgba(0, 0, 0, 0.96) 77%,
+                rgba(0, 0, 0, 0.92) 80%,
+                rgba(0, 0, 0, 0.86) 83%,
+                rgba(0, 0, 0, 0.78) 86%,
+                rgba(0, 0, 0, 0.68) 89%,
+                rgba(0, 0, 0, 0.56) 92%,
+                rgba(0, 0, 0, 0.42) 95%,
+                rgba(0, 0, 0, 0.25) 98%,
+                transparent 100%);
+        }
+
+        .main-content-padded {
+            padding: 0 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .status-card {
@@ -396,7 +453,6 @@
             opacity: 0.5;
         }
 
-        /* ========== گزارش شب (کاغذ کاهی) ========== */
         .report-paper-wrapper {
             position: relative;
             padding: 20px 8px 30px;
@@ -515,6 +571,10 @@
         }
         .qa-item.pending { border-color: var(--gold); }
         .qa-item.my-question { border-color: var(--primary); }
+        .qa-item.reported {
+            opacity: 0.5;
+            filter: grayscale(0.5);
+        }
 
         .qa-header {
             display: flex;
@@ -569,25 +629,29 @@
             gap: 4px;
             padding: 5px 10px;
             background: var(--bg3);
-            color: var(--text-light);
-            border: var(--border);
+            color: var(--danger);
+            border: 1px solid var(--danger);
             border-radius: 8px;
             font-family: var(--font);
             font-size: 9px;
             font-weight: 700;
-            cursor: not-allowed;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .qa-report-btn:active { transform: translate(1px, 1px); }
+        .qa-report-btn:disabled {
             opacity: 0.5;
+            cursor: not-allowed;
             filter: grayscale(0.5);
-            pointer-events: none;
         }
         .qa-report-btn i { font-size: 11px; }
-        .qa-report-btn .soon-mini {
-            font-size: 7px;
+        .qa-report-btn .report-count {
+            font-size: 8px;
+            font-weight: 800;
             padding: 1px 5px;
             border-radius: 6px;
-            background: #f59e0b;
+            background: var(--danger);
             color: #fff;
-            font-weight: 700;
             margin-right: 2px;
         }
 
@@ -974,6 +1038,19 @@
             margin-bottom: 12px;
         }
 
+        .report-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px dashed var(--danger);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--danger);
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
         .loading-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -1022,61 +1099,65 @@
             <img id="gameBannerImg" src="https://cdn.imgurl.ir/uploads/f78633_vx-b-wH4SnJpzY971o_K_dAk8To-Vwj1dHF-RtCld33FwJDrLw.png" alt="Banner" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         </div>
 
-        <div class="status-card" id="statusCard" style="display:none;">
-            <div class="status-row">
-                <div class="status-item">
-                    <div class="status-item-label" data-i18n="players_count">بازیکنان</div>
-                    <div class="status-item-value players" id="statusPlayers">0</div>
+        <div class="main-content-padded">
+
+            <div class="status-card" id="statusCard" style="display:none;">
+                <div class="status-row">
+                    <div class="status-item">
+                        <div class="status-item-label" data-i18n="players_count">بازیکنان</div>
+                        <div class="status-item-value players" id="statusPlayers">0</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-item-label" data-i18n="city_count">شهر</div>
+                        <div class="status-item-value city" id="statusCity">0</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-item-label" data-i18n="mafia_count">مافیا</div>
+                        <div class="status-item-value mafia">
+                            <span id="statusMafia">0</span>
+                            <span class="sub" id="statusSpy">(0)</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="status-item">
-                    <div class="status-item-label" data-i18n="city_count">شهر</div>
-                    <div class="status-item-value city" id="statusCity">0</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-item-label" data-i18n="mafia_count">مافیا</div>
-                    <div class="status-item-value mafia">
-                        <span id="statusMafia">0</span>
-                        <span class="sub" id="statusSpy">(0)</span>
+                <div class="status-row-2">
+                    <div class="status-item-2">
+                        <div class="icon"><i class="bi bi-calendar-event" aria-hidden="true"></i></div>
+                        <div class="value" id="statusPhase">-</div>
+                        <div class="label" data-i18n="phase_label">فاز</div>
+                    </div>
+                    <div class="status-item-2 timer" id="timerItem">
+                        <div class="icon"><i class="bi bi-hourglass-split" aria-hidden="true"></i></div>
+                        <div class="value" id="statusTimer">--:--</div>
+                        <div class="label" data-i18n="day_timer">زمان</div>
+                    </div>
+                    <div class="status-item-2">
+                        <div class="icon"><i class="bi bi-chat-dots" aria-hidden="true"></i></div>
+                        <div class="value" id="statusQuestions">0</div>
+                        <div class="label" data-i18n="questions_count">پرسش</div>
                     </div>
                 </div>
             </div>
-            <div class="status-row-2">
-                <div class="status-item-2">
-                    <div class="icon"><i class="bi bi-calendar-event" aria-hidden="true"></i></div>
-                    <div class="value" id="statusPhase">-</div>
-                    <div class="label" data-i18n="phase_label">فاز</div>
-                </div>
-                <div class="status-item-2 timer" id="timerItem">
-                    <div class="icon"><i class="bi bi-hourglass-split" aria-hidden="true"></i></div>
-                    <div class="value" id="statusTimer">--:--</div>
-                    <div class="label" data-i18n="day_timer">زمان</div>
-                </div>
-                <div class="status-item-2">
-                    <div class="icon"><i class="bi bi-chat-dots" aria-hidden="true"></i></div>
-                    <div class="value" id="statusQuestions">0</div>
-                    <div class="label" data-i18n="questions_count">پرسش</div>
-                </div>
-            </div>
-        </div>
 
-        <div id="dynamicContent"></div>
+            <div id="dynamicContent"></div>
 
-        <div class="section-card" id="roleInfoCard" style="display:none;">
-            <div class="section-header">
-                <div class="section-title">
-                    <i class="bi bi-person-badge" aria-hidden="true"></i>
-                    <span data-i18n="your_role">نقش شما</span>
+            <div class="section-card" id="roleInfoCard" style="display:none;">
+                <div class="section-header">
+                    <div class="section-title">
+                        <i class="bi bi-person-badge" aria-hidden="true"></i>
+                        <span data-i18n="your_role">نقش شما</span>
+                    </div>
+                    <span class="role-badge" id="myRoleBadge">-</span>
                 </div>
-                <span class="role-badge" id="myRoleBadge">-</span>
+                <div class="word-display" id="wordDisplay" style="display:none;">
+                    <div class="word-label" data-i18n="your_word">کلمه‌ی شما</div>
+                    <div class="word-value" id="myWord">----</div>
+                </div>
+                <div class="empty-state" id="noWordMsg" style="display:none;">
+                    <i class="bi bi-eye-slash" aria-hidden="true"></i>
+                    <span data-i18n="no_word_spy">شما کلمه را نمی‌دانید. مخفی بمانید!</span>
+                </div>
             </div>
-            <div class="word-display" id="wordDisplay" style="display:none;">
-                <div class="word-label" data-i18n="your_word">کلمه‌ی شما</div>
-                <div class="word-value" id="myWord">----</div>
-            </div>
-            <div class="empty-state" id="noWordMsg" style="display:none;">
-                <i class="bi bi-eye-slash" aria-hidden="true"></i>
-                <span data-i18n="no_word_spy">شما کلمه را نمی‌دانید. مخفی بمانید!</span>
-            </div>
+
         </div>
 
     </main>
@@ -1169,6 +1250,20 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="bi bi-flag-fill" aria-hidden="true"></i>
+                <span data-i18n="report_confirm_title">گزارش پیام</span>
+            </div>
+            <div class="report-warning" data-i18n="report_confirm">این پیام رو گزارش می‌دی؟ اگه ۵۰٪ بازیکنان گزارش بدن، بازی متوقف می‌شه.</div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="reportCancel" type="button" data-i18n="cancel">انصراف</button>
+                <button class="modal-btn danger" id="reportConfirm" type="button" data-i18n="report_btn">گزارش</button>
+            </div>
+        </div>
+    </div>
+
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-overlay-spinner"></div>
     </div>
@@ -1178,8 +1273,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbwoLiN36u9x1rBQSnoum483cLFVgJLOItOYejhGp-us0zbPmEx6aE1nDuIdMYTgx21y/exec';
-            var API_URL_EXTRA = 'https://script.google.com/macros/s/AKfycbxk8XVvHedOo6SfecwT-3EhdjBCB755fWqvbWKTXJY_bWH4oWDYOCqyVQwe3WYjMBsP/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbw9nDbVgZbizANGbJVtfl1d3BS7AIOqepTsrSO5SCw7_k0KBr_nB_LeVPFa2D_cgWBM/exec';
 
             var IMG_DAY = 'https://cdn.imgurl.ir/uploads/f78633_vx-b-wH4SnJpzY971o_K_dAk8To-Vwj1dHF-RtCld33FwJDrLw.png';
             var IMG_NIGHT = 'https://cdn.imgurl.ir/uploads/i743040_ld_dMMFV4JP2Sq-SynjLGi66hLw-ehnPP0nZSxOOgn8tf_5lMQ.png';
@@ -1193,6 +1287,7 @@
             var gameData = null;
             var questionsData = [];
             var playersData = [];
+            var reportStatusData = {};
             var isCreator = false;
             var isLoading = false;
             var isActionInProgress = false;
@@ -1202,6 +1297,7 @@
             var dayTimerDuration = 0;
             var currentSelectedVote = null;
             var currentAnswerQuestion = null;
+            var pendingReportMessageKey = null;
 
             var ROLE_NAMES = {
                 'citizen': 'role_citizen',
@@ -1371,6 +1467,7 @@
                     answer_now: 'ثبت پاسخ',
                     no_answer_yet: 'هنوز پاسخی ثبت نشده',
                     report_btn: 'گزارش',
+                    report_confirm_title: 'گزارش پیام',
                     report_confirm: 'این پیام رو گزارش می‌دی؟ اگه ۵۰٪ بازیکنان گزارش بدن، بازی متوقف می‌شه.',
                     report_submitted: 'گزارش شما ثبت شد',
                     report_already: 'قبلاً این پیام رو گزارش دادی',
@@ -1517,6 +1614,7 @@
                     answer_now: 'Answer now',
                     no_answer_yet: 'No answer yet',
                     report_btn: 'Report',
+                    report_confirm_title: 'Report Message',
                     report_confirm: 'Report this message? If 50% of players report, the game will be cancelled.',
                     report_submitted: 'Your report was submitted',
                     report_already: 'You already reported this message',
@@ -1663,6 +1761,7 @@
                     answer_now: 'أجب الآن',
                     no_answer_yet: 'لا إجابة بعد',
                     report_btn: 'إبلاغ',
+                    report_confirm_title: 'الإبلاغ عن الرسالة',
                     report_confirm: 'الإبلاغ عن هذه الرسالة؟ إذا أبلغ 50% من اللاعبين، يتم إلغاء اللعبة.',
                     report_submitted: 'تم إرسال إبلاغك',
                     report_already: 'لقد أبلغت عن هذه الرسالة بالفعل',
@@ -1946,53 +2045,6 @@
                 }
             }
 
-            async function fetchExtraData(action, params, retryCount) {
-                retryCount = retryCount || 0;
-                var payload = { action: action, username: getUserId() };
-                if (params && typeof params === 'object') {
-                    for (var k in params) {
-                        if (Object.prototype.hasOwnProperty.call(params, k)) {
-                            payload[k] = params[k];
-                        }
-                    }
-                }
-                try {
-                    var controller = new AbortController();
-                    var timeoutId = setTimeout(function() { controller.abort(); }, 15000);
-                    var r = await fetch(API_URL_EXTRA, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(payload),
-                        signal: controller.signal
-                    });
-                    clearTimeout(timeoutId);
-
-                    if (!r.ok) throw new Error('http_' + r.status);
-
-                    var ct = r.headers.get('content-type') || '';
-                    if (ct.indexOf('application/json') === -1) {
-                        throw new Error('invalid_content_type');
-                    }
-
-                    var data = await r.json();
-                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
-                    return data;
-                } catch(err) {
-                    var isRetryable = err && (
-                        err.name === 'AbortError' ||
-                        err.message === 'Failed to fetch' ||
-                        err.message === 'NetworkError when attempting to fetch resource.' ||
-                        err.message === 'invalid_content_type' ||
-                        /^http_5/.test(err.message || '')
-                    );
-                    if (retryCount < 2 && isRetryable) {
-                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
-                        return fetchExtraData(action, params, retryCount + 1);
-                    }
-                    return { ok: false, error: 'network' };
-                }
-            }
-
             function isNight(status) { return status === 'n1' || status === 'n2' || status === 'n3'; }
             function isDay(status) { return status === 'd1' || status === 'd2' || status === 'd3'; }
             function isVote(status) { return status === 'v1' || status === 'v2' || status === 'v3'; }
@@ -2159,8 +2211,6 @@
                 }
             }
 
-            /* ============ گزارش شب ============ */
-
             function parseNightData(raw) {
                 if (!raw) return null;
                 try {
@@ -2177,19 +2227,14 @@
                 var dayNum = getPhaseNumber(status);
                 if (dayNum <= 0) return null;
 
-                var prevNight = dayNum === 1 ? null : ('n' + dayNum);
-                if (!prevNight) {
-                    // توی d1، شب قبلش n1 بوده
-                    prevNight = 'n1';
-                }
-
+                var prevNight = 'n' + dayNum;
                 var nightRaw = game[prevNight];
                 var nightData = parseNightData(nightRaw) || {};
 
                 var report = {
                     night: prevNight,
                     title: getTranslation('night_report_title') + ' ' + toPersianDigits(dayNum),
-                    judgeDecided: nightData.judge_verdict !== undefined && nightData.judge_verdict !== null,
+                    judgeDecided: nightData.judge_verdict !== undefined && nightData.judge_verdict !== null && nightData.judge_verdict !== '',
                     detectiveUsed: !!nightData.detective_check,
                     spyGuessed: !!nightData.spy_guess
                 };
@@ -2231,7 +2276,18 @@
                 return html;
             }
 
-            /* ============ پیام‌ها ============ */
+            function getReportersCount(messageKey) {
+                if (!reportStatusData || !reportStatusData[messageKey]) return 0;
+                var reporters = reportStatusData[messageKey].reporters;
+                return Array.isArray(reporters) ? reporters.length : 0;
+            }
+
+            function hasIReported(messageKey) {
+                if (!reportStatusData || !reportStatusData[messageKey]) return false;
+                var reporters = reportStatusData[messageKey].reporters;
+                if (!Array.isArray(reporters)) return false;
+                return reporters.indexOf(String(myUserId)) !== -1;
+            }
 
             function renderQuestions(questions) {
                 if (!questions || questions.length === 0) {
@@ -2252,11 +2308,14 @@
                     var isForMe = String(q.responder) === String(myUserId);
                     var isPending = !q.answer || q.answer === '';
 
+                    var messageKey = String(q.asker) + '::' + String(q.ts || '');
+                    var iReported = hasIReported(messageKey);
+                    var reportersCount = getReportersCount(messageKey);
+
                     var itemClass = 'qa-item';
                     if (isPending) itemClass += ' pending';
                     if (isMine) itemClass += ' my-question';
-
-                    var messageKey = String(q.asker) + '::' + String(q.ts || '');
+                    if (iReported) itemClass += ' reported';
 
                     html += '<div class="' + itemClass + '" data-msg-key="' + escapeAttr(messageKey) + '">';
                     html += '<div class="qa-header">';
@@ -2279,7 +2338,17 @@
                     } else {
                         html += '<span></span>';
                     }
-                    html += '<button class="qa-report-btn" type="button"><i class="bi bi-flag" aria-hidden="true"></i> ' + escapeHtml(getTranslation('report_btn')) + ' <span class="soon-mini">' + escapeHtml(getTranslation('coming_soon')) + '</span></button>';
+
+                    var reportBtnClass = iReported ? 'qa-report-btn' : 'qa-report-btn';
+                    var disabledAttr = (isMine || iReported) ? 'disabled' : '';
+                    var reportCountHtml = reportersCount > 0 ? '<span class="report-count">' + toPersianDigits(reportersCount) + '</span>' : '';
+
+                    html += '<button class="' + reportBtnClass + '" data-report-key="' + escapeAttr(messageKey) + '" type="button" ' + disabledAttr + '>';
+                    html += '<i class="bi bi-flag-fill" aria-hidden="true"></i> ';
+                    html += reportCountHtml;
+                    html += escapeHtml(getTranslation('report_btn'));
+                    html += '</button>';
+
                     html += '</div>';
 
                     html += '</div>';
@@ -2287,8 +2356,6 @@
                 html += '</div>';
                 return html;
             }
-
-            /* ============ فاز روز ============ */
 
             function renderDayContent(game) {
                 var html = '';
@@ -2309,8 +2376,6 @@
 
                 return html;
             }
-
-            /* ============ رأی‌گیری ============ */
 
             function renderVoteContent(game) {
                 var html = '';
@@ -2342,8 +2407,6 @@
                 return html;
             }
 
-            /* ============ هم‌گروهی‌های مافیا ============ */
-
             function renderMafiaTeammates(game) {
                 var html = '';
                 var teammates = game.mafiaTeammates || [];
@@ -2373,8 +2436,6 @@
                 html += '</div>';
                 return html;
             }
-
-            /* ============ میزکار قاضی ============ */
 
             function renderJudgeWorkstation(game) {
                 if (myRole !== 'judge') return '';
@@ -2416,8 +2477,6 @@
                 return html;
             }
 
-            /* ============ میزکار کارآگاه ============ */
-
             function renderDetectiveWorkstation(game) {
                 if (myRole !== 'detective') return '';
 
@@ -2457,8 +2516,6 @@
                 return html;
             }
 
-            /* ============ میزکار جاسوس ============ */
-
             function renderSpyWorkstation(game) {
                 if (myRole !== 'spy') return '';
 
@@ -2484,13 +2541,12 @@
                 return html;
             }
 
-            /* ============ تاریخچه رأی ============ */
-
             function renderVoteHistory(game) {
                 var currentStatus = game.status;
                 var historyField = null;
-                if (currentStatus === 'n2') historyField = 'd1';
-                else if (currentStatus === 'n3') historyField = 'd2';
+                if (currentStatus === 'n1') historyField = 'd1';
+                else if (currentStatus === 'n2') historyField = 'd2';
+                else if (currentStatus === 'n3') historyField = 'd3';
                 else return '';
 
                 var raw = game[historyField];
@@ -2521,8 +2577,6 @@
                 return html;
             }
 
-            /* ============ فاز شب ============ */
-
             function renderNightContent(game) {
                 var html = '';
 
@@ -2544,8 +2598,6 @@
 
                 return html;
             }
-
-            /* ============ فاز پایان ============ */
 
             function renderFinalContent(game) {
                 var final = game.final || '';
@@ -2634,6 +2686,14 @@
                 answerBtns.forEach(function(btn) {
                     btn.addEventListener('click', function() {
                         openAnswerModal(btn.getAttribute('data-answer-asker'), btn.getAttribute('data-answer-responder'));
+                    });
+                });
+
+                var reportBtns = document.querySelectorAll('.qa-report-btn:not([disabled])');
+                reportBtns.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        pendingReportMessageKey = btn.getAttribute('data-report-key');
+                        document.getElementById('reportModal').classList.add('show');
                     });
                 });
 
@@ -2730,6 +2790,19 @@
                 }
             }
 
+            async function loadReportStatus() {
+                try {
+                    var result = await fetchData('getReportStatus', { gameId: roomId });
+                    if (result && result.ok && result.data && typeof result.data === 'object') {
+                        reportStatusData = result.data;
+                    } else {
+                        reportStatusData = {};
+                    }
+                } catch(e) {
+                    reportStatusData = {};
+                }
+            }
+
             async function loadGame(isInitial) {
                 if (isLoading) return;
                 isLoading = true;
@@ -2763,6 +2836,7 @@
                     isCreator = !!game.isCreator;
 
                     await loadQuestions();
+                    await loadReportStatus();
 
                     updateBannerByPhase(game.status);
                     updateStatusCard(game);
@@ -3157,10 +3231,9 @@
                 showLoading();
 
                 var status = gameData ? gameData.status : '';
-                var penaltyResult = null;
 
                 if (status !== 'waiting') {
-                    penaltyResult = await fetchExtraData('leaveGamePenalty', { gameId: roomId });
+                    await fetchData('leaveGamePenalty', { gameId: roomId });
                 }
 
                 var leaveResult = await fetchData('leaveGame', { gameId: roomId });
@@ -3176,6 +3249,42 @@
                     }, 800);
                 } else {
                     showToast(getTranslation('leave_failed'));
+                }
+            }
+
+            function closeReportModal() {
+                document.getElementById('reportModal').classList.remove('show');
+                pendingReportMessageKey = null;
+            }
+
+            async function confirmReport() {
+                if (!pendingReportMessageKey) return;
+                var messageKey = pendingReportMessageKey;
+                closeReportModal();
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('reportMessage', {
+                    gameId: roomId,
+                    messageKey: messageKey
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok && result.data) {
+                    if (result.data.gameCancelled) {
+                        showToast(getTranslation('game_cancelled_report'), 'info', 5000);
+                    } else {
+                        showToast(getTranslation('report_submitted'), 'success', 3000);
+                    }
+                    await loadGame(false);
+                } else {
+                    var err = result && result.error ? result.error : '';
+                    var msg = getTranslation('report_failed');
+                    if (err === 'Already reported') msg = getTranslation('report_already');
+                    showToast(msg);
                 }
             }
 
@@ -3219,6 +3328,9 @@
                 document.getElementById('leaveCancel').addEventListener('click', closeLeaveModal);
                 document.getElementById('leaveConfirm').addEventListener('click', confirmLeave);
 
+                document.getElementById('reportCancel').addEventListener('click', closeReportModal);
+                document.getElementById('reportConfirm').addEventListener('click', confirmReport);
+
                 document.getElementById('askModal').addEventListener('click', function(e) {
                     if (e.target === this) closeAskModal();
                 });
@@ -3233,6 +3345,9 @@
                 });
                 document.getElementById('leaveModal').addEventListener('click', function(e) {
                     if (e.target === this) closeLeaveModal();
+                });
+                document.getElementById('reportModal').addEventListener('click', function(e) {
+                    if (e.target === this) closeReportModal();
                 });
 
                 await loadGame(true);
