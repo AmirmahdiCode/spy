@@ -875,44 +875,6 @@
 
                 <div class="role-category">
                     <div class="role-category-title">
-                        <span data-i18n="team_mafia">گروه مافیا</span>
-                    </div>
-
-                    <div class="role-block">
-                        <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png" alt="جاسوس" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
-                            <span data-i18n="role_spy">جاسوس</span>
-                        </div>
-                        <div class="role-block-desc" data-i18n="role_spy_desc">تنها کسی است که کلمه را نمی‌داند و باید خود را مخفی نگه دارد تا لو نرود.</div>
-                    </div>
-
-                    <div class="role-block">
-                        <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png" alt="نفوذی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
-                            <span data-i18n="role_infiltrator">نفوذی</span>
-                        </div>
-                        <div class="role-block-desc" data-i18n="role_infiltrator_desc">نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن دیگران، جاسوس را از دید شهروندان پنهان نگه دارد.</div>
-                    </div>
-
-                    <div class="role-block">
-                        <div class="role-block-title">
-                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
-                            <span data-i18n="role_silencer">سایلنتر</span>
-                        </div>
-                        <div class="role-block-desc" data-i18n="role_silencer_desc">فقط یک‌بار می‌تواند یک نفر را انتخاب کند تا روز بعدش حق پرسش سوال نداشته باشد.</div>
-                    </div>
-
-                    <div class="role-block">
-                        <div class="role-block-title">
-                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
-                            <span data-i18n="role_bait">طعمه</span>
-                        </div>
-                        <div class="role-block-desc" data-i18n="role_bait_desc">جهت سردرگم کردن کارآگاه است تا مطمئن نباشد فرد استعلام‌شده جاسوس است یا نه.</div>
-                    </div>
-                </div>
-
-                <div class="role-category">
-                    <div class="role-category-title">
                         <span data-i18n="team_citizens">گروه شهر</span>
                     </div>
 
@@ -921,7 +883,7 @@
                             <img class="role-img" src="https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png" alt="شهروند" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_citizen">شهروند ساده</span>
                         </div>
-                        <div class="role-block-desc" data-i18n="role_citizen_desc">فعالیت خاصی ندارد؛ کلمه را می‌بیند، در بحث شرکت می‌کند و در رای‌گیری نظر خود را می‌گوید.</div>
+                        <div class="role-block-desc" data-i18n="role_citizen_desc">شهروند ساده نقش ویژه‌ای ندارد و تنها با شرکت در پرسش و پاسخ‌های روزانه و رأی‌گیری، به سایر اعضای شهر در شناسایی جاسوس کمک می‌کند.</div>
                     </div>
 
                     <div class="role-block">
@@ -929,7 +891,7 @@
                             <img class="role-img" src="https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png" alt="کارآگاه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_detective">کارآگاه</span>
                         </div>
-                        <div class="role-block-desc" data-i18n="role_detective_desc">در طول بازی فقط یک‌بار در یکی از ۳ شب می‌تواند استعلام بگیرد. استعلام جاسوس و طعمه مثبت است و بقیه منفی.</div>
+                        <div class="role-block-desc" data-i18n="role_detective_desc">کارآگاه در طول بازی و تنها یک‌بار می‌تواند یکی از بازیکنان را استعلام کند. استعلام جاسوس و طعمه «مثبت» و استعلام سایر نقش‌ها «منفی» خواهد بود.</div>
                     </div>
 
                     <div class="role-block">
@@ -937,15 +899,73 @@
                             <img class="role-img" src="https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png" alt="قاضی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_judge">قاضی</span>
                         </div>
-                        <div class="role-block-desc" data-i18n="role_judge_desc">نظر نهایی هر رای‌گیری را قاضی می‌دهد. می‌تواند شهر را نجات دهد یا شبی را هدر دهد.</div>
+                        <div class="role-block-desc" data-i18n="role_judge_desc">قاضی در شب پس از رأی‌گیری بیدار می‌شود و نتیجه‌ی آرای روز گذشته را اعلام می‌کند. او می‌تواند یکی از بازیکنانی که بیشترین رأی را آورده‌اند، یا هیچ‌کدام را برای اخراج انتخاب کند. اگر فرد اخراج‌شده جاسوس باشد، شهر برنده می‌شود؛ در غیر این صورت مافیا برنده خواهد شد. اگر قاضی فردی را انتخاب نکند، بازی به روز بعد کشیده می‌شود.</div>
                     </div>
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/i242516_InShot_20260917_162620222.png" alt="کلانتر" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_sheriff">کلانتر</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
-                        <div class="role-block-desc" data-i18n="role_sheriff_desc">در شب قبل از همه بیدار می‌شود و یک نفر را زندانی می‌کند. فرد زندانی آن شب نمی‌تواند بیدار شود و هیچ کاری انجام دهد و روز بعد نیز حق رای دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قدرت استفاده کند.</div>
+                        <div class="role-block-desc" data-i18n="role_sheriff_desc">کلانتر در شب پیش از همه بیدار می‌شود و یک بازیکن را زندانی می‌کند. فرد زندانی در آن شب نمی‌تواند بیدار شود و روز بعد نیز حق رأی دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قابلیت استفاده کند.</div>
+                    </div>
+
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/v31967_InShot_20260917_162742245.png" alt="دکتر" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <span data-i18n="role_doctor">دکتر</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                        </div>
+                        <div class="role-block-desc" data-i18n="role_doctor_desc">دکتر در شبی که تفنگدار شلیک کرده است بیدار می‌شود و یک بازیکن را برای درمان انتخاب می‌کند. اگر فرد انتخاب‌شده همان هدف تفنگدار باشد، درمان می‌شود؛ در غیر این صورت آن بازیکن کشته خواهد شد. اگر خود دکتر هدف تفنگدار قرار گرفته باشد، دیگر نمی‌تواند کسی را انتخاب کند و مستقیم از بازی خارج می‌شود.</div>
+                    </div>
+                </div>
+
+                <div class="role-category">
+                    <div class="role-category-title">
+                        <span data-i18n="team_mafia">گروه مافیا</span>
+                    </div>
+
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png" alt="جاسوس" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <span data-i18n="role_spy">جاسوس</span>
+                        </div>
+                        <div class="role-block-desc" data-i18n="role_spy_desc">جاسوس کلمه‌ی بازی را نمی‌داند و باید طوری رفتار کند که در پرسش و پاسخ‌های طول بازی لو نرود. جاسوس می‌تواند در هر شبی که موفق شد کلمه را حدس بزند، حدس خود را وارد کند تا در صورت صحت، مافیا برنده شود.</div>
+                    </div>
+
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png" alt="نفوذی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <span data-i18n="role_infiltrator">نفوذی</span>
+                        </div>
+                        <div class="role-block-desc" data-i18n="role_infiltrator_desc">نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن سایر بازیکنان، جاسوس را از دید شهروندان پنهان نگه دارد.</div>
+                    </div>
+
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/n732962_InShot_20260917_162331789.png" alt="طعمه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <span data-i18n="role_bait">طعمه</span>
+                        </div>
+                        <div class="role-block-desc" data-i18n="role_bait_desc">طعمه نقش ویژه‌ای ندارد و تنها برای سردرگم کردن کارآگاه است؛ چرا که نتیجه‌ی استعلام تنها برای جاسوس و طعمه «مثبت» گزارش می‌شود.</div>
+                    </div>
+
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/g192531_InShot_20260917_162213256.png" alt="سایلنتر" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <span data-i18n="role_silencer">سایلنتر</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                        </div>
+                        <div class="role-block-desc" data-i18n="role_silencer_desc">سایلنتر در طول بازی می‌تواند در یکی از شب‌ها یک بازیکن را انتخاب کند تا روز بعد حق شرکت در پرسش و پاسخ‌ها را نداشته باشد.</div>
+                    </div>
+
+                    <div class="role-block">
+                        <div class="role-block-title">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/p68300_InShot_20260917_162503506.png" alt="تفنگدار" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <span data-i18n="role_gunner">تفنگدار</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                        </div>
+                        <div class="role-block-desc" data-i18n="role_gunner_desc">تفنگدار در طول بازی و تنها در یکی از شب‌ها می‌تواند به یکی از اعضای شهر شلیک کند. اگر فرد انتخاب‌شده تا صبح روز بعد درمان نشود، کشته شده و از بازی خارج می‌شود.</div>
                     </div>
                 </div>
 
@@ -956,18 +976,20 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/x9199_InShot_20260917_162856320.png" alt="قاتل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_killer">قاتل</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
-                        <div class="role-block-desc" data-i18n="role_killer_desc">فقط یک‌بار می‌تواند یک نفر را بکشد. اگر فرد کشته‌شده جاسوس باشد، خودش برنده می‌شود. اگر فرد کشته‌شده شهروند باشد، از بازی حذف می‌شود.</div>
+                        <div class="role-block-desc" data-i18n="role_killer_desc">قاتل فقط یک‌بار در طول بازی می‌تواند یک بازیکن را از بازی حذف کند. اگر هدف او جاسوس باشد، خودش برنده می‌شود؛ اما اگر شهروندی را بکشد، خودش از بازی حذف می‌شود.</div>
                     </div>
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/u753353_InShot_20260917_162952379.png" alt="روانی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_psycho">روانی</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
-                        <div class="role-block-desc" data-i18n="role_psycho_desc">این بازیکن باید سعی کند خودش را حذف کند؛ یا با رای‌گیری یا با شلیک قاتل. اگر این بازیکن حذف شود، برنده می‌شود.</div>
+                        <div class="role-block-desc" data-i18n="role_psycho_desc">روانی باید تلاش کند خودش را از بازی حذف کند؛ چه با شلیک قاتل، چه با رأی‌گیری و نظر قاضی. اگر روانی حذف شود، خودش برنده‌ی بازی خواهد بود.</div>
                     </div>
                 </div>
 
@@ -1095,7 +1117,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbyyl_Lt2jg3iBqkAh3po4acYZHYaa4-ulCjO_Shp7PoSZvHyIFx0pwBA-Voyy-bIegE/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbwoLiN36u9x1rBQSnoum483cLFVgJLOItOYejhGp-us0zbPmEx6aE1nDuIdMYTgx21y/exec';
             var currentLang = 'fa';
             var activeGameId = null;
             var activeGameStatus = null;
@@ -1218,25 +1240,29 @@
                     team_mafia: 'گروه مافیا',
                     team_free: 'گروه آزاد',
                     role_citizen: 'شهروند ساده',
-                    role_citizen_desc: 'فعالیت خاصی ندارد؛ کلمه را می‌بیند، در بحث شرکت می‌کند و در رای‌گیری نظر خود را می‌گوید.',
+                    role_citizen_desc: 'شهروند ساده نقش ویژه‌ای ندارد و تنها با شرکت در پرسش و پاسخ‌های روزانه و رأی‌گیری، به سایر اعضای شهر در شناسایی جاسوس کمک می‌کند.',
                     role_detective: 'کارآگاه',
-                    role_detective_desc: 'در طول بازی فقط یک‌بار در یکی از ۳ شب می‌تواند استعلام بگیرد. استعلام جاسوس و طعمه مثبت است و بقیه منفی.',
+                    role_detective_desc: 'کارآگاه در طول بازی و تنها یک‌بار می‌تواند یکی از بازیکنان را استعلام کند. استعلام جاسوس و طعمه «مثبت» و استعلام سایر نقش‌ها «منفی» خواهد بود.',
                     role_judge: 'قاضی',
-                    role_judge_desc: 'نظر نهایی هر رای‌گیری را قاضی می‌دهد. می‌تواند شهر را نجات دهد یا شبی را هدر دهد.',
+                    role_judge_desc: 'قاضی در شب پس از رأی‌گیری بیدار می‌شود و نتیجه‌ی آرای روز گذشته را اعلام می‌کند. او می‌تواند یکی از بازیکنانی که بیشترین رأی را آورده‌اند، یا هیچ‌کدام را برای اخراج انتخاب کند. اگر فرد اخراج‌شده جاسوس باشد، شهر برنده می‌شود؛ در غیر این صورت مافیا برنده خواهد شد. اگر قاضی فردی را انتخاب نکند، بازی به روز بعد کشیده می‌شود.',
                     role_sheriff: 'کلانتر',
-                    role_sheriff_desc: 'در شب قبل از همه بیدار می‌شود و یک نفر را زندانی می‌کند. فرد زندانی آن شب نمی‌تواند بیدار شود و هیچ کاری انجام دهد و روز بعد نیز حق رای دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قدرت استفاده کند.',
+                    role_sheriff_desc: 'کلانتر در شب پیش از همه بیدار می‌شود و یک بازیکن را زندانی می‌کند. فرد زندانی در آن شب نمی‌تواند بیدار شود و روز بعد نیز حق رأی دادن ندارد. کلانتر فقط یک‌بار در کل بازی می‌تواند از این قابلیت استفاده کند.',
+                    role_doctor: 'دکتر',
+                    role_doctor_desc: 'دکتر در شبی که تفنگدار شلیک کرده است بیدار می‌شود و یک بازیکن را برای درمان انتخاب می‌کند. اگر فرد انتخاب‌شده همان هدف تفنگدار باشد، درمان می‌شود؛ در غیر این صورت آن بازیکن کشته خواهد شد. اگر خود دکتر هدف تفنگدار قرار گرفته باشد، دیگر نمی‌تواند کسی را انتخاب کند و مستقیم از بازی خارج می‌شود.',
                     role_spy: 'جاسوس',
-                    role_spy_desc: 'تنها کسی است که کلمه را نمی‌داند و باید خود را مخفی نگه دارد تا لو نرود.',
+                    role_spy_desc: 'جاسوس کلمه‌ی بازی را نمی‌داند و باید طوری رفتار کند که در پرسش و پاسخ‌های طول بازی لو نرود. جاسوس می‌تواند در هر شبی که موفق شد کلمه را حدس بزند، حدس خود را وارد کند تا در صورت صحت، مافیا برنده شود.',
                     role_infiltrator: 'نفوذی',
-                    role_infiltrator_desc: 'نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن دیگران، جاسوس را از دید شهروندان پنهان نگه دارد.',
-                    role_silencer: 'سایلنتر',
-                    role_silencer_desc: 'فقط یک‌بار می‌تواند یک نفر را انتخاب کند تا روز بعدش حق پرسش سوال نداشته باشد.',
+                    role_infiltrator_desc: 'نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن سایر بازیکنان، جاسوس را از دید شهروندان پنهان نگه دارد.',
                     role_bait: 'طعمه',
-                    role_bait_desc: 'جهت سردرگم کردن کارآگاه است تا مطمئن نباشد فرد استعلام‌شده جاسوس است یا نه.',
+                    role_bait_desc: 'طعمه نقش ویژه‌ای ندارد و تنها برای سردرگم کردن کارآگاه است؛ چرا که نتیجه‌ی استعلام تنها برای جاسوس و طعمه «مثبت» گزارش می‌شود.',
+                    role_silencer: 'سایلنتر',
+                    role_silencer_desc: 'سایلنتر در طول بازی می‌تواند در یکی از شب‌ها یک بازیکن را انتخاب کند تا روز بعد حق شرکت در پرسش و پاسخ‌ها را نداشته باشد.',
+                    role_gunner: 'تفنگدار',
+                    role_gunner_desc: 'تفنگدار در طول بازی و تنها در یکی از شب‌ها می‌تواند به یکی از اعضای شهر شلیک کند. اگر فرد انتخاب‌شده تا صبح روز بعد درمان نشود، کشته شده و از بازی خارج می‌شود.',
                     role_killer: 'قاتل',
-                    role_killer_desc: 'فقط یک‌بار می‌تواند یک نفر را بکشد. اگر فرد کشته‌شده جاسوس باشد، خودش برنده می‌شود. اگر فرد کشته‌شده شهروند باشد، از بازی حذف می‌شود.',
+                    role_killer_desc: 'قاتل فقط یک‌بار در طول بازی می‌تواند یک بازیکن را از بازی حذف کند. اگر هدف او جاسوس باشد، خودش برنده می‌شود؛ اما اگر شهروندی را بکشد، خودش از بازی حذف می‌شود.',
                     role_psycho: 'روانی',
-                    role_psycho_desc: 'این بازیکن باید سعی کند خودش را حذف کند؛ یا با رای‌گیری یا با شلیک قاتل. اگر این بازیکن حذف شود، برنده می‌شود.',
+                    role_psycho_desc: 'روانی باید تلاش کند خودش را از بازی حذف کند؛ چه با شلیک قاتل، چه با رأی‌گیری و نظر قاضی. اگر روانی حذف شود، خودش برنده‌ی بازی خواهد بود.',
                     coming_soon: 'به‌زودی',
                     play_rules: 'قوانین بازی',
                     play_rule_1_title: 'ظرفیت و تقسیم نقش‌ها',
@@ -1316,25 +1342,29 @@
                     team_mafia: 'Mafia Group',
                     team_free: 'Free Group',
                     role_citizen: 'Regular Citizen',
-                    role_citizen_desc: 'No special ability; sees the word, participates in discussion, and votes.',
+                    role_citizen_desc: 'The citizen has no special ability and only helps other city members identify the spy by participating in daily questions and voting.',
                     role_detective: 'Detective',
-                    role_detective_desc: 'Can inquire only once during one of the 3 nights. Inquiry of spy and bait is positive, others negative.',
+                    role_detective_desc: 'The detective can inquire about one player only once during the game. The inquiry of the spy and bait is "positive" and all other roles are "negative".',
                     role_judge: 'Judge',
-                    role_judge_desc: 'The judge gives the final decision of each vote. Can save the city or waste a night.',
+                    role_judge_desc: 'The judge wakes up at night after voting and announces the result of the previous day\'s votes. They can choose one of the players with the most votes, or none, to eliminate. If the eliminated player is the spy, the city wins; otherwise, the mafia wins. If the judge chooses no one, the game continues to the next day.',
                     role_sheriff: 'Sheriff',
-                    role_sheriff_desc: 'Wakes up before everyone at night and imprisons one person. The imprisoned cannot wake up that night or do anything, and cannot vote the next day. Sheriff can use this power only once in the entire game.',
+                    role_sheriff_desc: 'The sheriff wakes up before everyone at night and imprisons one player. The imprisoned player cannot wake up that night and cannot vote the next day. The sheriff can use this ability only once per game.',
+                    role_doctor: 'Doctor',
+                    role_doctor_desc: 'The doctor wakes up on the night the gunner shoots and chooses one player to heal. If the chosen player is the gunner\'s target, they are healed; otherwise, that player is killed. If the doctor is the gunner\'s target, they can no longer choose anyone and are immediately removed from the game.',
                     role_spy: 'Spy',
-                    role_spy_desc: 'The only one who does not know the word and must stay hidden to avoid being caught.',
+                    role_spy_desc: 'The spy does not know the game word and must behave in a way that does not expose them during the questions and answers of the game. The spy can enter their guess on any night they manage to guess the word, and if correct, the mafia wins.',
                     role_infiltrator: 'Infiltrator',
                     role_infiltrator_desc: 'The infiltrator pretends to be a citizen and tries to mislead others to keep the spy hidden from citizens.',
-                    role_silencer: 'Silencer',
-                    role_silencer_desc: 'Can choose one person only once to prevent them from asking questions the next day.',
                     role_bait: 'Bait',
-                    role_bait_desc: 'Designed to confuse the detective so they cannot be sure the inquired person is the spy or not.',
+                    role_bait_desc: 'The bait has no special ability and only serves to confuse the detective, since the inquiry result is "positive" only for the spy and the bait.',
+                    role_silencer: 'Silencer',
+                    role_silencer_desc: 'The silencer can, on one of the nights during the game, choose a player who will lose the right to participate in questions and answers the following day.',
+                    role_gunner: 'Gunner',
+                    role_gunner_desc: 'The gunner can, only on one of the nights during the game, shoot one of the city members. If the chosen player is not healed by the next morning, they are killed and removed from the game.',
                     role_killer: 'Killer',
-                    role_killer_desc: 'Can kill one person only once. If the killed is the spy, they win. If the killed is a citizen, they are removed from the game.',
+                    role_killer_desc: 'The killer can remove one player from the game only once. If their target is the spy, they win; but if they kill a citizen, they are removed from the game.',
                     role_psycho: 'Psycho',
-                    role_psycho_desc: 'This player must try to get themselves eliminated; either by vote or by the killer\'s shot. If eliminated, they win.',
+                    role_psycho_desc: 'The psycho must try to remove themselves from the game, either by the killer\'s shot or by voting and the judge\'s verdict. If the psycho is eliminated, they win the game.',
                     coming_soon: 'Coming Soon',
                     play_rules: 'Game Rules',
                     play_rule_1_title: 'Capacity & Role Distribution',
@@ -1414,25 +1444,29 @@
                     team_mafia: 'مجموعة المافيا',
                     team_free: 'مجموعة الأحرار',
                     role_citizen: 'المواطن العادي',
-                    role_citizen_desc: 'لا يملك قدرة خاصة؛ يرى الكلمة، يشارك في النقاش ويصوت.',
+                    role_citizen_desc: 'المواطن العادي ليس لديه قدرة خاصة، ويشارك فقط في الأسئلة والأجوبة اليومية والتصويت لمساعدة بقية أعضاء المدينة في تحديد الجاسوس.',
                     role_detective: 'المحقق',
-                    role_detective_desc: 'يمكنه الاستعلام مرة واحدة فقط خلال إحدى الليالي الثلاث. استعلام الجاسوس والطُعم إيجابي، والبقية سلبي.',
+                    role_detective_desc: 'يمكن للمحقق خلال اللعبة ومرة واحدة فقط أن يستعلم عن أحد اللاعبين. نتيجة الاستعلام عن الجاسوس والطُعم "إيجابية" وبقية الأدوار "سلبية".',
                     role_judge: 'القاضي',
-                    role_judge_desc: 'يعطي القاضي القرار النهائي لكل تصويت. يمكنه إنقاذ المدينة أو إضاعة ليلة.',
+                    role_judge_desc: 'يستيقظ القاضي ليلاً بعد التصويت ويعلن نتيجة تصويت اليوم السابق. يمكنه اختيار أحد اللاعبين الحاصلين على أعلى الأصوات، أو لا أحد، للإقصاء. إذا كان المُقصى هو الجاسوس، تفوز المدينة؛ وإلا تفوز المافيا. إذا لم يختر القاضي أحداً، تستمر اللعبة إلى اليوم التالي.',
                     role_sheriff: 'الشريف',
-                    role_sheriff_desc: 'يستيقظ قبل الجميع في الليل ويسجن شخصاً واحداً. المسجون لا يمكنه الاستيقاظ تلك الليلة أو فعل أي شيء، ولا يحق له التصويت في اليوم التالي. يمكن للشريف استخدام هذه القدرة مرة واحدة فقط طوال اللعبة.',
+                    role_sheriff_desc: 'يستيقظ الشريف قبل الجميع ليلاً ويسجن لاعباً واحداً. اللاعب المسجون لا يستطيع الاستيقاظ تلك الليلة ولا يحق له التصويت في اليوم التالي. يمكن للشريف استخدام هذه القدرة مرة واحدة فقط في اللعبة.',
+                    role_doctor: 'الطبيب',
+                    role_doctor_desc: 'يستيقظ الطبيب في الليلة التي يطلق فيها المسلح النار ويختار لاعباً لعلاجه. إذا كان اللاعب المختار هو هدف المسلح، يُشفى؛ وإلا يُقتل ذلك اللاعب. إذا كان الطبيب نفسه هدف المسلح، لا يستطيع اختيار أي شخص ويُقصى مباشرة من اللعبة.',
                     role_spy: 'الجاسوس',
-                    role_spy_desc: 'الوحيد الذي لا يعرف الكلمة ويجب أن يبقى مخفياً لتجنب اكتشافه.',
+                    role_spy_desc: 'الجاسوس لا يعرف كلمة اللعبة ويجب أن يتصرف بطريقة لا تكشفه في الأسئلة والأجوبة خلال اللعبة. يمكن للجاسوس في أي ليلة ينجح فيها في تخمين الكلمة أن يدخل تخمينه، وإذا صح، تفوز المافيا.',
                     role_infiltrator: 'المندس',
                     role_infiltrator_desc: 'يتظاهر المندس بأنه مواطن ويحاول تضليل الآخرين لإبقاء الجاسوس مخفياً عن المواطنين.',
-                    role_silencer: 'المُسكِت',
-                    role_silencer_desc: 'يمكنه اختيار شخص واحد مرة واحدة فقط لمنعه من طرح الأسئلة في اليوم التالي.',
                     role_bait: 'الطُعم',
-                    role_bait_desc: 'مصمم لإرباك المحقق حتى لا يتأكد مما إذا كان الشخص المستعلم عنه هو الجاسوس أم لا.',
+                    role_bait_desc: 'الطُعم ليس لديه قدرة خاصة، ووجوده فقط لإرباك المحقق، لأن نتيجة الاستعلام "إيجابية" فقط للجاسوس والطُعم.',
+                    role_silencer: 'المُسكِت',
+                    role_silencer_desc: 'يمكن للمُسكِت في إحدى ليالي اللعبة اختيار لاعب واحد ليخسر حق المشاركة في الأسئلة والأجوبة في اليوم التالي.',
+                    role_gunner: 'المسلح',
+                    role_gunner_desc: 'يمكن للمسلح في ليلة واحدة فقط خلال اللعبة أن يطلق النار على أحد أعضاء المدينة. إذا لم يُعالج الشخص المختار بحلول صباح اليوم التالي، يُقتل ويُقصى من اللعبة.',
                     role_killer: 'القاتل',
-                    role_killer_desc: 'يمكنه قتل شخص واحد مرة واحدة فقط. إذا كان المقتول هو الجاسوس، يفوز. إذا كان المقتول مواطناً، يُطرد من اللعبة.',
+                    role_killer_desc: 'يمكن للقاتل إقصاء لاعب واحد من اللعبة مرة واحدة فقط. إذا كان هدفه الجاسوس، يفوز هو؛ وإذا قتل مواطناً، يُقصى من اللعبة.',
                     role_psycho: 'المختل',
-                    role_psycho_desc: 'يجب على هذا اللاعب محاولة إقصاء نفسه؛ إما بالتصويت أو برصاصة القاتل. إذا أُقصي، يفوز.',
+                    role_psycho_desc: 'يجب على المختل محاولة إقصاء نفسه من اللعبة، إما برصاصة القاتل أو بالتصويت وحكم القاضي. إذا أُقصي، يفوز باللعبة.',
                     coming_soon: 'قريباً',
                     play_rules: 'قوانين اللعبة',
                     play_rule_1_title: 'السعة وتوزيع الأدوار',
@@ -1750,7 +1784,7 @@
                             var rawId = String(g.id == null ? '' : g.id);
                             if (!isValidGameId(rawId)) continue;
                             var s = g.status;
-                            if (s === 'waiting' || s === 'd1' || s === 'n1' || s === 'd2' || s === 'n2' || s === 'd3' || s === 'n3') {
+                            if (s === 'waiting' || s === 'd1' || s === 'n1' || s === 'd2' || s === 'n2' || s === 'd3' || s === 'n3' || s === 'v1' || s === 'v2' || s === 'v3') {
                                 activeGame = { id: rawId, status: s };
                                 break;
                             }
