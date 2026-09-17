@@ -1878,10 +1878,9 @@
                 var loader = document.getElementById('publicLoader');
                 var errorBox = document.getElementById('publicError');
 
-                isGamesLoading = true;
-                updateStartButtonState();
-
                 if (!silent) {
+                    isGamesLoading = true;
+                    updateStartButtonState();
                     loader.style.display = 'flex';
                     errorBox.style.display = 'none';
                     list.style.display = 'none';
@@ -1937,8 +1936,10 @@
                         errorBox.style.display = 'block';
                     }
                 } finally {
-                    isGamesLoading = false;
-                    updateStartButtonState();
+                    if (!silent) {
+                        isGamesLoading = false;
+                        updateStartButtonState();
+                    }
                 }
             }
 
