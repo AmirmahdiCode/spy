@@ -154,15 +154,12 @@
         .section-title i { color: var(--primary); font-size: 14px; }
 
         .sub-label {
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text-light);
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--dark);
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: block;
         }
-        .sub-label i { font-size: 11px; color: var(--primary); }
 
         .sub-divider {
             border: none;
@@ -224,15 +221,8 @@
         .slider-row {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             padding: 6px 0;
-        }
-        .slider-row .slider-icon {
-            font-size: 16px;
-            color: var(--primary);
-            width: 24px;
-            text-align: center;
-            flex-shrink: 0;
         }
         .slider-row .slider-label {
             font-size: 11px;
@@ -597,7 +587,7 @@
         <div class="section-card">
             <div class="section-title"><i class="bi bi-broadcast" aria-hidden="true"></i> <span data-i18n="game_setup">تنظیمات کلی بازی</span></div>
 
-            <div class="sub-label"><i class="bi bi-broadcast" aria-hidden="true"></i> <span data-i18n="game_type">نوع بازی</span></div>
+            <div class="sub-label"><span data-i18n="game_type">نوع بازی</span></div>
             <div class="options-grid" id="typeOptions">
                 <button class="option-btn" data-type="local" type="button">
                     <i class="bi bi-phone" aria-hidden="true"></i>
@@ -620,7 +610,7 @@
 
             <hr class="sub-divider">
 
-            <div class="sub-label"><i class="bi bi-bar-chart" aria-hidden="true"></i> <span data-i18n="game_level">سطح بازی</span></div>
+            <div class="sub-label"><span data-i18n="game_level">سطح بازی</span></div>
             <div class="options-grid five" id="levelOptions">
                 <button class="option-btn active" data-level="beginner" type="button">
                     <i class="bi bi-star" aria-hidden="true"></i>
@@ -635,20 +625,19 @@
                     <span class="option-label" data-i18n="level_advanced">پیشرفته</span>
                 </button>
                 <button class="option-btn" data-level="professional" type="button">
-                    <i class="bi bi-trophy" aria-hidden="true"></i>
+                    <i class="bi bi-award" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="level_professional">حرفه‌ای</span>
                 </button>
                 <button class="option-btn" data-level="legendary" type="button">
-                    <i class="bi bi-gem" aria-hidden="true"></i>
+                    <i class="bi bi-fire" aria-hidden="true"></i>
                     <span class="option-label" data-i18n="level_legendary">افسانه‌ای</span>
                 </button>
             </div>
 
             <hr class="sub-divider">
 
-            <div class="sub-label"><i class="bi bi-clock" aria-hidden="true"></i> <span data-i18n="day_duration">مدت زمان هر روز</span></div>
+            <div class="sub-label"><span data-i18n="day_duration">مدت زمان هر روز</span></div>
             <div class="slider-row">
-                <i class="bi bi-sun slider-icon" aria-hidden="true"></i>
                 <span class="slider-label" data-i18n="day_minutes">دقیقه در هر روز</span>
                 <span class="slider-value" id="dayDurationValue">۳</span>
             </div>
@@ -659,9 +648,8 @@
         <div class="section-card">
             <div class="section-title"><i class="bi bi-people" aria-hidden="true"></i> <span data-i18n="players_and_roles">بازیکنان و نقش‌ها</span></div>
 
-            <div class="sub-label"><i class="bi bi-people" aria-hidden="true"></i> <span data-i18n="player_count">تعداد نفرات</span></div>
+            <div class="sub-label"><span data-i18n="player_count">تعداد نفرات</span></div>
             <div class="slider-row">
-                <i class="bi bi-people slider-icon" aria-hidden="true"></i>
                 <span class="slider-label" data-i18n="total_players">تعداد کل بازیکنان</span>
                 <span class="slider-value" id="playerCountValue">۵</span>
             </div>
@@ -669,7 +657,7 @@
 
             <hr class="sub-divider">
 
-            <div class="sub-label"><i class="bi bi-person-badge" aria-hidden="true"></i> <span data-i18n="roles_config">انتخاب نقش‌ها</span></div>
+            <div class="sub-label"><span data-i18n="roles_config">انتخاب نقش‌ها</span></div>
 
             <div class="role-group">
                 <div class="group-title" data-i18n="team_city">گروه شهر</div>
@@ -922,6 +910,7 @@
             function rangeText(min, max) {
                 if (min === 1 && max === 1) return getTranslation('fixed_one');
                 if (min === 0 && max === 1) return getTranslation('range_zero_one');
+                if (min === 0 && max === 3) return getTranslation('range_zero_three');
                 var t = getTranslation('range_format');
                 return t.replace('{min}', min).replace('{max}', max);
             }
