@@ -29,9 +29,6 @@
             --radius: 12px;
             --border: 1px solid #000000;
             --font: 'Samim', Tahoma, sans-serif;
-            --accent: #000000;
-            --accent-bg: #f5f5f5;
-            --accent-text: #000000;
         }
 
         [data-theme="dark"] {
@@ -57,9 +54,6 @@
             --primary-light: #fca5a5;
             --primary-rgb: 220, 38, 38;
             --border: 1px solid #dc2626;
-            --accent: #dc2626;
-            --accent-bg: #fef2f2;
-            --accent-text: #dc2626;
         }
 
         [data-theme="dark"][data-special-theme="crime"] {
@@ -68,9 +62,6 @@
             --primary-light: #fca5a5;
             --primary-rgb: 239, 68, 68;
             --border: 1px solid #ef4444;
-            --accent: #ef4444;
-            --accent-bg: #1a0505;
-            --accent-text: #ef4444;
         }
 
         [data-animation="off"] * { animation: none !important; transition: none !important; }
@@ -132,63 +123,7 @@
             position: relative; z-index: 5;
             max-width: 600px; width: 100%;
             margin: 16px auto; padding: 0 12px 90px;
-            display: flex; flex-direction: column; gap: 14px;
-        }
-
-        .hero-card {
-            position: relative;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: var(--border);
-            border-radius: var(--radius);
-            padding: 18px 16px;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            overflow: hidden;
-        }
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 70%);
-            pointer-events: none;
-        }
-        .hero-icon {
-            width: 48px; height: 48px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #fff;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 1;
-        }
-        .hero-text {
-            flex: 1;
-            min-width: 0;
-            position: relative;
-            z-index: 1;
-        }
-        .hero-title {
-            font-size: 15px;
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 3px;
-        }
-        .hero-subtitle {
-            font-size: 9px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.75);
-            line-height: 1.6;
+            display: flex; flex-direction: column; gap: 12px;
         }
 
         .setting-section {
@@ -197,233 +132,99 @@
             border-radius: var(--radius);
             padding: 16px;
             box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
         }
 
-        .setting-section-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 14px;
-            padding-bottom: 12px;
-            border-bottom: 1.5px dashed var(--primary);
-        }
-        .setting-section-icon {
-            width: 36px; height: 36px;
-            border-radius: 10px;
-            background: var(--accent-bg);
-            border: 1.5px solid var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 17px;
-            color: var(--accent);
-            flex-shrink: 0;
-        }
-        .setting-section-info { flex: 1; min-width: 0; }
-        .setting-section-title {
-            font-size: 13px;
-            font-weight: 900;
+        .section-label {
+            font-size: 12px;
+            font-weight: 800;
             color: var(--dark);
-            margin-bottom: 2px;
-        }
-        .setting-section-desc {
-            font-size: 8.5px;
-            font-weight: 600;
-            color: var(--text-light);
-            line-height: 1.5;
+            margin-bottom: 12px;
+            display: block;
         }
 
-        .chips-row {
+        .h-scroll {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 4px 2px 10px;
+            margin: 0 -2px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
-        .chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 9px 16px;
+        .h-scroll::-webkit-scrollbar { display: none; }
+
+        .scroll-card {
+            flex-shrink: 0;
+            min-width: 90px;
+            padding: 12px 14px;
             border: var(--border);
-            border-radius: 25px;
+            border-radius: 10px;
             background: var(--bg2);
-            color: var(--text);
-            font-family: var(--font);
-            font-size: 11px;
-            font-weight: 800;
             cursor: pointer;
             transition: all 0.25s ease;
             box-shadow: 2px 2px 0 #000;
             position: relative;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 52px;
         }
-        .chip:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .chip.active {
+        .scroll-card:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .scroll-card.active {
             background: var(--primary);
-            color: #fff;
             border-color: var(--primary);
             box-shadow: 2px 2px 0 var(--primary-dark);
         }
-        .chip-flag {
-            font-size: 14px;
-            line-height: 1;
+        .scroll-card.active .scroll-card-text {
+            color: #fff;
         }
-
-        .font-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+        .scroll-card.active .scroll-card-check {
+            display: inline-flex;
         }
-        .font-card {
-            padding: 12px 10px;
-            border: var(--border);
-            border-radius: 10px;
-            background: var(--bg2);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 2px 2px 0 #000;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .font-card:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .font-card.active {
-            background: var(--accent-bg);
-            border-color: var(--accent);
-            border-width: 2px;
-        }
-        .font-card-preview {
-            font-size: 18px;
+        .scroll-card-text {
+            font-size: 12px;
             font-weight: 800;
             color: var(--dark);
-            margin-bottom: 6px;
-            line-height: 1.3;
+            white-space: nowrap;
         }
-        .font-card-name {
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--text-light);
-        }
-        .font-card.active .font-card-name {
-            color: var(--accent);
-        }
-        .font-card-check {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: #fff;
+        .scroll-card-check {
             display: none;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+            font-size: 14px;
+            color: #fff;
             font-weight: 900;
         }
-        .font-card.active .font-card-check {
-            display: flex;
-        }
 
-        .theme-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        .theme-card {
-            padding: 16px 12px;
-            border: var(--border);
-            border-radius: 12px;
-            background: var(--bg2);
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 2px 2px 0 #000;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .theme-card:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .theme-card.active {
-            background: var(--accent-bg);
-            border-color: var(--accent);
-            border-width: 2px;
-        }
-        .theme-card-visual {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            border: 2px solid var(--primary);
-            transition: all 0.3s ease;
-        }
-        .theme-card[data-special-theme="none"] .theme-card-visual {
-            background: #fff;
-            color: #000;
-        }
-        [data-theme="dark"] .theme-card[data-special-theme="none"] .theme-card-visual {
-            background: #000;
-            color: #fff;
-        }
-        .theme-card[data-special-theme="crime"] .theme-card-visual {
-            background: linear-gradient(135deg, #1a0505, #dc2626);
-            color: #fff;
-        }
-        .theme-card-label {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--dark);
-        }
-        .theme-card.active .theme-card-label {
-            color: var(--accent);
-        }
-
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 10px;
-            background: var(--bg2);
-            border: var(--border);
-            border-radius: 10px;
-            margin-bottom: 8px;
-            box-shadow: 2px 2px 0 #000;
-            transition: all 0.2s ease;
-        }
-        .toggle-row:last-child { margin-bottom: 0; }
-        .toggle-row.disabled { opacity: 0.45; pointer-events: none; }
-        .toggle-row-icon {
-            width: 32px; height: 32px;
-            border-radius: 8px;
-            background: var(--card-bg);
-            border: var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .font-preview-text {
             font-size: 15px;
-            color: var(--primary);
-            flex-shrink: 0;
-        }
-        .toggle-row-info { flex: 1; min-width: 0; }
-        .toggle-row-title {
-            font-size: 11px;
             font-weight: 800;
+        }
+
+        .toggle-list { display: flex; flex-direction: column; }
+        .toggle-list-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 2px;
+            border-bottom: 1px solid var(--bg3);
+        }
+        .toggle-list-row:last-child { border-bottom: none; padding-bottom: 2px; }
+        .toggle-list-row:first-child { padding-top: 2px; }
+        .toggle-list-row.disabled { opacity: 0.45; pointer-events: none; }
+
+        .toggle-list-info { flex: 1; min-width: 0; }
+        .toggle-list-title {
+            font-size: 12px;
+            font-weight: 700;
             color: var(--dark);
             display: flex;
             align-items: center;
             gap: 6px;
-            flex-wrap: wrap;
-        }
-        .toggle-row-desc {
-            font-size: 8.5px;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-top: 2px;
-            line-height: 1.5;
         }
         .coming-soon-badge {
             font-size: 7px;
@@ -432,7 +233,6 @@
             border-radius: 8px;
             background: var(--bg3);
             color: var(--text-light);
-            border: var(--border);
             white-space: nowrap;
         }
 
@@ -447,7 +247,7 @@
             box-shadow: 2px 2px 0 #000;
             flex-shrink: 0;
         }
-        .toggle-switch.active { background: var(--accent); }
+        .toggle-switch.active { background: var(--primary); }
         .toggle-switch::after {
             content: '';
             position: absolute;
@@ -467,69 +267,42 @@
 
         .support-card {
             position: relative;
-            background: linear-gradient(135deg, #dc2626, #7f1d1d);
+            background: var(--card-bg);
             border: var(--border);
             border-radius: var(--radius);
             padding: 16px;
             box-shadow: var(--shadow);
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
-            overflow: hidden;
             cursor: pointer;
             transition: all 0.25s ease;
         }
         .support-card:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .support-card::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            left: -10%;
-            width: 180px;
-            height: 180px;
-            background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
-            pointer-events: none;
-        }
-        .support-icon {
-            width: 44px; height: 44px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #fff;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 1;
-        }
         .support-text {
             flex: 1;
             min-width: 0;
-            position: relative;
-            z-index: 1;
         }
         .support-title {
             font-size: 12px;
-            font-weight: 900;
-            color: #fff;
+            font-weight: 800;
+            color: var(--dark);
             margin-bottom: 3px;
         }
         .support-channel {
             font-size: 10px;
             font-weight: 700;
-            color: rgba(255,255,255,0.85);
+            color: var(--primary);
             direction: ltr;
-            text-align: left;
-            display: inline-block;
+            text-align: right;
+            display: block;
         }
+        [dir="ltr"] .support-channel { text-align: left; }
         .support-arrow {
-            color: rgba(255,255,255,0.8);
-            font-size: 18px;
-            position: relative;
-            z-index: 1;
+            color: var(--text-light);
+            font-size: 16px;
+            flex-shrink: 0;
         }
 
         .support-notification {
@@ -617,160 +390,109 @@
 
     <main class="main-container">
 
-        <div class="hero-card">
-            <div class="hero-icon"><i class="bi bi-sliders2" aria-hidden="true"></i></div>
-            <div class="hero-text">
-                <div class="hero-title" data-i18n="settings_title">تنظیمات بازی</div>
-                <div class="hero-subtitle" data-i18n="settings_subtitle">ظاهر و رفتار بازی را به دلخواه خودت تنظیم کن</div>
-            </div>
-        </div>
-
         <div class="setting-section">
-            <div class="setting-section-header">
-                <div class="setting-section-icon"><i class="bi bi-translate" aria-hidden="true"></i></div>
-                <div class="setting-section-info">
-                    <div class="setting-section-title" data-i18n="language">زبان</div>
-                    <div class="setting-section-desc" data-i18n="language_desc">زبانی که می‌خواهی بازی با آن نمایش داده شود</div>
+            <span class="section-label" data-i18n="language">زبان</span>
+            <div class="h-scroll" id="langOptions">
+                <div class="scroll-card" data-lang="fa" role="button" tabindex="0">
+                    <span class="scroll-card-text">فارسی</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
-            </div>
-            <div class="chips-row" id="langOptions">
-                <button class="chip" data-lang="fa" type="button">
-                    <span class="chip-flag">🇮🇷</span>
-                    <span>فارسی</span>
-                </button>
-                <button class="chip" data-lang="ar" type="button">
-                    <span class="chip-flag">🇸🇦</span>
-                    <span>العربیة</span>
-                </button>
-                <button class="chip" data-lang="en" type="button">
-                    <span class="chip-flag">🌍</span>
-                    <span>English</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="setting-section">
-            <div class="setting-section-header">
-                <div class="setting-section-icon"><i class="bi bi-fonts" aria-hidden="true"></i></div>
-                <div class="setting-section-info">
-                    <div class="setting-section-title" data-i18n="font">فونت</div>
-                    <div class="setting-section-desc" data-i18n="font_desc">فونت دلخواه خودت رو انتخاب کن</div>
+                <div class="scroll-card" data-lang="en" role="button" tabindex="0">
+                    <span class="scroll-card-text">English</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
-            </div>
-            <div class="font-grid" id="fontOptions">
-                <div class="font-card" data-font="Samim" style="font-family: 'Samim', Tahoma, sans-serif;" role="button" tabindex="0">
-                    <div class="font-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></div>
-                    <div class="font-card-preview">صمیم</div>
-                    <div class="font-card-name">Samim</div>
-                </div>
-                <div class="font-card" data-font="Sahel" style="font-family: 'Sahel', Tahoma, sans-serif;" role="button" tabindex="0">
-                    <div class="font-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></div>
-                    <div class="font-card-preview">ساحل</div>
-                    <div class="font-card-name">Sahel</div>
-                </div>
-                <div class="font-card" data-font="Vazirmatn" style="font-family: 'Vazirmatn', Tahoma, sans-serif;" role="button" tabindex="0">
-                    <div class="font-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></div>
-                    <div class="font-card-preview">وزیرمتن</div>
-                    <div class="font-card-name">Vazirmatn</div>
-                </div>
-                <div class="font-card" data-font="Estedad" style="font-family: 'Estedad', Tahoma, sans-serif;" role="button" tabindex="0">
-                    <div class="font-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></div>
-                    <div class="font-card-preview">استعداد</div>
-                    <div class="font-card-name">Estedad</div>
-                </div>
-                <div class="font-card" data-font="Gandom" style="font-family: 'Gandom', Tahoma, sans-serif;" role="button" tabindex="0">
-                    <div class="font-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></div>
-                    <div class="font-card-preview">گندم</div>
-                    <div class="font-card-name">Gandom</div>
+                <div class="scroll-card" data-lang="ar" role="button" tabindex="0">
+                    <span class="scroll-card-text">العربیة</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
             </div>
         </div>
 
         <div class="setting-section">
-            <div class="setting-section-header">
-                <div class="setting-section-icon"><i class="bi bi-palette-fill" aria-hidden="true"></i></div>
-                <div class="setting-section-info">
-                    <div class="setting-section-title" data-i18n="theme">تم رنگی</div>
-                    <div class="setting-section-desc" data-i18n="theme_desc">حال و هوای کلی بازی</div>
+            <span class="section-label" data-i18n="font">فونت</span>
+            <div class="h-scroll" id="fontOptions">
+                <div class="scroll-card" data-font="Samim" style="font-family: 'Samim', Tahoma, sans-serif;" role="button" tabindex="0">
+                    <span class="scroll-card-text font-preview-text">صمیم</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
-            </div>
-            <div class="theme-grid" id="specialThemeOptions">
-                <div class="theme-card" data-special-theme="none" role="button" tabindex="0">
-                    <div class="theme-card-visual"><i class="bi bi-circle-fill" aria-hidden="true"></i></div>
-                    <div class="theme-card-label" data-i18n="classic">کلاسیک</div>
+                <div class="scroll-card" data-font="Sahel" style="font-family: 'Sahel', Tahoma, sans-serif;" role="button" tabindex="0">
+                    <span class="scroll-card-text font-preview-text">ساحل</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
-                <div class="theme-card" data-special-theme="crime" role="button" tabindex="0">
-                    <div class="theme-card-visual"><i class="bi bi-fire" aria-hidden="true"></i></div>
-                    <div class="theme-card-label" data-i18n="crime">جنایی</div>
+                <div class="scroll-card" data-font="Vazirmatn" style="font-family: 'Vazirmatn', Tahoma, sans-serif;" role="button" tabindex="0">
+                    <span class="scroll-card-text font-preview-text">وزیرمتن</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
-            </div>
-        </div>
-
-        <div class="setting-section">
-            <div class="setting-section-header">
-                <div class="setting-section-icon"><i class="bi bi-circle-half" aria-hidden="true"></i></div>
-                <div class="setting-section-info">
-                    <div class="setting-section-title" data-i18n="display_mode">حالت نمایش</div>
-                    <div class="setting-section-desc" data-i18n="display_mode_desc">روشن یا تاریک</div>
+                <div class="scroll-card" data-font="Estedad" style="font-family: 'Estedad', Tahoma, sans-serif;" role="button" tabindex="0">
+                    <span class="scroll-card-text font-preview-text">استعداد</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
-            </div>
-            <div class="theme-grid" id="themeModeOptions">
-                <div class="theme-card" data-theme-mode="light" role="button" tabindex="0">
-                    <div class="theme-card-visual" style="background: linear-gradient(135deg, #fef3c7, #f59e0b); color: #fff;"><i class="bi bi-sun-fill" aria-hidden="true"></i></div>
-                    <div class="theme-card-label" data-i18n="light">روشن</div>
-                </div>
-                <div class="theme-card" data-theme-mode="dark" role="button" tabindex="0">
-                    <div class="theme-card-visual" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff;"><i class="bi bi-moon-stars-fill" aria-hidden="true"></i></div>
-                    <div class="theme-card-label" data-i18n="dark">تاریک</div>
+                <div class="scroll-card" data-font="Gandom" style="font-family: 'Gandom', Tahoma, sans-serif;" role="button" tabindex="0">
+                    <span class="scroll-card-text font-preview-text">گندم</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
             </div>
         </div>
 
         <div class="setting-section">
-            <div class="setting-section-header">
-                <div class="setting-section-icon"><i class="bi bi-gear-fill" aria-hidden="true"></i></div>
-                <div class="setting-section-info">
-                    <div class="setting-section-title" data-i18n="other">تنظیمات دیگر</div>
-                    <div class="setting-section-desc" data-i18n="other_desc">رفتار و واکنش‌های بازی</div>
+            <span class="section-label" data-i18n="theme">تم رنگی</span>
+            <div class="h-scroll" id="specialThemeOptions">
+                <div class="scroll-card" data-special-theme="none" role="button" tabindex="0">
+                    <span class="scroll-card-text" data-i18n="classic">کلاسیک</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
+                </div>
+                <div class="scroll-card" data-special-theme="crime" role="button" tabindex="0">
+                    <span class="scroll-card-text" data-i18n="crime">جنایی</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
             </div>
+        </div>
 
-            <div class="toggle-row">
-                <div class="toggle-row-icon"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i></div>
-                <div class="toggle-row-info">
-                    <div class="toggle-row-title" data-i18n="animation">انیمیشن‌ها</div>
-                    <div class="toggle-row-desc" data-i18n="animation_desc">افکت‌ها و حرکت‌های نرم</div>
+        <div class="setting-section">
+            <span class="section-label" data-i18n="display_mode">حالت نمایش</span>
+            <div class="h-scroll" id="themeModeOptions">
+                <div class="scroll-card" data-theme-mode="light" role="button" tabindex="0">
+                    <span class="scroll-card-text" data-i18n="light">روشن</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
-                <div class="toggle-switch active" id="animationToggle" role="switch" tabindex="0" aria-checked="true"></div>
-            </div>
-
-            <div class="toggle-row">
-                <div class="toggle-row-icon"><i class="bi bi-phone-vibrate-fill" aria-hidden="true"></i></div>
-                <div class="toggle-row-info">
-                    <div class="toggle-row-title" data-i18n="haptic">لرزش</div>
-                    <div class="toggle-row-desc" data-i18n="haptic_desc">واکنش لمسی هنگام لمس دکمه‌ها</div>
+                <div class="scroll-card" data-theme-mode="dark" role="button" tabindex="0">
+                    <span class="scroll-card-text" data-i18n="dark">تاریک</span>
+                    <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
-                <div class="toggle-switch active" id="hapticToggle" role="switch" tabindex="0" aria-checked="true"></div>
             </div>
+        </div>
 
-            <div class="toggle-row disabled">
-                <div class="toggle-row-icon"><i class="bi bi-envelope-fill" aria-hidden="true"></i></div>
-                <div class="toggle-row-info">
-                    <div class="toggle-row-title">
-                        <span data-i18n="invite_messages">پیام‌های دعوت</span>
-                        <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+        <div class="setting-section">
+            <span class="section-label" data-i18n="other">تنظیمات دیگر</span>
+            <div class="toggle-list">
+                <div class="toggle-list-row">
+                    <div class="toggle-list-info">
+                        <div class="toggle-list-title" data-i18n="animation">انیمیشن‌ها</div>
                     </div>
-                    <div class="toggle-row-desc" data-i18n="invite_desc">دریافت پیام وقتی دوستانت دعوتت می‌کنند</div>
+                    <div class="toggle-switch active" id="animationToggle" role="switch" tabindex="0" aria-checked="true"></div>
                 </div>
-                <div class="toggle-switch" id="inviteToggle" aria-disabled="true"></div>
+                <div class="toggle-list-row">
+                    <div class="toggle-list-info">
+                        <div class="toggle-list-title" data-i18n="haptic">لرزش</div>
+                    </div>
+                    <div class="toggle-switch active" id="hapticToggle" role="switch" tabindex="0" aria-checked="true"></div>
+                </div>
+                <div class="toggle-list-row disabled">
+                    <div class="toggle-list-info">
+                        <div class="toggle-list-title">
+                            <span data-i18n="invite_messages">پیام‌های دعوت</span>
+                            <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                        </div>
+                    </div>
+                    <div class="toggle-switch" id="inviteToggle" aria-disabled="true"></div>
+                </div>
             </div>
         </div>
 
         <div class="support-card" id="supportCard">
-            <div class="support-icon"><i class="bi bi-heart-fill" aria-hidden="true"></i></div>
             <div class="support-text">
                 <div class="support-title" data-i18n="support_creator">حمایت از سازنده</div>
-                <div class="support-channel">@amirmahdi_code</div>
+                <span class="support-channel">@amirmahdi_code</span>
             </div>
             <i class="bi bi-chevron-left support-arrow" aria-hidden="true"></i>
         </div>
@@ -806,28 +528,18 @@
 
             var translations = {
                 fa: {
-                    settings_title: 'تنظیمات بازی',
-                    settings_subtitle: 'ظاهر و رفتار بازی را به دلخواه خودت تنظیم کن',
                     language: 'زبان',
-                    language_desc: 'زبانی که می‌خواهی بازی با آن نمایش داده شود',
                     font: 'فونت',
-                    font_desc: 'فونت دلخواه خودت رو انتخاب کن',
                     theme: 'تم رنگی',
-                    theme_desc: 'حال و هوای کلی بازی',
                     classic: 'کلاسیک',
                     crime: 'جنایی',
                     display_mode: 'حالت نمایش',
-                    display_mode_desc: 'روشن یا تاریک',
                     light: 'روشن',
                     dark: 'تاریک',
                     other: 'تنظیمات دیگر',
-                    other_desc: 'رفتار و واکنش‌های بازی',
                     animation: 'انیمیشن‌ها',
-                    animation_desc: 'افکت‌ها و حرکت‌های نرم',
                     haptic: 'لرزش',
-                    haptic_desc: 'واکنش لمسی هنگام لمس دکمه‌ها',
                     invite_messages: 'پیام‌های دعوت',
-                    invite_desc: 'دریافت پیام وقتی دوستانت دعوتت می‌کنند',
                     coming_soon: 'به‌زودی',
                     support_creator: 'حمایت از سازنده',
                     home: 'خانه',
@@ -836,28 +548,18 @@
                     settings_nav: 'تنظیمات'
                 },
                 en: {
-                    settings_title: 'Game Settings',
-                    settings_subtitle: 'Customize the look and behavior of your game',
                     language: 'Language',
-                    language_desc: 'Language to display the game in',
                     font: 'Font',
-                    font_desc: 'Choose your preferred font',
                     theme: 'Color Theme',
-                    theme_desc: 'The overall mood of the game',
                     classic: 'Classic',
                     crime: 'Crime',
                     display_mode: 'Display Mode',
-                    display_mode_desc: 'Light or dark',
                     light: 'Light',
                     dark: 'Dark',
                     other: 'More Settings',
-                    other_desc: 'Game behavior and feedback',
                     animation: 'Animations',
-                    animation_desc: 'Smooth effects and motions',
                     haptic: 'Haptic',
-                    haptic_desc: 'Vibration feedback on button taps',
                     invite_messages: 'Invite Messages',
-                    invite_desc: 'Get notified when friends invite you',
                     coming_soon: 'Coming Soon',
                     support_creator: 'Support Developer',
                     home: 'Home',
@@ -866,28 +568,18 @@
                     settings_nav: 'Settings'
                 },
                 ar: {
-                    settings_title: 'إعدادات اللعبة',
-                    settings_subtitle: 'خصّص مظهر وسلوك لعبتك كما تريد',
                     language: 'اللغة',
-                    language_desc: 'اللغة التي تريد عرض اللعبة بها',
                     font: 'الخط',
-                    font_desc: 'اختر الخط المفضل لديك',
                     theme: 'المظهر اللوني',
-                    theme_desc: 'الأجواء العامة للعبة',
                     classic: 'كلاسيكي',
                     crime: 'جريمة',
                     display_mode: 'وضع العرض',
-                    display_mode_desc: 'فاتح أو داكن',
                     light: 'فاتح',
                     dark: 'داكن',
                     other: 'إعدادات أخرى',
-                    other_desc: 'سلوك اللعبة واستجابتها',
                     animation: 'الحركات',
-                    animation_desc: 'تأثيرات وحركات ناعمة',
                     haptic: 'الاهتزاز',
-                    haptic_desc: 'ردود فعل لمسية عند الضغط على الأزرار',
                     invite_messages: 'رسائل الدعوة',
-                    invite_desc: 'استقبل إشعاراً عندما يدعوك أصدقاؤك',
                     coming_soon: 'قريباً',
                     support_creator: 'دعم المطور',
                     home: 'الرئيسية',
@@ -983,7 +675,7 @@
                 var fontFamily = fontMap[font] || fontMap['Samim'];
                 document.documentElement.style.setProperty('--font', fontFamily);
                 document.body.style.fontFamily = fontFamily;
-                document.querySelectorAll('.font-card[data-font]').forEach(function(b) {
+                document.querySelectorAll('.scroll-card[data-font]').forEach(function(b) {
                     b.classList.toggle('active', b.dataset.font === font);
                 });
             }
@@ -1003,13 +695,13 @@
             }
 
             function updateActiveStates(s) {
-                document.querySelectorAll('.theme-card[data-theme-mode]').forEach(function(b) {
+                document.querySelectorAll('.scroll-card[data-theme-mode]').forEach(function(b) {
                     b.classList.toggle('active', b.dataset.themeMode === s.theme);
                 });
-                document.querySelectorAll('.theme-card[data-special-theme]').forEach(function(b) {
+                document.querySelectorAll('.scroll-card[data-special-theme]').forEach(function(b) {
                     b.classList.toggle('active', b.dataset.specialTheme === s.specialTheme);
                 });
-                document.querySelectorAll('.chip[data-lang]').forEach(function(b) {
+                document.querySelectorAll('.scroll-card[data-lang]').forEach(function(b) {
                     b.classList.toggle('active', b.dataset.lang === s.language);
                 });
                 var animToggle = document.getElementById('animationToggle');
@@ -1101,41 +793,23 @@
             }
 
             document.getElementById('langOptions').addEventListener('click', function(e) {
-                var btn = e.target.closest('.chip[data-lang]');
+                var btn = e.target.closest('.scroll-card[data-lang]');
                 if (btn) setLanguage(btn.dataset.lang);
             });
 
             document.getElementById('fontOptions').addEventListener('click', function(e) {
-                var btn = e.target.closest('.font-card[data-font]');
+                var btn = e.target.closest('.scroll-card[data-font]');
                 if (btn) setFont(btn.dataset.font);
-            });
-            document.getElementById('fontOptions').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    var btn = e.target.closest('.font-card[data-font]');
-                    if (btn) { e.preventDefault(); setFont(btn.dataset.font); }
-                }
             });
 
             document.getElementById('specialThemeOptions').addEventListener('click', function(e) {
-                var opt = e.target.closest('.theme-card[data-special-theme]');
+                var opt = e.target.closest('.scroll-card[data-special-theme]');
                 if (opt) setSpecialTheme(opt.dataset.specialTheme);
-            });
-            document.getElementById('specialThemeOptions').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    var opt = e.target.closest('.theme-card[data-special-theme]');
-                    if (opt) { e.preventDefault(); setSpecialTheme(opt.dataset.specialTheme); }
-                }
             });
 
             document.getElementById('themeModeOptions').addEventListener('click', function(e) {
-                var opt = e.target.closest('.theme-card[data-theme-mode]');
+                var opt = e.target.closest('.scroll-card[data-theme-mode]');
                 if (opt) setTheme(opt.dataset.themeMode);
-            });
-            document.getElementById('themeModeOptions').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    var opt = e.target.closest('.theme-card[data-theme-mode]');
-                    if (opt) { e.preventDefault(); setTheme(opt.dataset.themeMode); }
-                }
             });
 
             document.getElementById('animationToggle').addEventListener('click', toggleAnimation);
