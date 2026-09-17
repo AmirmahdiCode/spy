@@ -804,7 +804,7 @@
             transition: all 0.2s ease;
         }
         .join-confirm-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .join-confirm-btn.yes { background: var(--success); color: #fff; }
+        .join-confirm-btn.yes { background: #10b981; color: #ffffff; border-color: #059669; }
         .join-confirm-btn.no { background: var(--bg2); color: var(--text); }
 
         .loading-overlay {
@@ -1246,6 +1246,8 @@
             var pendingAction = null;
             var pendingJoinGameId = null;
             var isGamesLoading = false;
+            var publicGamesInterval = null;
+            var PUBLIC_GAMES_REFRESH = 4000;
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var TERMS_DURATION = 48 * 60 * 60 * 1000;
@@ -1871,7 +1873,7 @@
                 }
             }
 
-            async function loadPublicGames() {
+            async function loadPublicGames(silent) {
                 var list = document.getElementById('publicList');
                 var loader = document.getElementById('publicLoader');
                 var errorBox = document.getElementById('publicError');
@@ -1879,9 +1881,11 @@
                 isGamesLoading = true;
                 updateStartButtonState();
 
-                loader.style.display = 'flex';
-                errorBox.style.display = 'none';
-                list.style.display = 'none';
+                if (!silent) {
+                    loader.style.display = 'flex';
+                    errorBox.style.display = 'none';
+                    list.style.display = 'none';
+                }
 
                 try {
                     var result = await fetchData('getPublicGames', {});
@@ -1915,21 +1919,40 @@
                         }
 
                         loader.style.display = 'none';
+                        errorBox.style.display = 'none';
                         list.style.display = 'flex';
                     } else {
+                        if (!silent) {
+                            document.getElementById('publicCount').textContent = '0';
+                            loader.style.display = 'none';
+                            errorBox.innerHTML = renderError();
+                            errorBox.style.display = 'block';
+                        }
+                    }
+                } catch(e) {
+                    if (!silent) {
                         document.getElementById('publicCount').textContent = '0';
                         loader.style.display = 'none';
                         errorBox.innerHTML = renderError();
                         errorBox.style.display = 'block';
                     }
-                } catch(e) {
-                    document.getElementById('publicCount').textContent = '0';
-                    loader.style.display = 'none';
-                    errorBox.innerHTML = renderError();
-                    errorBox.style.display = 'block';
                 } finally {
                     isGamesLoading = false;
                     updateStartButtonState();
+                }
+            }
+
+            function startPublicGamesPolling() {
+                stopPublicGamesPolling();
+                publicGamesInterval = setInterval(function() {
+                    loadPublicGames(true);
+                }, PUBLIC_GAMES_REFRESH);
+            }
+
+            function stopPublicGamesPolling() {
+                if (publicGamesInterval) {
+                    clearInterval(publicGamesInterval);
+                    publicGamesInterval = null;
                 }
             }
 
@@ -2170,7 +2193,7 @@
 
             document.getElementById('publicError').addEventListener('click', function(e) {
                 if (e.target && e.target.classList.contains('error-state-btn')) {
-                    loadPublicGames();
+                    loadPublicGames(false);
                 }
             });
 
@@ -2207,8 +2230,21 @@
 
             applyTheme();
             loadUserCurrency();
-            loadPublicGames();
+            loadPublicGames(false);
             checkActiveGame();
+            startPublicGamesPolling();
+
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    stopPublicGamesPolling();
+                } else {
+                    startPublicGamesPolling();
+                }
+            });
+
+            window.addEventListener('beforeunload', function() {
+                stopPublicGamesPolling();
+            });
 
             setTimeout(function() {
                 var notif = document.getElementById('supportNotification');
