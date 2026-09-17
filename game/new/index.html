@@ -284,33 +284,20 @@
             cursor: pointer;
         }
 
+        .group-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+            border-bottom: 1.5px solid var(--primary);
+        }
+
         .role-group {
-            margin-bottom: 14px;
+            margin-bottom: 16px;
         }
         .role-group:last-child {
             margin-bottom: 0;
-        }
-        .role-group-header {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 6px 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-        .role-group-header i { font-size: 13px; }
-        .role-group-header.city { background: var(--city-color); }
-        .role-group-header.mafia { background: var(--mafia-color); }
-        .role-group-header.free { background: var(--free-color); }
-        .role-group-header .group-count {
-            margin-right: auto;
-            font-size: 10px;
-            padding: 1px 8px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.25);
         }
 
         .roles-list {
@@ -685,28 +672,17 @@
             <div class="sub-label"><i class="bi bi-person-badge" aria-hidden="true"></i> <span data-i18n="roles_config">انتخاب نقش‌ها</span></div>
 
             <div class="role-group">
-                <div class="role-group-header city">
-                    <i class="bi bi-buildings" aria-hidden="true"></i>
-                    <span data-i18n="team_city">گروه شهر</span>
-                    <span class="group-count" id="cityCount">۰</span>
-                </div>
+                <div class="group-title" data-i18n="team_city">گروه شهر</div>
                 <div class="roles-list" id="cityRolesList"></div>
             </div>
 
             <div class="role-group">
-                <div class="role-group-header mafia">
-                    <i class="bi bi-mask" aria-hidden="true"></i>
-                    <span data-i18n="team_mafia">گروه مافیا</span>
-                    <span class="group-count" id="mafiaCount">۰</span>
-                </div>
+                <div class="group-title" data-i18n="team_mafia">گروه مافیا</div>
                 <div class="roles-list" id="mafiaRolesList"></div>
             </div>
 
             <div class="role-group">
-                <div class="role-group-header free">
-                    <i class="bi bi-person-fill-exclamation" aria-hidden="true"></i>
-                    <span data-i18n="team_free">گروه آزاد</span>
-                </div>
+                <div class="group-title" data-i18n="team_free">گروه آزاد</div>
                 <div class="roles-list" id="freeRolesList"></div>
             </div>
 
@@ -740,7 +716,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbyyl_Lt2jg3iBqkAh3po4acYZHYaa4-ulCjO_Shp7PoSZvHyIFx0pwBA-Voyy-bIegE/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbwoLiN36u9x1rBQSnoum483cLFVgJLOItOYejhGp-us0zbPmEx6aE1nDuIdMYTgx21y/exec';
             var currentLang = 'fa';
             var isCreating = false;
 
@@ -819,15 +795,19 @@
                     role_detective: 'کارآگاه',
                     role_judge: 'قاضی',
                     role_sheriff: 'کلانتر',
+                    role_doctor: 'دکتر',
                     role_spy: 'جاسوس',
                     role_infiltrator: 'نفوذی',
-                    role_silencer: 'سایلنتر',
                     role_bait: 'طعمه',
+                    role_silencer: 'سایلنتر',
+                    role_gunner: 'تفنگدار',
                     role_killer: 'قاتل',
                     role_psycho: 'روانی',
                     coming_soon: 'به‌زودی',
                     range_format: '{min} تا {max} نفر',
                     fixed_one: 'دقیقاً ۱ نفر',
+                    range_zero_one: '۰ یا ۱ نفر',
+                    range_zero_three: '۰ تا ۳ نفر',
                     create_failed: 'ساخت بازی انجام نشد. دوباره تلاش کن.',
                     create_active_game: 'ابتدا بازی فعال خود را تمام کنید',
                     error_network: 'اتصال اینترنت خود را بررسی کنید',
@@ -864,15 +844,19 @@
                     role_detective: 'Detective',
                     role_judge: 'Judge',
                     role_sheriff: 'Sheriff',
+                    role_doctor: 'Doctor',
                     role_spy: 'Spy',
                     role_infiltrator: 'Infiltrator',
-                    role_silencer: 'Silencer',
                     role_bait: 'Bait',
+                    role_silencer: 'Silencer',
+                    role_gunner: 'Gunner',
                     role_killer: 'Killer',
                     role_psycho: 'Psycho',
                     coming_soon: 'Coming Soon',
                     range_format: '{min} to {max}',
                     fixed_one: 'Exactly 1',
+                    range_zero_one: '0 or 1',
+                    range_zero_three: '0 to 3',
                     create_failed: 'Failed to create game. Try again.',
                     create_active_game: 'Please finish your active game first',
                     error_network: 'Please check your internet connection',
@@ -909,15 +893,19 @@
                     role_detective: 'محقق',
                     role_judge: 'قاضي',
                     role_sheriff: 'شريف',
+                    role_doctor: 'طبيب',
                     role_spy: 'جاسوس',
                     role_infiltrator: 'مندس',
-                    role_silencer: 'مسكت',
                     role_bait: 'طعم',
+                    role_silencer: 'مسكت',
+                    role_gunner: 'مسلح',
                     role_killer: 'قاتل',
                     role_psycho: 'مختل',
                     coming_soon: 'قريباً',
                     range_format: '{min} إلى {max}',
                     fixed_one: 'بالضبط ۱',
+                    range_zero_one: '۰ أو ۱',
+                    range_zero_three: '۰ إلى ۳',
                     create_failed: 'فشل إنشاء اللعبة. حاول مرة أخرى.',
                     create_active_game: 'يرجى إنهاء لعبتك النشطة أولاً',
                     error_network: 'يرجى التحقق من اتصالك بالإنترنت',
@@ -932,27 +920,30 @@
             }
 
             function rangeText(min, max) {
-                if (min === max) return getTranslation('fixed_one');
+                if (min === 1 && max === 1) return getTranslation('fixed_one');
+                if (min === 0 && max === 1) return getTranslation('range_zero_one');
                 var t = getTranslation('range_format');
                 return t.replace('{min}', min).replace('{max}', max);
             }
 
             var ROLE_DEFS = {
-                citizen: { nameKey: 'role_citizen', image: 'https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png', min: 1, max: 7, available: true, group: 'city' },
+                citizen: { nameKey: 'role_citizen', image: 'https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png', min: 1, max: 5, available: true, group: 'city' },
                 detective: { nameKey: 'role_detective', image: 'https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png', min: 0, max: 1, available: true, group: 'city' },
                 judge: { nameKey: 'role_judge', image: 'https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png', min: 1, max: 1, available: true, group: 'city' },
-                sheriff: { nameKey: 'role_sheriff', image: '', min: 0, max: 1, available: false, group: 'city' },
-                spy: { nameKey: 'role_spy', image: 'https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png', min: 1, max: 3, available: true, group: 'mafia' },
-                infiltrator: { nameKey: 'role_infiltrator', image: 'https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png', min: 0, max: 7, available: true, group: 'mafia' },
-                silencer: { nameKey: 'role_silencer', image: '', min: 0, max: 1, available: false, group: 'mafia' },
-                bait: { nameKey: 'role_bait', image: '', min: 0, max: 1, available: false, group: 'mafia' },
-                killer: { nameKey: 'role_killer', image: '', min: 0, max: 1, available: false, group: 'free' },
-                psycho: { nameKey: 'role_psycho', image: '', min: 0, max: 1, available: false, group: 'free' }
+                sheriff: { nameKey: 'role_sheriff', image: 'https://cdn.imgurl.ir/uploads/i242516_InShot_20260917_162620222.png', min: 0, max: 1, available: false, group: 'city' },
+                doctor: { nameKey: 'role_doctor', image: 'https://cdn.imgurl.ir/uploads/v31967_InShot_20260917_162742245.png', min: 0, max: 1, available: false, group: 'city' },
+                spy: { nameKey: 'role_spy', image: 'https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png', min: 1, max: 1, available: true, group: 'mafia' },
+                infiltrator: { nameKey: 'role_infiltrator', image: 'https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png', min: 0, max: 3, available: true, group: 'mafia' },
+                bait: { nameKey: 'role_bait', image: 'https://cdn.imgurl.ir/uploads/n732962_InShot_20260917_162331789.png', min: 0, max: 1, available: true, group: 'mafia' },
+                silencer: { nameKey: 'role_silencer', image: 'https://cdn.imgurl.ir/uploads/g192531_InShot_20260917_162213256.png', min: 0, max: 1, available: false, group: 'mafia' },
+                gunner: { nameKey: 'role_gunner', image: 'https://cdn.imgurl.ir/uploads/p68300_InShot_20260917_162503506.png', min: 0, max: 1, available: false, group: 'mafia' },
+                killer: { nameKey: 'role_killer', image: 'https://cdn.imgurl.ir/uploads/x9199_InShot_20260917_162856320.png', min: 0, max: 1, available: false, group: 'free' },
+                psycho: { nameKey: 'role_psycho', image: 'https://cdn.imgurl.ir/uploads/u753353_InShot_20260917_162952379.png', min: 0, max: 1, available: false, group: 'free' }
             };
 
             var ROLE_GROUPS = {
-                city: ['citizen', 'detective', 'judge', 'sheriff'],
-                mafia: ['spy', 'infiltrator', 'silencer', 'bait'],
+                city: ['citizen', 'detective', 'judge', 'sheriff', 'doctor'],
+                mafia: ['spy', 'infiltrator', 'bait', 'silencer', 'gunner'],
                 free: ['killer', 'psycho']
             };
 
@@ -963,20 +954,20 @@
                 6:  { spy: 1, infiltrator: 1, detective: 1, judge: 1, citizen: 2 },
                 7:  { spy: 1, infiltrator: 1, detective: 1, judge: 1, citizen: 3 },
                 8:  { spy: 1, infiltrator: 2, detective: 1, judge: 1, citizen: 3 },
-                9:  { spy: 2, infiltrator: 1, detective: 1, judge: 1, citizen: 4 },
-                10: { spy: 2, infiltrator: 2, detective: 1, judge: 1, citizen: 4 }
+                9:  { spy: 1, infiltrator: 2, detective: 1, judge: 1, citizen: 4 },
+                10: { spy: 1, infiltrator: 2, detective: 1, judge: 1, citizen: 5 }
             };
 
-            var ACTIVE_ROLES = ['citizen', 'detective', 'judge', 'spy', 'infiltrator'];
-            var CITY_ROLES = ['citizen', 'detective', 'judge', 'sheriff'];
-            var MAFIA_ROLES = ['spy', 'infiltrator', 'silencer', 'bait'];
+            var ACTIVE_ROLES = ['citizen', 'detective', 'judge', 'spy', 'infiltrator', 'bait'];
+            var CITY_ROLES = ['citizen', 'detective', 'judge', 'sheriff', 'doctor'];
+            var MAFIA_ROLES = ['spy', 'infiltrator', 'bait', 'silencer', 'gunner'];
 
             var state = {
                 type: 'public',
                 level: 'beginner',
                 playerCount: 5,
                 dayDuration: 3,
-                roles: { citizen: 1, detective: 1, judge: 1, spy: 1, infiltrator: 1, sheriff: 0, silencer: 0, bait: 0, killer: 0, psycho: 0 }
+                roles: { citizen: 1, detective: 1, judge: 1, spy: 1, infiltrator: 1, bait: 0, sheriff: 0, doctor: 0, silencer: 0, gunner: 0, killer: 0, psycho: 0 }
             };
 
             function getSettings() {
@@ -1141,13 +1132,6 @@
                 return getMafiaCount() < getCityCount();
             }
 
-            function updateGroupCounts() {
-                var cityEl = document.getElementById('cityCount');
-                var mafiaEl = document.getElementById('mafiaCount');
-                if (cityEl) cityEl.textContent = toPersianDigits(getCityCount());
-                if (mafiaEl) mafiaEl.textContent = toPersianDigits(getMafiaCount());
-            }
-
             function toPersianDigits(n) {
                 var s = String(n);
                 if (currentLang === 'en') return s;
@@ -1209,8 +1193,6 @@
                 ROLE_GROUPS.free.forEach(function(k) { freeHtml += renderRoleRow(k); });
                 var freeEl = document.getElementById('freeRolesList');
                 if (freeEl) freeEl.innerHTML = freeHtml;
-
-                updateGroupCounts();
             }
 
             function updateRoleValueUI(roleKey) {
@@ -1293,7 +1275,6 @@
                     }
                 }
 
-                updateGroupCounts();
                 updateCountersDisabled();
                 updateCreateButton();
             }
@@ -1328,6 +1309,7 @@
                 state.roles.judge = p.judge;
                 state.roles.spy = p.spy;
                 state.roles.infiltrator = p.infiltrator;
+                state.roles.bait = 0;
             }
 
             function refreshAllRolesUI() {
@@ -1410,7 +1392,7 @@
 
             function buildGameData() {
                 var roles = [];
-                ['spy', 'infiltrator', 'detective', 'judge', 'citizen'].forEach(function(k) {
+                ['spy', 'infiltrator', 'detective', 'judge', 'citizen', 'bait'].forEach(function(k) {
                     var count = state.roles[k] || 0;
                     for (var i = 0; i < count; i++) roles.push(k);
                 });
@@ -1539,7 +1521,7 @@
 
             applyTheme();
 
-            state.roles = { citizen: 1, detective: 1, judge: 1, spy: 1, infiltrator: 1, sheriff: 0, silencer: 0, bait: 0, killer: 0, psycho: 0 };
+            state.roles = { citizen: 1, detective: 1, judge: 1, spy: 1, infiltrator: 1, bait: 0, sheriff: 0, doctor: 0, silencer: 0, gunner: 0, killer: 0, psycho: 0 };
             state.type = 'public';
             setPlayerCount(5);
             setDayDuration(3);
