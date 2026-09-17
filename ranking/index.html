@@ -225,6 +225,38 @@
             border: var(--border);
         }
 
+        .friend-btn {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            padding: 6px 10px;
+            border: var(--border);
+            border-radius: 8px;
+            background: var(--bg2);
+            color: var(--text-light);
+            font-family: var(--font);
+            font-size: 8px;
+            font-weight: 800;
+            cursor: not-allowed;
+            opacity: 0.5;
+            filter: grayscale(0.7);
+            pointer-events: none;
+            min-width: 58px;
+        }
+        .friend-btn i { font-size: 12px; }
+        .friend-btn .soon-badge {
+            font-size: 6px;
+            font-weight: 700;
+            padding: 1px 4px;
+            border-radius: 6px;
+            background: #f59e0b;
+            color: #fff;
+            white-space: nowrap;
+        }
+
         .section-loader {
             text-align: center;
             padding: 20px;
@@ -561,7 +593,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbyyl_Lt2jg3iBqkAh3po4acYZHYaa4-ulCjO_Shp7PoSZvHyIFx0pwBA-Voyy-bIegE/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbwoLiN36u9x1rBQSnoum483cLFVgJLOItOYejhGp-us0zbPmEx6aE1nDuIdMYTgx21y/exec';
             var allRankings = [];
             var currentLang = 'fa';
 
@@ -640,7 +672,9 @@
                     settings_nav: 'تنظیمات',
                     you: 'شما',
                     error_loading: 'خطا در دریافت اطلاعات',
-                    unknown_user: 'کاربر'
+                    unknown_user: 'کاربر',
+                    add_friend: 'دوستی',
+                    coming_soon: 'به‌زودی'
                 },
                 en: {
                     search_user: 'Search user...',
@@ -655,7 +689,9 @@
                     settings_nav: 'Settings',
                     you: 'You',
                     error_loading: 'Error loading data',
-                    unknown_user: 'User'
+                    unknown_user: 'User',
+                    add_friend: 'Add',
+                    coming_soon: 'Soon'
                 },
                 ar: {
                     search_user: 'ابحث عن مستخدم...',
@@ -670,7 +706,9 @@
                     settings_nav: 'الإعدادات',
                     you: 'أنت',
                     error_loading: 'خطأ في تحميل البيانات',
-                    unknown_user: 'مستخدم'
+                    unknown_user: 'مستخدم',
+                    add_friend: 'صداقة',
+                    coming_soon: 'قريباً'
                 }
             };
 
@@ -872,17 +910,27 @@
                 var score = parseInt(item.score, 10);
                 if (isNaN(score)) score = 0;
 
-                // استفاده از رتبه‌ی واقعی ذخیره‌شده در _rank (1-based)
                 var rank = (typeof item._rank === 'number' && item._rank > 0) ? item._rank : (index + 1);
                 var rankIdx = rank - 1;
 
-                return '<div class="rank-item' + (me ? ' is-me' : '') + '" data-user-id="' + safeUserId + '" role="button" tabindex="0">' +
+                var html = '<div class="rank-item' + (me ? ' is-me' : '') + '" data-user-id="' + safeUserId + '" role="button" tabindex="0">' +
                     '<div class="rank-number ' + getRankClass(rankIdx) + '">' + getRankIcon(rankIdx) + '</div>' +
                     '<div class="rank-avatar">' + getAvatarHtml(avatarField) + '</div>' +
                     '<div class="rank-info"><div class="rank-name">' + displayName + ' ' + getUserTypeBadge(userType) + '</div>' +
-                    '<div class="rank-score">' + escapeHtml(getTranslation('score')) + ': ' + score + '</div></div>' +
-                    (me ? '<span class="rank-badge-me">' + escapeHtml(getTranslation('you')) + '</span>' : '') +
-                    '</div>';
+                    '<div class="rank-score">' + escapeHtml(getTranslation('score')) + ': ' + score + '</div></div>';
+
+                if (!me) {
+                    html += '<div class="friend-btn" title="' + escapeAttr(getTranslation('coming_soon')) + '">' +
+                        '<i class="bi bi-person-plus" aria-hidden="true"></i>' +
+                        '<span>' + escapeHtml(getTranslation('add_friend')) + '</span>' +
+                        '<span class="soon-badge">' + escapeHtml(getTranslation('coming_soon')) + '</span>' +
+                        '</div>';
+                } else {
+                    html += '<span class="rank-badge-me">' + escapeHtml(getTranslation('you')) + '</span>';
+                }
+
+                html += '</div>';
+                return html;
             }
 
             function renderRankList(list, myId) {
@@ -908,7 +956,6 @@
                 var myRank = findMyRank(list, myId);
                 if (myRank < 0) return;
                 var me = list[myRank];
-                // استفاده از رتبه‌ی واقعی
                 var realRank = (typeof me._rank === 'number' && me._rank > 0) ? me._rank : (myRank + 1);
                 document.getElementById('myRankFloatNumber').textContent = '#' + realRank;
                 document.getElementById('myRankFloatAvatar').innerHTML = getAvatarHtml(me.avatar || 'default');
@@ -941,7 +988,7 @@
                                 return sb - sa;
                             })
                             .map(function(item, idx) {
-                                item._rank = idx + 1;   // ← رتبه‌ی واقعی (1-based)
+                                item._rank = idx + 1;
                                 return item;
                             });
 
@@ -1031,6 +1078,7 @@
             document.getElementById('searchInput').addEventListener('input', filterRankings);
 
             document.getElementById('rankList').addEventListener('click', function(e) {
+                if (e.target.closest('.friend-btn')) return;
                 var item = e.target.closest('.rank-item');
                 if (item && item.dataset.userId) {
                     viewProfile(item.dataset.userId);
