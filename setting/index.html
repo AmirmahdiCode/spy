@@ -137,8 +137,10 @@
         .section-label {
             font-size: 11px;
             font-weight: 800;
-            color: var(--dark);
+            color: var(--primary);
             margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1.5px solid var(--primary);
             display: flex;
             align-items: center;
             gap: 6px;
@@ -146,6 +148,9 @@
         .section-label i {
             font-size: 13px;
             color: var(--primary);
+        }
+        .section-label.sub {
+            margin-top: 16px;
         }
 
         .h-scroll {
@@ -375,10 +380,8 @@
                     <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
             </div>
-        </div>
 
-        <div class="setting-section">
-            <div class="section-label">
+            <div class="section-label sub">
                 <i class="bi bi-fonts" aria-hidden="true"></i>
                 <span data-i18n="font">فونت</span>
             </div>
@@ -421,10 +424,8 @@
                     <span class="scroll-card-check"><i class="bi bi-check-lg" aria-hidden="true"></i></span>
                 </div>
             </div>
-        </div>
 
-        <div class="setting-section">
-            <div class="section-label">
+            <div class="section-label sub">
                 <i class="bi bi-circle-half" aria-hidden="true"></i>
                 <span data-i18n="display_mode">حالت نمایش</span>
             </div>
