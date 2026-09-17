@@ -2079,12 +2079,6 @@
             function joinGame(gameId) {
                 if (!isValidGameId(gameId)) return;
 
-                if (isGamesLoading) {
-                    triggerHaptic('heavy');
-                    showToast(getTranslation('toast_loading_games'), 4000);
-                    return;
-                }
-
                 if (hasHalfFinishedGame) {
                     triggerHaptic('heavy');
                     showToast(getTranslation('toast_has_active_game'), 4000);
