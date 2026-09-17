@@ -499,6 +499,43 @@
             color: var(--text-light);
         }
 
+        /* ✅ Skeleton Loading برای بازیکنان */
+        .skeleton-player {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 10px;
+            box-shadow: 2px 2px 0 #000;
+            animation: skeletonPulse 1.5s ease-in-out infinite;
+        }
+        .skeleton-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg3);
+            flex-shrink: 0;
+        }
+        .skeleton-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .skeleton-line {
+            height: 12px;
+            background: var(--bg3);
+            border-radius: 6px;
+        }
+        .skeleton-w-60 { width: 60%; }
+        .skeleton-w-40 { width: 40%; }
+        @keyframes skeletonPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.9; }
+        }
+
         .floating-action-bar {
             position: fixed;
             bottom: 12px;
@@ -1077,7 +1114,8 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbwoLiN36u9x1rBQSnoum483cLFVgJLOItOYejhGp-us0zbPmEx6aE1nDuIdMYTgx21y/exec';
+            // ✅ URL جدید اسکریپت واحد
+            var API_URL = 'https://script.google.com/macros/s/AKfycbxlLAUQaN4PimoKwmaqjtjLgZw62YarniI__dqiVIA4dMICL7qtVuhM_lXhoe-BMtDI/exec';
             var INVITE_BASE = 'https://eitaa.com/gameland_app/Spy?startapp=';
 
             var currentLang = 'fa';
@@ -1093,6 +1131,8 @@
             var revealTimerInterval = null;
             var revealTimeoutId = null;
             var REVEAL_AUTO_CLOSE = 15;
+            var lastPlayersSignature = '';
+            var skeletonShown = false;
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
 
@@ -1641,10 +1681,38 @@
                 return html;
             }
 
+            // ✅ Skeleton برای بازیکنان
+            function renderPlayerSkeleton() {
+                var html = '';
+                for (var i = 0; i < 3; i++) {
+                    html += '<div class="skeleton-player">';
+                    html += '<div class="skeleton-avatar"></div>';
+                    html += '<div class="skeleton-info">';
+                    html += '<div class="skeleton-line skeleton-w-60"></div>';
+                    html += '<div class="skeleton-line skeleton-w-40"></div>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+                return html;
+            }
+
+            // ✅ جلوگیری از رندر مجدد + Skeleton
             function updatePlayersList(players, playerCount) {
                 var listEl = document.getElementById('playersList');
                 var countEl = document.getElementById('playersCount');
                 if (!listEl) return;
+
+                // نمایش skeleton فقط بار اول
+                if (!skeletonShown && (!players || players.length === 0)) {
+                    listEl.innerHTML = renderPlayerSkeleton();
+                    skeletonShown = true;
+                    return;
+                }
+
+                // ساخت امضای بازیکنان
+                var signature = (players || []).map(function(p) {
+                    return p.user_id + ':' + (p.name || '') + ':' + (p.avatar || '') + ':' + (p.score || 0) + ':' + (p.user_type || '');
+                }).join('|') + '|isCreator=' + (isCreator ? '1' : '0');
 
                 if (countEl) {
                     countEl.textContent = players.length + ' / ' + playerCount;
@@ -1654,6 +1722,10 @@
                         countEl.classList.remove('full');
                     }
                 }
+
+                // ✅ فقط اگه تغییر کرده، رندر کن
+                if (signature === lastPlayersSignature) return;
+                lastPlayersSignature = signature;
 
                 if (players.length === 0) {
                     listEl.innerHTML = '<div class="empty-players">' + escapeHtml(getTranslation('empty_players')) + '</div>';
@@ -1762,9 +1834,16 @@
 
             function startPolling() {
                 stopPolling();
+                // ✅ polling تطبیقی: اگه بازیکن کمه، سریعتر
+                var interval = 5000;
+                if (currentGame && currentGame.players && currentGame.playerCount) {
+                    if (currentGame.players.length < currentGame.playerCount) {
+                        interval = 3000;
+                    }
+                }
                 pollingInterval = setInterval(function() {
                     if (!isLeaving) loadGame(false);
-                }, 5000);
+                }, interval);
             }
 
             function stopPolling() {
@@ -1893,20 +1972,53 @@
                 }
             }
 
+            // ✅ Optimistic kick
             async function doKick(playerId) {
-                showLoading();
                 triggerHaptic('medium');
 
+                // ✅ فوراً از UI حذف کن
+                var row = document.querySelector('[data-player-id="' + playerId + '"]');
+                if (row) {
+                    row.style.transition = 'all 0.3s ease';
+                    row.style.opacity = '0';
+                    row.style.transform = 'translateX(-30px)';
+                    setTimeout(function() {
+                        if (row.parentNode) row.parentNode.removeChild(row);
+                    }, 300);
+                }
+
+                // ✅ آپدیت currentGame
+                if (currentGame && currentGame.players) {
+                    currentGame.players = currentGame.players.filter(function(p) {
+                        return String(p.user_id) !== String(playerId);
+                    });
+                }
+
+                // ✅ بروزرسانی شمارش
+                var countEl = document.getElementById('playersCount');
+                if (countEl && currentGame && currentGame.players) {
+                    var requiredCount = currentGame.playerCount || 5;
+                    countEl.textContent = currentGame.players.length + ' / ' + requiredCount;
+                    if (currentGame.players.length >= requiredCount) {
+                        countEl.classList.add('full');
+                    } else {
+                        countEl.classList.remove('full');
+                    }
+                }
+
+                // ✅ رفرش signature که دوباره رندر نشه
+                lastPlayersSignature = '';
+
+                // ✅ به سرور بفرست
                 var result = await fetchData('kickPlayer', {
                     gameId: roomId,
                     targetUserId: playerId
                 });
 
-                hideLoading();
-
-                if (result && result.ok) {
+                if (!result || !result.ok) {
+                    // rollback
+                    lastPlayersSignature = '';
                     await loadGame(false);
-                } else {
                     showToast(getTranslation('kick_failed'));
                 }
             }
@@ -2047,6 +2159,16 @@
 
             document.getElementById('supportNotification').addEventListener('click', openSupportLink);
 
+            // ✅ توقف polling وقتی تب مخفیه
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    stopPolling();
+                } else {
+                    startPolling();
+                    if (!isLeaving) loadGame(false);
+                }
+            });
+
             async function init() {
                 applyTheme();
 
@@ -2072,6 +2194,13 @@
 
                 var badge = document.getElementById('roomCodeBadge');
                 if (badge) badge.textContent = roomId;
+
+                // ✅ Skeleton اولیه
+                var listEl = document.getElementById('playersList');
+                if (listEl) {
+                    listEl.innerHTML = renderPlayerSkeleton();
+                    skeletonShown = true;
+                }
 
                 await loadGame(true);
                 startPolling();
