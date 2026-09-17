@@ -324,40 +324,6 @@
             color: var(--dark);
         }
 
-        .role-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 9px;
-            font-weight: 800;
-            border: 1.5px solid;
-        }
-        .role-badge.role-spy, .role-badge.role-infiltrator { color: var(--mafia-color); border-color: var(--mafia-color); background: rgba(239, 68, 68, 0.1); }
-        .role-badge.role-citizen, .role-badge.role-detective, .role-badge.role-judge { color: var(--city-color); border-color: var(--city-color); background: rgba(16, 185, 129, 0.1); }
-        .role-badge.role-free { color: var(--free-color); border-color: var(--free-color); background: rgba(139, 92, 246, 0.1); }
-
-        .word-display {
-            background: var(--bg2);
-            border: 2px dashed var(--primary);
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
-        }
-        .word-display .word-label {
-            font-size: 8px;
-            font-weight: 700;
-            color: var(--text-light);
-            margin-bottom: 4px;
-        }
-        .word-display .word-value {
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--primary);
-            letter-spacing: 2px;
-        }
-
         .empty-state {
             text-align: center;
             padding: 16px;
@@ -372,7 +338,6 @@
             opacity: 0.5;
         }
 
-        /* ✅ Skeleton Loading */
         .skeleton-card {
             background: var(--card-bg);
             border: var(--border);
@@ -407,10 +372,93 @@
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* ✅ انیمیشن نرم برای کارت‌های آپدیت‌شده */
         .content-updated {
             animation: fadeInUp 0.4s ease;
+        }
+
+        .secret-card {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+            border: 2px solid #8b0000;
+            border-radius: var(--radius);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.4), 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(139, 0, 0, 0.15);
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            padding: 16px;
+        }
+        .secret-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(139, 0, 0, 0.03) 12px, rgba(139, 0, 0, 0.03) 24px),
+                radial-gradient(circle at center, rgba(139, 0, 0, 0.15), transparent 70%);
+            pointer-events: none;
+        }
+        .secret-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(220, 38, 38, 0.15) 30deg, transparent 60deg, transparent 360deg);
+            animation: rotateGlow 8s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes rotateGlow {
+            to { transform: rotate(360deg); }
+        }
+        .secret-card:active {
+            transform: scale(0.98);
+        }
+        .secret-card-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        .secret-card-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #dc2626;
+            letter-spacing: 8px;
+            text-shadow: 0 0 20px rgba(220, 38, 38, 0.8), 0 0 40px rgba(220, 38, 38, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8);
+            line-height: 1.4;
+            margin-bottom: 12px;
+            animation: pulseRed 2.5s ease-in-out infinite;
+        }
+        @keyframes pulseRed {
+            0%, 100% { text-shadow: 0 0 20px rgba(220, 38, 38, 0.8), 0 0 40px rgba(220, 38, 38, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8); }
+            50% { text-shadow: 0 0 30px rgba(220, 38, 38, 1), 0 0 60px rgba(220, 38, 38, 0.6), 0 2px 4px rgba(0, 0, 0, 0.8); }
+        }
+        .secret-card-subtitle {
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+        }
+        .secret-card-hint {
+            position: absolute;
+            bottom: 12px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: rgba(220, 38, 38, 0.6);
+            z-index: 2;
+            animation: blink 2s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
         .report-paper-wrapper {
@@ -1040,6 +1088,251 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
+
+        .confirm-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 5000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .confirm-overlay.show { display: flex; }
+        .confirm-box {
+            background: linear-gradient(135deg, #0a0a0a, #1a0a0a);
+            border: 2px solid #8b0000;
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            box-shadow: 0 0 40px rgba(139, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.7);
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            animation: confirmIn 0.4s ease forwards;
+        }
+        @keyframes confirmIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .confirm-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: #dc2626;
+            margin-bottom: 14px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
+        }
+        .confirm-text {
+            font-size: 12px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 2;
+            margin-bottom: 20px;
+            padding: 0 8px;
+        }
+        .confirm-btns { display: flex; gap: 10px; }
+        .confirm-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 12px;
+            font-weight: 800;
+            transition: all 0.2s ease;
+            border: 1px solid;
+        }
+        .confirm-btn:active { transform: scale(0.97); }
+        .confirm-btn.yes {
+            background: #dc2626;
+            color: #fff;
+            border-color: #b91c1c;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+        }
+        .confirm-btn.no {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .reveal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 5100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            perspective: 1500px;
+        }
+        .reveal-overlay.show { display: flex; }
+
+        .flip-card {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            height: 500px;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(.4,.2,.2,1);
+        }
+        .flip-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-face {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 20px;
+            overflow: hidden;
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+            border: 2px solid #8b0000;
+            box-shadow: 0 0 40px rgba(139, 0, 0, 0.5);
+            text-align: center;
+        }
+        .flip-card-back::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(139, 0, 0, 0.05) 12px, rgba(139, 0, 0, 0.05) 24px);
+            pointer-events: none;
+        }
+        .flip-card-back-title {
+            font-size: 36px;
+            font-weight: 900;
+            color: #dc2626;
+            letter-spacing: 10px;
+            text-shadow: 0 0 30px rgba(220, 38, 38, 0.8), 0 0 60px rgba(220, 38, 38, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .flip-card-front {
+            background: linear-gradient(160deg, #0d0d0d 0%, #1a0505 100%);
+            border: 2px solid #dc2626;
+            box-shadow: 0 0 40px rgba(220, 38, 38, 0.4);
+            transform: rotateY(180deg);
+            text-align: center;
+            gap: 12px;
+            justify-content: flex-start;
+            padding-top: 32px;
+        }
+        .flip-card-front::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.15), transparent 60%);
+            pointer-events: none;
+        }
+
+        .reveal-role-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #dc2626;
+            box-shadow: 0 0 25px rgba(220, 38, 38, 0.6), 0 4px 12px rgba(0, 0, 0, 0.7);
+            position: relative;
+            z-index: 2;
+            background: #1a0505;
+        }
+
+        .reveal-role-name {
+            font-size: 24px;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(220, 38, 38, 0.8);
+            position: relative;
+            z-index: 2;
+            letter-spacing: 2px;
+        }
+
+        .reveal-role-desc {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.9;
+            position: relative;
+            z-index: 2;
+            padding: 0 4px;
+            text-align: center;
+        }
+
+        .reveal-word-section {
+            margin-top: auto;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            border-top: 1px dashed rgba(220, 38, 38, 0.5);
+            padding-top: 14px;
+        }
+        .reveal-word-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .reveal-word-value {
+            font-size: 28px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(220, 38, 38, 0.8), 0 0 40px rgba(220, 38, 38, 0.4);
+            padding: 10px 0;
+        }
+        .reveal-word-empty {
+            font-size: 13px;
+            font-weight: 800;
+            color: #dc2626;
+            padding: 14px 0;
+            text-shadow: 0 0 10px rgba(220, 38, 38, 0.6);
+        }
+
+        .reveal-timer {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            text-align: right;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(220, 38, 38, 0.7);
+            z-index: 2;
+        }
+        .reveal-close-btn {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            padding: 8px 16px;
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-family: var(--font);
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
+            z-index: 3;
+            transition: all 0.2s ease;
+        }
+        .reveal-close-btn:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
@@ -1074,22 +1367,12 @@
 
             <div id="dynamicContent"></div>
 
-            <div class="section-card" id="roleInfoCard" style="display:none;">
-                <div class="section-header">
-                    <div class="section-title">
-                        <i class="bi bi-person-badge" aria-hidden="true"></i>
-                        <span data-i18n="your_role">نقش شما</span>
-                    </div>
-                    <span class="role-badge" id="myRoleBadge">-</span>
+            <div class="secret-card" id="secretCard">
+                <div class="secret-card-content">
+                    <div class="secret-card-title">مــحــرمــانــه</div>
+                    <div class="secret-card-subtitle" data-i18n="view_role_word">مشاهده نقش و کلمه</div>
                 </div>
-                <div class="word-display" id="wordDisplay" style="display:none;">
-                    <div class="word-label" data-i18n="your_word">کلمه‌ی شما</div>
-                    <div class="word-value" id="myWord">----</div>
-                </div>
-                <div class="empty-state" id="noWordMsg" style="display:none;">
-                    <i class="bi bi-eye-slash" aria-hidden="true"></i>
-                    <span data-i18n="no_word_spy">شما کلمه را نمی‌دانید. مخفی بمانید!</span>
-                </div>
+                <div class="secret-card-hint" data-i18n="tap_to_view">برای مشاهده لمس کنید</div>
             </div>
 
         </div>
@@ -1202,6 +1485,37 @@
         <div class="loading-overlay-spinner"></div>
     </div>
 
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-box">
+            <div class="confirm-title">محرمانه</div>
+            <div class="confirm-text" data-i18n="confirm_warning">قبل از تایید، برای دیدن مطمئن باشید کسی نگاه نمی‌کند</div>
+            <div class="confirm-btns">
+                <button class="confirm-btn no" id="confirmNo" type="button" data-i18n="cancel">انصراف</button>
+                <button class="confirm-btn yes" id="confirmYes" type="button" data-i18n="confirm_view">مطمئنم، نمایش بده</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="reveal-overlay" id="revealOverlay">
+        <div class="flip-card" id="flipCard">
+            <div class="flip-card-face flip-card-back">
+                <div class="flip-card-back-title">مــحــرمــانــه</div>
+            </div>
+            <div class="flip-card-face flip-card-front">
+                <img class="reveal-role-img" id="revealRoleImg" src="" alt="">
+                <div class="reveal-role-name" id="revealRoleName">---</div>
+                <div class="reveal-role-desc" id="revealRoleDesc">---</div>
+                <div class="reveal-word-section" id="revealWordSection">
+                    <div class="reveal-word-label" data-i18n="your_word">کلمه‌ی بازی</div>
+                    <div class="reveal-word-value" id="revealWordValue">----</div>
+                </div>
+                <div class="reveal-word-empty" id="revealWordEmpty" style="display:none;" data-i18n="no_word_spy">شما کلمه را نمی‌دانید. مخفی بمانید!</div>
+                <button class="reveal-close-btn" id="revealCloseBtn" type="button" data-i18n="close">بستن</button>
+                <div class="reveal-timer" id="revealTimer"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function() {
             'use strict';
@@ -1235,6 +1549,9 @@
             var currentSelectedVote = null;
             var currentAnswerQuestion = null;
             var pendingReportMessageKey = null;
+            var revealTimerInterval = null;
+            var revealTimeoutId = null;
+            var REVEAL_AUTO_CLOSE = 15;
 
             var ROLE_NAMES = {
                 'citizen': 'role_citizen',
@@ -1264,6 +1581,21 @@
                 'gunner': 'mafia',
                 'killer': 'free',
                 'psycho': 'free'
+            };
+
+            var ROLE_IMAGES = {
+                'citizen': 'https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png',
+                'detective': 'https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png',
+                'judge': 'https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png',
+                'sheriff': 'https://cdn.imgurl.ir/uploads/i242516_InShot_20260917_162620222.png',
+                'doctor': 'https://cdn.imgurl.ir/uploads/v31967_InShot_20260917_162742245.png',
+                'spy': 'https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png',
+                'infiltrator': 'https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png',
+                'bait': 'https://cdn.imgurl.ir/uploads/n732962_InShot_20260917_162331789.png',
+                'silencer': 'https://cdn.imgurl.ir/uploads/g192531_InShot_20260917_162213256.png',
+                'gunner': 'https://cdn.imgurl.ir/uploads/p68300_InShot_20260917_162503506.png',
+                'killer': 'https://cdn.imgurl.ir/uploads/x9199_InShot_20260917_162856320.png',
+                'psycho': 'https://cdn.imgurl.ir/uploads/u753353_InShot_20260917_162952379.png'
             };
 
             var iconAvatars = {
@@ -1310,6 +1642,18 @@
                     role_gunner: 'تفنگدار',
                     role_killer: 'قاتل',
                     role_psycho: 'روانی',
+                    role_citizen_desc: 'شهروند ساده نقش ویژه‌ای ندارد و تنها با شرکت در پرسش و پاسخ‌های روزانه و رأی‌گیری، به سایر اعضای شهر در شناسایی جاسوس کمک می‌کند.',
+                    role_detective_desc: 'کارآگاه در طول بازی و تنها یک‌بار می‌تواند یکی از بازیکنان را استعلام کند. استعلام جاسوس و طعمه «مثبت» و استعلام سایر نقش‌ها «منفی» خواهد بود.',
+                    role_judge_desc: 'قاضی در شب پس از رأی‌گیری بیدار می‌شود و نتیجه‌ی آرای روز گذشته را اعلام می‌کند.',
+                    role_sheriff_desc: 'کلانتر در شب پیش از همه بیدار می‌شود و یک بازیکن را زندانی می‌کند.',
+                    role_doctor_desc: 'دکتر در شبی که تفنگدار شلیک کرده است بیدار می‌شود و یک بازیکن را برای درمان انتخاب می‌کند.',
+                    role_spy_desc: 'جاسوس کلمه‌ی بازی را نمی‌داند و باید طوری رفتار کند که در پرسش و پاسخ‌های طول بازی لو نرود. جاسوس می‌تواند در هر شبی که موفق شد کلمه را حدس بزند، حدس خود را وارد کند.',
+                    role_infiltrator_desc: 'نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن سایر بازیکنان، جاسوس را از دید شهروندان پنهان نگه دارد.',
+                    role_bait_desc: 'طعمه نقش ویژه‌ای ندارد و تنها برای سردرگم کردن کارآگاه است؛ چرا که نتیجه‌ی استعلام تنها برای جاسوس و طعمه «مثبت» گزارش می‌شود.',
+                    role_silencer_desc: 'سایلنتر در طول بازی می‌تواند در یکی از شب‌ها یک بازیکن را انتخاب کند تا روز بعد حق شرکت در پرسش و پاسخ‌ها را نداشته باشد.',
+                    role_gunner_desc: 'تفنگدار در طول بازی و تنها در یکی از شب‌ها می‌تواند به یکی از اعضای شهر شلیک کند.',
+                    role_killer_desc: 'قاتل فقط یک‌بار در طول بازی می‌تواند یک بازیکن را از بازی حذف کند.',
+                    role_psycho_desc: 'روانی باید تلاش کند خودش را از بازی حذف کند؛ اگر روانی حذف شود، خودش برنده‌ی بازی خواهد بود.',
                     wait_night: 'شب شده، منتظر بمانید...',
                     wait_other_players: 'در انتظار سایر بازیکنان...',
                     mafia_teammates: 'هم‌گروهی‌های شما',
@@ -1435,7 +1779,12 @@
                     back_to_dashboard: 'بازگشت به داشبورد',
                     decline_tonight: 'امشب نمی‌خواهم',
                     declined: 'امشب انصراف دادی',
-                    declined_success: 'انصراف ثبت شد'
+                    declined_success: 'انصراف ثبت شد',
+                    view_role_word: 'مشاهده نقش و کلمه',
+                    tap_to_view: 'برای مشاهده لمس کنید',
+                    confirm_warning: 'قبل از تایید، برای دیدن مطمئن باشید کسی نگاه نمی‌کند',
+                    confirm_view: 'مطمئنم، نمایش بده',
+                    close: 'بستن'
                 },
                 en: {
                     table_title: 'Game Table',
@@ -1460,19 +1809,31 @@
                     role_gunner: 'Gunner',
                     role_killer: 'Killer',
                     role_psycho: 'Psycho',
+                    role_citizen_desc: 'The citizen has no special ability.',
+                    role_detective_desc: 'The detective can inquire about one player only once.',
+                    role_judge_desc: 'The judge wakes up at night after voting.',
+                    role_sheriff_desc: 'The sheriff wakes up before everyone at night.',
+                    role_doctor_desc: 'The doctor wakes up on the night the gunner shoots.',
+                    role_spy_desc: 'The spy does not know the game word.',
+                    role_infiltrator_desc: 'The infiltrator pretends to be a citizen.',
+                    role_bait_desc: 'The bait serves to confuse the detective.',
+                    role_silencer_desc: 'The silencer can silence a player.',
+                    role_gunner_desc: 'The gunner can shoot once.',
+                    role_killer_desc: 'The killer can remove one player once.',
+                    role_psycho_desc: 'The psycho must try to be eliminated to win.',
                     wait_night: 'It\'s night, wait...',
                     wait_other_players: 'Waiting for other players...',
                     mafia_teammates: 'Your Mafia Teammates',
-                    mafia_teammates_desc: 'These players are your teammates. Work together to keep the spy hidden.',
+                    mafia_teammates_desc: 'These players are your teammates.',
                     no_teammates: 'You are the only mafia member.',
                     judge_workstation: 'Judge Workstation',
-                    judge_desc: 'Review yesterday\'s votes and make your decision.',
+                    judge_desc: 'Review yesterday\'s votes.',
                     judge_select: 'Select the target player',
-                    judge_none: 'None (Acquit all)',
+                    judge_none: 'None',
                     judge_submit: 'Declare Verdict',
                     judge_decided: 'You already made your decision.',
                     detective_workstation: 'Detective Workstation',
-                    detective_desc: 'Inquire about one player. Note: You can use this only once per game.',
+                    detective_desc: 'Inquire about one player. Only once.',
                     detective_select: 'Select player',
                     detective_submit: 'Inquire',
                     detective_used: 'You already used your inquiry.',
@@ -1481,7 +1842,7 @@
                     detective_negative: 'Negative (Citizen)',
                     detective_target_was: 'Target',
                     spy_workstation: 'Spy Workstation',
-                    spy_desc: 'You can guess the game word. If correct, the mafia wins. If wrong, wait until next night.',
+                    spy_desc: 'You can guess the game word.',
                     spy_guess_placeholder: 'Your guess...',
                     spy_guess_submit: 'Submit Guess',
                     spy_guess_used: 'You guessed this night.',
@@ -1585,7 +1946,12 @@
                     back_to_dashboard: 'Back to Dashboard',
                     decline_tonight: 'Skip Tonight',
                     declined: 'You skipped tonight',
-                    declined_success: 'Skipped successfully'
+                    declined_success: 'Skipped successfully',
+                    view_role_word: 'View Role & Word',
+                    tap_to_view: 'Tap to view',
+                    confirm_warning: 'Before confirming, make sure no one is looking',
+                    confirm_view: 'I\'m sure, show it',
+                    close: 'Close'
                 },
                 ar: {
                     table_title: 'طاولة اللعب',
@@ -1610,33 +1976,45 @@
                     role_gunner: 'مسلح',
                     role_killer: 'قاتل',
                     role_psycho: 'مختل',
+                    role_citizen_desc: 'المواطن العادي ليس لديه قدرة خاصة.',
+                    role_detective_desc: 'يمكن للمحقق الاستعلام عن لاعب واحد مرة واحدة فقط.',
+                    role_judge_desc: 'يستيقظ القاضي ليلاً بعد التصويت.',
+                    role_sheriff_desc: 'يستيقظ الشريف قبل الجميع ليلاً.',
+                    role_doctor_desc: 'يستيقظ الطبيب في الليلة التي يطلق فيها المسلح النار.',
+                    role_spy_desc: 'الجاسوس لا يعرف كلمة اللعبة.',
+                    role_infiltrator_desc: 'يتظاهر المندس بأنه مواطن.',
+                    role_bait_desc: 'الطعم موجود فقط لإرباك المحقق.',
+                    role_silencer_desc: 'يمكن للمسكت إسكات لاعب.',
+                    role_gunner_desc: 'يمكن للمسلح إطلاق النار مرة واحدة.',
+                    role_killer_desc: 'يمكن للقاتل إقصاء لاعب مرة واحدة.',
+                    role_psycho_desc: 'يجب على المختل محاولة إقصاء نفسه للفوز.',
                     wait_night: 'حان الليل، انتظر...',
                     wait_other_players: 'في انتظار اللاعبين الآخرين...',
                     mafia_teammates: 'زملاؤك في المافيا',
-                    mafia_teammates_desc: 'هؤلاء زملاؤك. تعاونوا لإبقاء الجاسوس مخفياً.',
+                    mafia_teammates_desc: 'هؤلاء زملاؤك.',
                     no_teammates: 'أنت العضو الوحيد في المافيا.',
                     judge_workstation: 'مكتب القاضي',
-                    judge_desc: 'راجع تصويت الأمس واتخذ قرارك.',
+                    judge_desc: 'راجع تصويت الأمس.',
                     judge_select: 'اختر اللاعب المستهدف',
-                    judge_none: 'لا أحد (تبرئة الجميع)',
+                    judge_none: 'لا أحد',
                     judge_submit: 'إعلان الحكم',
                     judge_decided: 'لقد اتخذت قرارك بالفعل.',
                     detective_workstation: 'مكتب المحقق',
-                    detective_desc: 'استعلم عن لاعب واحد. ملاحظة: يمكنك استخدام هذا مرة واحدة فقط.',
+                    detective_desc: 'استعلم عن لاعب واحد. مرة واحدة فقط.',
                     detective_select: 'اختر اللاعب',
                     detective_submit: 'استعلام',
                     detective_used: 'لقد استخدمت استعلامك بالفعل.',
                     detective_result: 'نتيجة الاستعلام',
-                    detective_positive: 'إيجابي (مشتبه به)',
-                    detective_negative: 'سلبي (مواطن)',
+                    detective_positive: 'إيجابي',
+                    detective_negative: 'سلبي',
                     detective_target_was: 'الهدف',
                     spy_workstation: 'مكتب الجاسوس',
-                    spy_desc: 'يمكنك تخمين كلمة اللعبة. إذا صح، تفوز المافيا. إذا خطأ، انتظر الليلة القادمة.',
+                    spy_desc: 'يمكنك تخمين كلمة اللعبة.',
                     spy_guess_placeholder: 'تخمينك...',
                     spy_guess_submit: 'إرسال التخمين',
                     spy_guess_used: 'لقد خمّنت هذه الليلة.',
                     spy_guess_correct: 'تخمينك صحيح! فازت المافيا.',
-                    spy_guess_wrong: 'تخمين خاطئ. انتظر الليلة القادمة.',
+                    spy_guess_wrong: 'تخمين خاطئ.',
                     vote_history: 'تصويت الأمس',
                     vote_count: 'الأصوات',
                     ask_new_question: 'اطرح سؤالاً جديداً',
@@ -1735,7 +2113,12 @@
                     back_to_dashboard: 'العودة إلى لوحة التحكم',
                     decline_tonight: 'تخطّي الليلة',
                     declined: 'تخطّيت هذه الليلة',
-                    declined_success: 'تم التخطي'
+                    declined_success: 'تم التخطي',
+                    view_role_word: 'عرض الدور والكلمة',
+                    tap_to_view: 'اضغط للعرض',
+                    confirm_warning: 'قبل التأكيد، تأكد من عدم وجود أحد ينظر',
+                    confirm_view: 'أنا متأكد، اعرض',
+                    close: 'إغلاق'
                 }
             };
 
@@ -2097,31 +2480,6 @@
                 if (dayTimerInterval) {
                     clearInterval(dayTimerInterval);
                     dayTimerInterval = null;
-                }
-            }
-
-            function updateRoleInfoCard() {
-                var card = document.getElementById('roleInfoCard');
-                if (!card) return;
-                if (!myRole) {
-                    card.style.display = 'none';
-                    return;
-                }
-                card.style.display = 'block';
-                var badge = document.getElementById('myRoleBadge');
-                badge.textContent = getRoleName(myRole);
-                badge.className = 'role-badge ' + getRoleClass(myRole);
-
-                var wordDisplay = document.getElementById('wordDisplay');
-                var noWordMsg = document.getElementById('noWordMsg');
-
-                if (myWord && myWord !== '') {
-                    document.getElementById('myWord').textContent = myWord;
-                    wordDisplay.style.display = 'block';
-                    noWordMsg.style.display = 'none';
-                } else {
-                    wordDisplay.style.display = 'none';
-                    noWordMsg.style.display = 'block';
                 }
             }
 
@@ -2589,7 +2947,6 @@
                 return html;
             }
 
-            // ✅ Skeleton Loading
             function renderLoadingState() {
                 return '<div class="skeleton-card">' +
                     '<div class="skeleton-line skeleton-w-80"></div>' +
@@ -2639,7 +2996,6 @@
                     return;
                 }
 
-                // ✅ فقط اگه محتوا واقعاً عوض شده، آپدیت کن
                 var newSignature = getGameSignature(gameData) + '|' + JSON.stringify(questionsData.map(function(q) { return q.ts; })) + '|' + JSON.stringify(reportStatusData);
                 if (newSignature === lastGameDataSignature && !forceAnimate) {
                     return;
@@ -2647,7 +3003,6 @@
                 lastGameDataSignature = newSignature;
 
                 container.innerHTML = html;
-                // ✅ انیمیشن نرم
                 var wrapper = container.querySelector('.section-card, .report-paper-wrapper, .final-result-card');
                 if (wrapper) wrapper.classList.add('content-updated');
 
@@ -2842,7 +3197,6 @@
 
                     updateBannerByPhase(game.status);
                     updateTimerIfNeeded(game);
-                    updateRoleInfoCard();
                     renderDynamicContent(oldStatus !== game.status);
                     updateFloatingBar();
 
@@ -3067,7 +3421,6 @@
                 currentSelectedVote = null;
             }
 
-            // ✅ Optimistic UI
             async function submitVote() {
                 if (!currentSelectedVote) {
                     showToast(getTranslation('vote_select'));
@@ -3077,7 +3430,6 @@
                 var myVote = currentSelectedVote;
                 closeVoteModal();
 
-                // ✅ فوراً UI آپدیت کن
                 if (!gameData.voteData) gameData.voteData = { myVote: null, allVoted: false, counts: {} };
                 var prevVote = gameData.voteData.myVote;
                 gameData.voteData.myVote = myVote;
@@ -3086,14 +3438,12 @@
                 updateFloatingBar();
                 showToast(getTranslation('vote_success'), 'success');
 
-                // ✅ در پس‌زمینه بفرست
                 var result = await fetchData('castVote', {
                     gameId: roomId,
                     targetUserId: myVote
                 });
 
                 if (!result || !result.ok) {
-                    // rollback
                     gameData.voteData.myVote = prevVote;
                     renderDynamicContent(true);
                     updateFloatingBar();
@@ -3103,7 +3453,6 @@
                     else if (err === 'Cannot vote for yourself') msg = getTranslation('vote_select');
                     showToast(msg);
                 } else {
-                    // رفرش نرم
                     loadGame(false);
                 }
             }
@@ -3170,12 +3519,10 @@
                 }
             }
 
-            // ✅ Optimistic
             async function declineDetectiveCheck() {
                 if (isActionInProgress) return;
                 if (!gameData) return;
 
-                // ✅ فوراً UI
                 if (!gameData.nightData) gameData.nightData = {};
                 gameData.nightData.detective_declined = true;
                 renderDynamicContent(true);
@@ -3188,7 +3535,6 @@
                 var result = await fetchData('updateGame', payload);
 
                 if (!result || !result.ok) {
-                    // rollback
                     delete gameData.nightData.detective_declined;
                     renderDynamicContent(true);
                     showToast(getTranslation('error_network'));
@@ -3227,7 +3573,6 @@
                 }
             }
 
-            // ✅ Optimistic
             async function declineSpyGuess() {
                 if (isActionInProgress) return;
                 if (!gameData) return;
@@ -3266,7 +3611,15 @@
 
                 if (result && result.ok) {
                     showToast(getTranslation('phase_changed'), 'success');
-                    await loadGame(false);
+
+                    if (result.data && result.data.status && gameData) {
+                        gameData.status = result.data.status;
+                        if (result.data.final) gameData.final = result.data.final;
+                    }
+                    renderDynamicContent(true);
+                    updateFloatingBar();
+                    updateTimerIfNeeded(gameData);
+                    updateBannerByPhase(gameData.status);
                 } else {
                     showToast(getTranslation('error_network'));
                 }
@@ -3356,11 +3709,170 @@
                 }
             }
 
+            function openSecretCard() {
+                triggerHaptic('medium');
+                if (!myRole) {
+                    showToast(getTranslation('role_not_ready') || 'نقش شما هنوز مشخص نشده');
+                    return;
+                }
+                document.getElementById('confirmOverlay').classList.add('show');
+            }
+
+            function closeConfirm() {
+                document.getElementById('confirmOverlay').classList.remove('show');
+            }
+
+            function showReveal() {
+                closeConfirm();
+
+                var flipCard = document.getElementById('flipCard');
+                flipCard.classList.remove('flipped');
+
+                document.getElementById('revealRoleImg').src = ROLE_IMAGES[myRole] || '';
+                document.getElementById('revealRoleImg').alt = myRole;
+                document.getElementById('revealRoleName').textContent = getTranslation(ROLE_NAMES[myRole] || 'role_citizen');
+
+                var descKey = ROLE_NAMES[myRole] ? ROLE_NAMES[myRole] + '_desc' : 'role_citizen_desc';
+                document.getElementById('revealRoleDesc').textContent = getTranslation(descKey);
+
+                var wordSection = document.getElementById('revealWordSection');
+                var wordEmpty = document.getElementById('revealWordEmpty');
+
+                if (myRole === 'spy') {
+                    wordSection.style.display = 'none';
+                    wordEmpty.style.display = 'block';
+                } else {
+                    wordSection.style.display = 'block';
+                    wordEmpty.style.display = 'none';
+                    document.getElementById('revealWordValue').textContent = myWord || '---';
+                }
+
+                document.getElementById('revealOverlay').classList.add('show');
+
+                setTimeout(function() {
+                    flipCard.classList.add('flipped');
+                    triggerHaptic('heavy');
+                }, 300);
+
+                startRevealTimer();
+            }
+
+            function startRevealTimer() {
+                stopRevealTimer();
+                var remaining = REVEAL_AUTO_CLOSE;
+                updateRevealTimerText(remaining);
+
+                revealTimerInterval = setInterval(function() {
+                    remaining--;
+                    if (remaining >= 0) {
+                        updateRevealTimerText(remaining);
+                    }
+                    if (remaining <= 0) {
+                        stopRevealTimer();
+                        closeReveal();
+                    }
+                }, 1000);
+
+                revealTimeoutId = setTimeout(function() {
+                    closeReveal();
+                }, REVEAL_AUTO_CLOSE * 1000);
+            }
+
+            function updateRevealTimerText(n) {
+                var el = document.getElementById('revealTimer');
+                if (el) {
+                    var digits = currentLang === 'en' ? String(n) : String(n).replace(/\d/g, function(d) {
+                        return ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'][parseInt(d, 10)];
+                    });
+                    el.textContent = digits + 's';
+                }
+            }
+
+            function stopRevealTimer() {
+                if (revealTimerInterval) {
+                    clearInterval(revealTimerInterval);
+                    revealTimerInterval = null;
+                }
+                if (revealTimeoutId) {
+                    clearTimeout(revealTimeoutId);
+                    revealTimeoutId = null;
+                }
+            }
+
+            function closeReveal() {
+                stopRevealTimer();
+                var flipCard = document.getElementById('flipCard');
+                flipCard.classList.remove('flipped');
+
+                setTimeout(function() {
+                    document.getElementById('revealOverlay').classList.remove('show');
+                }, 600);
+            }
+
+            document.getElementById('secretCard').addEventListener('click', openSecretCard);
+            document.getElementById('confirmYes').addEventListener('click', showReveal);
+            document.getElementById('confirmNo').addEventListener('click', closeConfirm);
+            document.getElementById('revealCloseBtn').addEventListener('click', closeReveal);
+
+            document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeConfirm();
+            });
+
+            document.getElementById('revealOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeReveal();
+            });
+
+            document.getElementById('askCancel').addEventListener('click', closeAskModal);
+            document.getElementById('askSubmit').addEventListener('click', submitAsk);
+
+            document.getElementById('answerCancel').addEventListener('click', closeAnswerModal);
+            document.getElementById('answerSubmit').addEventListener('click', submitAnswer);
+
+            document.getElementById('extraCancel').addEventListener('click', closeExtraQuestionModal);
+            document.getElementById('extraCoinsBtn').addEventListener('click', function() { buyExtraQuestion('coins'); });
+            document.getElementById('extraDiamondsBtn').addEventListener('click', function() { buyExtraQuestion('diamonds'); });
+
+            document.getElementById('voteCancel').addEventListener('click', closeVoteModal);
+            document.getElementById('voteSubmit').addEventListener('click', submitVote);
+
+            document.getElementById('leaveCancel').addEventListener('click', closeLeaveModal);
+            document.getElementById('leaveConfirm').addEventListener('click', confirmLeave);
+
+            document.getElementById('reportCancel').addEventListener('click', closeReportModal);
+            document.getElementById('reportConfirm').addEventListener('click', confirmReport);
+
+            document.getElementById('askModal').addEventListener('click', function(e) {
+                if (e.target === this) closeAskModal();
+            });
+            document.getElementById('answerModal').addEventListener('click', function(e) {
+                if (e.target === this) closeAnswerModal();
+            });
+            document.getElementById('extraQuestionModal').addEventListener('click', function(e) {
+                if (e.target === this) closeExtraQuestionModal();
+            });
+            document.getElementById('voteModal').addEventListener('click', function(e) {
+                if (e.target === this) closeVoteModal();
+            });
+            document.getElementById('leaveModal').addEventListener('click', function(e) {
+                if (e.target === this) closeLeaveModal();
+            });
+            document.getElementById('reportModal').addEventListener('click', function(e) {
+                if (e.target === this) closeReportModal();
+            });
+
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    stopPolling();
+                } else {
+                    startPolling();
+                    loadGame(false);
+                }
+            });
+
             async function init() {
                 applyTheme();
                 loadUserCurrency();
 
-                // ✅ Skeleton Loading
                 var container = document.getElementById('dynamicContent');
                 if (container && !container.innerHTML.trim()) {
                     container.innerHTML = renderLoadingState();
@@ -3385,54 +3897,6 @@
                     setTimeout(function() { window.location.href = '../../dashboard/'; }, 2500);
                     return;
                 }
-
-                document.getElementById('askCancel').addEventListener('click', closeAskModal);
-                document.getElementById('askSubmit').addEventListener('click', submitAsk);
-
-                document.getElementById('answerCancel').addEventListener('click', closeAnswerModal);
-                document.getElementById('answerSubmit').addEventListener('click', submitAnswer);
-
-                document.getElementById('extraCancel').addEventListener('click', closeExtraQuestionModal);
-                document.getElementById('extraCoinsBtn').addEventListener('click', function() { buyExtraQuestion('coins'); });
-                document.getElementById('extraDiamondsBtn').addEventListener('click', function() { buyExtraQuestion('diamonds'); });
-
-                document.getElementById('voteCancel').addEventListener('click', closeVoteModal);
-                document.getElementById('voteSubmit').addEventListener('click', submitVote);
-
-                document.getElementById('leaveCancel').addEventListener('click', closeLeaveModal);
-                document.getElementById('leaveConfirm').addEventListener('click', confirmLeave);
-
-                document.getElementById('reportCancel').addEventListener('click', closeReportModal);
-                document.getElementById('reportConfirm').addEventListener('click', confirmReport);
-
-                document.getElementById('askModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeAskModal();
-                });
-                document.getElementById('answerModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeAnswerModal();
-                });
-                document.getElementById('extraQuestionModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeExtraQuestionModal();
-                });
-                document.getElementById('voteModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeVoteModal();
-                });
-                document.getElementById('leaveModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeLeaveModal();
-                });
-                document.getElementById('reportModal').addEventListener('click', function(e) {
-                    if (e.target === this) closeReportModal();
-                });
-
-                // ✅ توقف polling وقتی تب مخفیه
-                document.addEventListener('visibilitychange', function() {
-                    if (document.hidden) {
-                        stopPolling();
-                    } else {
-                        startPolling();
-                        loadGame(false);
-                    }
-                });
 
                 await loadGame(true);
                 startPolling();
