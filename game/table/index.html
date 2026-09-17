@@ -372,33 +372,45 @@
             opacity: 0.5;
         }
 
-        /* ✅ جدید: لودینگ استیت */
-        .loading-state-card {
+        /* ✅ Skeleton Loading */
+        .skeleton-card {
             background: var(--card-bg);
             border: var(--border);
             border-radius: var(--radius);
-            padding: 40px 20px;
+            padding: 20px;
             box-shadow: var(--shadow);
-            text-align: center;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.3s ease;
         }
-        .loading-state-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--bg3);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px;
+        .skeleton-line {
+            height: 16px;
+            background: linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+            margin-bottom: 12px;
         }
-        .loading-state-text {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--text-light);
+        .skeleton-line:last-child { margin-bottom: 0; }
+        .skeleton-w-80 { width: 80%; }
+        .skeleton-w-60 { width: 60%; }
+        .skeleton-w-90 { width: 90%; }
+        .skeleton-w-70 { width: 70%; }
+        .skeleton-w-100 { width: 100%; }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ✅ انیمیشن نرم برای کارت‌های آپدیت‌شده */
+        .content-updated {
+            animation: fadeInUp 0.4s ease;
         }
 
         .report-paper-wrapper {
@@ -1208,6 +1220,7 @@
             var myWord = '';
             var myPlayerData = null;
             var gameData = null;
+            var lastGameDataSignature = '';
             var questionsData = [];
             var playersData = [];
             var reportStatusData = {};
@@ -2049,7 +2062,6 @@
                 }
             }
 
-            // ✅ فقط تایمر رو مدیریت میکنه، UI نداره (statusCard حذف شده)
             function updateTimerIfNeeded(game) {
                 if (isDay(game.status)) {
                     var dayDur = (game.dayDuration || 3) * 60;
@@ -2577,19 +2589,36 @@
                 return html;
             }
 
+            // ✅ Skeleton Loading
             function renderLoadingState() {
-                return '<div class="loading-state-card">' +
-                    '<div class="loading-state-spinner"></div>' +
-                    '<div class="loading-state-text">' + escapeHtml(getTranslation('loading_data')) + '</div>' +
+                return '<div class="skeleton-card">' +
+                    '<div class="skeleton-line skeleton-w-80"></div>' +
+                    '<div class="skeleton-line skeleton-w-60"></div>' +
+                    '<div class="skeleton-line skeleton-w-90"></div>' +
+                    '<div class="skeleton-line skeleton-w-70"></div>' +
                     '</div>';
             }
 
-            function renderDynamicContent() {
+            function getGameSignature(game) {
+                if (!game) return '';
+                return [
+                    game.status || '',
+                    game.final || '',
+                    game.myRole || '',
+                    game.myWord || '',
+                    game.isCreator ? '1' : '0',
+                    (game.players || []).length,
+                    JSON.stringify(game.nightData || {}),
+                    JSON.stringify(game.voteData || {}),
+                    (game.questionsData || []).length
+                ].join('|');
+            }
+
+            function renderDynamicContent(forceAnimate) {
                 var container = document.getElementById('dynamicContent');
                 if (!container) return;
                 if (!gameData) {
-                    // ✅ لودینگ
-                    if (container.querySelector('.loading-state-card')) return;
+                    if (container.querySelector('.skeleton-card')) return;
                     container.innerHTML = renderLoadingState();
                     return;
                 }
@@ -2606,11 +2635,22 @@
                 } else if (status === 'finish' || status === 'cancelled') {
                     html += renderFinalContent(gameData);
                 } else if (status === 'waiting') {
-                    // حالت انتظار
-                    html += renderLoadingState();
+                    container.innerHTML = renderLoadingState();
+                    return;
                 }
 
+                // ✅ فقط اگه محتوا واقعاً عوض شده، آپدیت کن
+                var newSignature = getGameSignature(gameData) + '|' + JSON.stringify(questionsData.map(function(q) { return q.ts; })) + '|' + JSON.stringify(reportStatusData);
+                if (newSignature === lastGameDataSignature && !forceAnimate) {
+                    return;
+                }
+                lastGameDataSignature = newSignature;
+
                 container.innerHTML = html;
+                // ✅ انیمیشن نرم
+                var wrapper = container.querySelector('.section-card, .report-paper-wrapper, .final-result-card');
+                if (wrapper) wrapper.classList.add('content-updated');
+
                 bindDynamicEvents();
             }
 
@@ -2747,7 +2787,6 @@
                 var status = gameData.status;
 
                 if (isDay(status)) {
-                    // ✅ فقط اگه تایمر واقعاً برای این فاز start شده
                     if (dayTimerDuration > 0 && dayTimerStart > 0 && dayTimerPhase === status) {
                         var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
                         var remaining = dayTimerDuration - elapsed;
@@ -2782,6 +2821,7 @@
                     }
 
                     var game = result.data;
+                    var oldStatus = gameData ? gameData.status : '';
 
                     if (gameData && gameData.status !== game.status) {
                         if (game.status === 'finish' || game.status === 'cancelled') {
@@ -2803,7 +2843,7 @@
                     updateBannerByPhase(game.status);
                     updateTimerIfNeeded(game);
                     updateRoleInfoCard();
-                    renderDynamicContent();
+                    renderDynamicContent(oldStatus !== game.status);
                     updateFloatingBar();
 
                     isLoading = false;
@@ -2820,7 +2860,7 @@
                 stopPolling();
                 pollingInterval = setInterval(function() {
                     loadGame(false);
-                }, 3000);
+                }, 5000);
             }
 
             function stopPolling() {
@@ -3027,34 +3067,44 @@
                 currentSelectedVote = null;
             }
 
+            // ✅ Optimistic UI
             async function submitVote() {
-                if (isActionInProgress) return;
                 if (!currentSelectedVote) {
                     showToast(getTranslation('vote_select'));
                     return;
                 }
 
-                isActionInProgress = true;
-                showLoading();
+                var myVote = currentSelectedVote;
+                closeVoteModal();
 
+                // ✅ فوراً UI آپدیت کن
+                if (!gameData.voteData) gameData.voteData = { myVote: null, allVoted: false, counts: {} };
+                var prevVote = gameData.voteData.myVote;
+                gameData.voteData.myVote = myVote;
+
+                renderDynamicContent(true);
+                updateFloatingBar();
+                showToast(getTranslation('vote_success'), 'success');
+
+                // ✅ در پس‌زمینه بفرست
                 var result = await fetchData('castVote', {
                     gameId: roomId,
-                    targetUserId: currentSelectedVote
+                    targetUserId: myVote
                 });
 
-                hideLoading();
-                isActionInProgress = false;
-
-                if (result && result.ok) {
-                    closeVoteModal();
-                    showToast(getTranslation('vote_success'), 'success');
-                    await loadGame(false);
-                } else {
+                if (!result || !result.ok) {
+                    // rollback
+                    gameData.voteData.myVote = prevVote;
+                    renderDynamicContent(true);
+                    updateFloatingBar();
                     var err = result && result.error ? result.error : '';
                     var msg = getTranslation('error_network');
                     if (err === 'Already voted') msg = getTranslation('vote_already');
                     else if (err === 'Cannot vote for yourself') msg = getTranslation('vote_select');
                     showToast(msg);
+                } else {
+                    // رفرش نرم
+                    loadGame(false);
                 }
             }
 
@@ -3120,31 +3170,30 @@
                 }
             }
 
+            // ✅ Optimistic
             async function declineDetectiveCheck() {
                 if (isActionInProgress) return;
                 if (!gameData) return;
 
-                isActionInProgress = true;
-                showLoading();
-
-                var nightData = gameData.nightData || {};
-                nightData.detective_declined = true;
-                nightData.detective_declined_at = Date.now();
+                // ✅ فوراً UI
+                if (!gameData.nightData) gameData.nightData = {};
+                gameData.nightData.detective_declined = true;
+                renderDynamicContent(true);
+                showToast(getTranslation('declined_success'), 'info', 3000);
 
                 var status = gameData.status;
                 var payload = { gameId: roomId };
-                payload[status] = JSON.stringify(nightData);
+                payload[status] = JSON.stringify(gameData.nightData);
 
                 var result = await fetchData('updateGame', payload);
 
-                hideLoading();
-                isActionInProgress = false;
-
-                if (result && result.ok) {
-                    showToast(getTranslation('declined_success'), 'info', 3000);
-                    await loadGame(false);
-                } else {
+                if (!result || !result.ok) {
+                    // rollback
+                    delete gameData.nightData.detective_declined;
+                    renderDynamicContent(true);
                     showToast(getTranslation('error_network'));
+                } else {
+                    loadGame(false);
                 }
             }
 
@@ -3178,31 +3227,28 @@
                 }
             }
 
+            // ✅ Optimistic
             async function declineSpyGuess() {
                 if (isActionInProgress) return;
                 if (!gameData) return;
 
-                isActionInProgress = true;
-                showLoading();
-
-                var nightData = gameData.nightData || {};
-                nightData.spy_guess_declined = true;
-                nightData.spy_declined_at = Date.now();
+                if (!gameData.nightData) gameData.nightData = {};
+                gameData.nightData.spy_guess_declined = true;
+                renderDynamicContent(true);
+                showToast(getTranslation('declined_success'), 'info', 3000);
 
                 var status = gameData.status;
                 var payload = { gameId: roomId };
-                payload[status] = JSON.stringify(nightData);
+                payload[status] = JSON.stringify(gameData.nightData);
 
                 var result = await fetchData('updateGame', payload);
 
-                hideLoading();
-                isActionInProgress = false;
-
-                if (result && result.ok) {
-                    showToast(getTranslation('declined_success'), 'info', 3000);
-                    await loadGame(false);
-                } else {
+                if (!result || !result.ok) {
+                    delete gameData.nightData.spy_guess_declined;
+                    renderDynamicContent(true);
                     showToast(getTranslation('error_network'));
+                } else {
+                    loadGame(false);
                 }
             }
 
@@ -3314,7 +3360,7 @@
                 applyTheme();
                 loadUserCurrency();
 
-                // ✅ نمایش لودینگ در ابتدای کار
+                // ✅ Skeleton Loading
                 var container = document.getElementById('dynamicContent');
                 if (container && !container.innerHTML.trim()) {
                     container.innerHTML = renderLoadingState();
@@ -3376,6 +3422,16 @@
                 });
                 document.getElementById('reportModal').addEventListener('click', function(e) {
                     if (e.target === this) closeReportModal();
+                });
+
+                // ✅ توقف polling وقتی تب مخفیه
+                document.addEventListener('visibilitychange', function() {
+                    if (document.hidden) {
+                        stopPolling();
+                    } else {
+                        startPolling();
+                        loadGame(false);
+                    }
                 });
 
                 await loadGame(true);
