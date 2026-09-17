@@ -1,1 +1,3389 @@
-.
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>میز بازی | جاسوس مافیایی</title>
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/samim-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/lalezar-font@v1.0.0/dist/font-face.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg2: #f5f5f5;
+            --bg3: #e0e0e0;
+            --primary: #000000;
+            --primary-dark: #333333;
+            --primary-light: #666666;
+            --primary-rgb: 0, 0, 0;
+            --dark: #000000;
+            --text: #333333;
+            --text-light: #999999;
+            --white: #ffffff;
+            --card-bg: #ffffff;
+            --shadow: 3px 3px 0 #000000;
+            --radius: 12px;
+            --border: 1px solid #000000;
+            --gold: #f59e0b;
+            --font: 'Samim', Tahoma, sans-serif;
+            --success: #10b981;
+            --danger: #ef4444;
+            --city-color: #10b981;
+            --mafia-color: #ef4444;
+            --free-color: #8b5cf6;
+            --info-color: #06b6d4;
+        }
+
+        [data-theme="dark"] {
+            --bg: #000000;
+            --bg2: #1a1a1a;
+            --bg3: #333333;
+            --primary: #666666;
+            --primary-dark: #999999;
+            --primary-light: #444444;
+            --primary-rgb: 102, 102, 102;
+            --dark: #ffffff;
+            --text: #cccccc;
+            --text-light: #888888;
+            --white: #1a1a1a;
+            --card-bg: #1a1a1a;
+            --shadow: 3px 3px 0 #000000;
+            --border: 1px solid #666666;
+        }
+
+        [data-special-theme="crime"] {
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --primary-light: #fca5a5;
+            --primary-rgb: 220, 38, 38;
+            --border: 1px solid #dc2626;
+        }
+
+        [data-theme="dark"][data-special-theme="crime"] {
+            --primary: #ef4444;
+            --primary-dark: #dc2626;
+            --primary-light: #fca5a5;
+            --primary-rgb: 239, 68, 68;
+            --border: 1px solid #ef4444;
+        }
+
+        [data-animation="off"] * { animation: none !important; transition: none !important; }
+
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+            -webkit-user-drag: none; user-drag: none;
+        }
+        img { pointer-events: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; user-drag: none; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: font-family 0.3s ease;
+        }
+
+        .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
+
+        .header {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+
+        .header-logo {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: none;
+            box-shadow: none;
+            flex-shrink: 0;
+        }
+        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
+        .header-subtitle { font-size: 8px; color: var(--text-light); }
+
+        .header-currency { display: flex; align-items: center; gap: 6px; }
+        .currency-badge {
+            display: flex; align-items: center; gap: 4px;
+            background: var(--bg2); border: var(--border); border-radius: 8px;
+            padding: 4px 10px; font-size: 10px; font-weight: 700;
+            color: var(--dark); box-shadow: 2px 2px 0 #000;
+            min-width: 50px;
+            justify-content: center;
+        }
+        .currency-badge.coins i { color: #f59e0b; }
+        .currency-badge.diamonds i { color: #06b6d4; }
+        .mini-spinner {
+            width: 12px; height: 12px;
+            border: 2px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 75px;
+            right: 5%;
+            left: 5%;
+            max-width: 400px;
+            margin: 0 auto;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #ef4444;
+            color: #fff;
+            border: 1px solid #b91c1c;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+            animation: toastIn 0.4s ease forwards;
+        }
+        .toast.success {
+            background: #10b981;
+            border-color: #059669;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+        .toast.info {
+            background: #06b6d4;
+            border-color: #0891b2;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
+        }
+        .toast.hiding { animation: toastOut 0.4s ease forwards; }
+        .toast i { font-size: 16px; flex-shrink: 0; }
+        .toast .toast-text { flex: 1; line-height: 1.5; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .main-container {
+            position: relative; z-index: 5;
+            flex: 1;
+            max-width: 600px; width: 100%;
+            margin: 0 auto;
+            padding: 0 0 130px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .game-banner {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            margin-top: 8px;
+            background: transparent;
+            -webkit-mask-image: linear-gradient(to bottom,
+                black 0%,
+                black 71.4%,
+                rgba(0, 0, 0, 0.99) 74%,
+                rgba(0, 0, 0, 0.96) 77%,
+                rgba(0, 0, 0, 0.92) 80%,
+                rgba(0, 0, 0, 0.86) 83%,
+                rgba(0, 0, 0, 0.78) 86%,
+                rgba(0, 0, 0, 0.68) 89%,
+                rgba(0, 0, 0, 0.56) 92%,
+                rgba(0, 0, 0, 0.42) 95%,
+                rgba(0, 0, 0, 0.25) 98%,
+                transparent 100%);
+            mask-image: linear-gradient(to bottom,
+                black 0%,
+                black 71.4%,
+                rgba(0, 0, 0, 0.99) 74%,
+                rgba(0, 0, 0, 0.96) 77%,
+                rgba(0, 0, 0, 0.92) 80%,
+                rgba(0, 0, 0, 0.86) 83%,
+                rgba(0, 0, 0, 0.78) 86%,
+                rgba(0, 0, 0, 0.68) 89%,
+                rgba(0, 0, 0, 0.56) 92%,
+                rgba(0, 0, 0, 0.42) 95%,
+                rgba(0, 0, 0, 0.25) 98%,
+                transparent 100%);
+        }
+        .game-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 15%;
+            display: block;
+            transition: opacity 0.6s ease;
+            -webkit-mask-image: linear-gradient(to bottom,
+                black 0%,
+                black 71.4%,
+                rgba(0, 0, 0, 0.99) 74%,
+                rgba(0, 0, 0, 0.96) 77%,
+                rgba(0, 0, 0, 0.92) 80%,
+                rgba(0, 0, 0, 0.86) 83%,
+                rgba(0, 0, 0, 0.78) 86%,
+                rgba(0, 0, 0, 0.68) 89%,
+                rgba(0, 0, 0, 0.56) 92%,
+                rgba(0, 0, 0, 0.42) 95%,
+                rgba(0, 0, 0, 0.25) 98%,
+                transparent 100%);
+            mask-image: linear-gradient(to bottom,
+                black 0%,
+                black 71.4%,
+                rgba(0, 0, 0, 0.99) 74%,
+                rgba(0, 0, 0, 0.96) 77%,
+                rgba(0, 0, 0, 0.92) 80%,
+                rgba(0, 0, 0, 0.86) 83%,
+                rgba(0, 0, 0, 0.78) 86%,
+                rgba(0, 0, 0, 0.68) 89%,
+                rgba(0, 0, 0, 0.56) 92%,
+                rgba(0, 0, 0, 0.42) 95%,
+                rgba(0, 0, 0, 0.25) 98%,
+                transparent 100%);
+        }
+
+        .main-content-padded {
+            padding: 0 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed var(--text-light);
+            padding-bottom: 8px;
+        }
+        .section-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-title i { color: var(--primary); font-size: 13px; }
+        .section-badge {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 10px;
+            background: var(--bg2);
+            border: var(--border);
+            color: var(--dark);
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 800;
+            border: 1.5px solid;
+        }
+        .role-badge.role-spy, .role-badge.role-infiltrator { color: var(--mafia-color); border-color: var(--mafia-color); background: rgba(239, 68, 68, 0.1); }
+        .role-badge.role-citizen, .role-badge.role-detective, .role-badge.role-judge { color: var(--city-color); border-color: var(--city-color); background: rgba(16, 185, 129, 0.1); }
+        .role-badge.role-free { color: var(--free-color); border-color: var(--free-color); background: rgba(139, 92, 246, 0.1); }
+
+        .word-display {
+            background: var(--bg2);
+            border: 2px dashed var(--primary);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+        .word-display .word-label {
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+        .word-display .word-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 16px;
+            font-size: 10px;
+            color: var(--text-light);
+        }
+        .empty-state i {
+            font-size: 30px;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 6px;
+            opacity: 0.5;
+        }
+
+        /* ✅ جدید: لودینگ استیت */
+        .loading-state-card {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 40px 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+        .loading-state-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        .loading-state-text {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-light);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .report-paper-wrapper {
+            position: relative;
+            padding: 20px 8px 30px;
+        }
+        .report-paper-pin {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            font-size: 28px;
+            filter: drop-shadow(0 3px 4px rgba(0,0,0,0.4));
+        }
+        .report-paper {
+            position: relative;
+            background: #f5e6c8;
+            border-radius: 3px;
+            padding: 26px 22px 22px;
+            box-shadow: 
+                0 2px 4px rgba(0,0,0,0.15),
+                0 8px 16px rgba(0,0,0,0.12),
+                inset 0 0 80px rgba(139, 90, 43, 0.08);
+            transform: rotate(-3deg);
+            font-family: 'Lalezar', var(--font);
+            color: #3d2817;
+            line-height: 28px;
+            font-size: 16px;
+            letter-spacing: 0.3px;
+            transition: transform 0.3s ease;
+        }
+        .report-paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 3px;
+            pointer-events: none;
+            box-shadow: inset 0 0 40px rgba(139, 90, 43, 0.12);
+        }
+        .report-paper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 20px solid rgba(139, 90, 43, 0.15);
+            border-left: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-right: 20px solid transparent;
+        }
+
+        .report-title {
+            font-size: 20px;
+            font-weight: 400;
+            text-align: center;
+            color: #8b1e1e;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+        }
+
+        .report-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 2px 0;
+            font-size: 16px;
+        }
+        .report-line .report-emoji {
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+        .report-line .report-text {
+            flex: 1;
+            line-height: 28px;
+        }
+        .report-line.dim {
+            opacity: 0.55;
+        }
+
+        .report-signature {
+            margin-top: 14px;
+            padding-top: 8px;
+            font-size: 13px;
+            text-align: left;
+            color: rgba(61, 40, 23, 0.6);
+            transform: rotate(-1deg);
+        }
+        [dir="ltr"] .report-signature { text-align: right; }
+
+        .qa-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 2px;
+            margin: 0 -2px;
+        }
+
+        .qa-item {
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 10px;
+            padding: 10px 12px;
+            box-shadow: 2px 2px 0 #000;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .qa-item.pending { border-color: var(--gold); }
+        .qa-item.my-question { border-color: var(--primary); }
+        .qa-item.reported {
+            opacity: 0.5;
+            filter: grayscale(0.5);
+        }
+
+        .qa-header {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-light);
+            flex-wrap: wrap;
+        }
+        .qa-header .name { color: var(--dark); font-weight: 800; }
+        .qa-header i { font-size: 10px; color: var(--primary); }
+
+        .qa-text {
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.7;
+            color: var(--text);
+        }
+        .qa-text.answer { color: var(--success); }
+        .qa-text.pending-text { color: var(--gold); font-style: italic; }
+
+        .qa-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+            flex-wrap: wrap;
+        }
+        .qa-answer-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            background: var(--primary);
+            color: #fff;
+            border: var(--border);
+            border-radius: 8px;
+            font-family: var(--font);
+            font-size: 9px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #000;
+            transition: all 0.2s ease;
+        }
+        .qa-answer-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+
+        .qa-report-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            background: var(--bg3);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            font-family: var(--font);
+            font-size: 9px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .qa-report-btn:active { transform: translate(1px, 1px); }
+        .qa-report-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+        .qa-report-btn i { font-size: 11px; }
+        .qa-report-btn .report-count {
+            font-size: 8px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 6px;
+            background: var(--danger);
+            color: #fff;
+            margin-right: 2px;
+        }
+
+        .mafia-teammates {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .teammate-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 10px;
+            box-shadow: 2px 2px 0 #000;
+        }
+        .teammate-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--primary);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .teammate-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .teammate-info { flex: 1; min-width: 0; }
+        .teammate-name { font-size: 11px; font-weight: 800; color: var(--dark); }
+        .teammate-role { font-size: 9px; font-weight: 700; color: var(--mafia-color); margin-top: 2px; }
+
+        .vote-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 10px;
+            box-shadow: 2px 2px 0 #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 6px;
+        }
+        .vote-option:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .vote-option.selected {
+            border-color: var(--primary);
+            border-width: 2px;
+            background: var(--bg3);
+        }
+        .vote-option.mine {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .vote-option-votes {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary);
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: 8px;
+            padding: 2px 8px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .workstation {
+            background: var(--bg2);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+        .workstation-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .workstation-desc {
+            font-size: 10px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .action-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: var(--border);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 2px 2px 0 #000;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px;
+            background: var(--primary);
+            color: #fff;
+            border: var(--border);
+            border-radius: 8px;
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+        .action-btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .action-btn.danger { background: var(--danger); }
+        .action-btn.success { background: var(--success); }
+
+        .workstation-actions-row {
+            display: flex;
+            gap: 6px;
+        }
+
+        .workstation-actions-row .action-btn {
+            flex: 1;
+        }
+
+        .action-btn.secondary {
+            background: var(--bg2);
+            color: var(--text);
+            border: var(--border);
+        }
+
+        .result-box {
+            background: var(--bg2);
+            border: 2px dashed var(--primary);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-align: center;
+            color: var(--dark);
+            margin-top: 8px;
+        }
+        .result-box.positive { border-color: var(--danger); color: var(--danger); }
+        .result-box.negative { border-color: var(--success); color: var(--success); }
+
+        .floating-bar {
+            position: fixed;
+            bottom: 12px;
+            right: 5%;
+            left: 5%;
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            z-index: 998;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-float {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+            border-radius: 25px;
+            font-family: var(--font);
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            flex: 1;
+        }
+        [data-theme="dark"] .btn-float {
+            background: rgba(26, 26, 26, 0.35);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+        .btn-float::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
+            pointer-events: none;
+            border-radius: 25px 25px 0 0;
+        }
+        [data-theme="dark"] .btn-float::before {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+        }
+        .btn-float:active:not(:disabled) {
+            transform: scale(0.98);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .btn-float:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .btn-float i { font-size: 15px; position: relative; z-index: 1; }
+        .btn-float span { position: relative; z-index: 1; }
+        .btn-float.success { color: var(--success); border-color: var(--success); background: rgba(16, 185, 129, 0.15); }
+        .btn-float.info { color: var(--info-color); border-color: var(--info-color); background: rgba(6, 182, 212, 0.15); }
+        .btn-float.danger { color: var(--danger); border-color: var(--danger); background: rgba(239, 68, 68, 0.15); }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: 5px 5px 0 #000;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 14px;
+            border-bottom: 1px dashed var(--text-light);
+            padding-bottom: 10px;
+        }
+        .modal-header i { color: var(--primary); font-size: 16px; }
+
+        .modal-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .modal-label i { color: var(--primary); }
+
+        .modal-select, .modal-input, .modal-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: var(--border);
+            border-radius: 8px;
+            background: var(--bg2);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 2px 2px 0 #000;
+            outline: none;
+            margin-bottom: 12px;
+        }
+        .modal-textarea { min-height: 80px; resize: vertical; }
+
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 11px;
+            border: var(--border);
+            border-radius: 8px;
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #000;
+            transition: all 0.2s ease;
+        }
+        .modal-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .modal-btn.primary { background: var(--primary); color: #fff; }
+        .modal-btn.cancel { background: var(--bg2); color: var(--text); }
+        .modal-btn.success { background: var(--success); color: #fff; }
+        .modal-btn.danger { background: var(--danger); color: #fff; }
+        .modal-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .modal-info {
+            background: var(--bg2);
+            border: 1px dashed var(--text-light);
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .modal-info .highlight { color: var(--primary); font-weight: 800; }
+
+        .extra-question-cost {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .cost-btn {
+            flex: 1;
+            padding: 10px;
+            border: var(--border);
+            border-radius: 8px;
+            background: var(--bg2);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+        .cost-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .cost-btn i { font-size: 12px; }
+        .cost-btn.coins i { color: var(--gold); }
+        .cost-btn.diamonds i { color: var(--info-color); }
+
+        .final-result-card {
+            background: var(--card-bg);
+            border: 3px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 24px 16px;
+            text-align: center;
+            box-shadow: 5px 5px 0 #000;
+        }
+        .final-result-card.win { border-color: var(--success); }
+        .final-result-card.lose { border-color: var(--danger); }
+        .final-result-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .final-result-title {
+            font-size: 18px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+        .final-result-title.win { color: var(--success); }
+        .final-result-title.lose { color: var(--danger); }
+        .final-result-desc {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .leave-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px dashed var(--danger);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--danger);
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .report-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px dashed var(--danger);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--danger);
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 12px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 4000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-overlay.show { display: flex; }
+        .loading-overlay-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-right">
+                <div class="header-logo"><img src="https://cdn.imgurl.ir/uploads/b255561_InShot_20260908_172945792.jpg" alt="Mafia Spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;"></div>
+                <div>
+                    <div class="header-title" id="headerTitle">جاسوس مافیایی</div>
+                    <div class="header-subtitle" id="headerSubtitle" data-i18n="table_title">میز بازی</div>
+                </div>
+            </div>
+            <div class="header-currency">
+                <span class="currency-badge coins"><i class="bi bi-coin" aria-hidden="true"></i> <span id="coinsHeader"><span class="mini-spinner"></span></span></span>
+                <span class="currency-badge diamonds"><i class="bi bi-gem" aria-hidden="true"></i> <span id="diamondsHeader"><span class="mini-spinner"></span></span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container" id="mainContainer">
+
+        <div class="game-banner" id="gameBanner">
+            <img id="gameBannerImg" src="https://cdn.imgurl.ir/uploads/f78633_vx-b-wH4SnJpzY971o_K_dAk8To-Vwj1dHF-RtCld33FwJDrLw.png" alt="Banner" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        </div>
+
+        <div class="main-content-padded">
+
+            <div id="dynamicContent"></div>
+
+            <div class="section-card" id="roleInfoCard" style="display:none;">
+                <div class="section-header">
+                    <div class="section-title">
+                        <i class="bi bi-person-badge" aria-hidden="true"></i>
+                        <span data-i18n="your_role">نقش شما</span>
+                    </div>
+                    <span class="role-badge" id="myRoleBadge">-</span>
+                </div>
+                <div class="word-display" id="wordDisplay" style="display:none;">
+                    <div class="word-label" data-i18n="your_word">کلمه‌ی شما</div>
+                    <div class="word-value" id="myWord">----</div>
+                </div>
+                <div class="empty-state" id="noWordMsg" style="display:none;">
+                    <i class="bi bi-eye-slash" aria-hidden="true"></i>
+                    <span data-i18n="no_word_spy">شما کلمه را نمی‌دانید. مخفی بمانید!</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div class="floating-bar" id="floatingBar" style="display:none;"></div>
+
+    <div class="modal-overlay" id="askModal">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="bi bi-question-circle-fill" aria-hidden="true"></i>
+                <span data-i18n="ask_new_question">پرسش سوال جدید</span>
+            </div>
+            <div class="modal-info" id="askInfo"></div>
+            <div class="modal-label"><i class="bi bi-person-fill" aria-hidden="true"></i> <span data-i18n="select_target">انتخاب بازیکن مورد سوال</span></div>
+            <select class="modal-select" id="askTargetSelect"></select>
+            <div class="modal-label"><i class="bi bi-chat-left-text" aria-hidden="true"></i> <span data-i18n="question_text">متن سوال</span></div>
+            <textarea class="modal-textarea" id="askQuestionText" placeholder=""></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="askCancel" type="button" data-i18n="cancel">انصراف</button>
+                <button class="modal-btn primary" id="askSubmit" type="button" data-i18n="send">ارسال</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="answerModal">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="bi bi-reply-fill" aria-hidden="true"></i>
+                <span data-i18n="submit_answer">ثبت پاسخ</span>
+            </div>
+            <div class="modal-info" id="answerInfo"></div>
+            <div class="modal-label"><i class="bi bi-chat-right-quote" aria-hidden="true"></i> <span data-i18n="your_answer">پاسخ شما</span></div>
+            <textarea class="modal-textarea" id="answerText" placeholder=""></textarea>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="answerCancel" type="button" data-i18n="cancel">انصراف</button>
+                <button class="modal-btn success" id="answerSubmit" type="button" data-i18n="submit">ثبت</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="extraQuestionModal">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="bi bi-cart-plus-fill" aria-hidden="true"></i>
+                <span data-i18n="extra_question_title">خرید سوال اضافه</span>
+            </div>
+            <div class="modal-info" id="extraInfo"></div>
+            <div class="extra-question-cost">
+                <button class="cost-btn coins" id="extraCoinsBtn" type="button">
+                    <i class="bi bi-coin" aria-hidden="true"></i>
+                    <span id="extraCoinsText">50</span>
+                </button>
+                <button class="cost-btn diamonds" id="extraDiamondsBtn" type="button">
+                    <i class="bi bi-gem" aria-hidden="true"></i>
+                    <span id="extraDiamondsText">3</span>
+                </button>
+            </div>
+            <div class="modal-actions" style="margin-top:14px;">
+                <button class="modal-btn cancel" id="extraCancel" type="button" data-i18n="cancel">انصراف</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="voteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="bi bi-check2-square" aria-hidden="true"></i>
+                <span data-i18n="vote_title">رأی‌گیری</span>
+            </div>
+            <div class="modal-info" id="voteInfo" data-i18n="vote_info">فکر می‌کنی جاسوس کیه؟</div>
+            <div id="voteOptions"></div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="voteCancel" type="button" data-i18n="cancel">انصراف</button>
+                <button class="modal-btn primary" id="voteSubmit" type="button" disabled data-i18n="confirm_vote">تایید رأی</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="leaveModal">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+                <span data-i18n="leave_confirm_title">خروج از بازی</span>
+            </div>
+            <div class="leave-warning" id="leaveWarning" data-i18n="leave_warning">اگه خارج بشی، ۵۰ امتیاز از خودت و ۱۰ امتیاز از هم‌گروهی‌هات کم می‌شه. مطمئنی؟</div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="leaveCancel" type="button" data-i18n="cancel">انصراف</button>
+                <button class="modal-btn danger" id="leaveConfirm" type="button" data-i18n="leave_room">خروج</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reportModal">
+        <div class="modal">
+            <div class="modal-header">
+                <i class="bi bi-flag-fill" aria-hidden="true"></i>
+                <span data-i18n="report_confirm_title">گزارش پیام</span>
+            </div>
+            <div class="report-warning" data-i18n="report_confirm">این پیام رو گزارش می‌دی؟ اگه ۵۰٪ بازیکنان گزارش بدن، بازی متوقف می‌شه.</div>
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="reportCancel" type="button" data-i18n="cancel">انصراف</button>
+                <button class="modal-btn danger" id="reportConfirm" type="button" data-i18n="report_btn">گزارش</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-overlay-spinner"></div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            var webApp = window.Eitaa && window.Eitaa.WebApp;
+            var API_URL = 'https://script.google.com/macros/s/AKfycbyWiCpI1vavW7FOq6nNHlItZucSj-H0QR38k1i3wLWVzfkmfLm8VWADO6dPiglju21v/exec';
+            var API_URL_NIGHT = API_URL;
+
+            var IMG_DAY = 'https://cdn.imgurl.ir/uploads/f78633_vx-b-wH4SnJpzY971o_K_dAk8To-Vwj1dHF-RtCld33FwJDrLw.png';
+            var IMG_NIGHT = 'https://cdn.imgurl.ir/uploads/i743040_ld_dMMFV4JP2Sq-SynjLGi66hLw-ehnPP0nZSxOOgn8tf_5lMQ.png';
+
+            var currentLang = 'fa';
+            var roomId = '';
+            var myUserId = '';
+            var myRole = '';
+            var myWord = '';
+            var myPlayerData = null;
+            var gameData = null;
+            var questionsData = [];
+            var playersData = [];
+            var reportStatusData = {};
+            var isCreator = false;
+            var isLoading = false;
+            var isActionInProgress = false;
+            var pollingInterval = null;
+            var dayTimerInterval = null;
+            var dayTimerStart = 0;
+            var dayTimerDuration = 0;
+            var dayTimerPhase = '';
+            var currentSelectedVote = null;
+            var currentAnswerQuestion = null;
+            var pendingReportMessageKey = null;
+
+            var ROLE_NAMES = {
+                'citizen': 'role_citizen',
+                'detective': 'role_detective',
+                'judge': 'role_judge',
+                'sheriff': 'role_sheriff',
+                'doctor': 'role_doctor',
+                'spy': 'role_spy',
+                'infiltrator': 'role_infiltrator',
+                'bait': 'role_bait',
+                'silencer': 'role_silencer',
+                'gunner': 'role_gunner',
+                'killer': 'role_killer',
+                'psycho': 'role_psycho'
+            };
+
+            var ROLE_GROUPS = {
+                'citizen': 'city',
+                'detective': 'city',
+                'judge': 'city',
+                'sheriff': 'city',
+                'doctor': 'city',
+                'spy': 'mafia',
+                'infiltrator': 'mafia',
+                'silencer': 'mafia',
+                'bait': 'mafia',
+                'gunner': 'mafia',
+                'killer': 'free',
+                'psycho': 'free'
+            };
+
+            var iconAvatars = {
+                'icon_game': 'fa-gamepad', 'icon_trophy': 'fa-trophy', 'icon_star': 'fa-star',
+                'icon_bolt': 'fa-bolt', 'icon_fire': 'fa-fire', 'icon_crown': 'fa-crown',
+                'icon_medal': 'fa-medal', 'icon_ghost': 'fa-ghost',
+                'icon_hat': 'fa-hat-wizard', 'icon_shield': 'fa-shield-halved'
+            };
+
+            var allAvatarUrls = {
+                'pack1_1': 'https://cdn.imgurl.ir/uploads/w54346_lIQr-ezB9TyDFznBX3EieIvKLKM-CdpmSV-OSA2l26jhWCDcIA.png',
+                'pack1_2': 'https://cdn.imgurl.ir/uploads/d045472_45mp0V0r9zSquRAopHTdR59Od_o-L60GmINsTj2gUswx-2AmsQ.png',
+                'pack1_3': 'https://cdn.imgurl.ir/uploads/d114583_ftWUHkzgH4A2JymrtJgRp63obmk-8-j-mwqcSiacnVXLLkp0hA.png',
+                'pack1_4': 'https://cdn.imgurl.ir/uploads/w41443_xNi0R1rJosqzhzhbLnQzYQHn2fw-XhSRfdtbSTe4-1WdpJFA2w.png',
+                'pack1_5': 'https://cdn.imgurl.ir/uploads/n160157_D0pfZYH_Qyviui_DHs7nz-Ov8ok-9QNBVHKnRPi3pACDH8ybJw.png',
+                'pack1_6': 'https://cdn.imgurl.ir/uploads/z506541_xNi0R1rJosqzhzhbLnQzYQHn2fw-XhSRfdtbSTe4-1WdpJFA2w.png',
+                'pack1_7': 'https://cdn.imgurl.ir/uploads/o90527_iXRzLE_NMWaY3YWS7NVyWsLAnKc-5FHSha4aSI-iAd9SZcXZuA.png',
+                'pack1_8': 'https://cdn.imgurl.ir/uploads/x98720_ip7QxGUh5btN7O3bJEWpsCVMFcc-ior1jq1JT4yr8KBbjEEGNw.png',
+                'pack1_9': 'https://cdn.imgurl.ir/uploads/m835437_pGirYQXoRTm0dS72qKE41Rzrhwc-OrCH6A2LS7eVKdUmFciPEA.png',
+                'pack1_10': 'https://cdn.imgurl.ir/uploads/n589870_n1TPqxlnhdfs8om-ovlEjYGgBIM-LwT9XNfyQQSttH7PhHi5iQ.png'
+            };
+
+            var translations = {
+                fa: {
+                    table_title: 'میز بازی',
+                    players_count: 'بازیکنان',
+                    city_count: 'شهر',
+                    mafia_count: 'مافیا',
+                    phase_label: 'فاز',
+                    day_timer: 'زمان',
+                    questions_count: 'پرسش',
+                    your_role: 'نقش شما',
+                    your_word: 'کلمه‌ی شما',
+                    no_word_spy: 'شما کلمه را نمی‌دانید. مخفی بمانید!',
+                    role_citizen: 'شهروند ساده',
+                    role_detective: 'کارآگاه',
+                    role_judge: 'قاضی',
+                    role_sheriff: 'کلانتر',
+                    role_doctor: 'دکتر',
+                    role_spy: 'جاسوس',
+                    role_infiltrator: 'نفوذی',
+                    role_silencer: 'سایلنتر',
+                    role_bait: 'طعمه',
+                    role_gunner: 'تفنگدار',
+                    role_killer: 'قاتل',
+                    role_psycho: 'روانی',
+                    wait_night: 'شب شده، منتظر بمانید...',
+                    wait_other_players: 'در انتظار سایر بازیکنان...',
+                    mafia_teammates: 'هم‌گروهی‌های شما',
+                    mafia_teammates_desc: 'این افراد هم‌گروهی شما هستند. با همکاری هم جاسوس را مخفی نگه دارید.',
+                    no_teammates: 'شما تنها عضو مافیا هستید.',
+                    judge_workstation: 'میزکار قاضی',
+                    judge_desc: 'نتیجه رأی‌گیری روز گذشته را بررسی کنید و تصمیم بگیرید.',
+                    judge_select: 'فرد مورد نظر را انتخاب کنید',
+                    judge_none: 'هیچ‌کدام (تبرئه همه)',
+                    judge_submit: 'اعلام نظر',
+                    judge_decided: 'شما قبلاً نظر خود را اعلام کرده‌اید.',
+                    detective_workstation: 'میزکار کارآگاه',
+                    detective_desc: 'یک بازیکن را استعلام بگیرید. توجه: فقط یک‌بار در کل بازی می‌توانید از این قابلیت استفاده کنید.',
+                    detective_select: 'انتخاب بازیکن',
+                    detective_submit: 'استعلام',
+                    detective_used: 'شما قبلاً از قابلیت استعلام استفاده کرده‌اید.',
+                    detective_result: 'نتیجه استعلام',
+                    detective_positive: 'مثبت (مشکوک به جاسوسی)',
+                    detective_negative: 'منفی (شهروند)',
+                    detective_target_was: 'شخص استعلام‌شده',
+                    spy_workstation: 'میزکار جاسوس',
+                    spy_desc: 'می‌توانید کلمه‌ی بازی را حدس بزنید. اگه درست باشه، مافیا برنده می‌شه. اگه اشتباه باشه، تا شب بعد صبر کنید.',
+                    spy_guess_placeholder: 'کلمه‌ای که فکر می‌کنی درسته...',
+                    spy_guess_submit: 'ثبت حدس',
+                    spy_guess_used: 'شما این شب حدس زده‌اید.',
+                    spy_guess_correct: 'حدس شما درست بود! مافیا برنده شد.',
+                    spy_guess_wrong: 'حدس اشتباه بود. تا شب بعد صبر کنید.',
+                    vote_history: 'آرای روز قبل',
+                    vote_count: 'تعداد رأی',
+                    ask_new_question: 'پرسش سوال جدید',
+                    select_target: 'انتخاب بازیکن مورد سوال',
+                    question_text: 'متن سوال',
+                    your_answer: 'پاسخ شما',
+                    submit_answer: 'ثبت پاسخ',
+                    cancel: 'انصراف',
+                    send: 'ارسال',
+                    submit: 'ثبت',
+                    ask_btn: 'پرسش سوال جدید',
+                    vote_btn: 'رأی‌گیری',
+                    end_day_btn: 'پایان روز',
+                    end_night_btn: 'پایان شب',
+                    creator_only: 'فقط سازنده',
+                    no_questions: 'هنوز سوالی پرسیده نشده',
+                    loading_data: 'در حال آماده‌سازی میز...',
+                    error_network: 'اتصال اینترنت خود را بررسی کنید',
+                    error_join: 'خطا در دریافت اطلاعات بازی',
+                    ask_limit_reached: 'سقف سوالات شما پر شده است',
+                    ask_pending: 'شما یک سوال در انتظار پاسخ دارید',
+                    ask_self: 'نمی‌توانید از خودتان سوال بپرسید',
+                    ask_empty: 'لطفاً متن سوال را وارد کنید',
+                    answer_empty: 'لطفاً پاسخ را وارد کنید',
+                    ask_success: 'سوال با موفقیت ثبت شد',
+                    answer_success: 'پاسخ با موفقیت ثبت شد',
+                    vote_success: 'رأی شما ثبت شد',
+                    vote_already: 'شما قبلاً رأی داده‌اید',
+                    vote_select: 'لطفاً یک نفر را انتخاب کنید',
+                    vote_waiting: 'در انتظار رأی سایر بازیکنان...',
+                    vote_all_done: 'همه رأی دادند!',
+                    vote_my_choice: 'رأی شما',
+                    phase_changed: 'فاز بازی تغییر کرد',
+                    game_finished: 'بازی تمام شد',
+                    winner_city: 'شهر برنده شد',
+                    winner_mafia: 'مافیا برنده شد',
+                    winner_free: 'نقش آزاد برنده شد',
+                    winner_draw: 'بازی مساوی شد',
+                    winner_cancelled: 'بازی لغو شد',
+                    win_desc_city: 'شهر توانست جاسوس را پیدا کند!',
+                    win_desc_mafia: 'مافیا موفق شد شهر را فریب دهد!',
+                    win_desc_draw: 'بازی به پایان رسید بدون برنده.',
+                    your_team_won: 'تیم شما برنده شد!',
+                    your_team_lost: 'تیم شما باخت!',
+                    extra_question_title: 'خرید سوال اضافه',
+                    extra_info: 'برای پرسیدن سوال بیشتر، یکی از روش‌های زیر را انتخاب کنید.',
+                    not_enough_coins: 'سکه کافی ندارید',
+                    not_enough_diamonds: 'الماس کافی ندارید',
+                    buy_success: 'خرید موفق',
+                    buy_failed: 'خرید انجام نشد',
+                    ask_questions_used: 'سوالات استفاده‌شده',
+                    ask_questions_limit: 'سقف سوالات',
+                    exit_game: 'خروج',
+                    leave_confirm_title: 'خروج از بازی',
+                    leave_warning: 'اگه خارج بشی، ۵۰ امتیاز از خودت و ۱۰ امتیاز از هم‌گروهی‌هات کم می‌شه. مطمئنی؟',
+                    leave_success: 'از بازی خارج شدی',
+                    leave_failed: 'خروج انجام نشد',
+                    player_left: 'یک بازیکن از بازی خارج شد',
+                    loading: 'در حال بارگذاری...',
+                    question_from: 'از',
+                    question_to: 'به',
+                    question_label: 'سوال',
+                    answer_label: 'پاسخ',
+                    pending_answer: 'در انتظار پاسخ',
+                    answer_now: 'ثبت پاسخ',
+                    no_answer_yet: 'هنوز پاسخی ثبت نشده',
+                    report_btn: 'گزارش',
+                    report_confirm_title: 'گزارش پیام',
+                    report_confirm: 'این پیام رو گزارش می‌دی؟ اگه ۵۰٪ بازیکنان گزارش بدن، بازی متوقف می‌شه.',
+                    report_submitted: 'گزارش شما ثبت شد',
+                    report_already: 'قبلاً این پیام رو گزارش دادی',
+                    report_failed: 'گزارش انجام نشد',
+                    game_cancelled_report: 'بازی به دلیل گزارش تخلف متوقف شد',
+                    night_report_title: 'گزارش شب',
+                    night_report_empty: 'شب آرومی بود...',
+                    report_judge_decided: 'قاضی تصمیم خود را اعلام کرد',
+                    report_judge_not_decided: 'قاضی تصمیمی نگرفت',
+                    report_detective_used: 'کارآگاه استعلام گرفت',
+                    report_detective_not_used: 'کارآگاه استعلامی نگرفت',
+                    report_spy_guessed: 'جاسوس حدس زد',
+                    report_spy_not_guessed: 'جاسوس حدسی نزد',
+                    phase_n1: 'شب ۱',
+                    phase_d1: 'روز ۱',
+                    phase_v1: 'رأی‌گیری ۱',
+                    phase_n2: 'شب ۲',
+                    phase_d2: 'روز ۲',
+                    phase_v2: 'رأی‌گیری ۲',
+                    phase_n3: 'شب ۳',
+                    phase_d3: 'روز ۳',
+                    phase_v3: 'رأی‌گیری ۳',
+                    phase_waiting: 'در انتظار',
+                    phase_finish: 'پایان',
+                    phase_cancelled: 'لغو شده',
+                    bad_language: 'محتوای ارسالی حاوی کلمه یا کلمات نامناسب است',
+                    secret_word: 'نمی‌توانید کلمه‌ی مخفی بازی را در متن استفاده کنید',
+                    back_to_dashboard: 'بازگشت به داشبورد',
+                    decline_tonight: 'امشب نمی‌خواهم',
+                    declined: 'امشب انصراف دادی',
+                    declined_success: 'انصراف ثبت شد'
+                },
+                en: {
+                    table_title: 'Game Table',
+                    players_count: 'Players',
+                    city_count: 'City',
+                    mafia_count: 'Mafia',
+                    phase_label: 'Phase',
+                    day_timer: 'Timer',
+                    questions_count: 'Q&A',
+                    your_role: 'Your Role',
+                    your_word: 'Your Word',
+                    no_word_spy: 'You don\'t know the word. Stay hidden!',
+                    role_citizen: 'Citizen',
+                    role_detective: 'Detective',
+                    role_judge: 'Judge',
+                    role_sheriff: 'Sheriff',
+                    role_doctor: 'Doctor',
+                    role_spy: 'Spy',
+                    role_infiltrator: 'Infiltrator',
+                    role_silencer: 'Silencer',
+                    role_bait: 'Bait',
+                    role_gunner: 'Gunner',
+                    role_killer: 'Killer',
+                    role_psycho: 'Psycho',
+                    wait_night: 'It\'s night, wait...',
+                    wait_other_players: 'Waiting for other players...',
+                    mafia_teammates: 'Your Mafia Teammates',
+                    mafia_teammates_desc: 'These players are your teammates. Work together to keep the spy hidden.',
+                    no_teammates: 'You are the only mafia member.',
+                    judge_workstation: 'Judge Workstation',
+                    judge_desc: 'Review yesterday\'s votes and make your decision.',
+                    judge_select: 'Select the target player',
+                    judge_none: 'None (Acquit all)',
+                    judge_submit: 'Declare Verdict',
+                    judge_decided: 'You already made your decision.',
+                    detective_workstation: 'Detective Workstation',
+                    detective_desc: 'Inquire about one player. Note: You can use this only once per game.',
+                    detective_select: 'Select player',
+                    detective_submit: 'Inquire',
+                    detective_used: 'You already used your inquiry.',
+                    detective_result: 'Inquiry Result',
+                    detective_positive: 'Positive (Suspected spy)',
+                    detective_negative: 'Negative (Citizen)',
+                    detective_target_was: 'Target',
+                    spy_workstation: 'Spy Workstation',
+                    spy_desc: 'You can guess the game word. If correct, the mafia wins. If wrong, wait until next night.',
+                    spy_guess_placeholder: 'Your guess...',
+                    spy_guess_submit: 'Submit Guess',
+                    spy_guess_used: 'You guessed this night.',
+                    spy_guess_correct: 'Your guess was correct! Mafia won.',
+                    spy_guess_wrong: 'Wrong guess. Wait for next night.',
+                    vote_history: 'Yesterday\'s Votes',
+                    vote_count: 'Votes',
+                    ask_new_question: 'Ask New Question',
+                    select_target: 'Select target player',
+                    question_text: 'Question text',
+                    your_answer: 'Your Answer',
+                    submit_answer: 'Submit Answer',
+                    cancel: 'Cancel',
+                    send: 'Send',
+                    submit: 'Submit',
+                    ask_btn: 'Ask New Question',
+                    vote_btn: 'Vote',
+                    end_day_btn: 'End Day',
+                    end_night_btn: 'End Night',
+                    creator_only: 'Creator only',
+                    no_questions: 'No questions yet',
+                    loading_data: 'Preparing the table...',
+                    error_network: 'Please check your internet connection',
+                    error_join: 'Error loading game data',
+                    ask_limit_reached: 'Your question limit reached',
+                    ask_pending: 'You have a pending question',
+                    ask_self: 'Cannot ask yourself',
+                    ask_empty: 'Please enter the question',
+                    answer_empty: 'Please enter the answer',
+                    ask_success: 'Question submitted',
+                    answer_success: 'Answer submitted',
+                    vote_success: 'Your vote has been recorded',
+                    vote_already: 'You already voted',
+                    vote_select: 'Please select someone',
+                    vote_waiting: 'Waiting for other players...',
+                    vote_all_done: 'All players voted!',
+                    vote_my_choice: 'Your Vote',
+                    phase_changed: 'Phase changed',
+                    game_finished: 'Game Finished',
+                    winner_city: 'City Won',
+                    winner_mafia: 'Mafia Won',
+                    winner_free: 'Free Role Won',
+                    winner_draw: 'Draw',
+                    winner_cancelled: 'Game Cancelled',
+                    win_desc_city: 'The city found the spy!',
+                    win_desc_mafia: 'Mafia successfully deceived the city!',
+                    win_desc_draw: 'Game ended without a winner.',
+                    your_team_won: 'Your team won!',
+                    your_team_lost: 'Your team lost!',
+                    extra_question_title: 'Buy Extra Question',
+                    extra_info: 'To ask more questions, choose one of the options below.',
+                    not_enough_coins: 'Not enough coins',
+                    not_enough_diamonds: 'Not enough diamonds',
+                    buy_success: 'Purchase successful',
+                    buy_failed: 'Purchase failed',
+                    ask_questions_used: 'Questions used',
+                    ask_questions_limit: 'Question limit',
+                    exit_game: 'Exit',
+                    leave_confirm_title: 'Leave Game',
+                    leave_warning: 'If you leave, 50 points will be deducted from you and 10 points from each of your teammates. Are you sure?',
+                    leave_success: 'You left the game',
+                    leave_failed: 'Failed to leave',
+                    player_left: 'A player left the game',
+                    loading: 'Loading...',
+                    question_from: 'From',
+                    question_to: 'To',
+                    question_label: 'Question',
+                    answer_label: 'Answer',
+                    pending_answer: 'Pending answer',
+                    answer_now: 'Answer now',
+                    no_answer_yet: 'No answer yet',
+                    report_btn: 'Report',
+                    report_confirm_title: 'Report Message',
+                    report_confirm: 'Report this message? If 50% of players report, the game will be cancelled.',
+                    report_submitted: 'Your report was submitted',
+                    report_already: 'You already reported this message',
+                    report_failed: 'Report failed',
+                    game_cancelled_report: 'Game cancelled due to reports',
+                    night_report_title: 'Night Report',
+                    night_report_empty: 'Quiet night...',
+                    report_judge_decided: 'Judge made a decision',
+                    report_judge_not_decided: 'Judge did not decide',
+                    report_detective_used: 'Detective used inquiry',
+                    report_detective_not_used: 'Detective did not inquire',
+                    report_spy_guessed: 'Spy made a guess',
+                    report_spy_not_guessed: 'Spy did not guess',
+                    phase_n1: 'Night 1',
+                    phase_d1: 'Day 1',
+                    phase_v1: 'Vote 1',
+                    phase_n2: 'Night 2',
+                    phase_d2: 'Day 2',
+                    phase_v2: 'Vote 2',
+                    phase_n3: 'Night 3',
+                    phase_d3: 'Day 3',
+                    phase_v3: 'Vote 3',
+                    phase_waiting: 'Waiting',
+                    phase_finish: 'Finished',
+                    phase_cancelled: 'Cancelled',
+                    bad_language: 'Your message contains inappropriate language',
+                    secret_word: 'You cannot use the secret word',
+                    back_to_dashboard: 'Back to Dashboard',
+                    decline_tonight: 'Skip Tonight',
+                    declined: 'You skipped tonight',
+                    declined_success: 'Skipped successfully'
+                },
+                ar: {
+                    table_title: 'طاولة اللعب',
+                    players_count: 'اللاعبون',
+                    city_count: 'المدينة',
+                    mafia_count: 'المافيا',
+                    phase_label: 'المرحلة',
+                    day_timer: 'المؤقت',
+                    questions_count: 'أسئلة',
+                    your_role: 'دورك',
+                    your_word: 'كلمتك',
+                    no_word_spy: 'أنت لا تعرف الكلمة. ابقَ مخفياً!',
+                    role_citizen: 'مواطن',
+                    role_detective: 'محقق',
+                    role_judge: 'قاضي',
+                    role_sheriff: 'شريف',
+                    role_doctor: 'طبيب',
+                    role_spy: 'جاسوس',
+                    role_infiltrator: 'مندس',
+                    role_silencer: 'مسكت',
+                    role_bait: 'طعم',
+                    role_gunner: 'مسلح',
+                    role_killer: 'قاتل',
+                    role_psycho: 'مختل',
+                    wait_night: 'حان الليل، انتظر...',
+                    wait_other_players: 'في انتظار اللاعبين الآخرين...',
+                    mafia_teammates: 'زملاؤك في المافيا',
+                    mafia_teammates_desc: 'هؤلاء زملاؤك. تعاونوا لإبقاء الجاسوس مخفياً.',
+                    no_teammates: 'أنت العضو الوحيد في المافيا.',
+                    judge_workstation: 'مكتب القاضي',
+                    judge_desc: 'راجع تصويت الأمس واتخذ قرارك.',
+                    judge_select: 'اختر اللاعب المستهدف',
+                    judge_none: 'لا أحد (تبرئة الجميع)',
+                    judge_submit: 'إعلان الحكم',
+                    judge_decided: 'لقد اتخذت قرارك بالفعل.',
+                    detective_workstation: 'مكتب المحقق',
+                    detective_desc: 'استعلم عن لاعب واحد. ملاحظة: يمكنك استخدام هذا مرة واحدة فقط.',
+                    detective_select: 'اختر اللاعب',
+                    detective_submit: 'استعلام',
+                    detective_used: 'لقد استخدمت استعلامك بالفعل.',
+                    detective_result: 'نتيجة الاستعلام',
+                    detective_positive: 'إيجابي (مشتبه به)',
+                    detective_negative: 'سلبي (مواطن)',
+                    detective_target_was: 'الهدف',
+                    spy_workstation: 'مكتب الجاسوس',
+                    spy_desc: 'يمكنك تخمين كلمة اللعبة. إذا صح، تفوز المافيا. إذا خطأ، انتظر الليلة القادمة.',
+                    spy_guess_placeholder: 'تخمينك...',
+                    spy_guess_submit: 'إرسال التخمين',
+                    spy_guess_used: 'لقد خمّنت هذه الليلة.',
+                    spy_guess_correct: 'تخمينك صحيح! فازت المافيا.',
+                    spy_guess_wrong: 'تخمين خاطئ. انتظر الليلة القادمة.',
+                    vote_history: 'تصويت الأمس',
+                    vote_count: 'الأصوات',
+                    ask_new_question: 'اطرح سؤالاً جديداً',
+                    select_target: 'اختر اللاعب المستهدف',
+                    question_text: 'نص السؤال',
+                    your_answer: 'إجابتك',
+                    submit_answer: 'إرسال الإجابة',
+                    cancel: 'إلغاء',
+                    send: 'إرسال',
+                    submit: 'تأكيد',
+                    ask_btn: 'اطرح سؤالاً جديداً',
+                    vote_btn: 'صوّت',
+                    end_day_btn: 'إنهاء النهار',
+                    end_night_btn: 'إنهاء الليل',
+                    creator_only: 'المنشئ فقط',
+                    no_questions: 'لا أسئلة بعد',
+                    loading_data: 'جارٍ تحضير الطاولة...',
+                    error_network: 'يرجى التحقق من اتصالك بالإنترنت',
+                    error_join: 'خطأ في تحميل بيانات اللعبة',
+                    ask_limit_reached: 'وصلت إلى الحد الأقصى للأسئلة',
+                    ask_pending: 'لديك سؤال في انتظار الإجابة',
+                    ask_self: 'لا يمكنك سؤال نفسك',
+                    ask_empty: 'يرجى إدخال السؤال',
+                    answer_empty: 'يرجى إدخال الإجابة',
+                    ask_success: 'تم إرسال السؤال',
+                    answer_success: 'تم إرسال الإجابة',
+                    vote_success: 'تم تسجيل صوتك',
+                    vote_already: 'لقد صوّت بالفعل',
+                    vote_select: 'يرجى اختيار شخص',
+                    vote_waiting: 'في انتظار تصويت اللاعبين الآخرين...',
+                    vote_all_done: 'صوّت الجميع!',
+                    vote_my_choice: 'صوتك',
+                    phase_changed: 'تغيرت المرحلة',
+                    game_finished: 'انتهت اللعبة',
+                    winner_city: 'فازت المدينة',
+                    winner_mafia: 'فازت المافيا',
+                    winner_free: 'فاز الدور الحر',
+                    winner_draw: 'تعادل',
+                    winner_cancelled: 'تم إلغاء اللعبة',
+                    win_desc_city: 'وجدت المدينة الجاسوس!',
+                    win_desc_mafia: 'نجحت المافيا في خداع المدينة!',
+                    win_desc_draw: 'انتهت اللعبة بدون فائز.',
+                    your_team_won: 'فاز فريقك!',
+                    your_team_lost: 'خسر فريقك!',
+                    extra_question_title: 'شراء سؤال إضافي',
+                    extra_info: 'لطرح المزيد من الأسئلة، اختر أحد الخيارات أدناه.',
+                    not_enough_coins: 'لا تملك عملات كافية',
+                    not_enough_diamonds: 'لا تملك الماس كافياً',
+                    buy_success: 'تم الشراء بنجاح',
+                    buy_failed: 'فشل الشراء',
+                    ask_questions_used: 'الأسئلة المستخدمة',
+                    ask_questions_limit: 'حد الأسئلة',
+                    exit_game: 'خروج',
+                    leave_confirm_title: 'مغادرة اللعبة',
+                    leave_warning: 'إذا غادرت، ستُخصم 50 نقطة منك و10 نقاط من كل زميل. متأكد؟',
+                    leave_success: 'لقد غادرت اللعبة',
+                    leave_failed: 'فشل الخروج',
+                    player_left: 'لاعب غادر اللعبة',
+                    loading: 'جارٍ التحميل...',
+                    question_from: 'من',
+                    question_to: 'إلى',
+                    question_label: 'السؤال',
+                    answer_label: 'الإجابة',
+                    pending_answer: 'في انتظار الإجابة',
+                    answer_now: 'أجب الآن',
+                    no_answer_yet: 'لا إجابة بعد',
+                    report_btn: 'إبلاغ',
+                    report_confirm_title: 'الإبلاغ عن الرسالة',
+                    report_confirm: 'الإبلاغ عن هذه الرسالة؟ إذا أبلغ 50% من اللاعبين، يتم إلغاء اللعبة.',
+                    report_submitted: 'تم إرسال إبلاغك',
+                    report_already: 'لقد أبلغت عن هذه الرسالة بالفعل',
+                    report_failed: 'فشل الإبلاغ',
+                    game_cancelled_report: 'تم إلغاء اللعبة بسبب الإبلاغات',
+                    night_report_title: 'تقرير الليل',
+                    night_report_empty: 'ليلة هادئة...',
+                    report_judge_decided: 'اتخذ القاضي قراراً',
+                    report_judge_not_decided: 'لم يتخذ القاضي قراراً',
+                    report_detective_used: 'استخدم المحقق الاستعلام',
+                    report_detective_not_used: 'لم يستعلم المحقق',
+                    report_spy_guessed: 'خمّن الجاسوس',
+                    report_spy_not_guessed: 'لم يخمّن الجاسوس',
+                    phase_n1: 'الليل ١',
+                    phase_d1: 'النهار ١',
+                    phase_v1: 'تصويت ١',
+                    phase_n2: 'الليل ٢',
+                    phase_d2: 'النهار ٢',
+                    phase_v2: 'تصويت ٢',
+                    phase_n3: 'الليل ٣',
+                    phase_d3: 'النهار ٣',
+                    phase_v3: 'تصويت ٣',
+                    phase_waiting: 'في الانتظار',
+                    phase_finish: 'انتهت',
+                    phase_cancelled: 'ملغاة',
+                    bad_language: 'رسالتك تحتوي على كلمات غير لائقة',
+                    secret_word: 'لا يمكنك استخدام الكلمة السرية',
+                    back_to_dashboard: 'العودة إلى لوحة التحكم',
+                    decline_tonight: 'تخطّي الليلة',
+                    declined: 'تخطّيت هذه الليلة',
+                    declined_success: 'تم التخطي'
+                }
+            };
+
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+            document.addEventListener('copy', function(e) { e.preventDefault(); });
+            document.addEventListener('cut', function(e) { e.preventDefault(); });
+
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function escapeAttr(str) { return escapeHtml(str); }
+
+            function safeGetLocalStorage(key) {
+                try { return localStorage.getItem(key); }
+                catch(e) { return null; }
+            }
+
+            function safeSetLocalStorage(key, value) {
+                try { localStorage.setItem(key, value); return true; }
+                catch(e) { return false; }
+            }
+
+            function safeParseJSON(str, fallback) {
+                try {
+                    var parsed = JSON.parse(str);
+                    return parsed === null || parsed === undefined ? fallback : parsed;
+                } catch(e) { return fallback; }
+            }
+
+            var fontMap = {
+                'Samim': "'Samim', Tahoma, sans-serif",
+                'Sahel': "'Sahel', Tahoma, sans-serif",
+                'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
+                'Estedad': "'Estedad', Tahoma, sans-serif",
+                'Gandom': "'Gandom', Tahoma, sans-serif"
+            };
+
+            function getTranslation(k) {
+                var t = translations[currentLang] || translations.fa;
+                return t[k] || translations.fa[k] || k;
+            }
+
+            function getSettings() {
+                try {
+                    var raw = safeGetLocalStorage('mafiaSettings');
+                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                    var p = safeParseJSON(raw, null);
+                    if (!p || typeof p !== 'object') throw new Error('bad');
+                    if (!p.theme) p.theme = 'light';
+                    if (!p.specialTheme) p.specialTheme = 'none';
+                    if (p.animation === undefined) p.animation = true;
+                    if (p.haptic === undefined) p.haptic = true;
+                    if (!p.font) p.font = 'Samim';
+                    if (!p.language) p.language = 'fa';
+                    return p;
+                } catch(e) {
+                    return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
+                }
+            }
+
+            function updateHeaderTitle(lang) {
+                var titleEl = document.getElementById('headerTitle');
+                if (!titleEl) return;
+                titleEl.textContent = lang === 'en' ? 'Mafia Spy' : 'جاسوس مافیایی';
+            }
+
+            function applyLanguage(lang) {
+                var t = translations[lang] || translations.fa;
+                document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                    var k = el.getAttribute('data-i18n');
+                    if (t[k] !== undefined) el.textContent = t[k];
+                });
+                if (lang === 'en') {
+                    document.documentElement.setAttribute('dir', 'ltr');
+                } else {
+                    document.documentElement.setAttribute('dir', 'rtl');
+                }
+                updateHeaderTitle(lang);
+            }
+
+            function applyTheme() {
+                var s = getSettings();
+                currentLang = s.language || 'fa';
+                var t = s.theme || 'light';
+                var st = s.specialTheme || 'none';
+                var f = s.font || 'Samim';
+                document.documentElement.setAttribute('data-theme', t);
+                document.documentElement.setAttribute('data-special-theme', st);
+                if (s.animation === false) {
+                    document.documentElement.setAttribute('data-animation', 'off');
+                } else {
+                    document.documentElement.removeAttribute('data-animation');
+                }
+                var fontFamily = fontMap[f] || fontMap['Samim'];
+                document.documentElement.style.setProperty('--font', fontFamily);
+                document.body.style.fontFamily = fontFamily;
+                applyLanguage(currentLang);
+            }
+
+            function triggerHaptic(style) {
+                var s = getSettings();
+                if (s.haptic === false) return;
+                if (webApp && webApp.HapticFeedback && webApp.HapticFeedback.impactOccurred) {
+                    try { webApp.HapticFeedback.impactOccurred(style || 'light'); } catch(e) {}
+                }
+            }
+
+            function showToast(message, type, duration) {
+                duration = duration || 4000;
+                var container = document.getElementById('toastContainer');
+                if (!container) return;
+
+                var toast = document.createElement('div');
+                toast.className = 'toast' + (type ? ' ' + type : '');
+                var icon = 'bi-exclamation-triangle-fill';
+                if (type === 'success') icon = 'bi-check-circle-fill';
+                else if (type === 'info') icon = 'bi-info-circle-fill';
+                toast.innerHTML = '<i class="bi ' + icon + '" aria-hidden="true"></i><span class="toast-text">' + escapeHtml(message) + '</span>';
+                container.appendChild(toast);
+
+                setTimeout(function() {
+                    toast.classList.add('hiding');
+                    setTimeout(function() {
+                        if (toast.parentNode) toast.parentNode.removeChild(toast);
+                    }, 400);
+                }, duration);
+            }
+
+            function showLoading() {
+                var el = document.getElementById('loadingOverlay');
+                if (el) el.classList.add('show');
+            }
+
+            function hideLoading() {
+                var el = document.getElementById('loadingOverlay');
+                if (el) el.classList.remove('show');
+            }
+
+            function getAvatarHtml(avatarId) {
+                if (!avatarId || avatarId === 'default') return '<i class="fa-solid fa-user" aria-hidden="true"></i>';
+                if (iconAvatars[avatarId]) return '<i class="fa-solid ' + escapeAttr(iconAvatars[avatarId]) + '" aria-hidden="true"></i>';
+                if (allAvatarUrls[avatarId]) return '<img src="' + escapeAttr(allAvatarUrls[avatarId]) + '" alt="" draggable="false" oncontextmenu="return false;" ondragstart="return false;">';
+                return '<i class="fa-solid fa-user" aria-hidden="true"></i>';
+            }
+
+            function toPersianDigits(n) {
+                var s = String(n);
+                if (currentLang === 'en') return s;
+                var digits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+                return s.replace(/\d/g, function(d) { return digits[parseInt(d, 10)]; });
+            }
+
+            function formatTime(seconds) {
+                if (seconds < 0) seconds = 0;
+                var m = Math.floor(seconds / 60);
+                var s = seconds % 60;
+                var mm = m < 10 ? '0' + m : '' + m;
+                var ss = s < 10 ? '0' + s : '' + s;
+                return toPersianDigits(mm) + ':' + toPersianDigits(ss);
+            }
+
+            function getEitaaUser() {
+                return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
+            }
+
+            function getUserId() {
+                var u = getEitaaUser();
+                if (!u || u.id === undefined || u.id === null) return '';
+                return String(u.id);
+            }
+
+            function getRoomFromUrl() {
+                try {
+                    var urlParams = new URLSearchParams(window.location.search);
+                    var room = urlParams.get('room') || '';
+                    if (room && /^[A-Za-z0-9_\-]{1,50}$/.test(room)) return room;
+                } catch(e) {}
+                var stored = safeGetLocalStorage('mafiaRoomCode');
+                if (stored && /^[A-Za-z0-9_\-]{1,50}$/.test(stored)) return stored;
+                return '';
+            }
+
+            async function fetchData(action, params, retryCount) {
+                retryCount = retryCount || 0;
+                var payload = { action: action, username: getUserId() };
+                if (params && typeof params === 'object') {
+                    for (var k in params) {
+                        if (Object.prototype.hasOwnProperty.call(params, k)) {
+                            payload[k] = params[k];
+                        }
+                    }
+                }
+                try {
+                    var controller = new AbortController();
+                    var timeoutId = setTimeout(function() { controller.abort(); }, 15000);
+                    var r = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+
+                    if (!r.ok) throw new Error('http_' + r.status);
+
+                    var ct = r.headers.get('content-type') || '';
+                    if (ct.indexOf('application/json') === -1) {
+                        throw new Error('invalid_content_type');
+                    }
+
+                    var data = await r.json();
+                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
+                    return data;
+                } catch(err) {
+                    var isRetryable = err && (
+                        err.name === 'AbortError' ||
+                        err.message === 'Failed to fetch' ||
+                        err.message === 'NetworkError when attempting to fetch resource.' ||
+                        err.message === 'invalid_content_type' ||
+                        /^http_5/.test(err.message || '')
+                    );
+                    if (retryCount < 2 && isRetryable) {
+                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
+                        return fetchData(action, params, retryCount + 1);
+                    }
+                    return { ok: false, error: 'network' };
+                }
+            }
+
+            async function checkNightActionsAPI() {
+                try {
+                    var payload = { action: 'checkNightActions', gameId: roomId };
+                    var r = await fetch(API_URL_NIGHT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(payload)
+                    });
+                    return await r.json();
+                } catch(e) {
+                    return { ok: false, error: 'network' };
+                }
+            }
+
+            function isNight(status) { return status === 'n1' || status === 'n2' || status === 'n3'; }
+            function isDay(status) { return status === 'd1' || status === 'd2' || status === 'd3'; }
+            function isVote(status) { return status === 'v1' || status === 'v2' || status === 'v3'; }
+
+            function getPhaseNumber(status) {
+                if (status === 'n1' || status === 'd1' || status === 'v1') return 1;
+                if (status === 'n2' || status === 'd2' || status === 'v2') return 2;
+                if (status === 'n3' || status === 'd3' || status === 'v3') return 3;
+                return 0;
+            }
+
+            function getPhaseLabel(status) {
+                var map = {
+                    'waiting': 'phase_waiting',
+                    'n1': 'phase_n1', 'd1': 'phase_d1', 'v1': 'phase_v1',
+                    'n2': 'phase_n2', 'd2': 'phase_d2', 'v2': 'phase_v2',
+                    'n3': 'phase_n3', 'd3': 'phase_d3', 'v3': 'phase_v3',
+                    'finish': 'phase_finish',
+                    'cancelled': 'phase_cancelled'
+                };
+                return getTranslation(map[status] || 'phase_waiting');
+            }
+
+            function getRoleName(role) {
+                return getTranslation(ROLE_NAMES[role] || 'role_citizen');
+            }
+
+            function getRoleClass(role) {
+                var g = ROLE_GROUPS[role] || 'city';
+                if (g === 'mafia') return 'role-spy';
+                if (g === 'free') return 'role-free';
+                return 'role-citizen';
+            }
+
+            function findPlayerById(id) {
+                if (!playersData) return null;
+                for (var i = 0; i < playersData.length; i++) {
+                    if (String(playersData[i].user_id) === String(id)) return playersData[i];
+                }
+                return null;
+            }
+
+            async function loadUserCurrency() {
+                var coinsEl = document.getElementById('coinsHeader');
+                var diamondsEl = document.getElementById('diamondsHeader');
+                try {
+                    var userData = await fetchData('getUser', {});
+                    if (userData && userData.ok && userData.data && typeof userData.data === 'object') {
+                        var c = parseInt(userData.data.coins, 10);
+                        var d = parseInt(userData.data.diamonds, 10);
+                        coinsEl.textContent = String(isNaN(c) ? 0 : c);
+                        diamondsEl.textContent = String(isNaN(d) ? 0 : d);
+                    } else {
+                        coinsEl.textContent = '0';
+                        diamondsEl.textContent = '0';
+                    }
+                } catch(e) {
+                    coinsEl.textContent = '0';
+                    diamondsEl.textContent = '0';
+                }
+            }
+
+            function updateBannerByPhase(status) {
+                var img = document.getElementById('gameBannerImg');
+                if (!img) return;
+                var newSrc = isNight(status) ? IMG_NIGHT : IMG_DAY;
+                if (img.src !== newSrc) {
+                    img.style.opacity = '0';
+                    setTimeout(function() {
+                        img.src = newSrc;
+                        img.style.opacity = '1';
+                    }, 200);
+                }
+            }
+
+            // ✅ فقط تایمر رو مدیریت میکنه، UI نداره (statusCard حذف شده)
+            function updateTimerIfNeeded(game) {
+                if (isDay(game.status)) {
+                    var dayDur = (game.dayDuration || 3) * 60;
+                    if (dayTimerPhase !== game.status) {
+                        dayTimerPhase = game.status;
+                        dayTimerStart = 0;
+                        dayTimerDuration = 0;
+                        startDayTimer(dayDur);
+                    }
+                } else {
+                    if (dayTimerPhase !== '') {
+                        dayTimerPhase = '';
+                        stopDayTimer();
+                        dayTimerDuration = 0;
+                        dayTimerStart = 0;
+                    }
+                }
+            }
+
+            function startDayTimer(durationSec) {
+                stopDayTimer();
+                if (durationSec <= 0) return;
+                dayTimerStart = Date.now();
+                dayTimerDuration = durationSec;
+                dayTimerInterval = setInterval(function() {
+                    var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
+                    var remaining = dayTimerDuration - elapsed;
+                    if (remaining <= 0) stopDayTimer();
+                }, 1000);
+            }
+
+            function stopDayTimer() {
+                if (dayTimerInterval) {
+                    clearInterval(dayTimerInterval);
+                    dayTimerInterval = null;
+                }
+            }
+
+            function updateRoleInfoCard() {
+                var card = document.getElementById('roleInfoCard');
+                if (!card) return;
+                if (!myRole) {
+                    card.style.display = 'none';
+                    return;
+                }
+                card.style.display = 'block';
+                var badge = document.getElementById('myRoleBadge');
+                badge.textContent = getRoleName(myRole);
+                badge.className = 'role-badge ' + getRoleClass(myRole);
+
+                var wordDisplay = document.getElementById('wordDisplay');
+                var noWordMsg = document.getElementById('noWordMsg');
+
+                if (myWord && myWord !== '') {
+                    document.getElementById('myWord').textContent = myWord;
+                    wordDisplay.style.display = 'block';
+                    noWordMsg.style.display = 'none';
+                } else {
+                    wordDisplay.style.display = 'none';
+                    noWordMsg.style.display = 'block';
+                }
+            }
+
+            function parseNightData(raw) {
+                if (!raw) return null;
+                try {
+                    var p = JSON.parse(String(raw));
+                    if (p && typeof p === 'object') return p;
+                } catch(e) {}
+                return null;
+            }
+
+            function buildNightReport(game) {
+                var status = game.status;
+                if (!isDay(status)) return null;
+
+                var dayNum = getPhaseNumber(status);
+                if (dayNum <= 1) return null;
+
+                var prevNight = 'n' + (dayNum - 1);
+                var nightRaw = game[prevNight];
+                var nightData = parseNightData(nightRaw) || {};
+
+                var report = {
+                    night: prevNight,
+                    title: getTranslation('night_report_title') + ' ' + toPersianDigits(dayNum - 1),
+                    judgeDecided: nightData.judge_verdict !== undefined && nightData.judge_verdict !== null && nightData.judge_verdict !== '',
+                    detectiveUsed: !!nightData.detective_check,
+                    spyGuessed: !!nightData.spy_guess
+                };
+
+                return report;
+            }
+
+            function renderNightReportPaper(report) {
+                if (!report) return '';
+
+                var html = '';
+                html += '<div class="report-paper-wrapper">';
+                html += '<div class="report-paper-pin">📌</div>';
+                html += '<div class="report-paper">';
+                html += '<div class="report-title">' + escapeHtml(report.title) + '</div>';
+
+                if (report.judgeDecided) {
+                    html += '<div class="report-line"><span class="report-emoji">🔨</span><span class="report-text">' + escapeHtml(getTranslation('report_judge_decided')) + '</span></div>';
+                } else {
+                    html += '<div class="report-line dim"><span class="report-emoji">🔨</span><span class="report-text">' + escapeHtml(getTranslation('report_judge_not_decided')) + '</span></div>';
+                }
+
+                if (report.detectiveUsed) {
+                    html += '<div class="report-line"><span class="report-emoji">🔍</span><span class="report-text">' + escapeHtml(getTranslation('report_detective_used')) + '</span></div>';
+                } else {
+                    html += '<div class="report-line dim"><span class="report-emoji">🔍</span><span class="report-text">' + escapeHtml(getTranslation('report_detective_not_used')) + '</span></div>';
+                }
+
+                if (report.spyGuessed) {
+                    html += '<div class="report-line"><span class="report-emoji">🎭</span><span class="report-text">' + escapeHtml(getTranslation('report_spy_guessed')) + '</span></div>';
+                } else {
+                    html += '<div class="report-line dim"><span class="report-emoji">🎭</span><span class="report-text">' + escapeHtml(getTranslation('report_spy_not_guessed')) + '</span></div>';
+                }
+
+                html += '<div class="report-signature">— ' + escapeHtml(getTranslation('table_title')) + '</div>';
+                html += '</div>';
+                html += '</div>';
+
+                return html;
+            }
+
+            function getReportersCount(messageKey) {
+                if (!reportStatusData || !reportStatusData[messageKey]) return 0;
+                var reporters = reportStatusData[messageKey].reporters;
+                return Array.isArray(reporters) ? reporters.length : 0;
+            }
+
+            function hasIReported(messageKey) {
+                if (!reportStatusData || !reportStatusData[messageKey]) return false;
+                var reporters = reportStatusData[messageKey].reporters;
+                if (!Array.isArray(reporters)) return false;
+                return reporters.indexOf(String(myUserId)) !== -1;
+            }
+
+            function renderQuestions(questions) {
+                if (!questions || questions.length === 0) {
+                    return '<div class="empty-state"><i class="bi bi-chat-square-dots" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('no_questions')) + '</span></div>';
+                }
+
+                var html = '<div class="qa-list">';
+                for (var i = questions.length - 1; i >= 0; i--) {
+                    var q = questions[i];
+                    if (!q || typeof q !== 'object') continue;
+
+                    var asker = findPlayerById(q.asker);
+                    var responder = findPlayerById(q.responder);
+                    var askerName = asker ? asker.name : '---';
+                    var responderName = responder ? responder.name : '---';
+
+                    var isMine = String(q.asker) === String(myUserId);
+                    var isForMe = String(q.responder) === String(myUserId);
+                    var isPending = !q.answer || q.answer === '';
+
+                    var messageKey = String(q.asker) + '::' + String(q.ts || '');
+                    var iReported = hasIReported(messageKey);
+                    var reportersCount = getReportersCount(messageKey);
+
+                    var itemClass = 'qa-item';
+                    if (isPending) itemClass += ' pending';
+                    if (isMine) itemClass += ' my-question';
+                    if (iReported) itemClass += ' reported';
+
+                    html += '<div class="' + itemClass + '" data-msg-key="' + escapeAttr(messageKey) + '">';
+                    html += '<div class="qa-header">';
+                    html += '<i class="bi bi-person-up" aria-hidden="true"></i>';
+                    html += '<span class="name">' + escapeHtml(askerName) + '</span>';
+                    html += '<i class="bi bi-arrow-left" aria-hidden="true"></i>';
+                    html += '<span class="name">' + escapeHtml(responderName) + '</span>';
+                    html += '</div>';
+                    html += '<div class="qa-text"><b>' + escapeHtml(getTranslation('question_label')) + ':</b> ' + escapeHtml(q.question) + '</div>';
+
+                    if (isPending) {
+                        html += '<div class="qa-text pending-text">' + escapeHtml(getTranslation('pending_answer')) + '</div>';
+                    } else {
+                        html += '<div class="qa-text answer"><b>' + escapeHtml(getTranslation('answer_label')) + ':</b> ' + escapeHtml(q.answer) + '</div>';
+                    }
+
+                    html += '<div class="qa-actions">';
+                    if (isPending && isForMe) {
+                        html += '<button class="qa-answer-btn" data-answer-asker="' + escapeAttr(q.asker) + '" data-answer-responder="' + escapeAttr(q.responder) + '" type="button"><i class="bi bi-reply-fill" aria-hidden="true"></i> ' + escapeHtml(getTranslation('answer_now')) + '</button>';
+                    } else {
+                        html += '<span></span>';
+                    }
+
+                    var reportBtnClass = iReported ? 'qa-report-btn' : 'qa-report-btn';
+                    var disabledAttr = (isMine || iReported) ? 'disabled' : '';
+                    var reportCountHtml = reportersCount > 0 ? '<span class="report-count">' + toPersianDigits(reportersCount) + '</span>' : '';
+
+                    html += '<button class="' + reportBtnClass + '" data-report-key="' + escapeAttr(messageKey) + '" type="button" ' + disabledAttr + '>';
+                    html += '<i class="bi bi-flag-fill" aria-hidden="true"></i> ';
+                    html += reportCountHtml;
+                    html += escapeHtml(getTranslation('report_btn'));
+                    html += '</button>';
+
+                    html += '</div>';
+
+                    html += '</div>';
+                }
+                html += '</div>';
+                return html;
+            }
+
+            function renderDayContent(game) {
+                var html = '';
+
+                var report = buildNightReport(game);
+                if (report) {
+                    var reportHtml = renderNightReportPaper(report);
+                    if (reportHtml) html += reportHtml;
+                }
+
+                html += '<div class="section-card">';
+                html += '<div class="section-header">';
+                html += '<div class="section-title"><i class="bi bi-chat-dots-fill" aria-hidden="true"></i> <span>' + escapeHtml(getTranslation('questions_count')) + '</span></div>';
+                html += '<span class="section-badge">' + toPersianDigits(questionsData.length) + '</span>';
+                html += '</div>';
+                html += renderQuestions(questionsData);
+                html += '</div>';
+
+                return html;
+            }
+
+            function renderVoteContent(game) {
+                var html = '';
+                var voteData = game.voteData || null;
+
+                html += '<div class="section-card">';
+                html += '<div class="section-header">';
+                html += '<div class="section-title"><i class="bi bi-check2-square" aria-hidden="true"></i> <span>' + escapeHtml(getTranslation('vote_btn')) + '</span></div>';
+                html += '</div>';
+
+                if (!voteData) {
+                    html += '<div class="empty-state"><i class="bi bi-hourglass-split" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('vote_waiting')) + '</span></div>';
+                    html += '</div>';
+                    return html;
+                }
+
+                if (voteData.myVote) {
+                    var myChoice = findPlayerById(voteData.myVote);
+                    html += '<div class="modal-info">' + escapeHtml(getTranslation('vote_my_choice')) + ': <span class="highlight">' + escapeHtml(myChoice ? myChoice.name : '---') + '</span></div>';
+                }
+
+                if (voteData.allVoted) {
+                    html += '<div class="modal-info" style="color:var(--success);">' + escapeHtml(getTranslation('vote_all_done')) + '</div>';
+                } else {
+                    html += '<div class="modal-info">' + escapeHtml(getTranslation('vote_waiting')) + '</div>';
+                }
+
+                html += '</div>';
+                return html;
+            }
+
+            function renderMafiaTeammates(game) {
+                var html = '';
+                var teammates = game.mafiaTeammates || [];
+
+                html += '<div class="section-card">';
+                html += '<div class="section-header">';
+                html += '<div class="section-title"><i class="bi bi-people-fill" aria-hidden="true"></i> <span>' + escapeHtml(getTranslation('mafia_teammates')) + '</span></div>';
+                html += '</div>';
+                html += '<div class="modal-info">' + escapeHtml(getTranslation('mafia_teammates_desc')) + '</div>';
+
+                if (teammates.length === 0) {
+                    html += '<div class="empty-state"><i class="bi bi-person-x" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('no_teammates')) + '</span></div>';
+                } else {
+                    html += '<div class="mafia-teammates">';
+                    for (var i = 0; i < teammates.length; i++) {
+                        var t = teammates[i];
+                        html += '<div class="teammate-row">';
+                        html += '<div class="teammate-avatar">' + getAvatarHtml(t.avatar || 'default') + '</div>';
+                        html += '<div class="teammate-info">';
+                        html += '<div class="teammate-name">' + escapeHtml(t.name) + '</div>';
+                        html += '<div class="teammate-role">' + escapeHtml(getRoleName(t.role)) + '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    html += '</div>';
+                }
+                html += '</div>';
+                return html;
+            }
+
+            function renderJudgeWorkstation(game) {
+                if (myRole !== 'judge') return '';
+
+                var html = '';
+                html += '<div class="section-card">';
+                html += '<div class="section-header">';
+                html += '<div class="section-title"><i class="bi bi-hammer" aria-hidden="true"></i> <span>' + escapeHtml(getTranslation('judge_workstation')) + '</span></div>';
+                html += '</div>';
+                html += '<div class="workstation">';
+                html += '<div class="workstation-desc">' + escapeHtml(getTranslation('judge_desc')) + '</div>';
+
+                var nightData = game.nightData || {};
+                if (nightData.judge_verdict !== undefined && nightData.judge_verdict !== null) {
+                    html += '<div class="result-box">' + escapeHtml(getTranslation('judge_decided')) + '</div>';
+                    html += '</div></div>';
+                    return html;
+                }
+
+                var options = game.judgeVoteOptions || [];
+                if (options.length === 0) {
+                    html += '<div class="empty-state"><i class="bi bi-info-circle" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('vote_waiting')) + '</span></div>';
+                    html += '</div></div>';
+                    return html;
+                }
+
+                html += '<div class="modal-label">' + escapeHtml(getTranslation('judge_select')) + '</div>';
+                html += '<select class="action-select" id="judgeSelect">';
+                for (var i = 0; i < options.length; i++) {
+                    var o = options[i];
+                    var p = findPlayerById(o.user_id);
+                    if (!p) continue;
+                    html += '<option value="' + escapeAttr(o.user_id) + '">' + escapeHtml(p.name) + ' (' + toPersianDigits(o.votes) + ' ' + escapeHtml(getTranslation('vote_count')) + ')</option>';
+                }
+                html += '<option value="">' + escapeHtml(getTranslation('judge_none')) + '</option>';
+                html += '</select>';
+                html += '<button class="action-btn success" id="judgeSubmitBtn" type="button"><i class="bi bi-check-circle-fill" aria-hidden="true"></i> ' + escapeHtml(getTranslation('judge_submit')) + '</button>';
+                html += '</div></div>';
+                return html;
+            }
+
+            function renderDetectiveWorkstation(game) {
+                if (myRole !== 'detective') return '';
+
+                var html = '';
+                html += '<div class="section-card">';
+                html += '<div class="section-header">';
+                html += '<div class="section-title"><i class="bi bi-search" aria-hidden="true"></i> <span>' + escapeHtml(getTranslation('detective_workstation')) + '</span></div>';
+                html += '</div>';
+                html += '<div class="workstation">';
+
+                var history = game.detectiveHistory || [];
+                if (history.length > 0) {
+                    var h = history[0];
+                    html += '<div class="result-box ' + (h.check.result === 'positive' ? 'positive' : 'negative') + '">';
+                    html += '<div>' + escapeHtml(getTranslation('detective_result')) + ':</div>';
+                    var targetP = findPlayerById(h.check.target);
+                    html += '<div style="margin-top:4px;">' + escapeHtml(getTranslation('detective_target_was')) + ': ' + escapeHtml(targetP ? targetP.name : '---') + '</div>';
+                    html += '<div style="margin-top:4px;font-weight:900;">' + escapeHtml(h.check.result === 'positive' ? getTranslation('detective_positive') : getTranslation('detective_negative')) + '</div>';
+                    html += '</div>';
+                    html += '<div class="modal-info" style="margin-top:10px;">' + escapeHtml(getTranslation('detective_used')) + '</div>';
+                    html += '</div></div>';
+                    return html;
+                }
+
+                var nightData = game.nightData || {};
+                if (nightData.detective_declined) {
+                    html += '<div class="result-box">' + escapeHtml(getTranslation('declined')) + '</div>';
+                    html += '</div></div>';
+                    return html;
+                }
+
+                html += '<div class="workstation-desc">' + escapeHtml(getTranslation('detective_desc')) + '</div>';
+                html += '<div class="modal-label">' + escapeHtml(getTranslation('detective_select')) + '</div>';
+                html += '<select class="action-select" id="detectiveSelect">';
+                html += '<option value="">---</option>';
+                for (var i = 0; i < playersData.length; i++) {
+                    var p = playersData[i];
+                    if (String(p.user_id) === String(myUserId)) continue;
+                    html += '<option value="' + escapeAttr(p.user_id) + '">' + escapeHtml(p.name) + '</option>';
+                }
+                html += '</select>';
+                html += '<div class="workstation-actions-row">';
+                html += '<button class="action-btn" id="detectiveSubmitBtn" type="button"><i class="bi bi-search" aria-hidden="true"></i> ' + escapeHtml(getTranslation('detective_submit')) + '</button>';
+                html += '<button class="action-btn secondary" id="detectiveDeclineBtn" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i> ' + escapeHtml(getTranslation('decline_tonight')) + '</button>';
+                html += '</div>';
+                html += '</div></div>';
+                return html;
+            }
+
+            function renderSpyWorkstation(game) {
+                if (myRole !== 'spy') return '';
+
+                var html = '';
+                html += '<div class="section-card">';
+                html += '<div class="section-header">';
+                html += '<div class="section-title"><i class="bi bi-incognito" aria-hidden="true"></i> <span>' + escapeHtml(getTranslation('spy_workstation')) + '</span></div>';
+                html += '</div>';
+                html += '<div class="workstation">';
+
+                var nightData = game.nightData || {};
+                if (nightData.spy_guess) {
+                    html += '<div class="result-box">' + escapeHtml(getTranslation('spy_guess_used')) + '</div>';
+                    html += '</div></div>';
+                    return html;
+                }
+
+                if (nightData.spy_guess_declined) {
+                    html += '<div class="result-box">' + escapeHtml(getTranslation('declined')) + '</div>';
+                    html += '</div></div>';
+                    return html;
+                }
+
+                html += '<div class="workstation-desc">' + escapeHtml(getTranslation('spy_desc')) + '</div>';
+                html += '<div class="modal-label">' + escapeHtml(getTranslation('spy_guess_submit')) + '</div>';
+                html += '<input type="text" class="action-select" id="spyGuessInput" placeholder="' + escapeAttr(getTranslation('spy_guess_placeholder')) + '" maxlength="50">';
+                html += '<div class="workstation-actions-row">';
+                html += '<button class="action-btn danger" id="spyGuessSubmitBtn" type="button"><i class="bi bi-send-fill" aria-hidden="true"></i> ' + escapeHtml(getTranslation('spy_guess_submit')) + '</button>';
+                html += '<button class="action-btn secondary" id="spyDeclineBtn" type="button"><i class="bi bi-x-circle" aria-hidden="true"></i> ' + escapeHtml(getTranslation('decline_tonight')) + '</button>';
+                html += '</div>';
+                html += '</div></div>';
+                return html;
+            }
+
+            function renderVoteHistory(game) {
+                var currentStatus = game.status;
+                var historyField = null;
+                if (currentStatus === 'n1') historyField = 'v1';
+                else if (currentStatus === 'n2') historyField = 'v2';
+                else if (currentStatus === 'n3') historyField = 'v3';
+                else return '';
+
+                var raw = game[historyField];
+                if (!raw) return '';
+
+                var data;
+                try { data = JSON.parse(String(raw)); }
+                catch(e) { return ''; }
+                if (!data || !data.counts) return '';
+
+                var html = '';
+                html += '<div class="section-card">';
+                html += '<div class="section-header">';
+                html += '<div class="section-title"><i class="bi bi-bar-chart-fill" aria-hidden="true"></i> <span>' + escapeHtml(getTranslation('vote_history')) + '</span></div>';
+                html += '</div>';
+
+                for (var uid in data.counts) {
+                    var p = findPlayerById(uid);
+                    var votes = data.counts[uid];
+                    html += '<div class="vote-option">';
+                    html += '<div class="teammate-avatar">' + getAvatarHtml(p ? p.avatar : 'default') + '</div>';
+                    html += '<div style="flex:1;font-size:11px;font-weight:800;">' + escapeHtml(p ? p.name : '---') + '</div>';
+                    html += '<div class="vote-option-votes">' + toPersianDigits(votes) + '</div>';
+                    html += '</div>';
+                }
+
+                html += '</div>';
+                return html;
+            }
+
+            function renderNightContent(game) {
+                var html = '';
+
+                var group = ROLE_GROUPS[myRole] || '';
+                if (group === 'mafia') {
+                    html += renderMafiaTeammates(game);
+                }
+
+                html += renderJudgeWorkstation(game);
+                html += renderDetectiveWorkstation(game);
+                html += renderSpyWorkstation(game);
+                html += renderVoteHistory(game);
+
+                if (group !== 'mafia' && myRole !== 'judge' && myRole !== 'detective' && myRole !== 'spy') {
+                    html += '<div class="section-card">';
+                    html += '<div class="empty-state"><i class="bi bi-moon-stars" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('wait_night')) + '</span></div>';
+                    html += '</div>';
+                }
+
+                return html;
+            }
+
+            function renderFinalContent(game) {
+                var final = game.final || '';
+                var html = '';
+
+                html += '<div class="final-result-card';
+
+                var title = '';
+                var desc = '';
+                var icon = '🏆';
+                var isWinForMe = false;
+
+                if (final === 'city_won') {
+                    title = getTranslation('winner_city');
+                    desc = getTranslation('win_desc_city');
+                    icon = '🏙️';
+                    if (ROLE_GROUPS[myRole] === 'city') { isWinForMe = true; html += ' win'; }
+                    else html += ' lose';
+                } else if (final === 'mafia_won') {
+                    title = getTranslation('winner_mafia');
+                    desc = getTranslation('win_desc_mafia');
+                    icon = '🎭';
+                    if (ROLE_GROUPS[myRole] === 'mafia') { isWinForMe = true; html += ' win'; }
+                    else html += ' lose';
+                } else if (final === 'draw') {
+                    title = getTranslation('winner_draw');
+                    desc = getTranslation('win_desc_draw');
+                    icon = '🤝';
+                } else if (final === 'cancelled') {
+                    title = getTranslation('winner_cancelled');
+                    desc = '';
+                    icon = '🚫';
+                } else if (final === 'free_won') {
+                    title = getTranslation('winner_free');
+                    desc = '';
+                    icon = '⚡';
+                    if (ROLE_GROUPS[myRole] === 'free') { isWinForMe = true; html += ' win'; }
+                    else html += ' lose';
+                } else {
+                    title = getTranslation('game_finished');
+                    desc = '';
+                    icon = '🏁';
+                }
+
+                html += '">';
+                html += '<span class="final-result-icon">' + icon + '</span>';
+                html += '<div class="final-result-title ' + (isWinForMe ? 'win' : '') + '">' + escapeHtml(title) + '</div>';
+                html += '<div class="final-result-desc">' + escapeHtml(desc) + '</div>';
+                if (isWinForMe) {
+                    html += '<div class="result-box positive" style="margin-top:14px;">' + escapeHtml(getTranslation('your_team_won')) + '</div>';
+                } else if (ROLE_GROUPS[myRole] === 'city' || ROLE_GROUPS[myRole] === 'mafia' || ROLE_GROUPS[myRole] === 'free') {
+                    html += '<div class="result-box" style="margin-top:14px;">' + escapeHtml(getTranslation('your_team_lost')) + '</div>';
+                }
+                html += '</div>';
+
+                return html;
+            }
+
+            function renderLoadingState() {
+                return '<div class="loading-state-card">' +
+                    '<div class="loading-state-spinner"></div>' +
+                    '<div class="loading-state-text">' + escapeHtml(getTranslation('loading_data')) + '</div>' +
+                    '</div>';
+            }
+
+            function renderDynamicContent() {
+                var container = document.getElementById('dynamicContent');
+                if (!container) return;
+                if (!gameData) {
+                    // ✅ لودینگ
+                    if (container.querySelector('.loading-state-card')) return;
+                    container.innerHTML = renderLoadingState();
+                    return;
+                }
+
+                var status = gameData.status;
+                var html = '';
+
+                if (isDay(status)) {
+                    html += renderDayContent(gameData);
+                } else if (isNight(status)) {
+                    html += renderNightContent(gameData);
+                } else if (isVote(status)) {
+                    html += renderVoteContent(gameData);
+                } else if (status === 'finish' || status === 'cancelled') {
+                    html += renderFinalContent(gameData);
+                } else if (status === 'waiting') {
+                    // حالت انتظار
+                    html += renderLoadingState();
+                }
+
+                container.innerHTML = html;
+                bindDynamicEvents();
+            }
+
+            function bindDynamicEvents() {
+                var answerBtns = document.querySelectorAll('.qa-answer-btn');
+                answerBtns.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        openAnswerModal(btn.getAttribute('data-answer-asker'), btn.getAttribute('data-answer-responder'));
+                    });
+                });
+
+                var reportBtns = document.querySelectorAll('.qa-report-btn:not([disabled])');
+                reportBtns.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        pendingReportMessageKey = btn.getAttribute('data-report-key');
+                        document.getElementById('reportModal').classList.add('show');
+                    });
+                });
+
+                var judgeBtn = document.getElementById('judgeSubmitBtn');
+                if (judgeBtn) judgeBtn.addEventListener('click', submitJudgeVerdict);
+
+                var detectiveBtn = document.getElementById('detectiveSubmitBtn');
+                if (detectiveBtn) detectiveBtn.addEventListener('click', submitDetectiveCheck);
+
+                var detectiveDeclineBtn = document.getElementById('detectiveDeclineBtn');
+                if (detectiveDeclineBtn) detectiveDeclineBtn.addEventListener('click', declineDetectiveCheck);
+
+                var spyBtn = document.getElementById('spyGuessSubmitBtn');
+                if (spyBtn) spyBtn.addEventListener('click', submitSpyGuess);
+
+                var spyDeclineBtn = document.getElementById('spyDeclineBtn');
+                if (spyDeclineBtn) spyDeclineBtn.addEventListener('click', declineSpyGuess);
+            }
+
+            function updateFloatingBar() {
+                var bar = document.getElementById('floatingBar');
+                if (!bar) return;
+                if (!gameData) {
+                    bar.style.display = 'none';
+                    return;
+                }
+
+                var status = gameData.status;
+                var html = '';
+
+                if (status === 'finish' || status === 'cancelled') {
+                    html += '<button class="btn-float success" id="backBtn" type="button"><i class="bi bi-house-fill" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('back_to_dashboard')) + '</span></button>';
+                    bar.innerHTML = html;
+                    bar.style.display = 'flex';
+                    document.getElementById('backBtn').addEventListener('click', function() {
+                        window.location.href = '../../dashboard/';
+                    });
+                    return;
+                }
+
+                if (status === 'waiting') {
+                    bar.style.display = 'none';
+                    return;
+                }
+
+                if (isDay(status)) {
+                    var canAsk = gameData.questionInfo && gameData.questionInfo.canAskMore;
+                    if (canAsk) {
+                        html += '<button class="btn-float" id="askBtn" type="button"><i class="bi bi-plus-circle" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('ask_btn')) + '</span></button>';
+                    } else {
+                        html += '<button class="btn-float info" id="buyBtn" type="button"><i class="bi bi-cart-plus-fill" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('extra_question_title')) + '</span></button>';
+                    }
+                } else if (isVote(status)) {
+                    var voteData = gameData.voteData || {};
+                    if (voteData.myVote) {
+                        html += '<button class="btn-float" type="button" disabled><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('vote_already')) + '</span></button>';
+                    } else {
+                        html += '<button class="btn-float info" id="voteBtn" type="button"><i class="bi bi-check2-square" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('vote_btn')) + '</span></button>';
+                    }
+                }
+
+                html += '<button class="btn-float danger" id="exitBtn" type="button"><i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('exit_game')) + '</span></button>';
+
+                bar.innerHTML = html;
+                bar.style.display = 'flex';
+
+                var askBtn = document.getElementById('askBtn');
+                if (askBtn) askBtn.addEventListener('click', openAskModal);
+
+                var buyBtn = document.getElementById('buyBtn');
+                if (buyBtn) buyBtn.addEventListener('click', openExtraQuestionModal);
+
+                var voteBtn = document.getElementById('voteBtn');
+                if (voteBtn) voteBtn.addEventListener('click', openVoteModal);
+
+                var exitBtn = document.getElementById('exitBtn');
+                if (exitBtn) exitBtn.addEventListener('click', openLeaveModal);
+            }
+
+            async function loadQuestions() {
+                try {
+                    var result = await fetchData('getQuestions', { gameId: roomId, limit: 200 });
+                    if (result && result.ok && Array.isArray(result.data)) {
+                        var parsed = [];
+                        for (var i = 0; i < result.data.length; i++) {
+                            try {
+                                var q = JSON.parse(result.data[i]);
+                                if (q && typeof q === 'object') parsed.push(q);
+                            } catch(e) {}
+                        }
+                        questionsData = parsed;
+                    } else {
+                        questionsData = [];
+                    }
+                } catch(e) {
+                    questionsData = [];
+                }
+            }
+
+            async function loadReportStatus() {
+                try {
+                    var result = await fetchData('getReportStatus', { gameId: roomId });
+                    if (result && result.ok && result.data && typeof result.data === 'object') {
+                        reportStatusData = result.data;
+                    } else {
+                        reportStatusData = {};
+                    }
+                } catch(e) {
+                    reportStatusData = {};
+                }
+            }
+
+            async function checkAndAutoAdvance() {
+                if (!isCreator) return;
+                if (!gameData) return;
+                if (isActionInProgress) return;
+
+                var status = gameData.status;
+
+                if (isDay(status)) {
+                    // ✅ فقط اگه تایمر واقعاً برای این فاز start شده
+                    if (dayTimerDuration > 0 && dayTimerStart > 0 && dayTimerPhase === status) {
+                        var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
+                        var remaining = dayTimerDuration - elapsed;
+                        if (remaining <= 0) {
+                            await advancePhase();
+                        }
+                    }
+                }
+
+                if (isNight(status)) {
+                    var check = await checkNightActionsAPI();
+                    if (check && check.ok && check.data && check.data.allDone) {
+                        await advancePhase();
+                    }
+                }
+            }
+
+            async function loadGame(isInitial) {
+                if (isLoading) return;
+                isLoading = true;
+
+                try {
+                    var result = await fetchData('getGame', { gameId: roomId });
+
+                    if (!result || !result.ok || !result.data) {
+                        if (isInitial) {
+                            showToast(getTranslation('error_join'));
+                            setTimeout(function() { window.location.href = '../../dashboard/'; }, 2500);
+                        }
+                        isLoading = false;
+                        return;
+                    }
+
+                    var game = result.data;
+
+                    if (gameData && gameData.status !== game.status) {
+                        if (game.status === 'finish' || game.status === 'cancelled') {
+                            showToast(getTranslation('game_finished'), 'info');
+                        } else {
+                            showToast(getTranslation('phase_changed'), 'info');
+                        }
+                    }
+
+                    gameData = game;
+                    playersData = game.players || [];
+                    myRole = game.myRole || '';
+                    myWord = game.myWord || '';
+                    isCreator = !!game.isCreator;
+
+                    await loadQuestions();
+                    await loadReportStatus();
+
+                    updateBannerByPhase(game.status);
+                    updateTimerIfNeeded(game);
+                    updateRoleInfoCard();
+                    renderDynamicContent();
+                    updateFloatingBar();
+
+                    isLoading = false;
+
+                    if (isCreator) {
+                        checkAndAutoAdvance();
+                    }
+                } catch(e) {
+                    isLoading = false;
+                }
+            }
+
+            function startPolling() {
+                stopPolling();
+                pollingInterval = setInterval(function() {
+                    loadGame(false);
+                }, 3000);
+            }
+
+            function stopPolling() {
+                if (pollingInterval) {
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                }
+            }
+
+            function openAskModal() {
+                var overlay = document.getElementById('askModal');
+                var select = document.getElementById('askTargetSelect');
+                var info = document.getElementById('askInfo');
+                var textarea = document.getElementById('askQuestionText');
+
+                if (!overlay || !select) return;
+
+                var qi = gameData.questionInfo || {};
+                var extraText = '';
+                if (qi.extra > 0) extraText = ' (+' + toPersianDigits(qi.extra) + ')';
+                info.innerHTML = escapeHtml(getTranslation('ask_questions_used')) + ': <span class="highlight">' + toPersianDigits(qi.used || 0) + '</span> / ' + toPersianDigits((qi.limit || 0) + (qi.extra || 0)) + extraText;
+
+                select.innerHTML = '<option value="">---</option>';
+                for (var i = 0; i < playersData.length; i++) {
+                    var p = playersData[i];
+                    if (String(p.user_id) === String(myUserId)) continue;
+                    select.innerHTML += '<option value="' + escapeAttr(p.user_id) + '">' + escapeHtml(p.name) + '</option>';
+                }
+
+                textarea.value = '';
+                overlay.classList.add('show');
+            }
+
+            function closeAskModal() {
+                document.getElementById('askModal').classList.remove('show');
+            }
+
+            async function submitAsk() {
+                if (isActionInProgress) return;
+                var targetId = document.getElementById('askTargetSelect').value;
+                var text = document.getElementById('askQuestionText').value.trim();
+
+                if (!targetId) {
+                    showToast(getTranslation('ask_self'));
+                    return;
+                }
+                if (!text) {
+                    showToast(getTranslation('ask_empty'));
+                    return;
+                }
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('addQuestion', {
+                    gameId: roomId,
+                    responderId: targetId,
+                    question: text
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    closeAskModal();
+                    showToast(getTranslation('ask_success'), 'success');
+                    await loadGame(false);
+                } else {
+                    var err = result && result.error ? result.error : '';
+                    var msg = getTranslation('error_network');
+                    if (err === 'Question limit reached') msg = getTranslation('ask_limit_reached');
+                    else if (err === 'Pending answer exists') msg = getTranslation('ask_pending');
+                    else if (err === 'Cannot ask yourself') msg = getTranslation('ask_self');
+                    else if (err === 'Bad language detected') msg = getTranslation('bad_language');
+                    else if (err === 'Secret word detected') msg = getTranslation('secret_word');
+                    showToast(msg);
+                }
+            }
+
+            function openAnswerModal(askerId, responderId) {
+                currentAnswerQuestion = { asker: askerId, responder: responderId };
+                var info = document.getElementById('answerInfo');
+                var asker = findPlayerById(askerId);
+                info.textContent = asker ? asker.name : '---';
+                document.getElementById('answerText').value = '';
+                document.getElementById('answerModal').classList.add('show');
+            }
+
+            function closeAnswerModal() {
+                document.getElementById('answerModal').classList.remove('show');
+                currentAnswerQuestion = null;
+            }
+
+            async function submitAnswer() {
+                if (isActionInProgress) return;
+                if (!currentAnswerQuestion) return;
+                var text = document.getElementById('answerText').value.trim();
+                if (!text) {
+                    showToast(getTranslation('answer_empty'));
+                    return;
+                }
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('answerQuestion', {
+                    gameId: roomId,
+                    askerId: currentAnswerQuestion.asker,
+                    responderId: currentAnswerQuestion.responder,
+                    answer: text
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    closeAnswerModal();
+                    showToast(getTranslation('answer_success'), 'success');
+                    await loadGame(false);
+                } else {
+                    var err = result && result.error ? result.error : '';
+                    var msg = getTranslation('error_network');
+                    if (err === 'Bad language detected') msg = getTranslation('bad_language');
+                    else if (err === 'Secret word detected') msg = getTranslation('secret_word');
+                    showToast(msg);
+                }
+            }
+
+            function openExtraQuestionModal() {
+                var qi = gameData.questionInfo || {};
+                var cost = qi.extraCost || { coins: 50, diamonds: 3 };
+                document.getElementById('extraCoinsText').textContent = toPersianDigits(cost.coins);
+                document.getElementById('extraDiamondsText').textContent = toPersianDigits(cost.diamonds);
+                document.getElementById('extraInfo').textContent = getTranslation('extra_info');
+                document.getElementById('extraQuestionModal').classList.add('show');
+            }
+
+            function closeExtraQuestionModal() {
+                document.getElementById('extraQuestionModal').classList.remove('show');
+            }
+
+            async function buyExtraQuestion(payType) {
+                if (isActionInProgress) return;
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('buyExtraQuestion', {
+                    gameId: roomId,
+                    payType: payType
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    closeExtraQuestionModal();
+                    showToast(getTranslation('buy_success'), 'success');
+                    await loadGame(false);
+                } else {
+                    var err = result && result.error ? result.error : '';
+                    var msg = getTranslation('buy_failed');
+                    if (err === 'Not enough coins') msg = getTranslation('not_enough_coins');
+                    else if (err === 'Not enough diamonds') msg = getTranslation('not_enough_diamonds');
+                    showToast(msg);
+                }
+            }
+
+            function openVoteModal() {
+                currentSelectedVote = null;
+                var overlay = document.getElementById('voteModal');
+                var optionsEl = document.getElementById('voteOptions');
+                var submitBtn = document.getElementById('voteSubmit');
+
+                var html = '';
+                for (var i = 0; i < playersData.length; i++) {
+                    var p = playersData[i];
+                    if (String(p.user_id) === String(myUserId)) continue;
+                    html += '<div class="vote-option" data-vote-id="' + escapeAttr(p.user_id) + '">';
+                    html += '<div class="teammate-avatar">' + getAvatarHtml(p.avatar || 'default') + '</div>';
+                    html += '<div style="flex:1;font-size:11px;font-weight:800;">' + escapeHtml(p.name) + '</div>';
+                    html += '<i class="bi bi-circle" aria-hidden="true" data-vote-check="' + escapeAttr(p.user_id) + '"></i>';
+                    html += '</div>';
+                }
+                optionsEl.innerHTML = html;
+                submitBtn.disabled = true;
+
+                optionsEl.querySelectorAll('.vote-option').forEach(function(opt) {
+                    opt.addEventListener('click', function() {
+                        currentSelectedVote = opt.getAttribute('data-vote-id');
+                        optionsEl.querySelectorAll('.vote-option').forEach(function(o) { o.classList.remove('selected'); });
+                        optionsEl.querySelectorAll('i[data-vote-check]').forEach(function(ic) { ic.className = 'bi bi-circle'; });
+                        opt.classList.add('selected');
+                        var chk = opt.querySelector('i[data-vote-check]');
+                        if (chk) chk.className = 'bi bi-check-circle-fill';
+                        submitBtn.disabled = false;
+                    });
+                });
+
+                overlay.classList.add('show');
+            }
+
+            function closeVoteModal() {
+                document.getElementById('voteModal').classList.remove('show');
+                currentSelectedVote = null;
+            }
+
+            async function submitVote() {
+                if (isActionInProgress) return;
+                if (!currentSelectedVote) {
+                    showToast(getTranslation('vote_select'));
+                    return;
+                }
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('castVote', {
+                    gameId: roomId,
+                    targetUserId: currentSelectedVote
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    closeVoteModal();
+                    showToast(getTranslation('vote_success'), 'success');
+                    await loadGame(false);
+                } else {
+                    var err = result && result.error ? result.error : '';
+                    var msg = getTranslation('error_network');
+                    if (err === 'Already voted') msg = getTranslation('vote_already');
+                    else if (err === 'Cannot vote for yourself') msg = getTranslation('vote_select');
+                    showToast(msg);
+                }
+            }
+
+            async function submitJudgeVerdict() {
+                if (isActionInProgress) return;
+                var select = document.getElementById('judgeSelect');
+                if (!select) return;
+                var targetId = select.value;
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('nightAction', {
+                    gameId: roomId,
+                    action: 'judge_verdict',
+                    targetUserId: targetId
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    showToast(getTranslation('judge_submit'), 'success');
+                    await loadGame(false);
+                } else {
+                    var err = result && result.error ? result.error : '';
+                    var msg = getTranslation('error_network');
+                    if (err === 'Judge already decided') msg = getTranslation('judge_decided');
+                    showToast(msg);
+                }
+            }
+
+            async function submitDetectiveCheck() {
+                if (isActionInProgress) return;
+                var select = document.getElementById('detectiveSelect');
+                if (!select) return;
+                var targetId = select.value;
+                if (!targetId) {
+                    showToast(getTranslation('detective_select'));
+                    return;
+                }
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('nightAction', {
+                    gameId: roomId,
+                    action: 'detective_check',
+                    targetUserId: targetId
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    showToast(getTranslation('detective_result') + ': ' + (result.data && result.data.result === 'positive' ? getTranslation('detective_positive') : getTranslation('detective_negative')), 'info', 5000);
+                    await loadGame(false);
+                } else {
+                    var err = result && result.error ? result.error : '';
+                    var msg = getTranslation('error_network');
+                    if (err === 'Already used detective check') msg = getTranslation('detective_used');
+                    showToast(msg);
+                }
+            }
+
+            async function declineDetectiveCheck() {
+                if (isActionInProgress) return;
+                if (!gameData) return;
+
+                isActionInProgress = true;
+                showLoading();
+
+                var nightData = gameData.nightData || {};
+                nightData.detective_declined = true;
+                nightData.detective_declined_at = Date.now();
+
+                var status = gameData.status;
+                var payload = { gameId: roomId };
+                payload[status] = JSON.stringify(nightData);
+
+                var result = await fetchData('updateGame', payload);
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    showToast(getTranslation('declined_success'), 'info', 3000);
+                    await loadGame(false);
+                } else {
+                    showToast(getTranslation('error_network'));
+                }
+            }
+
+            async function submitSpyGuess() {
+                if (isActionInProgress) return;
+                var input = document.getElementById('spyGuessInput');
+                if (!input) return;
+                var guess = input.value.trim();
+                if (!guess) return;
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('spyGuess', {
+                    gameId: roomId,
+                    guess: guess
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    if (result.data && result.data.correct) {
+                        showToast(getTranslation('spy_guess_correct'), 'success', 5000);
+                    } else {
+                        showToast(getTranslation('spy_guess_wrong'), 'info', 5000);
+                    }
+                    await loadGame(false);
+                } else {
+                    showToast(getTranslation('error_network'));
+                }
+            }
+
+            async function declineSpyGuess() {
+                if (isActionInProgress) return;
+                if (!gameData) return;
+
+                isActionInProgress = true;
+                showLoading();
+
+                var nightData = gameData.nightData || {};
+                nightData.spy_guess_declined = true;
+                nightData.spy_declined_at = Date.now();
+
+                var status = gameData.status;
+                var payload = { gameId: roomId };
+                payload[status] = JSON.stringify(nightData);
+
+                var result = await fetchData('updateGame', payload);
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    showToast(getTranslation('declined_success'), 'info', 3000);
+                    await loadGame(false);
+                } else {
+                    showToast(getTranslation('error_network'));
+                }
+            }
+
+            async function advancePhase() {
+                if (isActionInProgress) return;
+                if (!isCreator) return;
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('advancePhase', { gameId: roomId });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok) {
+                    showToast(getTranslation('phase_changed'), 'success');
+                    await loadGame(false);
+                } else {
+                    showToast(getTranslation('error_network'));
+                }
+            }
+
+            function openLeaveModal() {
+                var modal = document.getElementById('leaveModal');
+                var warning = document.getElementById('leaveWarning');
+                var status = gameData ? gameData.status : '';
+
+                if (status === 'waiting') {
+                    warning.style.display = 'none';
+                } else {
+                    warning.style.display = 'block';
+                    warning.textContent = getTranslation('leave_warning');
+                }
+
+                modal.classList.add('show');
+            }
+
+            function closeLeaveModal() {
+                document.getElementById('leaveModal').classList.remove('show');
+            }
+
+            async function confirmLeave() {
+                if (isActionInProgress) return;
+                closeLeaveModal();
+
+                isActionInProgress = true;
+                showLoading();
+
+                var status = gameData ? gameData.status : '';
+
+                if (status !== 'waiting') {
+                    await fetchData('leaveGamePenalty', { gameId: roomId });
+                }
+
+                var leaveResult = await fetchData('leaveGame', { gameId: roomId });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (leaveResult && leaveResult.ok) {
+                    safeSetLocalStorage('mafiaRoomCode', '');
+                    showToast(getTranslation('leave_success'), 'success');
+                    setTimeout(function() {
+                        window.location.href = '../../dashboard/';
+                    }, 800);
+                } else {
+                    showToast(getTranslation('leave_failed'));
+                }
+            }
+
+            function closeReportModal() {
+                document.getElementById('reportModal').classList.remove('show');
+                pendingReportMessageKey = null;
+            }
+
+            async function confirmReport() {
+                if (!pendingReportMessageKey) return;
+                var messageKey = pendingReportMessageKey;
+                closeReportModal();
+
+                isActionInProgress = true;
+                showLoading();
+
+                var result = await fetchData('reportMessage', {
+                    gameId: roomId,
+                    messageKey: messageKey
+                });
+
+                hideLoading();
+                isActionInProgress = false;
+
+                if (result && result.ok && result.data) {
+                    if (result.data.gameCancelled) {
+                        showToast(getTranslation('game_cancelled_report'), 'info', 5000);
+                    } else {
+                        showToast(getTranslation('report_submitted'), 'success', 3000);
+                    }
+                    await loadGame(false);
+                } else {
+                    var err = result && result.error ? result.error : '';
+                    var msg = getTranslation('report_failed');
+                    if (err === 'Already reported') msg = getTranslation('report_already');
+                    showToast(msg);
+                }
+            }
+
+            async function init() {
+                applyTheme();
+                loadUserCurrency();
+
+                // ✅ نمایش لودینگ در ابتدای کار
+                var container = document.getElementById('dynamicContent');
+                if (container && !container.innerHTML.trim()) {
+                    container.innerHTML = renderLoadingState();
+                }
+
+                if (webApp) {
+                    try {
+                        webApp.ready();
+                        webApp.expand();
+                        if (webApp.BackButton && webApp.BackButton.show) {
+                            webApp.BackButton.show();
+                            webApp.BackButton.onClick(function() { window.location.href = '../../dashboard/'; });
+                        }
+                    } catch(e) {}
+                }
+
+                myUserId = getUserId();
+                roomId = getRoomFromUrl();
+
+                if (!myUserId || !roomId) {
+                    showToast(getTranslation('error_join'));
+                    setTimeout(function() { window.location.href = '../../dashboard/'; }, 2500);
+                    return;
+                }
+
+                document.getElementById('askCancel').addEventListener('click', closeAskModal);
+                document.getElementById('askSubmit').addEventListener('click', submitAsk);
+
+                document.getElementById('answerCancel').addEventListener('click', closeAnswerModal);
+                document.getElementById('answerSubmit').addEventListener('click', submitAnswer);
+
+                document.getElementById('extraCancel').addEventListener('click', closeExtraQuestionModal);
+                document.getElementById('extraCoinsBtn').addEventListener('click', function() { buyExtraQuestion('coins'); });
+                document.getElementById('extraDiamondsBtn').addEventListener('click', function() { buyExtraQuestion('diamonds'); });
+
+                document.getElementById('voteCancel').addEventListener('click', closeVoteModal);
+                document.getElementById('voteSubmit').addEventListener('click', submitVote);
+
+                document.getElementById('leaveCancel').addEventListener('click', closeLeaveModal);
+                document.getElementById('leaveConfirm').addEventListener('click', confirmLeave);
+
+                document.getElementById('reportCancel').addEventListener('click', closeReportModal);
+                document.getElementById('reportConfirm').addEventListener('click', confirmReport);
+
+                document.getElementById('askModal').addEventListener('click', function(e) {
+                    if (e.target === this) closeAskModal();
+                });
+                document.getElementById('answerModal').addEventListener('click', function(e) {
+                    if (e.target === this) closeAnswerModal();
+                });
+                document.getElementById('extraQuestionModal').addEventListener('click', function(e) {
+                    if (e.target === this) closeExtraQuestionModal();
+                });
+                document.getElementById('voteModal').addEventListener('click', function(e) {
+                    if (e.target === this) closeVoteModal();
+                });
+                document.getElementById('leaveModal').addEventListener('click', function(e) {
+                    if (e.target === this) closeLeaveModal();
+                });
+                document.getElementById('reportModal').addEventListener('click', function(e) {
+                    if (e.target === this) closeReportModal();
+                });
+
+                await loadGame(true);
+                startPolling();
+            }
+
+            init();
+        })();
+    </script>
+</body>
+</html>
