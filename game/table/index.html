@@ -1236,9 +1236,9 @@
         <div class="modal">
             <div class="modal-header">
                 <i class="bi bi-check2-square" aria-hidden="true"></i>
-                <span data-i18n="vote_title">رأیگیری</span>
+                <span data-i18n="vote_title">رأی‌گیری</span>
             </div>
-            <div class="modal-info" id="voteInfo" data-i18n="vote_info">فکر میکنی جاسوس کیه؟</div>
+            <div class="modal-info" id="voteInfo" data-i18n="vote_info">فکر می‌کنی جاسوس کیه؟</div>
             <div id="voteOptions"></div>
             <div class="modal-actions">
                 <button class="modal-btn cancel" id="voteCancel" type="button" data-i18n="cancel">انصراف</button>
@@ -1253,7 +1253,7 @@
                 <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
                 <span data-i18n="leave_confirm_title">خروج از بازی</span>
             </div>
-            <div class="leave-warning" id="leaveWarning" data-i18n="leave_warning">اگه خارج بشی، ۵۰ امتیاز از خودت و ۱۰ امتیاز از همگروهیهات کم میشه. مطمئنی؟</div>
+            <div class="leave-warning" id="leaveWarning" data-i18n="leave_warning">اگه خارج بشی، ۵۰ امتیاز از خودت و ۱۰ امتیاز از هم‌گروهی‌هات کم می‌شه. مطمئنی؟</div>
             <div class="modal-actions">
                 <button class="modal-btn cancel" id="leaveCancel" type="button" data-i18n="cancel">انصراف</button>
                 <button class="modal-btn danger" id="leaveConfirm" type="button" data-i18n="leave_room">خروج</button>
@@ -1267,7 +1267,7 @@
                 <i class="bi bi-flag-fill" aria-hidden="true"></i>
                 <span data-i18n="report_confirm_title">گزارش پیام</span>
             </div>
-            <div class="report-warning" data-i18n="report_confirm">این پیام رو گزارش میدی؟ اگه ۵۰٪ بازیکنان گزارش بدن، بازی متوقف میشه.</div>
+            <div class="report-warning" data-i18n="report_confirm">این پیام رو گزارش می‌دی؟ اگه ۵۰٪ بازیکنان گزارش بدن، بازی متوقف می‌شه.</div>
             <div class="modal-actions">
                 <button class="modal-btn cancel" id="reportCancel" type="button" data-i18n="cancel">انصراف</button>
                 <button class="modal-btn danger" id="reportConfirm" type="button" data-i18n="report_btn">گزارش</button>
@@ -1307,6 +1307,7 @@
             var dayTimerInterval = null;
             var dayTimerStart = 0;
             var dayTimerDuration = 0;
+            var dayTimerPhase = '';
             var currentSelectedVote = null;
             var currentAnswerQuestion = null;
             var pendingReportMessageKey = null;
@@ -2182,10 +2183,20 @@
                 document.getElementById('statusQuestions').textContent = toPersianDigits(qTotal);
 
                 if (isDay(game.status)) {
-                    var dayDur = game.dayDuration || 3;
-                    startDayTimer(dayDur * 60);
+                    var dayDur = (game.dayDuration || 3) * 60;
+                    if (dayTimerPhase !== game.status) {
+                        dayTimerPhase = game.status;
+                        startDayTimer(dayDur);
+                    } else if (dayTimerDuration === 0) {
+                        startDayTimer(dayDur);
+                    }
                 } else {
-                    stopDayTimer();
+                    if (dayTimerPhase !== '') {
+                        dayTimerPhase = '';
+                        stopDayTimer();
+                        dayTimerDuration = 0;
+                        dayTimerStart = 0;
+                    }
                     document.getElementById('statusTimer').textContent = '--:--';
                     document.getElementById('timerItem').classList.remove('urgent');
                 }
