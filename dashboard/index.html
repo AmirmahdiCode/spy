@@ -724,6 +724,108 @@
         }
         .terms-btn.cancel { background: var(--bg2); color: var(--text); }
 
+        .join-confirm-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 3500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .join-confirm-overlay.show { display: flex; }
+        .join-confirm-box {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 22px 20px;
+            box-shadow: 5px 5px 0 #000;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            animation: confirmIn 0.35s ease forwards;
+        }
+        @keyframes confirmIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .join-confirm-title {
+            font-size: 15px;
+            font-weight: 900;
+            color: var(--dark);
+            margin-bottom: 12px;
+            border-bottom: 1px dashed var(--text-light);
+            padding-bottom: 10px;
+        }
+        .join-confirm-text {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.9;
+            margin-bottom: 12px;
+        }
+        .join-confirm-gameid {
+            background: var(--bg2);
+            border: var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .game-id-highlight {
+            color: var(--primary);
+            font-weight: 900;
+            direction: ltr;
+            letter-spacing: 2px;
+        }
+        .join-confirm-btns {
+            display: flex;
+            gap: 10px;
+        }
+        .join-confirm-btn {
+            flex: 1;
+            padding: 12px;
+            border: var(--border);
+            border-radius: 8px;
+            font-family: var(--font);
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 2px 2px 0 #000;
+            transition: all 0.2s ease;
+        }
+        .join-confirm-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .join-confirm-btn.yes { background: var(--success); color: #fff; }
+        .join-confirm-btn.no { background: var(--bg2); color: var(--text); }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 4000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-overlay.show { display: flex; }
+        .loading-overlay-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
         .support-notification {
             position: fixed; top: 75px; right: 5%; left: 5%;
             max-width: 400px; margin: 0 auto;
@@ -1085,6 +1187,25 @@
         </div>
     </div>
 
+    <div class="join-confirm-overlay" id="joinConfirmOverlay">
+        <div class="join-confirm-box">
+            <div class="join-confirm-title" data-i18n="join_confirm_title">ورود به بازی</div>
+            <div class="join-confirm-text" data-i18n="join_confirm_text">آیا مطمئنید که می‌خواهید به این بازی وارد شوید؟</div>
+            <div class="join-confirm-gameid">
+                <span data-i18n="join_game_id">کد بازی:</span>
+                <span class="game-id-highlight" id="joinConfirmGameId">---</span>
+            </div>
+            <div class="join-confirm-btns">
+                <button class="join-confirm-btn no" id="joinConfirmNo" type="button" data-i18n="cancel">انصراف</button>
+                <button class="join-confirm-btn yes" id="joinConfirmYes" type="button" data-i18n="confirm_enter">ورود به بازی</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-overlay-spinner"></div>
+    </div>
+
     <div class="support-notification" id="supportNotification">
         <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         <div class="notif-info">
@@ -1123,6 +1244,7 @@
             var activeGameStatus = null;
             var hasHalfFinishedGame = false;
             var pendingAction = null;
+            var pendingJoinGameId = null;
             var isGamesLoading = false;
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
@@ -1182,6 +1304,16 @@
                         if (toast.parentNode) toast.parentNode.removeChild(toast);
                     }, 400);
                 }, duration);
+            }
+
+            function showLoading() {
+                var el = document.getElementById('loadingOverlay');
+                if (el) el.classList.add('show');
+            }
+
+            function hideLoading() {
+                var el = document.getElementById('loadingOverlay');
+                if (el) el.classList.remove('show');
             }
 
             var fontMap = {
@@ -1312,7 +1444,17 @@
                     error_network: 'اتصال اینترنت خود را بررسی کنید',
                     retry: 'تلاش مجدد',
                     toast_loading_games: 'در حال دریافت لیست بازی‌ها، لطفاً صبر کنید',
-                    toast_has_active_game: 'ابتدا بازی فعال خود را تمام کنید'
+                    toast_has_active_game: 'ابتدا بازی فعال خود را تمام کنید',
+                    join_confirm_title: 'ورود به بازی',
+                    join_confirm_text: 'آیا مطمئنید که می‌خواهید به این بازی وارد شوید؟',
+                    join_game_id: 'کد بازی:',
+                    confirm_enter: 'ورود به بازی',
+                    cancel: 'انصراف',
+                    join_failed: 'ورود به بازی ممکن نشد',
+                    err_game_started: 'این بازی از قبل شروع شده است',
+                    err_game_full: 'ظرفیت این بازی پر شده است',
+                    err_game_not_found: 'این بازی وجود ندارد یا حذف شده است',
+                    err_kicked: 'شما از این بازی اخراج شده‌اید'
                 },
                 en: {
                     start_new_game: 'Start New Game',
@@ -1414,7 +1556,17 @@
                     error_network: 'Please check your internet connection',
                     retry: 'Retry',
                     toast_loading_games: 'Loading games list, please wait',
-                    toast_has_active_game: 'Please finish your active game first'
+                    toast_has_active_game: 'Please finish your active game first',
+                    join_confirm_title: 'Join Game',
+                    join_confirm_text: 'Are you sure you want to join this game?',
+                    join_game_id: 'Game ID:',
+                    confirm_enter: 'Join Game',
+                    cancel: 'Cancel',
+                    join_failed: 'Failed to join the game',
+                    err_game_started: 'This game has already started',
+                    err_game_full: 'This game is full',
+                    err_game_not_found: 'This game does not exist or was removed',
+                    err_kicked: 'You have been kicked from this game'
                 },
                 ar: {
                     start_new_game: 'ابدأ لعبة جديدة',
@@ -1516,7 +1668,17 @@
                     error_network: 'يرجى التحقق من اتصالك بالإنترنت',
                     retry: 'إعادة المحاولة',
                     toast_loading_games: 'جار تحميل قائمة الألعاب، يرجى الانتظار',
-                    toast_has_active_game: 'يرجى إنهاء لعبتك النشطة أولاً'
+                    toast_has_active_game: 'يرجى إنهاء لعبتك النشطة أولاً',
+                    join_confirm_title: 'الانضمام إلى اللعبة',
+                    join_confirm_text: 'هل أنت متأكد من الانضمام إلى هذه اللعبة؟',
+                    join_game_id: 'معرف اللعبة:',
+                    confirm_enter: 'الانضمام',
+                    cancel: 'إلغاء',
+                    join_failed: 'فشل الانضمام إلى اللعبة',
+                    err_game_started: 'هذه اللعبة قد بدأت بالفعل',
+                    err_game_full: 'هذه اللعبة ممتلئة',
+                    err_game_not_found: 'هذه اللعبة غير موجودة أو تم حذفها',
+                    err_kicked: 'لقد تم طردك من هذه اللعبة'
                 }
             };
 
@@ -1843,9 +2005,14 @@
             }
 
             function scrollToTerms() {
+                document.getElementById('termsModalOverlay').classList.remove('show');
+                pendingAction = null;
+
                 var termsSection = document.getElementById('termsSection');
                 if (termsSection) {
-                    termsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    setTimeout(function() {
+                        termsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
                 }
                 triggerHaptic('light');
             }
@@ -1901,9 +2068,48 @@
                 }
 
                 guardGameEntry(function() {
-                    safeSetLocalStorage('mafiaRoomCode', gameId);
-                    window.location.href = '../game/waiting/?room=' + encodeURIComponent(gameId);
+                    pendingJoinGameId = gameId;
+                    document.getElementById('joinConfirmGameId').textContent = gameId;
+                    document.getElementById('joinConfirmOverlay').classList.add('show');
                 });
+            }
+
+            function closeJoinConfirm() {
+                document.getElementById('joinConfirmOverlay').classList.remove('show');
+                pendingJoinGameId = null;
+            }
+
+            async function confirmJoinGame() {
+                var gameId = pendingJoinGameId;
+                if (!gameId) return;
+
+                document.getElementById('joinConfirmOverlay').classList.remove('show');
+                pendingJoinGameId = null;
+
+                showLoading();
+
+                var result = await fetchData('joinGame', { gameId: gameId });
+
+                hideLoading();
+
+                if (result && result.ok) {
+                    safeSetLocalStorage('mafiaRoomCode', gameId);
+                    triggerHaptic('medium');
+                    window.location.href = '../game/waiting/?room=' + encodeURIComponent(gameId);
+                    return;
+                }
+
+                var err = result && result.error ? result.error : '';
+                var msg = getTranslation('join_failed');
+                if (err === 'Game already started') msg = getTranslation('err_game_started');
+                else if (err === 'Game is full') msg = getTranslation('err_game_full');
+                else if (err === 'Active game exists') msg = getTranslation('toast_has_active_game');
+                else if (err === 'Game not found') msg = getTranslation('err_game_not_found');
+                else if (err === 'You were kicked from this game') msg = getTranslation('err_kicked');
+                else if (err === 'network') msg = getTranslation('error_network');
+
+                triggerHaptic('heavy');
+                showToast(msg, 4500);
             }
 
             function goToActiveGame() {
@@ -1950,6 +2156,17 @@
 
             document.getElementById('activeGameFloat').addEventListener('click', goToActiveGame);
             document.getElementById('supportNotification').addEventListener('click', openSupportLink);
+
+            document.getElementById('joinConfirmYes').addEventListener('click', confirmJoinGame);
+            document.getElementById('joinConfirmNo').addEventListener('click', closeJoinConfirm);
+
+            document.getElementById('joinConfirmOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeJoinConfirm();
+            });
+
+            document.getElementById('termsModalOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeTermsModal();
+            });
 
             document.getElementById('publicError').addEventListener('click', function(e) {
                 if (e.target && e.target.classList.contains('error-state-btn')) {
