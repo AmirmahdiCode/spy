@@ -931,9 +931,8 @@
         .reveal-timer {
             position: absolute;
             bottom: 12px;
-            left: 0;
-            right: 0;
-            text-align: center;
+            right: 12px;
+            text-align: right;
             font-size: 10px;
             font-weight: 700;
             color: rgba(220, 38, 38, 0.7);
@@ -941,23 +940,22 @@
         }
         .reveal-close-btn {
             position: absolute;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px 24px;
+            bottom: 12px;
+            left: 12px;
+            padding: 8px 16px;
             background: #dc2626;
             color: #fff;
             border: none;
-            border-radius: 20px;
+            border-radius: 16px;
             font-family: var(--font);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.6);
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
             z-index: 3;
             transition: all 0.2s ease;
         }
-        .reveal-close-btn:active { transform: translateX(-50%) scale(0.96); }
+        .reveal-close-btn:active { transform: scale(0.96); }
     </style>
 </head>
 <body>
@@ -1998,7 +1996,7 @@
                     var digits = currentLang === 'en' ? String(n) : String(n).replace(/\d/g, function(d) {
                         return ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'][parseInt(d, 10)];
                     });
-                    el.textContent = getTranslation('close') + ' ' + digits + 's';
+                    el.textContent = digits + 's';
                 }
             }
 
