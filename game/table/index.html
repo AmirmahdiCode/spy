@@ -1160,12 +1160,12 @@
                     <span class="role-badge" id="myRoleBadge">-</span>
                 </div>
                 <div class="word-display" id="wordDisplay" style="display:none;">
-                    <div class="word-label" data-i18n="your_word">کلمهی شما</div>
+                    <div class="word-label" data-i18n="your_word">کلمه‌ی شما</div>
                     <div class="word-value" id="myWord">----</div>
                 </div>
                 <div class="empty-state" id="noWordMsg" style="display:none;">
                     <i class="bi bi-eye-slash" aria-hidden="true"></i>
-                    <span data-i18n="no_word_spy">شما کلمه را نمیدانید. مخفی بمانید!</span>
+                    <span data-i18n="no_word_spy">شما کلمه را نمی‌دانید. مخفی بمانید!</span>
                 </div>
             </div>
 
@@ -1285,7 +1285,7 @@
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
             var API_URL = 'https://script.google.com/macros/s/AKfycbw9nDbVgZbizANGbJVtfl1d3BS7AIOqepTsrSO5SCw7_k0KBr_nB_LeVPFa2D_cgWBM/exec';
-            var API_URL_NIGHT = 'https://script.google.com/macros/s/AKfycbx1wQopm51Z8Gr0_8smkyLaslhgZNPZsMtX9Lak1AkQL_61dS-qRdrmmeMBVD3OyoC0/exec';
+            var API_URL_NIGHT = 'https://script.google.com/macros/s/AKfycbyKCCkPHc7UIve0lcB5tJbb0PVfL--VbBqvNhMaKAWS2sHXgdpTEvY0tYuYrKBPHxAg/exec';
 
             var IMG_DAY = 'https://cdn.imgurl.ir/uploads/f78633_vx-b-wH4SnJpzY971o_K_dAk8To-Vwj1dHF-RtCld33FwJDrLw.png';
             var IMG_NIGHT = 'https://cdn.imgurl.ir/uploads/i743040_ld_dMMFV4JP2Sq-SynjLGi66hLw-ehnPP0nZSxOOgn8tf_5lMQ.png';
@@ -2266,20 +2266,21 @@
                 return null;
             }
 
+            // ✅ اصلاح‌شده: توی ترتیب جدید، d1 شب قبل نداره
             function buildNightReport(game) {
                 var status = game.status;
                 if (!isDay(status)) return null;
 
                 var dayNum = getPhaseNumber(status);
-                if (dayNum <= 0) return null;
+                if (dayNum <= 1) return null; // d1 شب قبل نداره
 
-                var prevNight = 'n' + dayNum;
+                var prevNight = 'n' + (dayNum - 1); // d2 → n1, d3 → n2
                 var nightRaw = game[prevNight];
                 var nightData = parseNightData(nightRaw) || {};
 
                 var report = {
                     night: prevNight,
-                    title: getTranslation('night_report_title') + ' ' + toPersianDigits(dayNum),
+                    title: getTranslation('night_report_title') + ' ' + toPersianDigits(dayNum - 1),
                     judgeDecided: nightData.judge_verdict !== undefined && nightData.judge_verdict !== null && nightData.judge_verdict !== '',
                     detectiveUsed: !!nightData.detective_check,
                     spyGuessed: !!nightData.spy_guess
@@ -2609,9 +2610,9 @@
             function renderVoteHistory(game) {
                 var currentStatus = game.status;
                 var historyField = null;
-                if (currentStatus === 'n1') historyField = 'd1';
-                else if (currentStatus === 'n2') historyField = 'd2';
-                else if (currentStatus === 'n3') historyField = 'd3';
+                if (currentStatus === 'n1') historyField = 'v1';
+                else if (currentStatus === 'n2') historyField = 'v2';
+                else if (currentStatus === 'n3') historyField = 'v3';
                 else return '';
 
                 var raw = game[historyField];
@@ -2817,11 +2818,6 @@
 
                 html += '<button class="btn-float danger" id="exitBtn" type="button"><i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('exit_game')) + '</span></button>';
 
-                if (isCreator && (isDay(status) || isNight(status))) {
-                    var endLabel = isNight(status) ? 'end_night_btn' : 'end_day_btn';
-                    html += '<button class="btn-float success" id="advanceBtn" type="button"><i class="bi bi-arrow-left-circle-fill" aria-hidden="true"></i><span>' + escapeHtml(getTranslation(endLabel)) + '</span></button>';
-                }
-
                 bar.innerHTML = html;
                 bar.style.display = 'flex';
 
@@ -2833,9 +2829,6 @@
 
                 var voteBtn = document.getElementById('voteBtn');
                 if (voteBtn) voteBtn.addEventListener('click', openVoteModal);
-
-                var advanceBtn = document.getElementById('advanceBtn');
-                if (advanceBtn) advanceBtn.addEventListener('click', advancePhase);
 
                 var exitBtn = document.getElementById('exitBtn');
                 if (exitBtn) exitBtn.addEventListener('click', openLeaveModal);
