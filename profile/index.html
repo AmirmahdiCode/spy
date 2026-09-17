@@ -224,6 +224,36 @@
         .stat-value { font-size: 16px; font-weight: 800; color: var(--dark); }
         .stat-label { font-size: 8px; color: var(--text-light); }
 
+        .friends-card {
+            background: var(--card-bg);
+            border: var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            opacity: 0.5;
+            filter: grayscale(0.5);
+            pointer-events: none;
+            position: relative;
+        }
+        .friends-card .card-title {
+            border-bottom-color: var(--bg3);
+        }
+        .friends-placeholder {
+            text-align: center;
+            padding: 16px 8px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+        .friends-placeholder i {
+            font-size: 28px;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 8px;
+            opacity: 0.5;
+        }
+
         .achievements-card { background: var(--card-bg); border: var(--border); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
         .achievements-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
         .achievement-item {
@@ -492,6 +522,18 @@
                 </div>
             </div>
 
+            <div class="friends-card" id="friendsCard">
+                <div class="card-title">
+                    <i class="bi bi-people-fill" aria-hidden="true"></i>
+                    <span data-i18n="my_friends">دوستان من</span>
+                    <span class="coming-soon-badge" data-i18n="coming_soon" style="margin-right:auto; font-size:7px; font-weight:700; padding:2px 6px; border-radius:8px; background:var(--bg3); color:var(--text-light); white-space:nowrap;">به‌زودی</span>
+                </div>
+                <div class="friends-placeholder">
+                    <i class="bi bi-person-plus" aria-hidden="true"></i>
+                    <span data-i18n="friends_soon">این بخش به‌زودی فعال می‌شود</span>
+                </div>
+            </div>
+
             <div class="section-loader" id="achievementsLoader" style="display:none;">
                 <div class="section-loader-spinner"></div>
                 <div class="section-loader-text" data-i18n="loading_achievements">در حال دریافت افتخارات...</div>
@@ -554,7 +596,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbyyl_Lt2jg3iBqkAh3po4acYZHYaa4-ulCjO_Shp7PoSZvHyIFx0pwBA-Voyy-bIegE/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbwoLiN36u9x1rBQSnoum483cLFVgJLOItOYejhGp-us0zbPmEx6aE1nDuIdMYTgx21y/exec';
             var currentAvatar = 'default';
             var currentLang = 'fa';
             var userDiamonds = 0;
@@ -619,6 +661,9 @@
                     achievements: 'افتخارات',
                     game_history: 'تاریخچه بازی‌ها',
                     select_avatar: 'انتخاب آواتار',
+                    my_friends: 'دوستان من',
+                    friends_soon: 'این بخش به‌زودی فعال می‌شود',
+                    coming_soon: 'به‌زودی',
                     home: 'خانه',
                     ranking: 'رتبه',
                     profile: 'پروفایل',
@@ -660,6 +705,9 @@
                     achievements: 'Achievements',
                     game_history: 'Game History',
                     select_avatar: 'Select Avatar',
+                    my_friends: 'My Friends',
+                    friends_soon: 'This section will be available soon',
+                    coming_soon: 'Coming Soon',
                     home: 'Home',
                     ranking: 'Ranking',
                     profile: 'Profile',
@@ -701,6 +749,9 @@
                     achievements: 'الإنجازات',
                     game_history: 'سجل المباريات',
                     select_avatar: 'اختر الصورة',
+                    my_friends: 'أصدقائي',
+                    friends_soon: 'سيكون هذا القسم متاحاً قريباً',
+                    coming_soon: 'قريباً',
                     home: 'الرئيسية',
                     ranking: 'الترتيب',
                     profile: 'الملف',
