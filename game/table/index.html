@@ -1284,8 +1284,9 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbw9nDbVgZbizANGbJVtfl1d3BS7AIOqepTsrSO5SCw7_k0KBr_nB_LeVPFa2D_cgWBM/exec';
-            var API_URL_NIGHT = 'https://script.google.com/macros/s/AKfycbyKCCkPHc7UIve0lcB5tJbb0PVfL--VbBqvNhMaKAWS2sHXgdpTEvY0tYuYrKBPHxAg/exec';
+            // ✅ اسکریپت واحد (ادغام‌شده)
+            var API_URL = 'https://script.google.com/macros/s/AKfycbyWiCpI1vavW7FOq6nNHlItZucSj-H0QR38k1i3wLWVzfkmfLm8VWADO6dPiglju21v/exec';
+            var API_URL_NIGHT = API_URL;
 
             var IMG_DAY = 'https://cdn.imgurl.ir/uploads/f78633_vx-b-wH4SnJpzY971o_K_dAk8To-Vwj1dHF-RtCld33FwJDrLw.png';
             var IMG_NIGHT = 'https://cdn.imgurl.ir/uploads/i743040_ld_dMMFV4JP2Sq-SynjLGi66hLw-ehnPP0nZSxOOgn8tf_5lMQ.png';
@@ -2266,15 +2267,16 @@
                 return null;
             }
 
-            // ✅ اصلاح‌شده: توی ترتیب جدید، d1 شب قبل نداره
+            // ✅ اصلاح‌شده: طبق ترتیب جدید d1 → v1 → n1 → d2 → v2 → n2 → d3 → v3 → n3
             function buildNightReport(game) {
                 var status = game.status;
                 if (!isDay(status)) return null;
 
                 var dayNum = getPhaseNumber(status);
-                if (dayNum <= 1) return null; // d1 شب قبل نداره
+                // d1 شب قبل نداره
+                if (dayNum <= 1) return null;
 
-                var prevNight = 'n' + (dayNum - 1); // d2 → n1, d3 → n2
+                var prevNight = 'n' + (dayNum - 1); // d2 → n1، d3 → n2
                 var nightRaw = game[prevNight];
                 var nightData = parseNightData(nightRaw) || {};
 
@@ -2607,6 +2609,7 @@
                 return html;
             }
 
+            // ✅ اصلاح‌شده: توی n1 رأی v1، n2 رأی v2، n3 رأی v3
             function renderVoteHistory(game) {
                 var currentStatus = game.status;
                 var historyField = null;
@@ -2817,6 +2820,8 @@
                 }
 
                 html += '<button class="btn-float danger" id="exitBtn" type="button"><i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('exit_game')) + '</span></button>';
+
+                // ✅ دکمه دستی «پایان روز/شب» حذف شد
 
                 bar.innerHTML = html;
                 bar.style.display = 'flex';
