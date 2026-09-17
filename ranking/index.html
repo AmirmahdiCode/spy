@@ -225,38 +225,6 @@
             border: var(--border);
         }
 
-        .friend-btn {
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            padding: 6px 10px;
-            border: var(--border);
-            border-radius: 8px;
-            background: var(--bg2);
-            color: var(--text-light);
-            font-family: var(--font);
-            font-size: 8px;
-            font-weight: 800;
-            cursor: not-allowed;
-            opacity: 0.5;
-            filter: grayscale(0.7);
-            pointer-events: none;
-            min-width: 58px;
-        }
-        .friend-btn i { font-size: 12px; }
-        .friend-btn .soon-badge {
-            font-size: 6px;
-            font-weight: 700;
-            padding: 1px 4px;
-            border-radius: 6px;
-            background: #f59e0b;
-            color: #fff;
-            white-space: nowrap;
-        }
-
         .section-loader {
             text-align: center;
             padding: 20px;
@@ -430,6 +398,37 @@
         .profile-modal-stat-value { font-size: 14px; font-weight: 800; color: var(--dark); }
         .profile-modal-stat-label { font-size: 7px; color: var(--text-light); }
 
+        .profile-modal-friend-btn {
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            border: var(--border);
+            border-radius: 8px;
+            background: var(--bg2);
+            color: var(--text-light);
+            font-family: var(--font);
+            font-size: 10px;
+            font-weight: 800;
+            cursor: not-allowed;
+            opacity: 0.5;
+            filter: grayscale(0.7);
+            pointer-events: none;
+            box-shadow: 2px 2px 0 #000;
+        }
+        .profile-modal-friend-btn i { font-size: 14px; }
+        .profile-modal-friend-btn .soon-badge {
+            font-size: 7px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+            background: #f59e0b;
+            color: #fff;
+            white-space: nowrap;
+        }
+
         .modal-loader {
             width: 40px;
             height: 40px;
@@ -557,6 +556,11 @@
                     <div class="profile-modal-stat"><div class="profile-modal-stat-value" id="modalCoins">0</div><div class="profile-modal-stat-label" data-i18n="coins">سکه</div></div>
                     <div class="profile-modal-stat"><div class="profile-modal-stat-value" id="modalDiamonds">0</div><div class="profile-modal-stat-label" data-i18n="diamonds">الماس</div></div>
                 </div>
+                <div class="profile-modal-friend-btn" id="modalFriendBtn">
+                    <i class="bi bi-person-plus" aria-hidden="true"></i>
+                    <span data-i18n="add_friend">درخواست دوستی</span>
+                    <span class="soon-badge" data-i18n="coming_soon">به‌زودی</span>
+                </div>
             </div>
         </div>
     </div>
@@ -673,7 +677,7 @@
                     you: 'شما',
                     error_loading: 'خطا در دریافت اطلاعات',
                     unknown_user: 'کاربر',
-                    add_friend: 'دوستی',
+                    add_friend: 'درخواست دوستی',
                     coming_soon: 'به‌زودی'
                 },
                 en: {
@@ -690,7 +694,7 @@
                     you: 'You',
                     error_loading: 'Error loading data',
                     unknown_user: 'User',
-                    add_friend: 'Add',
+                    add_friend: 'Add Friend',
                     coming_soon: 'Soon'
                 },
                 ar: {
@@ -707,7 +711,7 @@
                     you: 'أنت',
                     error_loading: 'خطأ في تحميل البيانات',
                     unknown_user: 'مستخدم',
-                    add_friend: 'صداقة',
+                    add_friend: 'طلب صداقة',
                     coming_soon: 'قريباً'
                 }
             };
@@ -919,13 +923,7 @@
                     '<div class="rank-info"><div class="rank-name">' + displayName + ' ' + getUserTypeBadge(userType) + '</div>' +
                     '<div class="rank-score">' + escapeHtml(getTranslation('score')) + ': ' + score + '</div></div>';
 
-                if (!me) {
-                    html += '<div class="friend-btn" title="' + escapeAttr(getTranslation('coming_soon')) + '">' +
-                        '<i class="bi bi-person-plus" aria-hidden="true"></i>' +
-                        '<span>' + escapeHtml(getTranslation('add_friend')) + '</span>' +
-                        '<span class="soon-badge">' + escapeHtml(getTranslation('coming_soon')) + '</span>' +
-                        '</div>';
-                } else {
+                if (me) {
                     html += '<span class="rank-badge-me">' + escapeHtml(getTranslation('you')) + '</span>';
                 }
 
@@ -1047,12 +1045,21 @@
                     document.getElementById('modalScore').textContent = String(isNaN(sc) ? 0 : sc);
                     document.getElementById('modalCoins').textContent = String(isNaN(co) ? 0 : co);
                     document.getElementById('modalDiamonds').textContent = String(isNaN(di) ? 0 : di);
+
+                    var modalFriendBtn = document.getElementById('modalFriendBtn');
+                    var isMyProfile = String(userId) === String(getUserId()) || String(d.user_id) === String(getUserId());
+                    if (modalFriendBtn) {
+                        modalFriendBtn.style.display = isMyProfile ? 'none' : 'flex';
+                    }
                 } else {
                     document.getElementById('modalName').textContent = getTranslation('error_loading');
                     document.getElementById('modalUsername').textContent = 'ID: ' + escapeHtml(userId);
                     document.getElementById('modalScore').textContent = '0';
                     document.getElementById('modalCoins').textContent = '0';
                     document.getElementById('modalDiamonds').textContent = '0';
+
+                    var modalFriendBtn2 = document.getElementById('modalFriendBtn');
+                    if (modalFriendBtn2) modalFriendBtn2.style.display = 'none';
                 }
             }
 
@@ -1078,7 +1085,6 @@
             document.getElementById('searchInput').addEventListener('input', filterRankings);
 
             document.getElementById('rankList').addEventListener('click', function(e) {
-                if (e.target.closest('.friend-btn')) return;
                 var item = e.target.closest('.rank-item');
                 if (item && item.dataset.userId) {
                     viewProfile(item.dataset.userId);
