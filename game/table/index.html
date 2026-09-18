@@ -94,12 +94,64 @@
 
         .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
 
-        .day-timer-bar {
-            position: fixed;
+        .header {
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+            padding: 10px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        [data-theme="dark"] .header {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+        }
+
+        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+
+        .header-logo {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: none;
+            box-shadow: none;
+            flex-shrink: 0;
+        }
+        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
+        .header-subtitle { font-size: 8px; color: var(--text-light); }
+
+        .header-currency { display: flex; align-items: center; gap: 6px; }
+        .currency-badge {
+            display: flex; align-items: center; gap: 4px;
+            background: var(--bg2); border: var(--border); border-radius: 8px;
+            padding: 4px 10px; font-size: 10px; font-weight: 700;
+            color: var(--dark); box-shadow: 2px 2px 0 #000;
+            min-width: 50px;
+            justify-content: center;
+        }
+        .currency-badge.coins i { color: #f59e0b; }
+        .currency-badge.diamonds i { color: #06b6d4; }
+        .mini-spinner {
+            width: 12px; height: 12px;
+            border: 2px solid var(--bg3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+
+        .day-timer-bar {
+            position: sticky;
+            top: 64px;
+            z-index: 9;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -164,68 +216,9 @@
             width: 100%;
         }
 
-        .header {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--primary);
-            padding: 10px 20px;
-            position: sticky;
-            top: 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            transition: top 0.3s ease;
-        }
-        body.timer-visible .header {
-            top: 42px;
-        }
-
-        [data-theme="dark"] .header {
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--primary);
-        }
-
-        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
-        .header-right { display: flex; align-items: center; gap: 10px; }
-
-        .header-logo {
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: none;
-            box-shadow: none;
-            flex-shrink: 0;
-        }
-        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
-        .header-subtitle { font-size: 8px; color: var(--text-light); }
-
-        .header-currency { display: flex; align-items: center; gap: 6px; }
-        .currency-badge {
-            display: flex; align-items: center; gap: 4px;
-            background: var(--bg2); border: var(--border); border-radius: 8px;
-            padding: 4px 10px; font-size: 10px; font-weight: 700;
-            color: var(--dark); box-shadow: 2px 2px 0 #000;
-            min-width: 50px;
-            justify-content: center;
-        }
-        .currency-badge.coins i { color: #f59e0b; }
-        .currency-badge.diamonds i { color: #06b6d4; }
-        .mini-spinner {
-            width: 12px; height: 12px;
-            border: 2px solid var(--bg3);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
-        }
-
         .toast-container {
             position: fixed;
-            top: 75px;
+            top: 130px;
             right: 5%;
             left: 5%;
             max-width: 400px;
@@ -236,7 +229,6 @@
             gap: 8px;
             pointer-events: none;
         }
-        body.timer-visible .toast-container { top: 120px; }
         .toast {
             background: #ef4444;
             color: #fff;
@@ -286,9 +278,6 @@
             display: flex;
             flex-direction: column;
             gap: 0;
-        }
-        body.timer-visible .main-container {
-            padding-top: 45px;
         }
 
         .game-banner {
@@ -1462,16 +1451,6 @@
 
     <div class="bg-animation"></div>
 
-    <div class="day-timer-bar" id="dayTimerBar">
-        <div class="day-timer-row">
-            <div class="day-timer-label"><i class="bi bi-hourglass-split" aria-hidden="true"></i> <span data-i18n="day_timer">زمان</span></div>
-            <div class="day-timer-text" id="dayTimerText">--:--</div>
-        </div>
-        <div class="day-timer-progress">
-            <div class="day-timer-fill" id="dayTimerFill" style="width:100%;"></div>
-        </div>
-    </div>
-
     <div class="toast-container" id="toastContainer"></div>
 
     <header class="header">
@@ -1489,6 +1468,16 @@
             </div>
         </div>
     </header>
+
+    <div class="day-timer-bar" id="dayTimerBar">
+        <div class="day-timer-row">
+            <div class="day-timer-label"><i class="bi bi-hourglass-split" aria-hidden="true"></i> <span data-i18n="day_timer">زمان</span></div>
+            <div class="day-timer-text" id="dayTimerText">--:--</div>
+        </div>
+        <div class="day-timer-progress">
+            <div class="day-timer-fill" id="dayTimerFill" style="width:100%;"></div>
+        </div>
+    </div>
 
     <main class="main-container" id="mainContainer">
 
@@ -1654,7 +1643,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbxlLAUQaN4PimoKwmaqjtjLgZw62YarniI__dqiVIA4dMICL7qtVuhM_lXhoe-BMtDI/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzRHiZrmdqVe9_lSD18j-WcStdy_tddL9yqY5BGuxG5Qk12kBAlKkSncnj0FlpyK1w/exec';
             var API_URL_NIGHT = API_URL;
 
             var IMG_DAY = 'https://cdn.imgurl.ir/uploads/f78633_vx-b-wH4SnJpzY971o_K_dAk8To-Vwj1dHF-RtCld33FwJDrLw.png';
@@ -2583,11 +2572,9 @@
                 if (!bar) return;
                 if (show) {
                     bar.classList.add('show');
-                    document.body.classList.add('timer-visible');
                 } else {
                     bar.classList.remove('show');
                     bar.classList.remove('urgent');
-                    document.body.classList.remove('timer-visible');
                 }
             }
 
@@ -2612,11 +2599,30 @@
             function updateTimerIfNeeded(game) {
                 if (isDay(game.status)) {
                     var dayDur = (game.dayDuration || 3) * 60;
-                    if (dayTimerPhase !== game.status) {
+                    var serverStart = game.dayStartedAt || 0;
+                    
+                    if (!serverStart) {
+                        var cached = safeGetLocalStorage('mafia_dayStartedAt_' + roomId);
+                        serverStart = cached ? parseInt(cached, 10) : 0;
+                    }
+                    
+                    if (dayTimerPhase !== game.status || dayTimerStart !== serverStart) {
                         dayTimerPhase = game.status;
-                        dayTimerStart = 0;
-                        dayTimerDuration = 0;
-                        startDayTimer(dayDur);
+                        dayTimerStart = serverStart || Date.now();
+                        dayTimerDuration = dayDur;
+                        
+                        if (serverStart > 0) {
+                            safeSetLocalStorage('mafia_dayStartedAt_' + roomId, String(serverStart));
+                        }
+                        
+                        if (dayTimerInterval) clearInterval(dayTimerInterval);
+                        updateDayTimerBar();
+                        dayTimerInterval = setInterval(function() {
+                            updateDayTimerBar();
+                            var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
+                            var remaining = dayTimerDuration - elapsed;
+                            if (remaining <= 0) stopDayTimer();
+                        }, 1000);
                     }
                     showDayTimerBar(true);
                 } else {
@@ -2625,23 +2631,10 @@
                         stopDayTimer();
                         dayTimerDuration = 0;
                         dayTimerStart = 0;
+                        try { localStorage.removeItem('mafia_dayStartedAt_' + roomId); } catch(e) {}
                     }
                     showDayTimerBar(false);
                 }
-            }
-
-            function startDayTimer(durationSec) {
-                stopDayTimer();
-                if (durationSec <= 0) return;
-                dayTimerStart = Date.now();
-                dayTimerDuration = durationSec;
-                updateDayTimerBar();
-                dayTimerInterval = setInterval(function() {
-                    updateDayTimerBar();
-                    var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
-                    var remaining = dayTimerDuration - elapsed;
-                    if (remaining <= 0) stopDayTimer();
-                }, 1000);
             }
 
             function stopDayTimer() {
@@ -3611,8 +3604,6 @@
                     targetUserId: myVote
                 });
 
-                console.log('VOTE RESULT:', result);
-
                 if (!result || !result.ok) {
                     gameData.voteData.myVote = prevVote;
                     renderDynamicContent(true);
@@ -3782,6 +3773,7 @@
                     if (result.data && result.data.status && gameData) {
                         gameData.status = result.data.status;
                         if (result.data.final) gameData.final = result.data.final;
+                        if (result.data.dayStartedAt) gameData.dayStartedAt = result.data.dayStartedAt;
                     }
                     updateTimerIfNeeded(gameData);
                     renderDynamicContent(true);
