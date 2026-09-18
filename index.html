@@ -31,6 +31,9 @@
             --font: 'Samim', Tahoma, sans-serif;
             --success: #10b981;
             --danger: #ef4444;
+            --progress-blue: #3b82f6;
+            --progress-purple: #8b5cf6;
+            --progress-green: #10b981;
         }
 
         [data-theme="dark"] {
@@ -68,6 +71,14 @@
 
         [data-animation="off"] * { animation: none !important; transition: none !important; }
 
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         * { 
             margin: 0; padding: 0; box-sizing: border-box;
             -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
@@ -83,9 +94,76 @@
             display: flex;
             flex-direction: column;
             transition: font-family 0.3s ease;
+            overflow-x: hidden;
         }
 
-        .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 30%, var(--bg3) 60%, var(--bg2) 100%);
+            background-size: 400% 400%;
+            animation: gradientFlow 18s ease infinite;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.12;
+            animation: floatParticle linear infinite;
+        }
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% {
+                transform: translateY(-10vh) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        .confetti-container {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            opacity: 1;
+            animation: confettiFall 1.8s ease-out forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
 
         .header {
             position: relative;
@@ -170,80 +248,38 @@
             to { opacity: 0; transform: translateY(-20px) scale(0.95); }
         }
 
-        .support-bar {
-            position: fixed;
-            top: 78px;
-            right: 5%;
-            left: 5%;
-            width: 90%;
-            max-width: 600px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1.5px solid var(--primary);
-            border-radius: 25px;
-            padding: 8px 16px;
+        .support-notification {
+            position: fixed; top: 75px; right: 5%; left: 5%;
+            max-width: 400px; margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            padding: 10px 14px;
             display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            align-items: center; gap: 10px;
             z-index: 2000;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-            transition: all 0.25s ease;
-            overflow: hidden;
         }
-        [data-theme="dark"] .support-bar {
-            background: rgba(26, 26, 26, 0.35);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        [data-theme="dark"] .support-notification {
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--primary);
         }
-        .support-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
-            pointer-events: none;
-            border-radius: 25px 25px 0 0;
-        }
-        [data-theme="dark"] .support-bar::before {
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
-        }
-        .support-bar.show {
+        .support-notification.show {
             display: flex;
-            animation: supportIn 0.5s ease forwards;
+            animation: slideDownNotif 0.5s ease forwards, slideUpNotif 0.5s ease 4.5s forwards;
         }
-        .support-bar:active {
-            transform: scale(0.98);
-        }
-        .support-bar span {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--primary);
-            position: relative;
-            z-index: 1;
-        }
-        .support-bar .channel-name {
-            color: var(--primary);
-            font-weight: 900;
-            direction: ltr;
-            display: inline-block;
-            margin-right: 4px;
-        }
-        .support-bar i {
-            color: var(--primary);
-            font-size: 14px;
-            position: relative;
-            z-index: 1;
-        }
+        .support-notification img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary); object-fit: cover; }
+        .support-notification .notif-info { flex: 1; }
+        .support-notification .notif-name { font-size: 10px; font-weight: 800; color: var(--dark); }
+        .support-notification i { color: var(--text-light); font-size: 10px; }
 
-        @keyframes supportIn {
-            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        @keyframes slideDownNotif { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpNotif { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
 
         .main-container {
             position: relative; z-index: 5;
@@ -259,13 +295,24 @@
             gap: 20px;
         }
 
+        .spy-mask-icon {
+            font-size: 72px;
+            margin-bottom: 8px;
+            animation: maskFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+        }
+        @keyframes maskFloat {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
         .message-title {
             font-size: 22px;
             font-weight: 800;
             color: var(--dark);
             line-height: 1.5;
             max-width: 400px;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
         .message-desc {
             font-size: 13px;
@@ -273,12 +320,13 @@
             color: var(--text-light);
             line-height: 1.9;
             max-width: 380px;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         .message-title.fading,
         .message-desc.fading {
             opacity: 0;
+            transform: translateY(-8px);
         }
 
         .blocked-contact {
@@ -320,16 +368,40 @@
             z-index: 2000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
             transition: all 0.4s ease;
+            overflow: hidden;
         }
         [data-theme="dark"] .progress-card {
             background: rgba(26, 26, 26, 0.6);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
+
+        .progress-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            animation: waveAcross 4s ease-in-out infinite;
+            pointer-events: none;
+            border-radius: 20px;
+        }
+        [data-theme="dark"] .progress-card::before {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+        }
+        @keyframes waveAcross {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
         .progress-card.error {
             border-color: var(--danger);
+            animation: errorShake 0.5s ease;
         }
         .progress-card.error .progress-bar-fill {
-            background: var(--danger);
+            background: var(--danger) !important;
         }
         .progress-card.error .progress-step-text {
             color: var(--danger);
@@ -337,21 +409,61 @@
         .progress-card.error .progress-percent {
             color: var(--danger);
         }
+        @keyframes errorShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        .progress-card.success {
+            border-color: var(--success);
+            animation: successPulse 0.8s ease;
+        }
+        .progress-card.success .progress-bar-fill {
+            background: var(--success) !important;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+        }
+        .progress-card.success .progress-step-text {
+            color: var(--success);
+        }
+        .progress-card.success .progress-percent {
+            color: var(--success);
+        }
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
 
         .progress-header {
             display: flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
         }
         .progress-icon {
             font-size: 14px;
             color: var(--primary);
             flex-shrink: 0;
             transition: color 0.3s ease;
+            display: inline-block;
+        }
+        .progress-icon.spinning {
+            animation: spinIcon 1.5s linear infinite;
+        }
+        @keyframes spinIcon {
+            to { transform: rotate(360deg); }
         }
         .progress-card.error .progress-icon {
             color: var(--danger);
+            animation: none;
+        }
+        .progress-card.success .progress-icon {
+            color: var(--success);
+            animation: none;
         }
         .progress-step-text {
             font-size: 11px;
@@ -359,10 +471,12 @@
             color: var(--dark);
             flex: 1;
             text-align: right;
-            transition: color 0.3s ease, opacity 0.3s ease;
+            transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
         [dir="ltr"] .progress-step-text { text-align: left; }
-        .progress-step-text.fading { opacity: 0; }
+        .progress-step-text.fading { opacity: 0; transform: translateY(-6px); }
         .progress-percent {
             font-size: 11px;
             font-weight: 900;
@@ -371,6 +485,8 @@
             text-align: left;
             direction: ltr;
             transition: color 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .progress-bar-track {
@@ -381,6 +497,7 @@
             overflow: hidden;
             position: relative;
             border: 1px solid rgba(0, 0, 0, 0.1);
+            z-index: 1;
         }
         [data-theme="dark"] .progress-bar-track {
             border-color: rgba(255, 255, 255, 0.1);
@@ -388,9 +505,9 @@
         .progress-bar-fill {
             height: 100%;
             width: 0%;
-            background: var(--primary);
+            background: var(--progress-blue);
             border-radius: 10px;
-            transition: width 0.5s cubic-bezier(.17,.67,.12,.99), background 0.3s ease;
+            transition: width 0.6s cubic-bezier(.17,.67,.12,.99), background 0.5s ease;
             position: relative;
             overflow: hidden;
         }
@@ -401,7 +518,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
             animation: shimmer 1.5s ease-in-out infinite;
         }
         @keyframes shimmer {
@@ -411,11 +528,40 @@
         .progress-card.error .progress-bar-fill::after {
             display: none;
         }
+
+        .footer-credits {
+            position: fixed;
+            bottom: 86px;
+            right: 5%;
+            left: 5%;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--text-light);
+            z-index: 1500;
+            pointer-events: none;
+            opacity: 0.6;
+            letter-spacing: 0.5px;
+        }
+        .footer-credits i {
+            color: var(--danger);
+            font-size: 9px;
+            animation: heartBeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
     </style>
 </head>
 <body>
 
     <div class="bg-animation"></div>
+    <div class="particles-container" id="particlesContainer"></div>
+    <div class="confetti-container" id="confettiContainer"></div>
 
     <div class="toast-container" id="toastContainer"></div>
 
@@ -430,20 +576,29 @@
         </div>
     </header>
 
-    <div class="support-bar" id="supportBar">
-        <i class="bi bi-heart-fill" aria-hidden="true"></i>
-        <span data-i18n="support_text">حمایت از سازنده</span>
-        <span class="channel-name">@amirmahdi_code</span>
+    <div class="support-notification" id="supportNotification">
+        <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="notif-info">
+            <div class="notif-name">امیرمهدی | Amirmahdi</div>
+        </div>
+        <i class="bi bi-chevron-left" aria-hidden="true"></i>
     </div>
 
     <main class="main-container">
+        <div class="spy-mask-icon" id="spyMaskIcon">🎭</div>
         <h1 class="message-title" id="messageTitle" data-i18n="preparing_title">در حال آماده‌سازی...</h1>
         <p class="message-desc" id="messageDesc" data-i18n="preparing_desc">لطفاً چند لحظه صبر کنید</p>
     </main>
 
+    <div class="footer-credits">
+        <span data-i18n="made_with">ساخته شده با</span>
+        <i class="bi bi-heart-fill" aria-hidden="true"></i>
+        <span data-i18n="by_amirmahdi">توسط امیرمهدی</span>
+    </div>
+
     <div class="progress-card" id="progressCard">
         <div class="progress-header">
-            <i class="bi bi-hourglass-split progress-icon" id="progressIcon" aria-hidden="true"></i>
+            <i class="bi bi-hourglass-split progress-icon spinning" id="progressIcon" aria-hidden="true"></i>
             <span class="progress-step-text" id="progressStepText">در حال آماده‌سازی...</span>
             <span class="progress-percent" id="progressPercent">0%</span>
         </div>
@@ -461,12 +616,15 @@
 
             var messageTitle = document.getElementById('messageTitle');
             var messageDesc = document.getElementById('messageDesc');
-            var supportBar = document.getElementById('supportBar');
+            var supportNotification = document.getElementById('supportNotification');
             var progressCard = document.getElementById('progressCard');
             var progressIcon = document.getElementById('progressIcon');
             var progressStepText = document.getElementById('progressStepText');
             var progressPercent = document.getElementById('progressPercent');
             var progressBarFill = document.getElementById('progressBarFill');
+            var particlesContainer = document.getElementById('particlesContainer');
+            var confettiContainer = document.getElementById('confettiContainer');
+            var spyMaskIcon = document.getElementById('spyMaskIcon');
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var ERROR_REDIRECT_DELAY = 5000;
@@ -474,6 +632,7 @@
             var isRedirecting = false;
             var currentLang = 'fa';
             var currentProgress = 0;
+            var confettiTriggered = false;
 
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
             document.addEventListener('dragstart', function(e) { e.preventDefault(); });
@@ -548,7 +707,10 @@
                     err_game_cancelled: 'این بازی لغو شده است',
                     err_game_not_found: 'این بازی وجود ندارد یا حذف شده است',
                     err_kicked: 'شما از این بازی اخراج شده‌اید',
-                    err_network: 'اتصال اینترنت خود را بررسی کنید'
+                    err_network: 'اتصال اینترنت خود را بررسی کنید',
+
+                    made_with: 'ساخته شده با',
+                    by_amirmahdi: 'توسط امیرمهدی'
                 },
                 en: {
                     preparing_title: 'Preparing...',
@@ -582,7 +744,10 @@
                     err_game_cancelled: 'This game has been cancelled',
                     err_game_not_found: 'This game does not exist or was removed',
                     err_kicked: 'You have been kicked from this game',
-                    err_network: 'Please check your internet connection'
+                    err_network: 'Please check your internet connection',
+
+                    made_with: 'Made with',
+                    by_amirmahdi: 'by Amirmahdi'
                 },
                 ar: {
                     preparing_title: 'جار التحضير...',
@@ -616,7 +781,10 @@
                     err_game_cancelled: 'تم إلغاء هذه اللعبة',
                     err_game_not_found: 'هذه اللعبة غير موجودة أو تم حذفها',
                     err_kicked: 'لقد تم طردك من هذه اللعبة',
-                    err_network: 'يرجى التحقق من اتصالك بالإنترنت'
+                    err_network: 'يرجى التحقق من اتصالك بالإنترنت',
+
+                    made_with: 'صنع بـ',
+                    by_amirmahdi: 'بواسطة أميرمهدي'
                 }
             };
 
@@ -682,6 +850,13 @@
                 applyLanguage(currentLang);
             }
 
+            function isAnimationEnabled() {
+                var s = getSettings();
+                if (s.animation === false) return false;
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+                return true;
+            }
+
             function triggerHaptic(style) {
                 var s = getSettings();
                 if (s.haptic === false) return;
@@ -708,7 +883,52 @@
                 }, duration);
             }
 
-            function setProgress(percent, stepKey, isError) {
+            function spawnParticles() {
+                if (!isAnimationEnabled()) return;
+                if (!particlesContainer) return;
+                particlesContainer.innerHTML = '';
+                for (var i = 0; i < 15; i++) {
+                    var p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.animationDuration = (10 + Math.random() * 15) + 's';
+                    p.style.animationDelay = Math.random() * 10 + 's';
+                    var size = 2 + Math.random() * 4;
+                    p.style.width = size + 'px';
+                    p.style.height = size + 'px';
+                    particlesContainer.appendChild(p);
+                }
+            }
+
+            function spawnConfetti() {
+                if (!isAnimationEnabled()) return;
+                if (!confettiContainer) return;
+                var colors = ['#ef4444', '#f59e0b', '#10b981', '#06b6d4', '#8b5cf6', '#ec4899'];
+                for (var i = 0; i < 25; i++) {
+                    var c = document.createElement('div');
+                    c.className = 'confetti-piece';
+                    c.style.left = Math.random() * 100 + '%';
+                    c.style.top = '-20px';
+                    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    c.style.animationDuration = (1.5 + Math.random() * 1) + 's';
+                    c.style.animationDelay = Math.random() * 0.4 + 's';
+                    confettiContainer.appendChild(c);
+                    (function(el) {
+                        setTimeout(function() {
+                            if (el.parentNode) el.parentNode.removeChild(el);
+                        }, 3000);
+                    })(c);
+                }
+            }
+
+            function getProgressColor(percent) {
+                if (percent < 30) return 'var(--progress-blue)';
+                if (percent < 70) return 'var(--progress-purple)';
+                return 'var(--progress-green)';
+            }
+
+            function setProgress(percent, stepKey, state) {
                 currentProgress = percent;
                 progressBarFill.style.width = percent + '%';
                 progressPercent.textContent = toPersianDigits(percent) + '%';
@@ -718,14 +938,31 @@
                     setTimeout(function() {
                         progressStepText.textContent = getTranslation(stepKey);
                         progressStepText.classList.remove('fading');
-                    }, 200);
+                    }, 250);
                 }
 
-                if (isError) {
+                if (state === 'error') {
                     progressCard.classList.add('error');
+                    progressCard.classList.remove('success');
                     progressIcon.className = 'bi bi-x-circle-fill progress-icon';
+                    progressBarFill.style.background = 'var(--danger)';
+                    confettiTriggered = false;
+                } else if (state === 'success') {
+                    progressCard.classList.remove('error');
+                    progressCard.classList.add('success');
+                    progressIcon.className = 'bi bi-check-circle-fill progress-icon';
+                    progressBarFill.style.background = 'var(--success)';
+                    if (!confettiTriggered) {
+                        confettiTriggered = true;
+                        spawnConfetti();
+                        triggerHaptic('medium');
+                    }
                 } else {
                     progressCard.classList.remove('error');
+                    progressCard.classList.remove('success');
+                    progressIcon.className = 'bi bi-hourglass-split progress-icon spinning';
+                    progressBarFill.style.background = getProgressColor(percent);
+                    if (percent < 100) confettiTriggered = false;
                 }
             }
 
@@ -753,10 +990,11 @@
                     { title: 'أحدكم جاسوس', desc: 'يجب أن تجدوه قبل فوات الأوان. كونوا منتبهين للكلام والسلوك.' },
                     { title: 'اسأل، اعرف، اكشف', desc: 'بأسئلة ذكية اقترب من الحقيقة وحدد الجاسوس.' },
                     { title: 'دافع عن المدينة', desc: 'المافيا تترصد. اتحدوا معاً لإنقاذ المدينة.' },
-                    { title: 'اكتشف الحقيقة', desc: 'بمنطق واستدلال، ميّز بين الصدق والكذب واكشف الجاسوس.' }
+                    { title: 'اكتشف الحقيقة', desc: 'اسأل، اعرف، اكشف الجاسوس بالمنطق.' }
                 ]
             };
 
+            var maskIcons = ['🎭', '🕵️', '🔍', '🔎', '🗝️'];
             var currentMsgIndex = 0;
 
             function getCurrentMessages() {
@@ -776,6 +1014,17 @@
                     messageTitle.classList.remove('fading');
                     messageDesc.classList.remove('fading');
                 }, 400);
+
+                if (spyMaskIcon && isAnimationEnabled()) {
+                    var iconIdx = index % maskIcons.length;
+                    spyMaskIcon.style.transform = 'scale(0.7)';
+                    spyMaskIcon.style.opacity = '0.5';
+                    setTimeout(function() {
+                        spyMaskIcon.textContent = maskIcons[iconIdx];
+                        spyMaskIcon.style.transform = '';
+                        spyMaskIcon.style.opacity = '';
+                    }, 200);
+                }
             }
 
             function startMessageRotation() {
@@ -783,6 +1032,7 @@
                 currentMsgIndex = 0;
                 messageTitle.textContent = msgs[0].title;
                 messageDesc.textContent = msgs[0].desc;
+                if (spyMaskIcon) spyMaskIcon.textContent = maskIcons[0];
 
                 messageInterval = setInterval(function() {
                     currentMsgIndex++;
@@ -798,7 +1048,7 @@
             }
 
             function showSupportBar() {
-                supportBar.classList.add('show');
+                if (supportNotification) supportNotification.classList.add('show');
             }
 
             function getEitaaUser() {
@@ -896,18 +1146,20 @@
                 else if (errCode === 'Active game exists') msg = getTranslation('err_active_game');
                 else if (errCode === 'Game not found') msg = getTranslation('err_game_not_found');
                 else if (errCode === 'You were kicked from this game') msg = getTranslation('err_kicked');
-                else if (errCode === 'Game is finished' || errCode === 'Game finished') msg = getTranslation('err_game_finished');
+                else if (errCode === 'Game is finished' || errCode === 'Game finished' || errCode === 'Game is finish') msg = getTranslation('err_game_finished');
                 else if (errCode === 'Game is cancelled' || errCode === 'Game cancelled') msg = getTranslation('err_game_cancelled');
                 else if (errCode === 'network') msg = getTranslation('err_network');
 
-                setProgress(currentProgress, null, true);
+                setProgress(currentProgress, null, 'error');
                 progressStepText.textContent = msg;
                 progressStepText.classList.remove('fading');
 
                 messageTitle.textContent = msg;
                 messageDesc.textContent = getTranslation('blocked_desc');
+                if (spyMaskIcon) spyMaskIcon.textContent = '⚠️';
 
                 showToast(msg, 4500);
+                triggerHaptic('heavy');
 
                 setTimeout(function() {
                     goToDashboard();
@@ -916,7 +1168,7 @@
 
             function handleBlocked() {
                 stopMessageRotation();
-                setProgress(100, null, true);
+                setProgress(100, null, 'error');
                 progressStepText.textContent = getTranslation('step_blocked');
 
                 messageTitle.textContent = getTranslation('blocked_title');
@@ -925,6 +1177,8 @@
                     '<i class="bi bi-telegram" aria-hidden="true"></i> ' +
                     escapeHtml(getTranslation('blocked_contact')) +
                     '</a>';
+
+                if (spyMaskIcon) spyMaskIcon.textContent = '🚫';
 
                 var contact = document.getElementById('blockedContact');
                 if (contact) {
@@ -936,10 +1190,11 @@
 
             function handleNotInEitaa() {
                 stopMessageRotation();
-                setProgress(100, null, true);
+                setProgress(100, null, 'error');
                 progressStepText.textContent = getTranslation('not_in_eitaa_title');
                 messageTitle.textContent = getTranslation('not_in_eitaa_title');
                 messageDesc.textContent = getTranslation('not_in_eitaa_desc');
+                if (spyMaskIcon) spyMaskIcon.textContent = '❌';
             }
 
             function openSupportProfile() {
@@ -952,6 +1207,8 @@
             }
 
             function openChannelLink() {
+                triggerHaptic('light');
+                if (supportNotification) supportNotification.classList.remove('show');
                 if (webApp && webApp.openEitaaLink) {
                     webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
                 } else {
@@ -970,7 +1227,7 @@
                             var rawId = String(g.id == null ? '' : g.id);
                             if (!VALID_GAME_ID.test(rawId)) continue;
                             var s = g.status;
-                            if (s === 'waiting' || s === 'd1' || s === 'n1' || s === 'd2' || s === 'n2' || s === 'd3' || s === 'n3') {
+                            if (s === 'waiting' || s === 'd1' || s === 'n1' || s === 'v1' || s === 'd2' || s === 'n2' || s === 'v2' || s === 'd3' || s === 'n3' || s === 'v3') {
                                 return { id: rawId, status: s };
                             }
                         }
@@ -981,6 +1238,7 @@
 
             async function init() {
                 applyTheme();
+                spawnParticles();
                 startMessageRotation();
                 setProgress(5, 'step_user_info');
 
@@ -1049,7 +1307,7 @@
 
                     var gameStatus = String(targetGame.data.status || '');
 
-                    if (gameStatus === 'finish' || gameStatus === 'finished') {
+                    if (gameStatus === 'finish') {
                         handleJoinError('Game is finished');
                         return;
                     }
@@ -1059,8 +1317,10 @@
                     }
 
                     if (activeGame && activeGame.id === startParam) {
-                        setProgress(95, 'step_redirect_waiting');
-                        goToWaiting(startParam);
+                        setProgress(95, 'step_redirect_waiting', 'success');
+                        setTimeout(function() {
+                            goToWaiting(startParam);
+                        }, 400);
                         return;
                     }
 
@@ -1097,8 +1357,10 @@
                     var joinResult = await fetchData('joinGame', { gameId: startParam });
 
                     if (joinResult && joinResult.ok) {
-                        setProgress(95, 'step_redirect_waiting');
-                        goToWaiting(startParam);
+                        setProgress(95, 'step_redirect_waiting', 'success');
+                        setTimeout(function() {
+                            goToWaiting(startParam);
+                        }, 400);
                         return;
                     }
 
@@ -1110,14 +1372,16 @@
                 setProgress(90, 'step_preparing');
 
                 setTimeout(function() {
-                    setProgress(100, 'step_redirect_dashboard');
+                    setProgress(100, 'step_redirect_dashboard', 'success');
                     setTimeout(function() {
                         goToDashboard();
-                    }, 600);
+                    }, 800);
                 }, 500);
             }
 
-            supportBar.addEventListener('click', openChannelLink);
+            if (supportNotification) {
+                supportNotification.addEventListener('click', openChannelLink);
+            }
 
             init();
         })();
