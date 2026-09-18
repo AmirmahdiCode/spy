@@ -108,9 +108,6 @@
 
         [data-theme="dark"] .header {
             background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--primary);
         }
 
         .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
@@ -148,77 +145,9 @@
             display: inline-block;
         }
 
-        .day-timer-bar {
-            position: sticky;
-            top: 64px;
-            z-index: 9;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--primary);
-            padding: 6px 12px 5px;
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-        [data-theme="dark"] .day-timer-bar {
-            background: rgba(26, 26, 26, 0.85);
-        }
-        .day-timer-bar.show { display: flex; }
-        .day-timer-bar.urgent .day-timer-fill { background: var(--danger); }
-        .day-timer-bar.urgent .day-timer-text { color: var(--danger); animation: pulse 1s infinite; }
-        .day-timer-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            max-width: 600px;
-            width: 100%;
-            margin: 0 auto;
-        }
-        .day-timer-label {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .day-timer-label i { color: var(--primary); font-size: 11px; }
-        .day-timer-text {
-            font-size: 13px;
-            font-weight: 900;
-            color: var(--dark);
-            direction: ltr;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
-        }
-        .day-timer-progress {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            height: 4px;
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            overflow: hidden;
-        }
-        .day-timer-fill {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            background: var(--success);
-            border-radius: 999px;
-            transition: width 1s linear, background 0.3s ease;
-            width: 100%;
-        }
-
         .toast-container {
             position: fixed;
-            top: 130px;
+            top: 75px;
             right: 5%;
             left: 5%;
             max-width: 400px;
@@ -442,91 +371,6 @@
         }
         .content-updated {
             animation: fadeInUp 0.4s ease;
-        }
-
-        .secret-card {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
-            border: 2px solid #8b0000;
-            border-radius: var(--radius);
-            box-shadow: 0 0 30px rgba(139, 0, 0, 0.4), 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(139, 0, 0, 0.15);
-            cursor: pointer;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.4s ease;
-            padding: 16px;
-        }
-        .secret-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: 
-                repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(139, 0, 0, 0.03) 12px, rgba(139, 0, 0, 0.03) 24px),
-                radial-gradient(circle at center, rgba(139, 0, 0, 0.15), transparent 70%);
-            pointer-events: none;
-        }
-        .secret-card::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent 0deg, rgba(220, 38, 38, 0.15) 30deg, transparent 60deg, transparent 360deg);
-            animation: rotateGlow 8s linear infinite;
-            pointer-events: none;
-        }
-        @keyframes rotateGlow {
-            to { transform: rotate(360deg); }
-        }
-        .secret-card:active {
-            transform: scale(0.98);
-        }
-        .secret-card-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
-        .secret-card-title {
-            font-size: 32px;
-            font-weight: 900;
-            color: #dc2626;
-            letter-spacing: 8px;
-            text-shadow: 0 0 20px rgba(220, 38, 38, 0.8), 0 0 40px rgba(220, 38, 38, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8);
-            line-height: 1.4;
-            margin-bottom: 12px;
-            animation: pulseRed 2.5s ease-in-out infinite;
-        }
-        @keyframes pulseRed {
-            0%, 100% { text-shadow: 0 0 20px rgba(220, 38, 38, 0.8), 0 0 40px rgba(220, 38, 38, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8); }
-            50% { text-shadow: 0 0 30px rgba(220, 38, 38, 1), 0 0 60px rgba(220, 38, 38, 0.6), 0 2px 4px rgba(0, 0, 0, 0.8); }
-        }
-        .secret-card-subtitle {
-            font-size: 12px;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 1px;
-        }
-        .secret-card-hint {
-            position: absolute;
-            bottom: 12px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 9px;
-            font-weight: 700;
-            color: rgba(220, 38, 38, 0.6);
-            z-index: 2;
-            animation: blink 2s ease-in-out infinite;
-        }
-        @keyframes blink {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 1; }
         }
 
         .report-paper-wrapper {
@@ -1445,6 +1289,1091 @@
             transition: all 0.2s ease;
         }
         .reveal-close-btn:active { transform: scale(0.96); }
+
+        .detective-desk-wrapper {
+            position: relative;
+            width: 100%;
+            margin: 0 0 12px 0;
+            perspective: 1200px;
+        }
+
+        .detective-desk {
+            position: relative;
+            width: 100%;
+            min-height: 340px;
+            border-radius: var(--radius);
+            background:
+                repeating-linear-gradient(90deg,
+                    rgba(0, 0, 0, 0.04) 0px,
+                    rgba(0, 0, 0, 0.04) 2px,
+                    transparent 2px,
+                    transparent 60px),
+                repeating-linear-gradient(0deg,
+                    rgba(255, 255, 255, 0.02) 0px,
+                    rgba(255, 255, 255, 0.02) 1px,
+                    transparent 1px,
+                    transparent 40px),
+                linear-gradient(180deg, #3d2416 0%, #2a1810 40%, #1f1108 100%);
+            border: 3px solid #1a0d05;
+            box-shadow:
+                inset 0 2px 0 rgba(255, 255, 255, 0.08),
+                inset 0 -20px 40px rgba(0, 0, 0, 0.5),
+                inset 20px 0 40px rgba(0, 0, 0, 0.3),
+                inset -20px 0 40px rgba(0, 0, 0, 0.3),
+                0 12px 30px rgba(0, 0, 0, 0.4),
+                0 4px 8px rgba(0, 0, 0, 0.6);
+            padding: 30px 14px 14px;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .detective-desk::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(255, 200, 100, 0.06), transparent 40%),
+                radial-gradient(ellipse at 85% 90%, rgba(0, 0, 0, 0.4), transparent 50%);
+            pointer-events: none;
+            border-radius: var(--radius);
+        }
+
+        .detective-desk::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(255, 255, 255, 0.05) 20%,
+                rgba(0, 0, 0, 0.2) 50%,
+                rgba(255, 255, 255, 0.05) 80%,
+                rgba(0, 0, 0, 0.3) 100%);
+            border-radius: var(--radius) var(--radius) 0 0;
+            pointer-events: none;
+        }
+
+        .desk-lamp {
+            position: absolute;
+            top: 8px;
+            right: 14px;
+            width: 60px;
+            height: 90px;
+            z-index: 8;
+            pointer-events: none;
+        }
+
+        .desk-lamp-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 8px;
+            background: linear-gradient(180deg, #4a4a4a, #1a1a1a);
+            border-radius: 50% 50% 4px 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        .desk-lamp-pole {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 50px;
+            background: linear-gradient(90deg, #2a2a2a, #555, #2a2a2a);
+            border-radius: 2px;
+        }
+
+        .desk-lamp-shade {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 28px;
+            background: linear-gradient(180deg, #333 0%, #1a1a1a 100%);
+            border-radius: 50% 50% 8px 8px / 100% 100% 20% 20%;
+            border: 2px solid #111;
+            box-shadow:
+                inset 0 -8px 12px rgba(0, 0, 0, 0.8),
+                0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .desk-lamp-bulb {
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 10px;
+            background: #555;
+            border-radius: 50%;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6);
+            transition: background 0.6s ease, box-shadow 0.6s ease;
+        }
+
+        .desk-lamp.lamp-on .desk-lamp-bulb {
+            background: #ffdd88;
+            box-shadow:
+                inset 0 0 6px rgba(255, 200, 100, 0.9),
+                0 0 12px rgba(255, 200, 100, 0.7),
+                0 0 20px rgba(255, 200, 100, 0.4);
+        }
+
+        .desk-lamp-glow {
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            background: radial-gradient(ellipse at top center, rgba(255, 200, 100, 0.35), transparent 65%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.8s ease, width 0.8s ease, height 0.8s ease;
+            pointer-events: none;
+        }
+
+        .desk-lamp.lamp-on .desk-lamp-glow {
+            width: 280px;
+            height: 260px;
+            opacity: 1;
+        }
+
+        .desk-calendar {
+            position: absolute;
+            top: 22px;
+            right: 84px;
+            width: 130px;
+            min-height: 100px;
+            background: linear-gradient(180deg, #f5efe0 0%, #e8dfc8 100%);
+            border-radius: 6px;
+            box-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.5) inset,
+                0 -2px 6px rgba(0, 0, 0, 0.15) inset,
+                0 4px 10px rgba(0, 0, 0, 0.6),
+                0 1px 3px rgba(0, 0, 0, 0.4);
+            padding: 8px 10px 10px;
+            z-index: 6;
+            transform: rotate(-2deg);
+            border: 1px solid #c9bda3;
+            transition: transform 0.4s ease;
+        }
+
+        .desk-calendar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent 10%, #b8a888 50%, transparent 90%);
+            border-radius: 6px 6px 0 0;
+            opacity: 0.5;
+        }
+
+        .desk-calendar-header {
+            font-size: 8px;
+            font-weight: 800;
+            color: #8b1e1e;
+            text-align: center;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+            border-bottom: 1px dashed rgba(139, 30, 30, 0.3);
+            padding-bottom: 3px;
+        }
+
+        .desk-calendar-phase {
+            font-size: 11px;
+            font-weight: 900;
+            color: #3d2817;
+            text-align: center;
+            margin-bottom: 6px;
+            font-family: 'Lalezar', var(--font);
+        }
+
+        .desk-calendar-timer {
+            font-size: 22px;
+            font-weight: 900;
+            color: #1a0d05;
+            text-align: center;
+            direction: ltr;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+            transition: color 0.3s ease;
+        }
+
+        .desk-calendar-timer.urgent {
+            color: #b91c1c;
+            animation: calendarPulse 1s infinite;
+        }
+
+        @keyframes calendarPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .desk-calendar-progress {
+            position: relative;
+            margin-top: 6px;
+            height: 5px;
+            background: #d4c9b3;
+            border-radius: 3px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .desk-calendar-progress-fill {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 3px;
+            transition: width 1s linear, background 0.3s ease;
+        }
+
+        .desk-calendar-progress-fill.urgent {
+            background: linear-gradient(90deg, #ef4444, #b91c1c);
+        }
+
+        .desk-calendar-hint {
+            font-size: 7px;
+            font-weight: 700;
+            color: #a89870;
+            text-align: center;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        .desk-notebook {
+            position: absolute;
+            top: 130px;
+            left: 18px;
+            width: 150px;
+            height: 110px;
+            z-index: 5;
+            transform: rotate(3deg);
+            transition: transform 0.5s ease;
+        }
+
+        .desk-notebook-cover {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #6b4423 0%, #4a2f19 100%);
+            border-radius: 3px;
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.6),
+                0 1px 3px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            border: 1px solid #2a1810;
+            z-index: 3;
+            opacity: 0;
+            transform: translateY(-8px) rotateX(-30deg);
+            transform-origin: top center;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        .desk-notebook-cover::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 20px;
+            background: radial-gradient(ellipse, rgba(255, 220, 150, 0.25), transparent);
+            border-radius: 50%;
+        }
+
+        .desk-notebook.closed .desk-notebook-cover {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+
+        .desk-notebook-pages {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, #faf5e8 0%, #f0e8d4 100%);
+            border-radius: 3px;
+            box-shadow:
+                inset 0 0 20px rgba(139, 90, 43, 0.15),
+                inset 0 2px 0 rgba(0, 0, 0, 0.05);
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow: hidden;
+            border: 1px solid #c9bda3;
+        }
+
+        .desk-notebook-pages::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background: linear-gradient(180deg, transparent 5%, rgba(139, 90, 43, 0.2) 50%, transparent 95%);
+            pointer-events: none;
+        }
+
+        .desk-notebook-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 5%, rgba(60, 60, 80, 0.3) 15%, rgba(60, 60, 80, 0.3) 85%, transparent 95%);
+            border-radius: 1px;
+        }
+
+        .desk-notebook-line.wavy {
+            height: 8px;
+            background: none;
+            position: relative;
+        }
+
+        .desk-notebook-line.wavy::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 5%;
+            right: 5%;
+            height: 1px;
+            background: rgba(60, 60, 80, 0.35);
+            border-radius: 50%;
+            transform: skewY(1deg);
+        }
+
+        .desk-notebook-text {
+            font-size: 8px;
+            font-weight: 700;
+            color: rgba(60, 40, 20, 0.7);
+            font-family: 'Lalezar', var(--font);
+            text-align: center;
+            margin-top: auto;
+            letter-spacing: 1px;
+        }
+
+        .desk-pencil {
+            position: absolute;
+            bottom: 20px;
+            left: 78px;
+            width: 90px;
+            height: 6px;
+            background: linear-gradient(90deg, #f4d35e 0%, #e0b840 70%, #c99b30 100%);
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            transform: rotate(-25deg);
+            transform-origin: left center;
+            z-index: 6;
+            transition: transform 0.5s ease;
+        }
+
+        .desk-pencil::before {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 6px;
+            background: linear-gradient(90deg, #f5deb3 0%, #d4b896 100%);
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+        }
+
+        .desk-pencil::after {
+            content: '';
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 3px;
+            background: #1a1a1a;
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+        }
+
+        .desk-notebook.closed + .desk-pencil,
+        .desk-pencil.closed-position {
+            transform: rotate(-5deg);
+        }
+
+        .desk-folders {
+            position: absolute;
+            top: 100px;
+            right: 20px;
+            width: 130px;
+            height: 100px;
+            z-index: 5;
+        }
+
+        .desk-folder {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            border-radius: 2px 4px 4px 4px;
+            box-shadow:
+                0 3px 6px rgba(0, 0, 0, 0.4),
+                0 1px 2px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .desk-folder::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 15px;
+            width: 40px;
+            height: 8px;
+            background: inherit;
+            border-radius: 4px 4px 0 0;
+            filter: brightness(1.1);
+        }
+
+        .desk-folder-1 {
+            background: linear-gradient(135deg, #b8860b 0%, #8b6508 100%);
+            transform: rotate(-8deg) translate(0, 12px);
+            z-index: 1;
+        }
+
+        .desk-folder-2 {
+            background: linear-gradient(135deg, #d4a574 0%, #a67c52 100%);
+            transform: rotate(4deg) translate(-8px, 4px);
+            z-index: 2;
+        }
+
+        .desk-folder-3 {
+            background: linear-gradient(135deg, #c9a961 0%, #8b7838 100%);
+            transform: rotate(-2deg);
+            z-index: 3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .desk-folder-3::after {
+            content: 'Mحرم';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            font-size: 20px;
+            font-weight: 900;
+            color: rgba(180, 20, 20, 0.65);
+            border: 3px solid rgba(180, 20, 20, 0.65);
+            border-radius: 4px;
+            padding: 4px 12px;
+            letter-spacing: 2px;
+            font-family: 'Lalezar', var(--font);
+            text-transform: uppercase;
+        }
+
+        .desk-folder-tab {
+            position: absolute;
+            bottom: 6px;
+            left: 8px;
+            font-size: 7px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 1px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .desk-coffee {
+            position: absolute;
+            bottom: 20px;
+            right: 22px;
+            width: 44px;
+            height: 50px;
+            z-index: 7;
+        }
+
+        .desk-coffee-cup {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 44px;
+            height: 40px;
+            background: linear-gradient(180deg, #f5f5f5 0%, #dcdcdc 60%, #b0b0b0 100%);
+            border-radius: 4px 4px 12px 12px;
+            box-shadow:
+                inset 0 -4px 8px rgba(0, 0, 0, 0.15),
+                0 4px 8px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .desk-coffee-cup::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 3px;
+            right: 3px;
+            height: 8px;
+            background: radial-gradient(ellipse at center, #4a2810 0%, #2a1808 100%);
+            border-radius: 50%;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .desk-coffee-handle {
+            position: absolute;
+            top: 8px;
+            right: -12px;
+            width: 16px;
+            height: 20px;
+            border: 3px solid #dcdcdc;
+            border-left: none;
+            border-radius: 0 50% 50% 0;
+            box-shadow: 2px 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .desk-coffee-steam {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 40px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        .desk-coffee.steam-on .desk-coffee-steam {
+            opacity: 0.7;
+        }
+
+        .desk-coffee-steam-line {
+            position: absolute;
+            width: 3px;
+            height: 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+            border-radius: 50%;
+            animation: steamFloat 3s ease-in-out infinite;
+        }
+
+        .desk-coffee-steam-line:nth-child(1) {
+            left: 6px;
+            animation-delay: 0s;
+        }
+        .desk-coffee-steam-line:nth-child(2) {
+            left: 14px;
+            animation-delay: 1s;
+            height: 25px;
+        }
+        .desk-coffee-steam-line:nth-child(3) {
+            left: 22px;
+            animation-delay: 2s;
+        }
+
+        @keyframes steamFloat {
+            0% {
+                transform: translateY(0) scaleX(1);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-25px) scaleX(2);
+                opacity: 0;
+            }
+        }
+
+        .desk-sugar {
+            position: absolute;
+            bottom: 8px;
+            right: 72px;
+            width: 14px;
+            height: 10px;
+            background: linear-gradient(180deg, #fafafa 0%, #e0e0e0 100%);
+            border: 1px solid #c0c0c0;
+            border-radius: 2px;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+            transform: rotate(15deg);
+        }
+        .desk-sugar::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 2px;
+            right: 2px;
+            height: 1px;
+            background: rgba(0, 0, 0, 0.15);
+        }
+        .desk-sugar-2 {
+            right: 62px;
+            bottom: 12px;
+            transform: rotate(-10deg);
+        }
+
+        .desk-clutter {
+            position: absolute;
+            bottom: 12px;
+            left: 14px;
+            width: 130px;
+            height: 70px;
+            z-index: 4;
+            transition: all 0.5s ease;
+        }
+
+        .desk-clutter.organized .desk-clutter-item {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        .desk-clutter-item {
+            position: absolute;
+            transition: all 0.5s ease;
+            opacity: 1;
+        }
+
+        .desk-flashlight {
+            bottom: 6px;
+            left: 4px;
+            width: 40px;
+            height: 12px;
+            background: linear-gradient(180deg, #d0d0d0 0%, #808080 50%, #505050 100%);
+            border-radius: 2px 4px 4px 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transform: rotate(-15deg);
+        }
+        .desk-flashlight::before {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(180deg, #ffdd88, #b8860b);
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 0 6px rgba(255, 220, 100, 0.5);
+        }
+
+        .desk-magnifier {
+            bottom: 22px;
+            left: 50px;
+            width: 40px;
+            height: 40px;
+            transform: rotate(35deg);
+        }
+        .desk-magnifier::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 26px;
+            height: 26px;
+            border: 3px solid #8b6914;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200, 230, 255, 0.3), transparent 70%);
+            box-shadow: 0 0 8px rgba(200, 230, 255, 0.4);
+        }
+        .desk-magnifier::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 3px;
+            height: 16px;
+            background: linear-gradient(180deg, #8b6914, #4a3508);
+            border-radius: 2px;
+            transform: rotate(45deg);
+            transform-origin: top center;
+        }
+
+        .desk-pins {
+            bottom: 40px;
+            left: 96px;
+            width: 20px;
+            height: 20px;
+        }
+        .desk-pin {
+            position: absolute;
+            width: 4px;
+            height: 12px;
+            background: linear-gradient(180deg, #ef4444 0%, #b91c1c 60%, #7f1d1d 100%);
+            border-radius: 2px 2px 0 0;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+        }
+        .desk-pin::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -2px;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle at 30% 30%, #ff8888, #b91c1c);
+            border-radius: 50%;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .desk-pin:nth-child(1) { left: 0; top: 0; transform: rotate(-30deg); }
+        .desk-pin:nth-child(2) { left: 6px; top: 2px; transform: rotate(20deg); }
+        .desk-pin:nth-child(3) { left: 12px; top: 4px; transform: rotate(-10deg); }
+
+        .desk-cigarette-pack {
+            bottom: 6px;
+            left: 76px;
+            width: 26px;
+            height: 36px;
+            background: linear-gradient(180deg, #f5f5f5 0%, #e0e0e0 100%);
+            border-radius: 2px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
+            transform: rotate(-20deg);
+            border: 1px solid #a0a0a0;
+        }
+        .desk-cigarette-pack::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 4px;
+            right: 4px;
+            height: 12px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #333 100%);
+            border-radius: 2px;
+        }
+        .desk-cigarette-pack::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 8px;
+            background: #b91c1c;
+            border-radius: 1px;
+            box-shadow: 0 0 4px rgba(185, 28, 28, 0.6);
+        }
+
+        .desk-workstation-area {
+            position: relative;
+            margin-top: 240px;
+            padding: 0 4px;
+            z-index: 3;
+        }
+
+        .desk-workstation-area .section-card {
+            background: rgba(245, 245, 245, 0.95);
+            border: 1px solid #8b7838;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="dark"] .desk-workstation-area .section-card {
+            background: rgba(20, 20, 20, 0.92);
+            border: 1px solid #666;
+        }
+
+        .desk-workstation-area .workstation {
+            background: rgba(245, 245, 245, 0.9);
+            border: 2px solid #8b7838;
+        }
+
+        [data-theme="dark"] .desk-workstation-area .workstation {
+            background: rgba(20, 20, 20, 0.9);
+            border: 2px solid #888;
+        }
+
+        .detective-desk.desk-day .desk-lamp-bulb {
+            background: #555;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.6);
+        }
+        .detective-desk.desk-day .desk-lamp-glow {
+            opacity: 0;
+        }
+        .detective-desk.desk-day .desk-coffee-steam {
+            opacity: 0;
+        }
+        .detective-desk.desk-day .desk-notebook {
+            transform: rotate(0deg);
+        }
+        .detective-desk.desk-day .desk-notebook-cover {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
+        }
+        .detective-desk.desk-day .desk-pencil {
+            transform: rotate(-5deg);
+        }
+        .detective-desk.desk-day .desk-folder-1 {
+            transform: rotate(-3deg) translate(0, 4px);
+        }
+        .detective-desk.desk-day .desk-folder-2 {
+            transform: rotate(2deg) translate(-4px, 2px);
+        }
+        .detective-desk.desk-day .desk-folder-3 {
+            transform: rotate(-1deg);
+        }
+        .detective-desk.desk-day .desk-folder-3::after {
+            opacity: 0.4;
+        }
+        .detective-desk.desk-day .desk-clutter-item {
+            opacity: 0.95;
+        }
+        .detective-desk.desk-day .desk-magnifier {
+            transform: rotate(15deg);
+        }
+        .detective-desk.desk-day .desk-flashlight {
+            transform: rotate(-5deg);
+        }
+        .detective-desk.desk-day .desk-cigarette-pack {
+            transform: rotate(-10deg);
+        }
+
+        .detective-desk.desk-night .desk-calendar-timer {
+            text-shadow: 0 0 4px rgba(255, 200, 100, 0.4);
+        }
+
+        .detective-desk.desk-night::after {
+            background: linear-gradient(90deg,
+                rgba(0, 0, 0, 0.6) 0%,
+                rgba(255, 200, 100, 0.1) 20%,
+                rgba(0, 0, 0, 0.5) 50%,
+                rgba(255, 200, 100, 0.1) 80%,
+                rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        .desk-folder-confidential {
+            position: absolute;
+            top: 90px;
+            right: 160px;
+            width: 100px;
+            height: 70px;
+            background: linear-gradient(135deg, #d4a574 0%, #a67c52 100%);
+            border-radius: 2px 4px 4px 4px;
+            box-shadow:
+                0 3px 8px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(220, 38, 38, 0.4),
+                0 0 40px rgba(220, 38, 38, 0.2);
+            cursor: pointer;
+            z-index: 7;
+            transform: rotate(-6deg);
+            transition: all 0.4s ease;
+            animation: folderShine 3s ease-in-out infinite;
+            overflow: visible;
+        }
+
+        .desk-folder-confidential::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            right: 12px;
+            width: 36px;
+            height: 8px;
+            background: linear-gradient(135deg, #d4a574 0%, #a67c52 100%);
+            border-radius: 4px 4px 0 0;
+            filter: brightness(1.1);
+        }
+
+        .desk-folder-confidential::after {
+            content: 'محرمانه';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-8deg);
+            font-size: 14px;
+            font-weight: 900;
+            color: rgba(180, 20, 20, 0.85);
+            border: 2.5px solid rgba(180, 20, 20, 0.85);
+            border-radius: 3px;
+            padding: 3px 8px;
+            letter-spacing: 1px;
+            font-family: 'Lalezar', var(--font);
+            background: rgba(255, 255, 255, 0.1);
+            text-shadow: 0 0 4px rgba(255, 200, 200, 0.5);
+        }
+
+        .desk-folder-confidential:active {
+            transform: rotate(-3deg) scale(0.96);
+        }
+
+        @keyframes folderShine {
+            0%, 100% {
+                box-shadow:
+                    0 3px 8px rgba(0, 0, 0, 0.5),
+                    0 0 20px rgba(220, 38, 38, 0.4),
+                    0 0 40px rgba(220, 38, 38, 0.2);
+            }
+            50% {
+                box-shadow:
+                    0 3px 8px rgba(0, 0, 0, 0.5),
+                    0 0 30px rgba(220, 38, 38, 0.7),
+                    0 0 60px rgba(220, 38, 38, 0.4);
+            }
+        }
+
+        .desk-folder-confidential .folder-icon {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 480px) {
+            .detective-desk {
+                min-height: 300px;
+                padding: 24px 10px 10px;
+            }
+            .desk-lamp {
+                width: 44px;
+                height: 70px;
+                top: 6px;
+                right: 8px;
+            }
+            .desk-lamp-shade {
+                width: 40px;
+                height: 22px;
+            }
+            .desk-lamp-pole {
+                height: 38px;
+            }
+            .desk-lamp-base {
+                width: 32px;
+            }
+            .desk-calendar {
+                top: 18px;
+                right: 60px;
+                width: 105px;
+                padding: 6px 8px 8px;
+            }
+            .desk-calendar-timer {
+                font-size: 18px;
+            }
+            .desk-calendar-phase {
+                font-size: 9px;
+            }
+            .desk-notebook {
+                top: 110px;
+                left: 10px;
+                width: 120px;
+                height: 88px;
+            }
+            .desk-notebook-pages {
+                padding: 9px 11px;
+                gap: 5px;
+            }
+            .desk-pencil {
+                left: 62px;
+                width: 70px;
+                bottom: 14px;
+            }
+            .desk-folders {
+                top: 85px;
+                right: 14px;
+                width: 110px;
+                height: 85px;
+            }
+            .desk-folder {
+                width: 100px;
+                height: 68px;
+            }
+            .desk-folder-confidential {
+                top: 78px;
+                right: 130px;
+                width: 85px;
+                height: 60px;
+            }
+            .desk-folder-confidential::after {
+                font-size: 12px;
+                padding: 2px 6px;
+            }
+            .desk-coffee {
+                width: 36px;
+                height: 42px;
+                bottom: 16px;
+                right: 16px;
+            }
+            .desk-coffee-cup {
+                width: 36px;
+                height: 33px;
+            }
+            .desk-sugar {
+                right: 58px;
+                width: 12px;
+                height: 8px;
+            }
+            .desk-sugar-2 {
+                right: 50px;
+            }
+            .desk-clutter {
+                width: 100px;
+                height: 55px;
+                bottom: 8px;
+                left: 8px;
+            }
+            .desk-flashlight {
+                width: 32px;
+                height: 10px;
+            }
+            .desk-magnifier {
+                width: 32px;
+                height: 32px;
+                left: 40px;
+            }
+            .desk-magnifier::before {
+                width: 20px;
+                height: 20px;
+            }
+            .desk-pins {
+                left: 78px;
+                bottom: 32px;
+            }
+            .desk-pin {
+                width: 3px;
+                height: 10px;
+            }
+            .desk-pin::before {
+                width: 6px;
+                height: 6px;
+            }
+            .desk-cigarette-pack {
+                width: 22px;
+                height: 30px;
+                left: 60px;
+            }
+            .desk-workstation-area {
+                margin-top: 210px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .detective-desk {
+                min-height: 280px;
+                padding: 22px 8px 8px;
+            }
+            .desk-calendar {
+                width: 95px;
+                right: 54px;
+            }
+            .desk-calendar-timer {
+                font-size: 16px;
+            }
+            .desk-notebook {
+                width: 105px;
+                height: 78px;
+                top: 100px;
+                left: 8px;
+            }
+            .desk-pencil {
+                left: 54px;
+                width: 60px;
+            }
+            .desk-folder-confidential {
+                right: 118px;
+                width: 75px;
+                height: 55px;
+            }
+            .desk-folder-confidential::after {
+                font-size: 10px;
+                padding: 2px 4px;
+            }
+            .desk-workstation-area {
+                margin-top: 195px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1469,16 +2398,6 @@
         </div>
     </header>
 
-    <div class="day-timer-bar" id="dayTimerBar">
-        <div class="day-timer-row">
-            <div class="day-timer-label"><i class="bi bi-hourglass-split" aria-hidden="true"></i> <span data-i18n="day_timer">زمان</span></div>
-            <div class="day-timer-text" id="dayTimerText">--:--</div>
-        </div>
-        <div class="day-timer-progress">
-            <div class="day-timer-fill" id="dayTimerFill" style="width:100%;"></div>
-        </div>
-    </div>
-
     <main class="main-container" id="mainContainer">
 
         <div class="game-banner" id="gameBanner">
@@ -1487,14 +2406,76 @@
 
         <div class="main-content-padded">
 
-            <div id="dynamicContent"></div>
+            <div class="detective-desk-wrapper">
+                <div class="detective-desk" id="detectiveDesk">
+                    <div class="desk-lamp" id="deskLamp">
+                        <div class="desk-lamp-glow" id="deskLampGlow"></div>
+                        <div class="desk-lamp-base"></div>
+                        <div class="desk-lamp-pole"></div>
+                        <div class="desk-lamp-shade"></div>
+                        <div class="desk-lamp-bulb" id="deskLampBulb"></div>
+                    </div>
 
-            <div class="secret-card" id="secretCard">
-                <div class="secret-card-content">
-                    <div class="secret-card-title">مــحــرمــانــه</div>
-                    <div class="secret-card-subtitle" data-i18n="view_role_word">مشاهده نقش و کلمه</div>
+                    <div class="desk-calendar" id="deskCalendar">
+                        <div class="desk-calendar-header" data-i18n="table_title">میز بازی</div>
+                        <div class="desk-calendar-phase" id="deskCalendarPhase">-</div>
+                        <div class="desk-calendar-timer" id="deskCalendarTimer">--:--</div>
+                        <div class="desk-calendar-progress">
+                            <div class="desk-calendar-progress-fill" id="deskCalendarProgressFill" style="width:100%;"></div>
+                        </div>
+                        <div class="desk-calendar-hint" data-i18n="day_timer">زمان</div>
+                    </div>
+
+                    <div class="desk-notebook closed" id="deskNotebook">
+                        <div class="desk-notebook-pages">
+                            <div class="desk-notebook-line wavy"></div>
+                            <div class="desk-notebook-line wavy"></div>
+                            <div class="desk-notebook-line wavy"></div>
+                            <div class="desk-notebook-line"></div>
+                            <div class="desk-notebook-line"></div>
+                            <div class="desk-notebook-text">پرونده محرمانه</div>
+                        </div>
+                        <div class="desk-notebook-cover"></div>
+                    </div>
+
+                    <div class="desk-pencil" id="deskPencil"></div>
+
+                    <div class="desk-folders">
+                        <div class="desk-folder desk-folder-1"></div>
+                        <div class="desk-folder desk-folder-2"></div>
+                        <div class="desk-folder desk-folder-3"></div>
+                    </div>
+
+                    <div class="desk-folder-confidential" id="deskFolderConfidential">
+                        <span class="folder-icon">🔒</span>
+                    </div>
+
+                    <div class="desk-coffee" id="deskCoffee">
+                        <div class="desk-coffee-steam">
+                            <div class="desk-coffee-steam-line"></div>
+                            <div class="desk-coffee-steam-line"></div>
+                            <div class="desk-coffee-steam-line"></div>
+                        </div>
+                        <div class="desk-coffee-cup"></div>
+                        <div class="desk-coffee-handle"></div>
+                    </div>
+
+                    <div class="desk-sugar"></div>
+                    <div class="desk-sugar desk-sugar-2"></div>
+
+                    <div class="desk-clutter" id="deskClutter">
+                        <div class="desk-clutter-item desk-flashlight"></div>
+                        <div class="desk-clutter-item desk-magnifier"></div>
+                        <div class="desk-clutter-item desk-pins">
+                            <div class="desk-pin"></div>
+                            <div class="desk-pin"></div>
+                            <div class="desk-pin"></div>
+                        </div>
+                        <div class="desk-clutter-item desk-cigarette-pack"></div>
+                    </div>
+
+                    <div class="desk-workstation-area" id="deskWorkstationArea"></div>
                 </div>
-                <div class="secret-card-hint" data-i18n="tap_to_view">برای مشاهده لمس کنید</div>
             </div>
 
         </div>
@@ -2567,64 +3548,116 @@
                 }
             }
 
-            function showDayTimerBar(show) {
-                var bar = document.getElementById('dayTimerBar');
-                if (!bar) return;
-                if (show) {
-                    bar.classList.add('show');
-                } else {
-                    bar.classList.remove('show');
-                    bar.classList.remove('urgent');
-                }
-            }
+            function updateDeskTimer() {
+                var timerEl = document.getElementById('deskCalendarTimer');
+                var fillEl = document.getElementById('deskCalendarProgressFill');
+                if (!timerEl || !fillEl) return;
 
-            function updateDayTimerBar() {
-                var textEl = document.getElementById('dayTimerText');
-                var fillEl = document.getElementById('dayTimerFill');
-                var bar = document.getElementById('dayTimerBar');
-                if (!textEl || !fillEl || !bar) return;
+                if (!isDay(gameData ? gameData.status : '')) {
+                    timerEl.textContent = '--:--';
+                    fillEl.style.width = '0%';
+                    timerEl.classList.remove('urgent');
+                    fillEl.classList.remove('urgent');
+                    return;
+                }
+
                 var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
                 var remaining = dayTimerDuration - elapsed;
                 if (remaining < 0) remaining = 0;
-                textEl.textContent = formatTime(remaining);
+
+                timerEl.textContent = formatTime(remaining);
                 var pct = dayTimerDuration > 0 ? (remaining / dayTimerDuration) * 100 : 0;
                 fillEl.style.width = pct + '%';
+
                 if (remaining <= 30) {
-                    bar.classList.add('urgent');
+                    timerEl.classList.add('urgent');
+                    fillEl.classList.add('urgent');
                 } else {
-                    bar.classList.remove('urgent');
+                    timerEl.classList.remove('urgent');
+                    fillEl.classList.remove('urgent');
                 }
+            }
+
+            function updateDeskAppearance(status) {
+                var desk = document.getElementById('detectiveDesk');
+                var lamp = document.getElementById('deskLamp');
+                var notebook = document.getElementById('deskNotebook');
+                var coffee = document.getElementById('deskCoffee');
+                var clutter = document.getElementById('deskClutter');
+                var phaseEl = document.getElementById('deskCalendarPhase');
+
+                if (!desk) return;
+
+                if (isNight(status)) {
+                    desk.classList.remove('desk-day');
+                    desk.classList.add('desk-night');
+                    if (lamp) lamp.classList.add('lamp-on');
+                    if (notebook) notebook.classList.remove('closed');
+                    if (coffee) coffee.classList.add('steam-on');
+                    if (clutter) clutter.classList.remove('organized');
+                } else {
+                    desk.classList.remove('desk-night');
+                    desk.classList.add('desk-day');
+                    if (lamp) lamp.classList.remove('lamp-on');
+                    if (notebook) notebook.classList.add('closed');
+                    if (coffee) coffee.classList.remove('steam-on');
+                    if (clutter) clutter.classList.add('organized');
+                }
+
+                if (phaseEl) {
+                    phaseEl.textContent = getPhaseLabel(status);
+                }
+            }
+
+            function stopDayTimer() {
+                if (dayTimerInterval) {
+                    clearInterval(dayTimerInterval);
+                    dayTimerInterval = null;
+                }
+            }
+
+            function startDayTimer(durationSec) {
+                stopDayTimer();
+                if (durationSec <= 0) return;
+                dayTimerStart = Date.now();
+                dayTimerDuration = durationSec;
+                updateDeskTimer();
+                dayTimerInterval = setInterval(function() {
+                    updateDeskTimer();
+                    var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
+                    var remaining = dayTimerDuration - elapsed;
+                    if (remaining <= 0) stopDayTimer();
+                }, 1000);
             }
 
             function updateTimerIfNeeded(game) {
                 if (isDay(game.status)) {
                     var dayDur = (game.dayDuration || 3) * 60;
                     var serverStart = game.dayStartedAt || 0;
-                    
+
                     if (!serverStart) {
                         var cached = safeGetLocalStorage('mafia_dayStartedAt_' + roomId);
                         serverStart = cached ? parseInt(cached, 10) : 0;
                     }
-                    
+
                     if (dayTimerPhase !== game.status || dayTimerStart !== serverStart) {
                         dayTimerPhase = game.status;
                         dayTimerStart = serverStart || Date.now();
                         dayTimerDuration = dayDur;
-                        
+
                         if (serverStart > 0) {
                             safeSetLocalStorage('mafia_dayStartedAt_' + roomId, String(serverStart));
                         }
-                        
+
                         if (dayTimerInterval) clearInterval(dayTimerInterval);
-                        updateDayTimerBar();
+                        updateDeskTimer();
                         dayTimerInterval = setInterval(function() {
-                            updateDayTimerBar();
+                            updateDeskTimer();
                             var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
                             var remaining = dayTimerDuration - elapsed;
                             if (remaining <= 0) stopDayTimer();
                         }, 1000);
                     }
-                    showDayTimerBar(true);
                 } else {
                     if (dayTimerPhase !== '') {
                         dayTimerPhase = '';
@@ -2633,14 +3666,7 @@
                         dayTimerStart = 0;
                         try { localStorage.removeItem('mafia_dayStartedAt_' + roomId); } catch(e) {}
                     }
-                    showDayTimerBar(false);
-                }
-            }
-
-            function stopDayTimer() {
-                if (dayTimerInterval) {
-                    clearInterval(dayTimerInterval);
-                    dayTimerInterval = null;
+                    updateDeskTimer();
                 }
             }
 
@@ -3132,14 +4158,9 @@
                 ].join('|');
             }
 
-            function renderDynamicContent(forceAnimate) {
-                var container = document.getElementById('dynamicContent');
-                if (!container) return;
-                if (!gameData) {
-                    if (container.querySelector('.skeleton-card')) return;
-                    container.innerHTML = renderLoadingState();
-                    return;
-                }
+            function renderDeskWorkstation() {
+                var area = document.getElementById('deskWorkstationArea');
+                if (!area || !gameData) return;
 
                 var status = gameData.status;
                 var html = '';
@@ -3153,9 +4174,20 @@
                 } else if (status === 'finish' || status === 'cancelled') {
                     html += renderFinalContent(gameData);
                 } else if (status === 'waiting') {
-                    container.innerHTML = renderLoadingState();
+                    area.innerHTML = renderLoadingState();
                     return;
                 }
+
+                area.innerHTML = html;
+                bindDynamicEvents();
+            }
+
+            function renderDynamicContent(forceAnimate) {
+                if (!gameData) {
+                    return;
+                }
+
+                updateDeskAppearance(gameData.status);
 
                 var newSignature = getGameSignature(gameData) + '|' + JSON.stringify(questionsData.map(function(q) { return q.ts; })) + '|' + JSON.stringify(reportStatusData);
                 if (newSignature === lastGameDataSignature && !forceAnimate) {
@@ -3163,11 +4195,7 @@
                 }
                 lastGameDataSignature = newSignature;
 
-                container.innerHTML = html;
-                var wrapper = container.querySelector('.section-card, .report-paper-wrapper, .final-result-card');
-                if (wrapper) wrapper.classList.add('content-updated');
-
-                bindDynamicEvents();
+                renderDeskWorkstation();
             }
 
             function bindDynamicEvents() {
@@ -3968,7 +4996,6 @@
                 }, 600);
             }
 
-            document.getElementById('secretCard').addEventListener('click', openSecretCard);
             document.getElementById('confirmYes').addEventListener('click', showReveal);
             document.getElementById('confirmNo').addEventListener('click', closeConfirm);
             document.getElementById('revealCloseBtn').addEventListener('click', closeReveal);
@@ -4032,11 +5059,6 @@
                 applyTheme();
                 loadUserCurrency();
 
-                var container = document.getElementById('dynamicContent');
-                if (container && !container.innerHTML.trim()) {
-                    container.innerHTML = renderLoadingState();
-                }
-
                 if (webApp) {
                     try {
                         webApp.ready();
@@ -4055,6 +5077,11 @@
                     showToast(getTranslation('error_join'));
                     setTimeout(function() { window.location.href = '../../dashboard/'; }, 2500);
                     return;
+                }
+
+                var deskFolderEl = document.getElementById('deskFolderConfidential');
+                if (deskFolderEl) {
+                    deskFolderEl.addEventListener('click', openSecretCard);
                 }
 
                 await loadGame(true);
