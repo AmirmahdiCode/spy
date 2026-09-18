@@ -68,6 +68,14 @@
 
         [data-animation="off"] * { animation: none !important; transition: none !important; }
 
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         * { 
             margin: 0; padding: 0; box-sizing: border-box;
             -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
@@ -88,7 +96,48 @@
             overflow-x: hidden;
         }
 
-        .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 30%, var(--bg3) 60%, var(--bg2) 100%);
+            background-size: 400% 400%;
+            animation: gradientFlow 18s ease infinite;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.12;
+            animation: floatParticle linear infinite;
+        }
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% {
+                transform: translateY(-10vh) scale(1.3);
+                opacity: 0;
+            }
+        }
 
         .header {
             position: relative;
@@ -208,6 +257,7 @@
             overflow: hidden;
             margin-top: 8px;
             background: transparent;
+            animation: bannerEnter 0.9s ease;
             -webkit-mask-image: linear-gradient(to bottom,
                 black 0%,
                 black 71.4%,
@@ -234,6 +284,16 @@
                 rgba(0, 0, 0, 0.42) 95%,
                 rgba(0, 0, 0, 0.25) 98%,
                 transparent 100%);
+        }
+        @keyframes bannerEnter {
+            0% {
+                opacity: 0;
+                transform: scale(1.03) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
         .mystery-banner img {
             width: 100%;
@@ -295,9 +355,25 @@
             cursor: pointer;
             transition: all 0.2s ease;
             position: relative;
+            overflow: hidden;
+        }
+        .btn-start-game::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+            pointer-events: none;
+        }
+        .btn-start-game:hover::before {
+            left: 100%;
         }
         .btn-start-game:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
-        .btn-start-game i { font-size: 16px; }
+        .btn-start-game i { font-size: 16px; transition: transform 0.3s ease; }
+        .btn-start-game:hover i { transform: rotate(180deg); }
         .btn-start-game.loading-games {
             opacity: 0.5;
             cursor: not-allowed;
@@ -324,9 +400,17 @@
             font-weight: 800;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
         .btn-wheel:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
-        .btn-wheel i { font-size: 16px; }
+        .btn-wheel i {
+            font-size: 16px;
+            transition: transform 0.4s ease;
+        }
+        .btn-wheel:hover i {
+            transform: rotate(360deg);
+        }
 
         .section-card {
             margin: 12px 12px 0;
@@ -335,6 +419,17 @@
             border-radius: var(--radius);
             padding: 16px;
             box-shadow: var(--shadow);
+            animation: cardEnter 0.7s ease backwards;
+        }
+        @keyframes cardEnter {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .section-title {
             font-size: 13px;
@@ -349,7 +444,14 @@
             padding-bottom: 8px;
         }
         .section-title-left { display: flex; align-items: center; gap: 8px; }
-        .section-title i { color: var(--primary); }
+        .section-title i {
+            color: var(--primary);
+            animation: iconPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+        }
         .section-badge {
             font-size: 8px;
             font-weight: 700;
@@ -358,6 +460,16 @@
             background: var(--bg2);
             border: var(--border);
             color: var(--dark);
+            transition: all 0.3s ease;
+        }
+        .section-badge.updated {
+            animation: badgeBounce 0.6s ease;
+        }
+        @keyframes badgeBounce {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.25); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); }
         }
 
         .section-loader {
@@ -391,7 +503,16 @@
             align-items: center;
             gap: 8px;
         }
-        .error-state i { font-size: 30px; color: #ef4444; }
+        .error-state i {
+            font-size: 30px;
+            color: #ef4444;
+            animation: shakeIcon 0.5s ease;
+        }
+        @keyframes shakeIcon {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
         .error-state-text { font-size: 10px; font-weight: 700; color: var(--text); }
         .error-state-btn {
             padding: 8px 16px;
@@ -404,6 +525,7 @@
             font-size: 10px;
             font-weight: 800;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
         .error-state-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
 
@@ -419,8 +541,36 @@
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 2px 2px 0 #000;
+            animation: gameCardEnter 0.5s ease backwards;
+        }
+        @keyframes gameCardEnter {
+            0% {
+                opacity: 0;
+                transform: translateX(-15px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+        .game-card:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 #000;
         }
         .game-card:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
+        .game-card.new-game {
+            animation: gameCardEnter 0.5s ease backwards, newGameHighlight 2s ease;
+        }
+        @keyframes newGameHighlight {
+            0%, 100% {
+                background: var(--bg2);
+                border-color: var(--primary);
+            }
+            30% {
+                background: rgba(16, 185, 129, 0.25);
+                border-color: #10b981;
+            }
+        }
         .game-card-avatar {
             width: 32px; height: 32px;
             border-radius: 50%;
@@ -440,11 +590,46 @@
             padding: 3px 10px; border-radius: 10px;
             border: var(--border); flex-shrink: 0;
             background: #10b981; color: #fff;
+            position: relative;
+            overflow: hidden;
         }
         .game-card-badge.waiting { background: #f59e0b; color: #fff; }
+        .game-card-badge.waiting::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            border: 1.5px solid #f59e0b;
+            transform: translate(-50%, -50%);
+            animation: badgePulse 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes badgePulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.6);
+                opacity: 0;
+            }
+        }
 
         .empty-state { text-align: center; padding: 16px; color: var(--text-light); font-size: 10px; }
-        .empty-state i { font-size: 35px; color: var(--primary); margin-bottom: 8px; display: block; }
+        .empty-state i {
+            font-size: 35px;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: block;
+            animation: emptyFloat 3s ease-in-out infinite;
+        }
+        @keyframes emptyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
 
         .rules-article {
             font-size: 11px;
@@ -456,8 +641,15 @@
             font-weight: 800;
             color: var(--dark);
             margin: 16px 0 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .rules-article h3:first-child { margin-top: 0; }
+        .rules-article h3 i {
+            color: var(--primary);
+            font-size: 14px;
+        }
         .rules-article p { margin-bottom: 8px; }
         .rules-article ul { padding-right: 18px; margin-bottom: 8px; }
         [dir="ltr"] .rules-article ul { padding-right: 0; padding-left: 18px; }
@@ -475,6 +667,11 @@
             font-size: 11px;
             display: inline-block;
             vertical-align: middle;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.25); }
         }
 
         .terms-link-btn {
@@ -497,7 +694,8 @@
             justify-content: center;
         }
         .terms-link-btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
-        .terms-link-btn i { font-size: 14px; }
+        .terms-link-btn i { font-size: 14px; transition: transform 0.3s ease; }
+        .terms-link-btn:hover i { transform: translateY(3px); }
 
         .role-category {
             margin-bottom: 16px;
@@ -516,6 +714,17 @@
 
         .role-block {
             margin-bottom: 12px;
+            animation: roleEnter 0.5s ease backwards;
+        }
+        @keyframes roleEnter {
+            0% {
+                opacity: 0;
+                transform: translateX(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         .role-block:last-child { margin-bottom: 0; }
 
@@ -537,6 +746,10 @@
             border: 1.5px solid var(--primary);
             flex-shrink: 0;
             background: var(--bg2);
+            transition: transform 0.3s ease;
+        }
+        .role-block:hover .role-img {
+            transform: scale(1.15) rotate(5deg);
         }
 
         .role-block-desc {
@@ -556,6 +769,11 @@
             color: #fff;
             border: 1px solid #d97706;
             white-space: nowrap;
+            animation: comingSoonPulse 2s ease-in-out infinite;
+        }
+        @keyframes comingSoonPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.85; }
         }
 
         .active-game-float {
@@ -585,7 +803,32 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--primary);
         }
-        .active-game-float.show { display: flex; }
+        .active-game-float.show {
+            display: flex;
+            animation: activeGameBounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, activeGamePulse 2.5s ease-in-out 0.6s infinite;
+        }
+        @keyframes activeGameBounceIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.85);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes activeGamePulse {
+            0%, 100% {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            }
+            50% {
+                box-shadow: 0 4px 28px rgba(0, 0, 0, 0.12), 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+            }
+        }
         .active-game-float-icon {
             width: 25px; height: 25px;
             border-radius: 50%;
@@ -628,6 +871,17 @@
             max-width: 400px;
             width: 100%;
             position: relative;
+            animation: modalEnter 0.4s ease;
+        }
+        @keyframes modalEnter {
+            0% {
+                opacity: 0;
+                transform: scale(0.9) translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
         .terms-modal-header {
             display: flex;
@@ -688,6 +942,12 @@
         .terms-checkbox.checked {
             background: var(--primary);
             border-color: var(--primary);
+            animation: checkboxPop 0.3s ease;
+        }
+        @keyframes checkboxPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
         .terms-checkbox.checked::after {
             content: '✓';
@@ -847,7 +1107,22 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--primary);
         }
-        .support-notification img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary); object-fit: cover; }
+        .support-notification img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--primary);
+            object-fit: cover;
+            animation: supportAvatarPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes supportAvatarPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 6px rgba(var(--primary-rgb), 0);
+            }
+        }
         .support-notification .notif-info { flex: 1; }
         .support-notification .notif-name { font-size: 10px; font-weight: 800; color: var(--dark); }
         .support-notification i { color: var(--text-light); font-size: 10px; }
@@ -877,11 +1152,16 @@
             display: flex; flex-direction: column; align-items: center; gap: 1px;
             cursor: pointer; text-decoration: none; color: var(--text-light);
             padding: 4px 10px; font-family: var(--font); background: none; border: none; font-size: 12px;
+            transition: all 0.2s ease;
+        }
+        .nav-item:active {
+            transform: scale(0.9);
         }
         .nav-item img {
             width: 20px; height: 20px;
             opacity: 0.5;
             filter: brightness(0);
+            transition: all 0.3s ease;
         }
         [data-theme="dark"] .nav-item img {
             filter: brightness(0) invert(1);
@@ -897,6 +1177,7 @@
 <body>
 
     <div class="bg-animation"></div>
+    <div class="particles-container" id="particlesContainer"></div>
 
     <div class="toast-container" id="toastContainer"></div>
 
@@ -933,7 +1214,7 @@
             </button>
         </div>
 
-        <div class="section-card">
+        <div class="section-card" style="animation-delay: 0.1s;">
             <div class="section-title">
                 <span class="section-title-left"><i class="bi bi-globe" aria-hidden="true"></i> <span data-i18n="public_games">بازی‌های سراسری</span></span>
                 <span class="section-badge" id="publicCount">0</span>
@@ -946,7 +1227,7 @@
             <div class="games-list" id="publicList" style="display:none;"></div>
         </div>
 
-        <div class="section-card" id="gameRulesSection">
+        <div class="section-card" id="gameRulesSection" style="animation-delay: 0.2s;">
             <div class="section-title">
                 <span class="section-title-left"><i class="bi bi-book" aria-hidden="true"></i> <span data-i18n="game_guide">راهنمای بازی</span></span>
             </div>
@@ -1098,7 +1379,7 @@
             </div>
         </div>
 
-        <div class="section-card" id="gameRulesPlay">
+        <div class="section-card" id="gameRulesPlay" style="animation-delay: 0.3s;">
             <div class="section-title">
                 <span class="section-title-left"><i class="bi bi-shield-check" aria-hidden="true"></i> <span data-i18n="play_rules">قوانین بازی</span></span>
             </div>
@@ -1123,7 +1404,7 @@
             </div>
         </div>
 
-        <div class="section-card" id="termsSection">
+        <div class="section-card" id="termsSection" style="animation-delay: 0.4s;">
             <div class="section-title">
                 <span class="section-title-left"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> <span data-i18n="terms_title">قوانین و مقررات استفاده</span></span>
             </div>
@@ -1138,10 +1419,10 @@
                 <p data-i18n="term_3_desc">ارسال هرگونه تبلیغات، لینک خارجی، معرفی سرویس‌های دیگر یا دعوت به کانال‌ها و گروه‌های شخصی، تحت هر شرایطی ممنوع بوده و موجب محدودسازی موقت یا دائم (در صورت تکرار) اکانت خواهد شد.</p>
 
                 <h3><i class="bi bi-4-circle" aria-hidden="true"></i> <span data-i18n="term_4_title">حفاظت از کدهای بازی</span></h3>
-                <p><span data-i18n="term_4_desc">تلاش برای دستیابی به کدهای بازی و استفاده‌ی نادرست از آن‌ها، غیرمجاز و غیرشرعی است و موجب محدودسازی حساب بازی فرد خاطی خواهد شد.</span></p>
+                <p data-i18n="term_4_desc">تلاش برای دسترسی به کدهای بازی و سوءاستفاده از آن‌ها مجاز نیست و در صورت مشاهده، دسترسی کاربر به بازی محدود خواهد شد. لطفاً برای حفظ عدالت و سلامت رقابت، از این اقدامات خودداری فرمایید.</p>
 
                 <h3><i class="bi bi-5-circle" aria-hidden="true"></i> <span data-i18n="term_5_title">رعایت قوانین جمهوری اسلامی ایران</span></h3>
-                <p data-i18n="term_5_desc">انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب محدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.</p>
+                <p data-i18n="term_5_desc">رعایت قوانین و مقررات جمهوری اسلامی ایران برای همه کاربران الزامی است. در صورت مشاهده تخلف، حساب کاربری محدود شده و در موارد لازم، موضوع به مراجع ذی‌صلاح ارجاع داده خواهد شد.</p>
 
                 <h3><i class="bi bi-6-circle" aria-hidden="true"></i> <span data-i18n="term_6_title">هدف سرگرمی و مالکیت معنوی</span></h3>
                 <p><span data-i18n="term_6_desc_1">این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به </span><a id="linkChannel1" data-i18n="amirmahdi">امیرمهدی</a><span data-i18n="term_6_desc_2"> می‌باشد. این سرویس با ❤️ به شما تقدیم می‌گردد.</span></p>
@@ -1238,7 +1519,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbwoLiN36u9x1rBQSnoum483cLFVgJLOItOYejhGp-us0zbPmEx6aE1nDuIdMYTgx21y/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzRHiZrmdqVe9_lSD18j-WcStdy_tddL9yqY5BGuxG5Qk12kBAlKkSncnj0FlpyK1w/exec';
             var currentLang = 'fa';
             var activeGameId = null;
             var activeGameStatus = null;
@@ -1247,7 +1528,10 @@
             var pendingJoinGameId = null;
             var isGamesLoading = false;
             var publicGamesInterval = null;
-            var PUBLIC_GAMES_REFRESH = 4000;
+            var PUBLIC_GAMES_REFRESH = 6000;
+            var lastPublicGamesSignature = '';
+            var knownGameIds = {};
+            var isFirstPublicLoad = true;
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var TERMS_DURATION = 48 * 60 * 60 * 1000;
@@ -1316,6 +1600,31 @@
             function hideLoading() {
                 var el = document.getElementById('loadingOverlay');
                 if (el) el.classList.remove('show');
+            }
+
+            function isAnimationEnabled() {
+                var s = getSettings();
+                if (s.animation === false) return false;
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+                return true;
+            }
+
+            function spawnParticles() {
+                if (!isAnimationEnabled()) return;
+                var container = document.getElementById('particlesContainer');
+                if (!container) return;
+                container.innerHTML = '';
+                for (var i = 0; i < 15; i++) {
+                    var p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.animationDuration = (10 + Math.random() * 15) + 's';
+                    p.style.animationDelay = Math.random() * 10 + 's';
+                    var size = 2 + Math.random() * 4;
+                    p.style.width = size + 'px';
+                    p.style.height = size + 'px';
+                    container.appendChild(p);
+                }
             }
 
             var fontMap = {
@@ -1416,9 +1725,9 @@
                     term_3_title: 'ممنوعیت تبلیغات',
                     term_3_desc: 'ارسال هرگونه تبلیغات، لینک خارجی، معرفی سرویس‌های دیگر یا دعوت به کانال‌ها و گروه‌های شخصی، تحت هر شرایطی ممنوع بوده و موجب محدودسازی موقت یا دائم (در صورت تکرار) اکانت خواهد شد.',
                     term_4_title: 'حفاظت از کدهای بازی',
-                    term_4_desc: 'تلاش برای دستیابی به کدهای بازی و استفاده‌ی نادرست از آن‌ها، غیرمجاز و غیرشرعی است و موجب محدودسازی حساب بازی فرد خاطی خواهد شد.',
+                    term_4_desc: 'تلاش برای دسترسی به کدهای بازی و سوءاستفاده از آن‌ها مجاز نیست و در صورت مشاهده، دسترسی کاربر به بازی محدود خواهد شد. لطفاً برای حفظ عدالت و سلامت رقابت، از این اقدامات خودداری فرمایید.',
                     term_5_title: 'رعایت قوانین جمهوری اسلامی ایران',
-                    term_5_desc: 'انجام هرگونه فعالیت مغایر با قوانین و مقررات جمهوری اسلامی ایران ممنوع بوده و موجب محدودسازی حساب کاربری خواهد شد. در صورت نیاز، موارد تخلف به مراجع قانونی ذی‌صلاح گزارش داده خواهد شد.',
+                    term_5_desc: 'رعایت قوانین و مقررات جمهوری اسلامی ایران برای همه کاربران الزامی است. در صورت مشاهده تخلف، حساب کاربری محدود شده و در موارد لازم، موضوع به مراجع ذی‌صلاح ارجاع داده خواهد شد.',
                     term_6_title: 'هدف سرگرمی و مالکیت معنوی',
                     term_6_desc_1: 'این بازی صرفاً با هدف سرگرمی طراحی شده است. تمامی حقوق مادی و معنوی این بازی متعلق به ',
                     amirmahdi: 'امیرمهدی',
@@ -1528,9 +1837,9 @@
                     term_3_title: 'Prohibition of Advertising',
                     term_3_desc: 'Sending any advertisements, external links, introducing other services, or inviting to personal channels and groups is strictly prohibited and will result in temporary or permanent account restriction (if repeated).',
                     term_4_title: 'Protection of Game Codes',
-                    term_4_desc: 'Attempting to access the game codes or misuse them is unauthorized and religiously impermissible, and will result in the restriction of the offender\'s game account.',
+                    term_4_desc: 'Attempting to access the game codes or misusing them is not permitted. If observed, the user\'s access to the game will be restricted. Please refrain from such actions to maintain fairness and integrity of the competition.',
                     term_5_title: 'Compliance with Islamic Republic of Iran Laws',
-                    term_5_desc: 'Any activity contrary to the laws of the Islamic Republic of Iran is prohibited and will result in account restriction. If necessary, violations will be reported to the relevant legal authorities.',
+                    term_5_desc: 'Compliance with the laws and regulations of the Islamic Republic of Iran is mandatory for all users. In case of violation, the user account will be restricted, and if necessary, the matter will be referred to the relevant authorities.',
                     term_6_title: 'Entertainment Purpose & Intellectual Property',
                     term_6_desc_1: 'This game is designed purely for entertainment purposes. All material and intellectual rights of this game belong to ',
                     amirmahdi: 'Amirmahdi',
@@ -1640,9 +1949,9 @@
                     term_3_title: 'حظر الإعلانات',
                     term_3_desc: 'يُحظر تماماً إرسال أي إعلانات أو روابط خارجية أو الترويج لخدمات أخرى، وسيؤدي إلى تقييد الحساب مؤقتاً أو دائماً (في حالة التكرار).',
                     term_4_title: 'حماية أكواد اللعبة',
-                    term_4_desc: 'محاولة الوصول إلى أكواد اللعبة أو إساءة استخدامها أمرٌ غير مسموح به وغير شرعي، وسيؤدي إلى تقييد حساب اللعبة الخاص بالمخالف.',
+                    term_4_desc: 'محاولة الوصول إلى أكواد اللعبة أو إساءة استخدامها غير مسموح بها. في حالة ملاحظة ذلك، سيتم تقييد وصول المستخدم إلى اللعبة. يرجى الامتناع عن هذه الإجراءات للحفاظ على العدالة والنزاهة في المنافسة.',
                     term_5_title: 'الالتزام بقوانين جمهورية إيران الإسلامية',
-                    term_5_desc: 'أي نشاط مخالف لقوانين جمهورية إيران الإسلامية محظور وسيؤدي إلى تقييد الحساب. في حالة الحاجة، سيتم الإبلاغ عن المخالفات للسلطات القانونية.',
+                    term_5_desc: 'الالتزام بقوانين ولوائح جمهورية إيران الإسلامية إلزامي لجميع المستخدمين. في حالة ملاحظة أي مخالفة، سيتم تقييد حساب المستخدم، وعند الحاجة سيتم إحالة الموضوع إلى الجهات المختصة.',
                     term_6_title: 'غرض الترفيه والملكية الفكرية',
                     term_6_desc_1: 'تم تصميم هذه اللعبة لغرض الترفيه فقط. جميع الحقوق تعود إلى ',
                     amirmahdi: 'أميرمهدي',
@@ -1890,22 +2199,53 @@
                     var result = await fetchData('getPublicGames', {});
 
                     if (result.ok && Array.isArray(result.data)) {
-                        document.getElementById('publicCount').textContent = String(result.data.length);
+                        var validGames = [];
+                        for (var i = 0; i < result.data.length; i++) {
+                            var g = result.data[i];
+                            if (!g || typeof g !== 'object') continue;
+                            var rawId = String(g.id == null ? '' : g.id);
+                            if (!isValidGameId(rawId)) continue;
+                            validGames.push({ id: rawId, raw: g });
+                        }
 
-                        if (result.data.length === 0) {
+                        var signature = validGames.map(function(x) { return x.id; }).join('|');
+
+                        var badgeEl = document.getElementById('publicCount');
+                        if (badgeEl) {
+                            var oldCount = badgeEl.textContent;
+                            badgeEl.textContent = String(validGames.length);
+                            if (!isFirstPublicLoad && oldCount !== String(validGames.length)) {
+                                badgeEl.classList.add('updated');
+                                setTimeout(function() { badgeEl.classList.remove('updated'); }, 700);
+                            }
+                        }
+
+                        if (signature === lastPublicGamesSignature && !isFirstPublicLoad) {
+                            if (!silent) {
+                                loader.style.display = 'none';
+                                errorBox.style.display = 'none';
+                                list.style.display = 'flex';
+                            }
+                            return;
+                        }
+
+                        lastPublicGamesSignature = signature;
+
+                        if (validGames.length === 0) {
                             list.innerHTML = renderEmpty(getTranslation('no_public_games'));
                         } else {
                             var html = '';
-                            for (var i = 0; i < result.data.length; i++) {
-                                var g = result.data[i];
-                                if (!g || typeof g !== 'object') continue;
-                                var rawId = String(g.id == null ? '' : g.id);
-                                if (!isValidGameId(rawId)) continue;
-                                var safeId = escapeHtml(rawId);
-                                var playerCount = countPlayers(g.players);
-                                var maxPlayers = parseInt(g.maxPlayers, 10);
+                            for (var j = 0; j < validGames.length; j++) {
+                                var item = validGames[j];
+                                var g2 = item.raw;
+                                var safeId = escapeHtml(item.id);
+                                var playerCount = countPlayers(g2.players);
+                                var maxPlayers = parseInt(g2.maxPlayers, 10);
                                 var subText = playerCount + (isNaN(maxPlayers) ? '' : (' / ' + maxPlayers)) + ' ' + escapeHtml(getTranslation('players'));
-                                html += '<div class="game-card" data-game-id="' + safeId + '" role="button" tabindex="0">' +
+                                var isNew = !isFirstPublicLoad && knownGameIds[item.id] === undefined;
+                                var cardClass = 'game-card' + (isNew ? ' new-game' : '');
+                                var animDelay = (j * 0.05) + 's';
+                                html += '<div class="' + cardClass + '" data-game-id="' + safeId + '" role="button" tabindex="0" style="animation-delay:' + animDelay + '">' +
                                     '<div class="game-card-avatar"><i class="bi bi-people" aria-hidden="true"></i></div>' +
                                     '<div class="game-card-info">' +
                                     '<div class="game-card-title">' + safeId + '</div>' +
@@ -1913,6 +2253,7 @@
                                     '</div>' +
                                     '<span class="game-card-badge waiting">' + escapeHtml(getTranslation('waiting')) + '</span>' +
                                     '</div>';
+                                knownGameIds[item.id] = true;
                             }
                             list.innerHTML = html;
                         }
@@ -1920,9 +2261,11 @@
                         loader.style.display = 'none';
                         errorBox.style.display = 'none';
                         list.style.display = 'flex';
+                        isFirstPublicLoad = false;
                     } else {
                         if (!silent) {
-                            document.getElementById('publicCount').textContent = '0';
+                            var badgeErr = document.getElementById('publicCount');
+                            if (badgeErr) badgeErr.textContent = '0';
                             loader.style.display = 'none';
                             errorBox.innerHTML = renderError();
                             errorBox.style.display = 'block';
@@ -1930,7 +2273,8 @@
                     }
                 } catch(e) {
                     if (!silent) {
-                        document.getElementById('publicCount').textContent = '0';
+                        var badgeCatch = document.getElementById('publicCount');
+                        if (badgeCatch) badgeCatch.textContent = '0';
                         loader.style.display = 'none';
                         errorBox.innerHTML = renderError();
                         errorBox.style.display = 'block';
@@ -2224,6 +2568,7 @@
             }
 
             applyTheme();
+            spawnParticles();
             loadUserCurrency();
             loadPublicGames(false);
             checkActiveGame();
