@@ -94,6 +94,76 @@
 
         .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
 
+        .day-timer-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--primary);
+            padding: 6px 12px 5px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        [data-theme="dark"] .day-timer-bar {
+            background: rgba(26, 26, 26, 0.85);
+        }
+        .day-timer-bar.show { display: flex; }
+        .day-timer-bar.urgent .day-timer-fill { background: var(--danger); }
+        .day-timer-bar.urgent .day-timer-text { color: var(--danger); animation: pulse 1s infinite; }
+        .day-timer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .day-timer-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .day-timer-label i { color: var(--primary); font-size: 11px; }
+        .day-timer-text {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--dark);
+            direction: ltr;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+        .day-timer-progress {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 4px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .day-timer-fill {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background: var(--success);
+            border-radius: 999px;
+            transition: width 1s linear, background 0.3s ease;
+            width: 100%;
+        }
+
         .header {
             position: relative;
             z-index: 10;
@@ -105,6 +175,10 @@
             position: sticky;
             top: 0;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            transition: top 0.3s ease;
+        }
+        body.timer-visible .header {
+            top: 42px;
         }
 
         [data-theme="dark"] .header {
@@ -162,6 +236,7 @@
             gap: 8px;
             pointer-events: none;
         }
+        body.timer-visible .toast-container { top: 120px; }
         .toast {
             background: #ef4444;
             color: #fff;
@@ -200,6 +275,7 @@
             to { opacity: 0; transform: translateY(-20px) scale(0.95); }
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         .main-container {
             position: relative; z-index: 5;
@@ -210,6 +286,9 @@
             display: flex;
             flex-direction: column;
             gap: 0;
+        }
+        body.timer-visible .main-container {
+            padding-top: 45px;
         }
 
         .game-banner {
@@ -829,6 +908,7 @@
             z-index: 998;
             display: flex;
             gap: 8px;
+            align-items: center;
         }
 
         .btn-float {
@@ -884,6 +964,49 @@
         .btn-float.success { color: var(--success); border-color: var(--success); background: rgba(16, 185, 129, 0.15); }
         .btn-float.info { color: var(--info-color); border-color: var(--info-color); background: rgba(6, 182, 212, 0.15); }
         .btn-float.danger { color: var(--danger); border-color: var(--danger); background: rgba(239, 68, 68, 0.15); }
+
+        .btn-circle-exit {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1.5px solid var(--danger);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        [data-theme="dark"] .btn-circle-exit {
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .btn-circle-exit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+            pointer-events: none;
+            border-radius: 50% 50% 0 0;
+        }
+        .btn-circle-exit:active {
+            transform: scale(0.94);
+            background: rgba(239, 68, 68, 0.3);
+        }
+        .btn-circle-exit i {
+            font-size: 20px;
+            position: relative;
+            z-index: 1;
+        }
 
         .modal-overlay {
             position: fixed;
@@ -1338,6 +1461,16 @@
 <body>
 
     <div class="bg-animation"></div>
+
+    <div class="day-timer-bar" id="dayTimerBar">
+        <div class="day-timer-row">
+            <div class="day-timer-label"><i class="bi bi-hourglass-split" aria-hidden="true"></i> <span data-i18n="day_timer">زمان</span></div>
+            <div class="day-timer-text" id="dayTimerText">--:--</div>
+        </div>
+        <div class="day-timer-progress">
+            <div class="day-timer-fill" id="dayTimerFill" style="width:100%;"></div>
+        </div>
+    </div>
 
     <div class="toast-container" id="toastContainer"></div>
 
@@ -2445,6 +2578,37 @@
                 }
             }
 
+            function showDayTimerBar(show) {
+                var bar = document.getElementById('dayTimerBar');
+                if (!bar) return;
+                if (show) {
+                    bar.classList.add('show');
+                    document.body.classList.add('timer-visible');
+                } else {
+                    bar.classList.remove('show');
+                    bar.classList.remove('urgent');
+                    document.body.classList.remove('timer-visible');
+                }
+            }
+
+            function updateDayTimerBar() {
+                var textEl = document.getElementById('dayTimerText');
+                var fillEl = document.getElementById('dayTimerFill');
+                var bar = document.getElementById('dayTimerBar');
+                if (!textEl || !fillEl || !bar) return;
+                var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
+                var remaining = dayTimerDuration - elapsed;
+                if (remaining < 0) remaining = 0;
+                textEl.textContent = formatTime(remaining);
+                var pct = dayTimerDuration > 0 ? (remaining / dayTimerDuration) * 100 : 0;
+                fillEl.style.width = pct + '%';
+                if (remaining <= 30) {
+                    bar.classList.add('urgent');
+                } else {
+                    bar.classList.remove('urgent');
+                }
+            }
+
             function updateTimerIfNeeded(game) {
                 if (isDay(game.status)) {
                     var dayDur = (game.dayDuration || 3) * 60;
@@ -2454,6 +2618,7 @@
                         dayTimerDuration = 0;
                         startDayTimer(dayDur);
                     }
+                    showDayTimerBar(true);
                 } else {
                     if (dayTimerPhase !== '') {
                         dayTimerPhase = '';
@@ -2461,6 +2626,7 @@
                         dayTimerDuration = 0;
                         dayTimerStart = 0;
                     }
+                    showDayTimerBar(false);
                 }
             }
 
@@ -2469,7 +2635,9 @@
                 if (durationSec <= 0) return;
                 dayTimerStart = Date.now();
                 dayTimerDuration = durationSec;
+                updateDayTimerBar();
                 dayTimerInterval = setInterval(function() {
+                    updateDayTimerBar();
                     var elapsed = Math.floor((Date.now() - dayTimerStart) / 1000);
                     var remaining = dayTimerDuration - elapsed;
                     if (remaining <= 0) stopDayTimer();
@@ -3083,7 +3251,7 @@
                     }
                 }
 
-                html += '<button class="btn-float danger" id="exitBtn" type="button"><i class="bi bi-box-arrow-right" aria-hidden="true"></i><span>' + escapeHtml(getTranslation('exit_game')) + '</span></button>';
+                html += '<button class="btn-circle-exit" id="exitBtn" type="button" aria-label="' + escapeAttr(getTranslation('exit_game')) + '"><i class="bi bi-box-arrow-right" aria-hidden="true"></i></button>';
 
                 bar.innerHTML = html;
                 bar.style.display = 'flex';
@@ -3443,17 +3611,16 @@
                     targetUserId: myVote
                 });
 
+                console.log('VOTE RESULT:', result);
+
                 if (!result || !result.ok) {
                     gameData.voteData.myVote = prevVote;
                     renderDynamicContent(true);
                     updateFloatingBar();
-                    var err = result && result.error ? result.error : '';
-                    var msg = getTranslation('error_network');
-                    if (err === 'Already voted') msg = getTranslation('vote_already');
-                    else if (err === 'Cannot vote for yourself') msg = getTranslation('vote_select');
-                    showToast(msg);
+                    var err = (result && result.error) ? String(result.error) : 'unknown';
+                    showToast('خطا: ' + err, 'error', 6000);
                 } else {
-                    loadGame(false);
+                    setTimeout(function() { loadGame(false); }, 500);
                 }
             }
 
@@ -3616,9 +3783,9 @@
                         gameData.status = result.data.status;
                         if (result.data.final) gameData.final = result.data.final;
                     }
+                    updateTimerIfNeeded(gameData);
                     renderDynamicContent(true);
                     updateFloatingBar();
-                    updateTimerIfNeeded(gameData);
                     updateBannerByPhase(gameData.status);
                 } else {
                     showToast(getTranslation('error_network'));
