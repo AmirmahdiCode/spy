@@ -70,6 +70,14 @@
 
         [data-animation="off"] * { animation: none !important; transition: none !important; }
 
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
         * { 
             margin: 0; padding: 0; box-sizing: border-box;
             -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
@@ -85,9 +93,76 @@
             display: flex;
             flex-direction: column;
             transition: font-family 0.3s ease;
+            overflow-x: hidden;
         }
 
-        .bg-animation { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%); }
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 0;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 40%, var(--bg3) 80%);
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: floatParticle linear infinite;
+        }
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% {
+                transform: translateY(-10vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .confetti-container {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            opacity: 1;
+            animation: confettiFall 1.5s ease-out forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
 
         .header {
             position: relative;
@@ -104,9 +179,6 @@
 
         [data-theme="dark"] .header {
             background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--primary);
         }
 
         .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
@@ -143,6 +215,7 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
+            animation: fadeInUp 0.5s ease;
         }
 
         .waiting-icon {
@@ -185,6 +258,7 @@
         }
 
         .room-code-badge {
+            position: relative;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -198,6 +272,30 @@
             box-shadow: 2px 2px 0 #000;
             direction: ltr;
             letter-spacing: 2px;
+            overflow: hidden;
+        }
+        .room-code-badge::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: shimmerCode 3s ease-in-out infinite;
+        }
+        [data-theme="dark"] .room-code-badge::after {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+        }
+        @keyframes shimmerCode {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+        .room-code-badge .typed-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
         }
 
         .copy-link-btn {
@@ -218,12 +316,37 @@
             transition: all 0.2s ease;
             width: 100%;
             max-width: 320px;
+            position: relative;
+            overflow: hidden;
         }
         .copy-link-btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
         .copy-link-btn i { font-size: 15px; }
         .copy-link-btn.copied {
             background: var(--success);
             border-color: var(--success);
+            animation: pulseSuccess 0.6s ease;
+        }
+        @keyframes pulseSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .copy-link-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        .copy-link-btn.ripple::after {
+            width: 300px;
+            height: 300px;
+            transition: width 0.6s ease, height 0.6s ease;
         }
 
         .secret-card {
@@ -242,6 +365,15 @@
             justify-content: center;
             transition: all 0.4s ease;
             padding: 16px;
+            animation: pulseBorder 3s ease-in-out infinite;
+        }
+        @keyframes pulseBorder {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(139, 0, 0, 0.4), 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(139, 0, 0, 0.15);
+            }
+            50% {
+                box-shadow: 0 0 45px rgba(220, 38, 38, 0.7), 0 8px 25px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba(220, 38, 38, 0.25);
+            }
         }
         .secret-card::before {
             content: '';
@@ -317,6 +449,17 @@
             border-radius: var(--radius);
             padding: 16px;
             box-shadow: var(--shadow);
+            animation: fadeInUp 0.6s ease;
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        .players-card.full-team {
+            border-color: var(--success);
+            box-shadow: 3px 3px 0 var(--success), 0 0 20px rgba(16, 185, 129, 0.3);
+            animation: fullTeamPulse 2s ease-in-out infinite;
+        }
+        @keyframes fullTeamPulse {
+            0%, 100% { box-shadow: 3px 3px 0 var(--success), 0 0 20px rgba(16, 185, 129, 0.3); }
+            50% { box-shadow: 3px 3px 0 var(--success), 0 0 35px rgba(16, 185, 129, 0.5); }
         }
 
         .players-card-header {
@@ -348,11 +491,19 @@
             border-radius: 8px;
             padding: 3px 10px;
             box-shadow: 2px 2px 0 #000;
+            transition: all 0.3s ease;
         }
         .players-count.full {
             color: #fff;
             background: var(--success);
             border-color: var(--success);
+            animation: countBounce 0.6s ease;
+        }
+        @keyframes countBounce {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.2); }
+            60% { transform: scale(0.95); }
+            100% { transform: scale(1); }
         }
 
         .players-list {
@@ -371,11 +522,36 @@
             border-radius: 10px;
             box-shadow: 2px 2px 0 #000;
             transition: all 0.3s ease;
-            animation: playerIn 0.4s ease forwards;
+            animation: playerBounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes playerIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes playerBounceIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(5px) scale(1.03);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .player-row.just-arrived {
+            animation: playerHighlight 2s ease forwards;
+        }
+        @keyframes playerHighlight {
+            0% {
+                background: rgba(16, 185, 129, 0.4);
+                border-color: var(--success);
+            }
+            100% {
+                background: var(--bg2);
+                border-color: var(--primary);
+            }
         }
         .player-row.is-me {
             border-color: var(--primary);
@@ -400,6 +576,12 @@
             align-items: center;
             justify-content: center;
             box-shadow: 1px 1px 0 #000;
+            animation: crownWiggle 3s ease-in-out infinite;
+        }
+        @keyframes crownWiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
         }
 
         .player-avatar {
@@ -415,6 +597,15 @@
             color: var(--primary);
             overflow: hidden;
             flex-shrink: 0;
+            transition: transform 0.4s ease;
+        }
+        .player-row.just-arrived .player-avatar {
+            animation: avatarSpin 1s ease;
+        }
+        @keyframes avatarSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(360deg) scale(1.15); }
+            100% { transform: rotate(360deg) scale(1); }
         }
         .player-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -499,7 +690,6 @@
             color: var(--text-light);
         }
 
-        /* ✅ Skeleton Loading برای بازیکنان */
         .skeleton-player {
             display: flex;
             align-items: center;
@@ -622,6 +812,27 @@
         .btn-start::before {
             background: linear-gradient(to bottom, rgba(16, 185, 129, 0.2), transparent);
         }
+        .btn-start.ready {
+            animation: startPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes startPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+            }
+            50% {
+                transform: scale(1.03);
+                box-shadow: 0 4px 30px rgba(16, 185, 129, 0.6);
+            }
+        }
+        .btn-start.shake {
+            animation: shakeBtn 0.5s ease;
+        }
+        @keyframes shakeBtn {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
 
         .waiting-action-info {
             flex: 2;
@@ -717,9 +928,6 @@
         }
         [data-theme="dark"] .support-notification {
             background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
         }
         .support-notification img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--primary); object-fit: cover; }
         .support-notification .notif-info { flex: 1; }
@@ -729,6 +937,10 @@
         @keyframes slideDownNotif { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUpNotif { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
         .loading-overlay {
             position: fixed;
@@ -998,6 +1210,8 @@
 <body>
 
     <div class="bg-animation"></div>
+    <div class="particles-container" id="particlesContainer"></div>
+    <div class="confetti-container" id="confettiContainer"></div>
 
     <div class="toast-container" id="toastContainer"></div>
 
@@ -1021,7 +1235,7 @@
             </div>
             <div class="waiting-title" data-i18n="waiting_title">در انتظار ورود بازیکن‌ها</div>
             <div class="waiting-desc" data-i18n="waiting_desc">لینک رو کپی کن و بقیه رو دعوت کن به بازی</div>
-            <div class="room-code-badge" id="roomCodeBadge">------</div>
+            <div class="room-code-badge" id="roomCodeBadge"><span class="typed-text" id="roomCodeText"></span></div>
             <button class="copy-link-btn" id="btnCopyLink" type="button">
                 <i class="bi bi-link-45deg" aria-hidden="true"></i>
                 <span data-i18n="copy_link">کپی کردن لینک دعوت</span>
@@ -1036,7 +1250,7 @@
             <div class="secret-card-hint" data-i18n="tap_to_view">برای مشاهده لمس کنید</div>
         </div>
 
-        <div class="players-card">
+        <div class="players-card" id="playersCard">
             <div class="players-card-header">
                 <div class="players-card-title">
                     <i class="bi bi-people-fill" aria-hidden="true"></i>
@@ -1114,8 +1328,7 @@
             'use strict';
 
             var webApp = window.Eitaa && window.Eitaa.WebApp;
-            // ✅ URL جدید اسکریپت واحد
-            var API_URL = 'https://script.google.com/macros/s/AKfycbxlLAUQaN4PimoKwmaqjtjLgZw62YarniI__dqiVIA4dMICL7qtVuhM_lXhoe-BMtDI/exec';
+            var API_URL = 'https://script.google.com/macros/s/AKfycbzRHiZrmdqVe9_lSD18j-WcStdy_tddL9yqY5BGuxG5Qk12kBAlKkSncnj0FlpyK1w/exec';
             var INVITE_BASE = 'https://eitaa.com/gameland_app/Spy?startapp=';
 
             var currentLang = 'fa';
@@ -1133,6 +1346,8 @@
             var REVEAL_AUTO_CLOSE = 15;
             var lastPlayersSignature = '';
             var skeletonShown = false;
+            var knownPlayerIds = {};
+            var isFirstLoad = true;
 
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
 
@@ -1490,6 +1705,13 @@
                 }
             }
 
+            function isAnimationEnabled() {
+                var s = getSettings();
+                if (s.animation === false) return false;
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+                return true;
+            }
+
             function showToast(message, type, duration) {
                 duration = duration || 4000;
                 var container = document.getElementById('toastContainer');
@@ -1647,13 +1869,74 @@
                 }
             }
 
-            function renderPlayerRow(p, index) {
+            function spawnParticles() {
+                if (!isAnimationEnabled()) return;
+                var container = document.getElementById('particlesContainer');
+                if (!container) return;
+                container.innerHTML = '';
+                for (var i = 0; i < 20; i++) {
+                    var p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                    p.style.animationDelay = Math.random() * 8 + 's';
+                    var size = 2 + Math.random() * 4;
+                    p.style.width = size + 'px';
+                    p.style.height = size + 'px';
+                    container.appendChild(p);
+                }
+            }
+
+            function spawnConfetti() {
+                if (!isAnimationEnabled()) return;
+                var container = document.getElementById('confettiContainer');
+                if (!container) return;
+                var colors = ['#ef4444', '#f59e0b', '#10b981', '#06b6d4', '#8b5cf6', '#ec4899'];
+                for (var i = 0; i < 20; i++) {
+                    var c = document.createElement('div');
+                    c.className = 'confetti-piece';
+                    c.style.left = Math.random() * 100 + '%';
+                    c.style.top = '-20px';
+                    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    c.style.animationDuration = (1 + Math.random() * 1) + 's';
+                    c.style.animationDelay = Math.random() * 0.3 + 's';
+                    container.appendChild(c);
+                    (function(el) {
+                        setTimeout(function() {
+                            if (el.parentNode) el.parentNode.removeChild(el);
+                        }, 2500);
+                    })(c);
+                }
+            }
+
+            function typewriterRoomCode(code) {
+                var el = document.getElementById('roomCodeText');
+                if (!el) return;
+                el.textContent = '';
+                if (!isAnimationEnabled()) {
+                    el.textContent = code;
+                    return;
+                }
+                var i = 0;
+                var interval = setInterval(function() {
+                    if (i >= code.length) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    el.textContent += code.charAt(i);
+                    i++;
+                }, 120);
+            }
+
+            function renderPlayerRow(p, index, isNew) {
                 var isMe = String(p.user_id) === String(myUserId);
                 var isHost = index === 0;
 
                 var classes = 'player-row';
                 if (isMe) classes += ' is-me';
                 if (isHost) classes += ' is-creator';
+                if (isNew) classes += ' just-arrived';
 
                 var score = parseInt(p.score, 10);
                 if (isNaN(score)) score = 0;
@@ -1681,7 +1964,6 @@
                 return html;
             }
 
-            // ✅ Skeleton برای بازیکنان
             function renderPlayerSkeleton() {
                 var html = '';
                 for (var i = 0; i < 3; i++) {
@@ -1696,34 +1978,43 @@
                 return html;
             }
 
-            // ✅ جلوگیری از رندر مجدد + Skeleton
             function updatePlayersList(players, playerCount) {
                 var listEl = document.getElementById('playersList');
                 var countEl = document.getElementById('playersCount');
+                var cardEl = document.getElementById('playersCard');
                 if (!listEl) return;
 
-                // نمایش skeleton فقط بار اول
                 if (!skeletonShown && (!players || players.length === 0)) {
                     listEl.innerHTML = renderPlayerSkeleton();
                     skeletonShown = true;
                     return;
                 }
 
-                // ساخت امضای بازیکنان
                 var signature = (players || []).map(function(p) {
                     return p.user_id + ':' + (p.name || '') + ':' + (p.avatar || '') + ':' + (p.score || 0) + ':' + (p.user_type || '');
                 }).join('|') + '|isCreator=' + (isCreator ? '1' : '0');
 
+                var isFull = players.length >= playerCount;
+
                 if (countEl) {
                     countEl.textContent = players.length + ' / ' + playerCount;
-                    if (players.length >= playerCount) {
-                        countEl.classList.add('full');
+                    if (isFull) {
+                        if (!countEl.classList.contains('full')) {
+                            countEl.classList.add('full');
+                        }
                     } else {
                         countEl.classList.remove('full');
                     }
                 }
 
-                // ✅ فقط اگه تغییر کرده، رندر کن
+                if (cardEl) {
+                    if (isFull) {
+                        cardEl.classList.add('full-team');
+                    } else {
+                        cardEl.classList.remove('full-team');
+                    }
+                }
+
                 if (signature === lastPlayersSignature) return;
                 lastPlayersSignature = signature;
 
@@ -1733,10 +2024,32 @@
                 }
 
                 var html = '';
+                var newPlayerArrived = false;
                 for (var i = 0; i < players.length; i++) {
-                    html += renderPlayerRow(players[i], i);
+                    var p = players[i];
+                    var isNew = !isFirstLoad && knownPlayerIds[p.user_id] === undefined;
+                    if (isNew) newPlayerArrived = true;
+                    html += renderPlayerRow(p, i, isNew);
                 }
                 listEl.innerHTML = html;
+
+                for (var j = 0; j < players.length; j++) {
+                    knownPlayerIds[players[j].user_id] = true;
+                }
+
+                if (newPlayerArrived && !isFirstLoad) {
+                    triggerHaptic('light');
+                }
+
+                if (isFull && !isFirstLoad && !knownPlayerIds.__fullNotified) {
+                    knownPlayerIds.__fullNotified = true;
+                    spawnConfetti();
+                    triggerHaptic('medium');
+                }
+
+                if (!isFull) {
+                    knownPlayerIds.__fullNotified = false;
+                }
             }
 
             function updateActionBar() {
@@ -1750,7 +2063,14 @@
                     var playersArr = currentGame && currentGame.players ? currentGame.players : [];
                     var requiredCount = currentGame && currentGame.playerCount ? currentGame.playerCount : 5;
                     var canStart = playersArr.length >= requiredCount;
-                    if (startBtn) startBtn.disabled = !canStart;
+                    if (startBtn) {
+                        startBtn.disabled = !canStart;
+                        if (canStart) {
+                            startBtn.classList.add('ready');
+                        } else {
+                            startBtn.classList.remove('ready');
+                        }
+                    }
                 } else {
                     if (startBtn) startBtn.style.display = 'none';
                     if (waitingInfo) waitingInfo.style.display = 'flex';
@@ -1826,6 +2146,7 @@
                     updatePlayersList(players, game.playerCount || 5);
                     updateActionBar();
 
+                    isFirstLoad = false;
                     isLoading = false;
                 } catch(e) {
                     isLoading = false;
@@ -1834,7 +2155,6 @@
 
             function startPolling() {
                 stopPolling();
-                // ✅ polling تطبیقی: اگه بازیکن کمه، سریعتر
                 var interval = 5000;
                 if (currentGame && currentGame.players && currentGame.playerCount) {
                     if (currentGame.players.length < currentGame.playerCount) {
@@ -1867,10 +2187,16 @@
                 if (ok) {
                     if (btn) {
                         btn.classList.add('copied');
+                        btn.classList.add('ripple');
                         var span = btn.querySelector('span');
                         if (span) span.textContent = getTranslation('link_copied');
+                        setTimeout(function() {
+                            btn.classList.remove('ripple');
+                        }, 600);
                     }
                     showToast(getTranslation('link_copied'), 'success', 2500);
+                    spawnConfetti();
+                    triggerHaptic('medium');
 
                     setTimeout(function() {
                         if (btn) {
@@ -1929,6 +2255,11 @@
                     var remaining = requiredCount - playersArr.length;
                     var msg = getTranslation('start_not_full').replace('{n}', remaining);
                     showToast(msg);
+                    var startBtn = document.getElementById('btnStart');
+                    if (startBtn) {
+                        startBtn.classList.add('shake');
+                        setTimeout(function() { startBtn.classList.remove('shake'); }, 600);
+                    }
                     return;
                 }
 
@@ -1942,6 +2273,7 @@
                 if (result && result.ok) {
                     stopPolling();
                     showToast(getTranslation('game_started'), 'success');
+                    spawnConfetti();
                     setTimeout(function() {
                         window.location.href = '../table/?room=' + encodeURIComponent(roomId);
                     }, 800);
@@ -1972,11 +2304,9 @@
                 }
             }
 
-            // ✅ Optimistic kick
             async function doKick(playerId) {
                 triggerHaptic('medium');
 
-                // ✅ فوراً از UI حذف کن
                 var row = document.querySelector('[data-player-id="' + playerId + '"]');
                 if (row) {
                     row.style.transition = 'all 0.3s ease';
@@ -1987,14 +2317,12 @@
                     }, 300);
                 }
 
-                // ✅ آپدیت currentGame
                 if (currentGame && currentGame.players) {
                     currentGame.players = currentGame.players.filter(function(p) {
                         return String(p.user_id) !== String(playerId);
                     });
                 }
 
-                // ✅ بروزرسانی شمارش
                 var countEl = document.getElementById('playersCount');
                 if (countEl && currentGame && currentGame.players) {
                     var requiredCount = currentGame.playerCount || 5;
@@ -2006,17 +2334,14 @@
                     }
                 }
 
-                // ✅ رفرش signature که دوباره رندر نشه
                 lastPlayersSignature = '';
 
-                // ✅ به سرور بفرست
                 var result = await fetchData('kickPlayer', {
                     gameId: roomId,
                     targetUserId: playerId
                 });
 
                 if (!result || !result.ok) {
-                    // rollback
                     lastPlayersSignature = '';
                     await loadGame(false);
                     showToast(getTranslation('kick_failed'));
@@ -2159,7 +2484,6 @@
 
             document.getElementById('supportNotification').addEventListener('click', openSupportLink);
 
-            // ✅ توقف polling وقتی تب مخفیه
             document.addEventListener('visibilitychange', function() {
                 if (document.hidden) {
                     stopPolling();
@@ -2171,6 +2495,7 @@
 
             async function init() {
                 applyTheme();
+                spawnParticles();
 
                 if (webApp) {
                     try {
@@ -2192,10 +2517,8 @@
                     return;
                 }
 
-                var badge = document.getElementById('roomCodeBadge');
-                if (badge) badge.textContent = roomId;
+                typewriterRoomCode(roomId);
 
-                // ✅ Skeleton اولیه
                 var listEl = document.getElementById('playersList');
                 if (listEl) {
                     listEl.innerHTML = renderPlayerSkeleton();
