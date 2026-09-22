@@ -12,1173 +12,16 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="css.css" rel="stylesheet">
     <style>
-        :root {
-            --bg: #ffffff;
-            --bg2: #f5f5f5;
-            --bg3: #e0e0e0;
-            --primary: #000000;
-            --primary-dark: #333333;
-            --primary-light: #666666;
-            --primary-rgb: 0, 0, 0;
-            --dark: #000000;
-            --text: #333333;
-            --text-light: #999999;
-            --white: #ffffff;
-            --card-bg: #ffffff;
-            --shadow: 3px 3px 0 #000000;
-            --radius: 12px;
-            --border: 1px solid #000000;
-            --gold: #f59e0b;
-            --font: 'Samim', Tahoma, sans-serif;
-        }
-
-        [data-theme="dark"] {
-            --bg: #000000;
-            --bg2: #1a1a1a;
-            --bg3: #333333;
-            --primary: #666666;
-            --primary-dark: #999999;
-            --primary-light: #444444;
-            --primary-rgb: 102, 102, 102;
-            --dark: #ffffff;
-            --text: #cccccc;
-            --text-light: #888888;
-            --white: #1a1a1a;
-            --card-bg: #1a1a1a;
-            --shadow: 3px 3px 0 #000000;
-            --border: 1px solid #666666;
-        }
-
-        [data-special-theme="crime"] {
-            --primary: #dc2626;
-            --primary-dark: #b91c1c;
-            --primary-light: #fca5a5;
-            --primary-rgb: 220, 38, 38;
-            --border: 1px solid #dc2626;
-        }
-
-        [data-theme="dark"][data-special-theme="crime"] {
-            --primary: #ef4444;
-            --primary-dark: #dc2626;
-            --primary-light: #fca5a5;
-            --primary-rgb: 239, 68, 68;
-            --border: 1px solid #ef4444;
-        }
-
-        [data-animation="off"] * { animation: none !important; transition: none !important; }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        * { 
-            margin: 0; padding: 0; box-sizing: border-box;
-            -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
-            -webkit-user-drag: none; user-drag: none;
-        }
-        img { pointer-events: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; user-drag: none; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            transition: font-family 0.3s ease;
-            overflow-x: hidden;
-        }
-
-        .bg-animation {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 0;
-            background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 30%, var(--bg3) 60%, var(--bg2) 100%);
-            background-size: 400% 400%;
-            animation: gradientFlow 18s ease infinite;
-        }
-        @keyframes gradientFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .particles-container {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 1;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0.12;
-            animation: floatParticle linear infinite;
-        }
-        @keyframes floatParticle {
-            0% {
-                transform: translateY(100vh) scale(0);
-                opacity: 0;
-            }
-            10% { opacity: 0.15; }
-            90% { opacity: 0.15; }
-            100% {
-                transform: translateY(-10vh) scale(1.3);
-                opacity: 0;
-            }
-        }
-
-        .header {
-            position: relative;
-            z-index: 10;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--primary);
-            padding: 10px 20px;
-            position: sticky;
-            top: 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-        }
-
-        [data-theme="dark"] .header {
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--primary);
-        }
-
-        .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 600px; margin: 0 auto; }
-        .header-right { display: flex; align-items: center; gap: 10px; }
-
-        .header-logo {
-            width: 44px; height: 44px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: none;
-            box-shadow: none;
-            flex-shrink: 0;
-        }
-        .header-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        .header-title { font-size: 18px; font-weight: 800; color: var(--dark); }
-        .header-subtitle { font-size: 8px; color: var(--text-light); }
-
-        .header-currency { display: flex; align-items: center; gap: 6px; }
-        .currency-badge {
-            display: flex; align-items: center; gap: 4px;
-            background: var(--bg2); border: var(--border); border-radius: 8px;
-            padding: 4px 10px; font-size: 10px; font-weight: 700;
-            color: var(--dark); box-shadow: 2px 2px 0 #000;
-            min-width: 50px;
-            justify-content: center;
-        }
-        .currency-badge.coins i { color: #f59e0b; }
-        .currency-badge.diamonds i { color: #06b6d4; }
-        .mini-spinner {
-            width: 12px; height: 12px;
-            border: 2px solid var(--bg3);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
-        }
-
-        .toast-container {
-            position: fixed;
-            top: 75px;
-            right: 5%;
-            left: 5%;
-            max-width: 400px;
-            margin: 0 auto;
-            z-index: 3000;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            pointer-events: none;
-        }
-        .toast {
-            background: #ef4444;
-            color: #fff;
-            border: 1px solid #b91c1c;
-            border-radius: 12px;
-            padding: 12px 14px;
-            font-size: 11px;
-            font-weight: 700;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            pointer-events: auto;
-            animation: toastIn 0.4s ease forwards;
-        }
-        .toast.hiding {
-            animation: toastOut 0.4s ease forwards;
-        }
-        .toast i {
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-        .toast .toast-text {
-            flex: 1;
-            line-height: 1.5;
-        }
-
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        @keyframes toastOut {
-            from { opacity: 1; transform: translateY(0) scale(1); }
-            to { opacity: 0; transform: translateY(-20px) scale(0.95); }
-        }
-
-        .main-container {
-            position: relative; z-index: 5;
-            max-width: 600px; width: 100%;
-            margin: 0 auto; padding: 0 0 100px;
-            display: flex; flex-direction: column; gap: 0;
-        }
-
-        .mystery-banner {
-            position: relative;
-            width: 100%;
-            height: 280px;
-            overflow: hidden;
-            margin-top: 8px;
-            background: transparent;
-            animation: bannerEnter 0.9s ease;
-            -webkit-mask-image: linear-gradient(to bottom,
-                black 0%,
-                black 71.4%,
-                rgba(0, 0, 0, 0.99) 74%,
-                rgba(0, 0, 0, 0.96) 77%,
-                rgba(0, 0, 0, 0.92) 80%,
-                rgba(0, 0, 0, 0.86) 83%,
-                rgba(0, 0, 0, 0.78) 86%,
-                rgba(0, 0, 0, 0.68) 89%,
-                rgba(0, 0, 0, 0.56) 92%,
-                rgba(0, 0, 0, 0.42) 95%,
-                rgba(0, 0, 0, 0.25) 98%,
-                transparent 100%);
-            mask-image: linear-gradient(to bottom,
-                black 0%,
-                black 71.4%,
-                rgba(0, 0, 0, 0.99) 74%,
-                rgba(0, 0, 0, 0.96) 77%,
-                rgba(0, 0, 0, 0.92) 80%,
-                rgba(0, 0, 0, 0.86) 83%,
-                rgba(0, 0, 0, 0.78) 86%,
-                rgba(0, 0, 0, 0.68) 89%,
-                rgba(0, 0, 0, 0.56) 92%,
-                rgba(0, 0, 0, 0.42) 95%,
-                rgba(0, 0, 0, 0.25) 98%,
-                transparent 100%);
-        }
-        @keyframes bannerEnter {
-            0% {
-                opacity: 0;
-                transform: scale(1.03) translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-        .mystery-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 15%;
-            display: block;
-            -webkit-mask-image: linear-gradient(to bottom,
-                black 0%,
-                black 71.4%,
-                rgba(0, 0, 0, 0.99) 74%,
-                rgba(0, 0, 0, 0.96) 77%,
-                rgba(0, 0, 0, 0.92) 80%,
-                rgba(0, 0, 0, 0.86) 83%,
-                rgba(0, 0, 0, 0.78) 86%,
-                rgba(0, 0, 0, 0.68) 89%,
-                rgba(0, 0, 0, 0.56) 92%,
-                rgba(0, 0, 0, 0.42) 95%,
-                rgba(0, 0, 0, 0.25) 98%,
-                transparent 100%);
-            mask-image: linear-gradient(to bottom,
-                black 0%,
-                black 71.4%,
-                rgba(0, 0, 0, 0.99) 74%,
-                rgba(0, 0, 0, 0.96) 77%,
-                rgba(0, 0, 0, 0.92) 80%,
-                rgba(0, 0, 0, 0.86) 83%,
-                rgba(0, 0, 0, 0.78) 86%,
-                rgba(0, 0, 0, 0.68) 89%,
-                rgba(0, 0, 0, 0.56) 92%,
-                rgba(0, 0, 0, 0.42) 95%,
-                rgba(0, 0, 0, 0.25) 98%,
-                transparent 100%);
-        }
-
-        .action-row {
-            display: flex;
-            gap: 8px;
-            padding: 0 12px;
-            margin-top: -50px;
-            position: relative;
-            z-index: 6;
-        }
-        .btn-start-game {
-            flex: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 14px 12px;
-            background: var(--primary);
-            color: #fff;
-            border: var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            font-family: var(--font);
-            font-size: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-start-game::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.6s ease;
-            pointer-events: none;
-        }
-        .btn-start-game:hover::before {
-            left: 100%;
-        }
-        .btn-start-game:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
-        .btn-start-game i { font-size: 16px; transition: transform 0.3s ease; }
-        .btn-start-game:hover i { transform: rotate(180deg); }
-        .btn-start-game.loading-games {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .btn-start-game.loading-games:active {
-            transform: none;
-            box-shadow: var(--shadow);
-        }
-
-        .btn-wheel {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            padding: 14px 8px;
-            background: var(--card-bg);
-            color: var(--primary);
-            border: var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            font-family: var(--font);
-            font-size: 10px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-wheel:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
-        .btn-wheel i {
-            font-size: 16px;
-            transition: transform 0.4s ease;
-        }
-        .btn-wheel:hover i {
-            transform: rotate(360deg);
-        }
-
-        .section-card {
-            margin: 12px 12px 0;
-            background: var(--card-bg);
-            border: var(--border);
-            border-radius: var(--radius);
-            padding: 16px;
-            box-shadow: var(--shadow);
-            animation: cardEnter 0.7s ease backwards;
-        }
-        @keyframes cardEnter {
-            0% {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .section-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            margin-bottom: 12px;
-            border-bottom: 1px dashed var(--text-light);
-            padding-bottom: 8px;
-        }
-        .section-title-left { display: flex; align-items: center; gap: 8px; }
-        .section-title i {
-            color: var(--primary);
-            animation: iconPulse 2.5s ease-in-out infinite;
-        }
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.12); }
-        }
-        .section-badge {
-            font-size: 8px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 10px;
-            background: var(--bg2);
-            border: var(--border);
-            color: var(--dark);
-            transition: all 0.3s ease;
-        }
-        .section-badge.updated {
-            animation: badgeBounce 0.6s ease;
-        }
-        @keyframes badgeBounce {
-            0% { transform: scale(1); }
-            40% { transform: scale(1.25); }
-            70% { transform: scale(0.95); }
-            100% { transform: scale(1); }
-        }
-
-        .section-loader {
-            text-align: center;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .section-loader-spinner {
-            width: 25px;
-            height: 25px;
-            border: 3px solid var(--bg3);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        .section-loader-text {
-            font-size: 8px;
-            font-weight: 700;
-            color: var(--text-light);
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .error-state {
-            text-align: center;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        .error-state i {
-            font-size: 30px;
-            color: #ef4444;
-            animation: shakeIcon 0.5s ease;
-        }
-        @keyframes shakeIcon {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-5px); }
-            40%, 80% { transform: translateX(5px); }
-        }
-        .error-state-text { font-size: 10px; font-weight: 700; color: var(--text); }
-        .error-state-btn {
-            padding: 8px 16px;
-            background: var(--primary);
-            color: #fff;
-            border: var(--border);
-            border-radius: 8px;
-            box-shadow: 2px 2px 0 #000;
-            font-family: var(--font);
-            font-size: 10px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .error-state-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-
-        .games-list { display: flex; flex-direction: column; gap: 8px; }
-        .game-card {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
-            border: var(--border);
-            border-radius: 8px;
-            background: var(--bg2);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 2px 2px 0 #000;
-            animation: gameCardEnter 0.5s ease backwards;
-        }
-        @keyframes gameCardEnter {
-            0% {
-                opacity: 0;
-                transform: translateX(-15px) scale(0.95);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0) scale(1);
-            }
-        }
-        .game-card:hover {
-            transform: translate(-1px, -1px);
-            box-shadow: 3px 3px 0 #000;
-        }
-        .game-card:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .game-card.new-game {
-            animation: gameCardEnter 0.5s ease backwards, newGameHighlight 2s ease;
-        }
-        @keyframes newGameHighlight {
-            0%, 100% {
-                background: var(--bg2);
-                border-color: var(--primary);
-            }
-            30% {
-                background: rgba(16, 185, 129, 0.25);
-                border-color: #10b981;
-            }
-        }
-        .game-card-avatar {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 14px; flex-shrink: 0;
-            border: var(--border);
-            overflow: hidden;
-        }
-        .game-card-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .game-card-info { flex: 1; min-width: 0; }
-        .game-card-title { font-size: 10px; font-weight: 700; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .game-card-subtitle { font-size: 8px; color: var(--text-light); }
-        .game-card-badge {
-            font-size: 8px; font-weight: 700;
-            padding: 3px 10px; border-radius: 10px;
-            border: var(--border); flex-shrink: 0;
-            background: #10b981; color: #fff;
-            position: relative;
-            overflow: hidden;
-        }
-        .game-card-badge.waiting { background: #f59e0b; color: #fff; }
-        .game-card-badge.waiting::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            border: 1.5px solid #f59e0b;
-            transform: translate(-50%, -50%);
-            animation: badgePulse 2s ease-in-out infinite;
-            pointer-events: none;
-        }
-        @keyframes badgePulse {
-            0% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0.7;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.6);
-                opacity: 0;
-            }
-        }
-
-        .empty-state { text-align: center; padding: 16px; color: var(--text-light); font-size: 10px; }
-        .empty-state i {
-            font-size: 35px;
-            color: var(--primary);
-            margin-bottom: 8px;
-            display: block;
-            animation: emptyFloat 3s ease-in-out infinite;
-        }
-        @keyframes emptyFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        .rules-article {
-            font-size: 11px;
-            line-height: 2;
-            color: var(--text);
-        }
-        .rules-article h3 {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--dark);
-            margin: 16px 0 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .rules-article h3:first-child { margin-top: 0; }
-        .rules-article h3 i {
-            color: var(--primary);
-            font-size: 14px;
-        }
-        .rules-article p { margin-bottom: 8px; }
-        .rules-article ul { padding-right: 18px; margin-bottom: 8px; }
-        [dir="ltr"] .rules-article ul { padding-right: 0; padding-left: 18px; }
-        .rules-article li { margin-bottom: 4px; }
-        .rules-article .highlight { font-weight: 800; color: var(--primary); }
-        .rules-article a {
-            color: var(--primary);
-            font-weight: 800;
-            text-decoration: none;
-            border-bottom: 1px dashed var(--primary);
-            cursor: pointer;
-        }
-        .rules-article .heart-icon {
-            color: #ef4444;
-            font-size: 11px;
-            display: inline-block;
-            vertical-align: middle;
-            animation: heartBeat 1.5s ease-in-out infinite;
-        }
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.25); }
-        }
-
-        .terms-link-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--primary);
-            color: #fff;
-            border: var(--border);
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin-top: 10px;
-            font-family: var(--font);
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: all 0.2s ease;
-            width: 100%;
-            justify-content: center;
-        }
-        .terms-link-btn:active { transform: translate(1px, 1px); box-shadow: 2px 2px 0 #000; }
-        .terms-link-btn i { font-size: 14px; transition: transform 0.3s ease; }
-        .terms-link-btn:hover i { transform: translateY(3px); }
-
-        .role-category {
-            margin-bottom: 16px;
-        }
-        .role-category:last-child { margin-bottom: 0; }
-
-        .role-category-title {
-            display: block;
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--primary);
-            padding-bottom: 6px;
-            margin-bottom: 10px;
-            border-bottom: 1.5px solid var(--primary);
-        }
-
-        .role-block {
-            margin-bottom: 12px;
-            animation: roleEnter 0.5s ease backwards;
-        }
-        @keyframes roleEnter {
-            0% {
-                opacity: 0;
-                transform: translateX(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        .role-block:last-child { margin-bottom: 0; }
-
-        .role-block-title {
-            font-size: 11.5px;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .role-block-title .role-img {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1.5px solid var(--primary);
-            flex-shrink: 0;
-            background: var(--bg2);
-            transition: transform 0.3s ease;
-        }
-        .role-block:hover .role-img {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .role-block-desc {
-            font-size: 10.5px;
-            line-height: 1.9;
-            color: var(--text);
-            padding-right: 30px;
-        }
-        [dir="ltr"] .role-block-desc { padding-right: 0; padding-left: 30px; }
-
-        .coming-soon-badge {
-            font-size: 7px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 8px;
-            background: #f59e0b;
-            color: #fff;
-            border: 1px solid #d97706;
-            white-space: nowrap;
-            animation: comingSoonPulse 2s ease-in-out infinite;
-        }
-        @keyframes comingSoonPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.85; }
-        }
-
-        .active-game-float {
-            position: fixed;
-            bottom: 60px;
-            right: 5%;
-            left: 5%;
-            width: 90%;
-            max-width: 600px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
-            border-radius: 25px;
-            padding: 8px 14px;
-            display: none;
-            align-items: center;
-            gap: 8px;
-            z-index: 500;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            cursor: pointer;
-        }
-        [data-theme="dark"] .active-game-float {
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
-        }
-        .active-game-float.show {
-            display: flex;
-            animation: activeGameBounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, activeGamePulse 2.5s ease-in-out 0.6s infinite;
-        }
-        @keyframes activeGameBounceIn {
-            0% {
-                opacity: 0;
-                transform: translateY(30px) scale(0.85);
-            }
-            60% {
-                opacity: 1;
-                transform: translateY(-5px) scale(1.02);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        @keyframes activeGamePulse {
-            0%, 100% {
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            }
-            50% {
-                box-shadow: 0 4px 28px rgba(0, 0, 0, 0.12), 0 0 0 3px rgba(var(--primary-rgb), 0.1);
-            }
-        }
-        .active-game-float-icon {
-            width: 25px; height: 25px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 12px; flex-shrink: 0;
-        }
-        .active-game-float-info { flex: 1; min-width: 0; }
-        .active-game-float-title { font-size: 10px; font-weight: 800; color: var(--dark); }
-        .active-game-float-subtitle { font-size: 8px; color: var(--text-light); }
-        .active-game-float-btn {
-            font-size: 9px;
-            font-weight: 700;
-            color: #fff;
-            background: var(--primary);
-            padding: 5px 12px;
-            border-radius: 15px;
-            border: var(--border);
-            white-space: nowrap;
-        }
-
-        .terms-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 3000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .terms-modal-overlay.show { display: flex; }
-        .terms-modal {
-            background: var(--card-bg);
-            border: var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: 5px 5px 0 #000;
-            max-width: 400px;
-            width: 100%;
-            position: relative;
-            animation: modalEnter 0.4s ease;
-        }
-        @keyframes modalEnter {
-            0% {
-                opacity: 0;
-                transform: scale(0.9) translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-        .terms-modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 14px;
-            border-bottom: 1px dashed var(--text-light);
-            padding-bottom: 10px;
-        }
-        .terms-modal-header i { color: var(--primary); font-size: 18px; }
-        .terms-modal-simple-text {
-            font-size: 11.5px;
-            line-height: 2;
-            color: var(--text);
-            margin-bottom: 16px;
-            text-align: center;
-        }
-        .terms-modal-simple-text a {
-            display: inline-block;
-            color: var(--primary);
-            font-weight: 800;
-            text-decoration: none;
-            border-bottom: 1px dashed var(--primary);
-            cursor: pointer;
-            margin-top: 8px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            background: var(--bg2);
-            border: var(--border);
-        }
-        .terms-modal-simple-text a:active { transform: scale(.97); }
-        .terms-checkbox-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--bg2);
-            border: var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 14px;
-            cursor: pointer;
-            transition: all .2s;
-        }
-        .terms-checkbox-row:active { transform: scale(.98); }
-        .terms-checkbox {
-            width: 22px; height: 22px;
-            border: 2px solid var(--text-light);
-            border-radius: 6px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-            transition: all .2s;
-            background: var(--card-bg);
-        }
-        .terms-checkbox.checked {
-            background: var(--primary);
-            border-color: var(--primary);
-            animation: checkboxPop 0.3s ease;
-        }
-        @keyframes checkboxPop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-        .terms-checkbox.checked::after {
-            content: '✓';
-            color: #fff;
-            font-weight: 800;
-            font-size: 14px;
-        }
-        .terms-checkbox-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--dark);
-            line-height: 1.5;
-        }
-        .terms-actions { display: flex; gap: 10px; }
-        .terms-btn {
-            flex: 1;
-            padding: 12px;
-            border: var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: var(--font);
-            font-size: 12px;
-            font-weight: 800;
-            box-shadow: 2px 2px 0 #000;
-            transition: all .2s;
-        }
-        .terms-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .terms-btn.accept { background: #10b981; color: #fff; }
-        .terms-btn.accept:disabled {
-            background: var(--bg3);
-            color: var(--text-light);
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        .terms-btn.cancel { background: var(--bg2); color: var(--text); }
-
-        .join-confirm-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 3500;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .join-confirm-overlay.show { display: flex; }
-        .join-confirm-box {
-            background: var(--card-bg);
-            border: var(--border);
-            border-radius: var(--radius);
-            padding: 22px 20px;
-            box-shadow: 5px 5px 0 #000;
-            max-width: 360px;
-            width: 100%;
-            text-align: center;
-            animation: confirmIn 0.35s ease forwards;
-        }
-        @keyframes confirmIn {
-            from { opacity: 0; transform: scale(0.85); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .join-confirm-title {
-            font-size: 15px;
-            font-weight: 900;
-            color: var(--dark);
-            margin-bottom: 12px;
-            border-bottom: 1px dashed var(--text-light);
-            padding-bottom: 10px;
-        }
-        .join-confirm-text {
-            font-size: 11.5px;
-            font-weight: 700;
-            color: var(--text);
-            line-height: 1.9;
-            margin-bottom: 12px;
-        }
-        .join-confirm-gameid {
-            background: var(--bg2);
-            border: var(--border);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .game-id-highlight {
-            color: var(--primary);
-            font-weight: 900;
-            direction: ltr;
-            letter-spacing: 2px;
-        }
-        .join-confirm-btns {
-            display: flex;
-            gap: 10px;
-        }
-        .join-confirm-btn {
-            flex: 1;
-            padding: 12px;
-            border: var(--border);
-            border-radius: 8px;
-            font-family: var(--font);
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 2px 2px 0 #000;
-            transition: all 0.2s ease;
-        }
-        .join-confirm-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000; }
-        .join-confirm-btn.yes { background: #10b981; color: #ffffff; border-color: #059669; }
-        .join-confirm-btn.no { background: var(--bg2); color: var(--text); }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 4000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-        .loading-overlay.show { display: flex; }
-        .loading-overlay-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255,255,255,0.2);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        .support-notification {
-            position: fixed; top: 75px; right: 5%; left: 5%;
-            max-width: 400px; margin: 0 auto;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            padding: 10px 14px;
-            display: flex; align-items: center; gap: 10px;
-            z-index: 2000;
-            animation: slideDownNotif 0.5s ease forwards, slideUpNotif 0.5s ease 4.5s forwards;
-            cursor: pointer;
-        }
-        [data-theme="dark"] .support-notification {
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
-        }
-        .support-notification img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--primary);
-            object-fit: cover;
-            animation: supportAvatarPulse 2.5s ease-in-out infinite;
-        }
-        @keyframes supportAvatarPulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4);
-            }
-            50% {
-                box-shadow: 0 0 0 6px rgba(var(--primary-rgb), 0);
-            }
-        }
-        .support-notification .notif-info { flex: 1; }
-        .support-notification .notif-name { font-size: 10px; font-weight: 800; color: var(--dark); }
-        .support-notification i { color: var(--text-light); font-size: 10px; }
-
-        @keyframes slideDownNotif { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUpNotif { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-        .bottom-nav {
-            position: fixed; bottom: 8px; right: 5%; left: 5%; width: 90%; margin: 0 auto;
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
-            border-radius: 25px;
-            display: flex; justify-content: space-around; align-items: center;
-            padding: 4px 0; z-index: 999;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-        }
-        [data-theme="dark"] .bottom-nav {
-            background: rgba(26, 26, 26, 0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--primary);
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 1px;
-            cursor: pointer; text-decoration: none; color: var(--text-light);
-            padding: 4px 10px; font-family: var(--font); background: none; border: none; font-size: 12px;
-            transition: all 0.2s ease;
-        }
-        .nav-item:active {
-            transform: scale(0.9);
-        }
-        .nav-item img {
-            width: 20px; height: 20px;
-            opacity: 0.5;
-            filter: brightness(0);
-            transition: all 0.3s ease;
-        }
-        [data-theme="dark"] .nav-item img {
-            filter: brightness(0) invert(1);
-        }
-        .nav-item.active img {
-            opacity: 1;
-            animation: bounce 1.5s ease-in-out infinite;
-        }
-        .nav-item span { font-size: 7px; font-weight: 600; }
-        .nav-item.active { color: var(--primary); }
+        .main-container { padding-bottom: 100px; gap: 0; }
+        .page-enter { animation: pageEnter 0.5s ease; }
+        @keyframes pageEnter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-
     <div class="bg-animation"></div>
     <div class="particles-container" id="particlesContainer"></div>
-
     <div class="toast-container" id="toastContainer"></div>
 
     <header class="header">
@@ -1197,10 +40,9 @@
         </div>
     </header>
 
-    <main class="main-container">
-        
+    <main class="main-container page-enter">
         <div class="mystery-banner">
-            <img src="https://cdn.imgurl.ir/uploads/x53745_InShot_20260908_173109765.jpg" alt="تصویر مرموز بازی جاسوس مافیایی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+            <img src="https://cdn.imgurl.ir/uploads/x53745_InShot_20260908_173109765.jpg" alt="Mafia Spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         </div>
 
         <div class="action-row">
@@ -1227,14 +69,13 @@
             <div class="games-list" id="publicList" style="display:none;"></div>
         </div>
 
-        <div class="section-card" id="gameRulesSection" style="animation-delay: 0.2s;">
+        <div class="section-card" style="animation-delay: 0.2s;">
             <div class="section-title">
                 <span class="section-title-left"><i class="bi bi-book" aria-hidden="true"></i> <span data-i18n="game_guide">راهنمای بازی</span></span>
             </div>
             <div class="rules-article">
-                
                 <h3 data-i18n="intro_title">معرفی بازی</h3>
-                <p data-i18n="intro_desc">بازی «جاسوس مافیایی» یک بازی چالشی منحصربه‌فرد است که در طول ۳ شبانه‌روز انجام می‌شود و دارای ۲ فاز است: فاز روز و فاز شب.</p>
+                <p data-i18n="intro_desc">بازی «جاسوس مافیایی» یک بازی چالشی منحصر‌به‌فرد است که در طول ۳ شبانه‌روز انجام می‌شود و دارای ۲ فاز است: فاز روز و فاز شب.</p>
 
                 <h3 data-i18n="phases_title">فازهای بازی</h3>
                 <p><span class="highlight" data-i18n="night_phase">فاز شب:</span> <span data-i18n="phase_night_desc">در طول شب، اعضای گروه مافیا یکدیگر را می‌شناسند و نقش‌های همدیگر را متوجه می‌شوند. نقش‌های ویژه نیز توانایی‌های خود را ایفا می‌کنند.</span></p>
@@ -1257,13 +98,11 @@
                 <h3 data-i18n="roles_title">نقش‌ها و وظایف</h3>
 
                 <div class="role-category">
-                    <div class="role-category-title">
-                        <span data-i18n="team_citizens">گروه شهر</span>
-                    </div>
+                    <div class="role-category-title"><span data-i18n="team_citizens">گروه شهر</span></div>
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png" alt="شهروند" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/k79593_InShot_20260908_173316870.png" alt="citizen" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_citizen">شهروند ساده</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_citizen_desc">شهروند ساده نقش ویژه‌ای ندارد و تنها با شرکت در پرسش و پاسخ‌های روزانه و رأی‌گیری، به سایر اعضای شهر در شناسایی جاسوس کمک می‌کند.</div>
@@ -1271,7 +110,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png" alt="کارآگاه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/w921252_InShot_20260908_173559430.png" alt="detective" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_detective">کارآگاه</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_detective_desc">کارآگاه در طول بازی و تنها یک‌بار می‌تواند یکی از بازیکنان را استعلام کند. استعلام جاسوس و طعمه «مثبت» و استعلام سایر نقش‌ها «منفی» خواهد بود.</div>
@@ -1279,7 +118,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png" alt="قاضی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/e372004_InShot_20260908_180057525.png" alt="judge" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_judge">قاضی</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_judge_desc">قاضی در شب پس از رأی‌گیری بیدار می‌شود و نتیجه‌ی آرای روز گذشته را اعلام می‌کند. او می‌تواند یکی از بازیکنانی که بیشترین رأی را آورده‌اند، یا هیچ‌کدام را برای اخراج انتخاب کند. اگر فرد اخراج‌شده جاسوس باشد، شهر برنده می‌شود؛ در غیر این صورت مافیا برنده خواهد شد. اگر قاضی فردی را انتخاب نکند، بازی به روز بعد کشیده می‌شود.</div>
@@ -1287,7 +126,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/i242516_InShot_20260917_162620222.png" alt="کلانتر" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/i242516_InShot_20260917_162620222.png" alt="sheriff" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_sheriff">کلانتر</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
@@ -1296,7 +135,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/v31967_InShot_20260917_162742245.png" alt="دکتر" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/v31967_InShot_20260917_162742245.png" alt="doctor" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_doctor">دکتر</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
@@ -1305,13 +144,11 @@
                 </div>
 
                 <div class="role-category">
-                    <div class="role-category-title">
-                        <span data-i18n="team_mafia">گروه مافیا</span>
-                    </div>
+                    <div class="role-category-title"><span data-i18n="team_mafia">گروه مافیا</span></div>
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png" alt="جاسوس" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/j86520_InShot_20260908_180252663.png" alt="spy" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_spy">جاسوس</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_spy_desc">جاسوس کلمه‌ی بازی را نمی‌داند و باید طوری رفتار کند که در پرسش و پاسخ‌های طول بازی لو نرود. جاسوس می‌تواند در هر شبی که موفق شد کلمه را حدس بزند، حدس خود را وارد کند تا در صورت صحت، مافیا برنده شود.</div>
@@ -1319,7 +156,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png" alt="نفوذی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/g373296_InShot_20260908_180342640.png" alt="infiltrator" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_infiltrator">نفوذی</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_infiltrator_desc">نفوذی خود را در نقش یک شهروند جا می‌زند و تلاش می‌کند با گمراه کردن سایر بازیکنان، جاسوس را از دید شهروندان پنهان نگه دارد.</div>
@@ -1327,7 +164,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/n732962_InShot_20260917_162331789.png" alt="طعمه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/n732962_InShot_20260917_162331789.png" alt="bait" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_bait">طعمه</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_bait_desc">طعمه نقش ویژه‌ای ندارد و تنها برای سردرگم کردن کارآگاه است؛ چرا که نتیجه‌ی استعلام تنها برای جاسوس و طعمه «مثبت» گزارش می‌شود.</div>
@@ -1335,7 +172,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/g192531_InShot_20260917_162213256.png" alt="سایلنتر" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/g192531_InShot_20260917_162213256.png" alt="silencer" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_silencer">سایلنتر</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
@@ -1344,7 +181,7 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/p68300_InShot_20260917_162503506.png" alt="تفنگدار" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/p68300_InShot_20260917_162503506.png" alt="gunner" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_gunner">تفنگدار</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
@@ -1353,13 +190,11 @@
                 </div>
 
                 <div class="role-category">
-                    <div class="role-category-title">
-                        <span data-i18n="team_free">گروه آزاد</span>
-                    </div>
+                    <div class="role-category-title"><span data-i18n="team_free">گروه آزاد</span></div>
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/x9199_InShot_20260917_162856320.png" alt="قاتل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/x9199_InShot_20260917_162856320.png" alt="killer" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_killer">قاتل</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
@@ -1368,23 +203,21 @@
 
                     <div class="role-block">
                         <div class="role-block-title">
-                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/u753353_InShot_20260917_162952379.png" alt="روانی" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+                            <img class="role-img" src="https://cdn.imgurl.ir/uploads/u753353_InShot_20260917_162952379.png" alt="psycho" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
                             <span data-i18n="role_psycho">روانی</span>
                             <span class="coming-soon-badge" data-i18n="coming_soon">به‌زودی</span>
                         </div>
                         <div class="role-block-desc" data-i18n="role_psycho_desc">روانی باید تلاش کند خودش را از بازی حذف کند؛ چه با شلیک قاتل، چه با رأی‌گیری و نظر قاضی. اگر روانی حذف شود، خودش برنده‌ی بازی خواهد بود.</div>
                     </div>
                 </div>
-
             </div>
         </div>
 
-        <div class="section-card" id="gameRulesPlay" style="animation-delay: 0.3s;">
+        <div class="section-card" style="animation-delay: 0.3s;">
             <div class="section-title">
                 <span class="section-title-left"><i class="bi bi-shield-check" aria-hidden="true"></i> <span data-i18n="play_rules">قوانین بازی</span></span>
             </div>
             <div class="rules-article">
-
                 <h3><i class="bi bi-1-circle" aria-hidden="true"></i> <span data-i18n="play_rule_1_title">ظرفیت و تقسیم نقش‌ها</span></h3>
                 <p data-i18n="play_rule_1_desc">بازی از ۳ تا ۱۰ نفر تشکیل می‌شود و تقسیم نقش‌ها کاملاً تصادفی و خودکار انجام می‌گیرد تا بازی برای همه منصفانه باشد.</p>
 
@@ -1400,7 +233,6 @@
                     <i class="bi bi-arrow-down-circle-fill" aria-hidden="true"></i>
                     <span data-i18n="play_rule_4_btn">مشاهده قوانین و مقررات استفاده</span>
                 </button>
-
             </div>
         </div>
 
@@ -1434,7 +266,6 @@
                 <p data-i18n="term_8_desc">استفاده از این برنامک به منزله پذیرش کامل شرایط و ضوابط تعیین‌شده می‌باشد. کاربر موظف است به‌طور مستمر قوانین را مطالعه نماید تا در صورت بروزرسانی، از تغییرات مطلع گردد.</p>
             </div>
         </div>
-
     </main>
 
     <div class="active-game-float" id="activeGameFloat">
@@ -1488,7 +319,7 @@
     </div>
 
     <div class="support-notification" id="supportNotification">
-        <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="سازنده" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <img src="https://cdn.imgurl.ir/uploads/v68396_InShot_20260817_190450653.jpg" alt="support" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
         <div class="notif-info">
             <div class="notif-name">امیرمهدی | Amirmahdi</div>
         </div>
@@ -1496,30 +327,30 @@
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active" data-href="../dashboard/">
-            <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="خانه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="nav-item active" data-href="dashboard/">
+            <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="home" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="home">خانه</span>
         </div>
-        <div class="nav-item" data-href="../ranking/">
-            <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="رتبه" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="nav-item" data-href="ranking/">
+            <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="rank" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="ranking">رتبه</span>
         </div>
-        <div class="nav-item" data-href="../profile/">
-            <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="پروفایل" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="nav-item" data-href="profile/">
+            <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="profile" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="profile">پروفایل</span>
         </div>
-        <div class="nav-item" data-href="../setting/">
-            <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="تنظیمات" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
+        <div class="nav-item" data-href="setting/">
+            <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="settings" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="settings_nav">تنظیمات</span>
         </div>
     </nav>
 
+    <script src="script.js"></script>
     <script>
         (function() {
             'use strict';
 
-            var webApp = window.Eitaa && window.Eitaa.WebApp;
-            var API_URL = 'https://script.google.com/macros/s/AKfycbzRHiZrmdqVe9_lSD18j-WcStdy_tddL9yqY5BGuxG5Qk12kBAlKkSncnj0FlpyK1w/exec';
+            var App = window.MafiaApp;
             var currentLang = 'fa';
             var activeGameId = null;
             var activeGameStatus = null;
@@ -1532,127 +363,8 @@
             var lastPublicGamesSignature = '';
             var knownGameIds = {};
             var isFirstPublicLoad = true;
-
             var VALID_GAME_ID = /^[A-Za-z0-9_\-]{1,50}$/;
             var TERMS_DURATION = 48 * 60 * 60 * 1000;
-
-            document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
-            document.addEventListener('copy', function(e) { e.preventDefault(); });
-            document.addEventListener('cut', function(e) { e.preventDefault(); });
-
-            function escapeHtml(str) {
-                if (str === null || str === undefined) return '';
-                return String(str)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#39;');
-            }
-
-            function isValidGameId(id) {
-                return typeof id === 'string' && VALID_GAME_ID.test(id);
-            }
-
-            function safeSetLocalStorage(key, value) {
-                try { localStorage.setItem(key, value); return true; }
-                catch(e) { return false; }
-            }
-
-            function safeGetLocalStorage(key) {
-                try { return localStorage.getItem(key); }
-                catch(e) { return null; }
-            }
-
-            function safeParseJSON(str, fallback) {
-                try {
-                    var parsed = JSON.parse(str);
-                    return parsed === null || parsed === undefined ? fallback : parsed;
-                } catch(e) {
-                    return fallback;
-                }
-            }
-
-            function showToast(message, duration) {
-                duration = duration || 4000;
-                var container = document.getElementById('toastContainer');
-                if (!container) return;
-
-                var toast = document.createElement('div');
-                toast.className = 'toast';
-                toast.innerHTML = '<i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i><span class="toast-text">' + escapeHtml(message) + '</span>';
-                container.appendChild(toast);
-
-                setTimeout(function() {
-                    toast.classList.add('hiding');
-                    setTimeout(function() {
-                        if (toast.parentNode) toast.parentNode.removeChild(toast);
-                    }, 400);
-                }, duration);
-            }
-
-            function showLoading() {
-                var el = document.getElementById('loadingOverlay');
-                if (el) el.classList.add('show');
-            }
-
-            function hideLoading() {
-                var el = document.getElementById('loadingOverlay');
-                if (el) el.classList.remove('show');
-            }
-
-            function isAnimationEnabled() {
-                var s = getSettings();
-                if (s.animation === false) return false;
-                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-                return true;
-            }
-
-            function spawnParticles() {
-                if (!isAnimationEnabled()) return;
-                var container = document.getElementById('particlesContainer');
-                if (!container) return;
-                container.innerHTML = '';
-                for (var i = 0; i < 15; i++) {
-                    var p = document.createElement('div');
-                    p.className = 'particle';
-                    p.style.left = Math.random() * 100 + '%';
-                    p.style.animationDuration = (10 + Math.random() * 15) + 's';
-                    p.style.animationDelay = Math.random() * 10 + 's';
-                    var size = 2 + Math.random() * 4;
-                    p.style.width = size + 'px';
-                    p.style.height = size + 'px';
-                    container.appendChild(p);
-                }
-            }
-
-            var fontMap = {
-                'Samim': "'Samim', Tahoma, sans-serif",
-                'Sahel': "'Sahel', Tahoma, sans-serif",
-                'Vazirmatn': "'Vazirmatn', Tahoma, sans-serif",
-                'Estedad': "'Estedad', Tahoma, sans-serif",
-                'Gandom': "'Gandom', Tahoma, sans-serif"
-            };
-
-            var loadedFonts = { 'Samim': true };
-
-            function loadFont(fontName) {
-                if (loadedFonts[fontName]) return;
-                loadedFonts[fontName] = true;
-                var fontFiles = {
-                    'Vazirmatn': 'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css',
-                    'Sahel': 'https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css',
-                    'Estedad': 'https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css',
-                    'Gandom': 'https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css'
-                };
-                if (fontFiles[fontName]) {
-                    var link = document.createElement('link');
-                    link.rel = 'stylesheet';
-                    link.href = fontFiles[fontName];
-                    document.head.appendChild(link);
-                }
-            }
 
             var translations = {
                 fa: {
@@ -1662,7 +374,7 @@
                     loading_games: 'در حال دریافت بازی‌ها...',
                     game_guide: 'راهنمای بازی',
                     intro_title: 'معرفی بازی',
-                    intro_desc: 'بازی «جاسوس مافیایی» یک بازی چالشی منحصربه‌فرد است که در طول ۳ شبانه‌روز انجام می‌شود و دارای ۲ فاز است: فاز روز و فاز شب.',
+                    intro_desc: 'بازی «جاسوس مافیایی» یک بازی چالشی منحصر‌به‌فرد است که در طول ۳ شبانه‌روز انجام می‌شود و دارای ۲ فاز است: فاز روز و فاز شب.',
                     phases_title: 'فازهای بازی',
                     night_phase: 'فاز شب:',
                     phase_night_desc: 'در طول شب، اعضای گروه مافیا یکدیگر را می‌شناسند و نقش‌های همدیگر را متوجه می‌شوند. نقش‌های ویژه نیز توانایی‌های خود را ایفا می‌کنند.',
@@ -1822,7 +534,7 @@
                     play_rules: 'Game Rules',
                     play_rule_1_title: 'Capacity & Role Distribution',
                     play_rule_1_desc: 'The game is played with 3 to 10 players, and roles are distributed completely randomly and automatically to keep the game fair for everyone.',
-                    play_rule_2_title: 'Leaving the Game (Leaving the Table)',
+                    play_rule_2_title: 'Leaving the Game',
                     play_rule_2_desc: 'Any player who leaves the table during the game will cause themselves and their teammates to lose, and points will be deducted. 50 points will be deducted from the player themselves and 10 points from each of their teammates.',
                     play_rule_3_title: 'Prohibition of Revealing Roles',
                     play_rule_3_desc: 'Revealing your own role or others\' roles during the game is prohibited. Users can report via the game menu if they observe this. If 50% or more players report a message, the game will automatically stop and the offending team will be considered the loser.',
@@ -1934,7 +646,7 @@
                     play_rules: 'قوانين اللعبة',
                     play_rule_1_title: 'السعة وتوزيع الأدوار',
                     play_rule_1_desc: 'تُلعب اللعبة من 3 إلى 10 لاعبين، ويتم توزيع الأدوار بشكل عشوائي وآلي بالكامل لضمان العدالة للجميع.',
-                    play_rule_2_title: 'مغادرة اللعبة (ترك الطاولة)',
+                    play_rule_2_title: 'مغادرة اللعبة',
                     play_rule_2_desc: 'أي لاعب يغادر الطاولة أثناء اللعبة، يخسر هو وزملاؤه وتُخصم النقاط. تُخصم 50 نقطة من اللاعب نفسه و 10 نقاط من كل من زملائه.',
                     play_rule_3_title: 'حظر الكشف عن الأدوار',
                     play_rule_3_desc: 'الكشف عن دورك أو أدوار الآخرين أثناء اللعبة محظور. يمكن للمستخدمين الإبلاغ عبر قائمة اللعبة عند ملاحظة ذلك. إذا أبلغ 50% أو أكثر من اللاعبين عن رسالة، يتم إيقاف اللعبة تلقائياً ويُعتبر الفريق المخالف خاسراً.',
@@ -1998,145 +710,19 @@
                 return t[k] || translations.fa[k] || k;
             }
 
-            function getSettings() {
-                try {
-                    var raw = safeGetLocalStorage('mafiaSettings');
-                    if (!raw) return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
-                    var p = safeParseJSON(raw, null);
-                    if (!p || typeof p !== 'object') throw new Error('bad');
-                    if (!p.theme) p.theme = 'light';
-                    if (!p.specialTheme) p.specialTheme = 'none';
-                    if (p.animation === undefined) p.animation = true;
-                    if (p.haptic === undefined) p.haptic = true;
-                    if (!p.font) p.font = 'Samim';
-                    if (!p.language) p.language = 'fa';
-                    return p;
-                } catch(e) {
-                    return { theme: 'light', specialTheme: 'none', animation: true, haptic: true, font: 'Samim', language: 'fa' };
-                }
-            }
-
-            function updateHeaderTitle(lang) {
-                var titleEl = document.getElementById('headerTitle');
-                var subtitleEl = document.getElementById('headerSubtitle');
-                if (!titleEl || !subtitleEl) return;
-                if (lang === 'en') {
-                    titleEl.textContent = 'Mafia Spy';
-                    subtitleEl.textContent = 'Find the city spy.';
-                } else {
-                    titleEl.textContent = 'جاسوس مافیایی';
-                    subtitleEl.textContent = 'جاسوس شهر رو پیدا کن.';
-                }
-            }
-
-            function applyLanguage(lang) {
-                var t = translations[lang] || translations.fa;
-                document.querySelectorAll('[data-i18n]').forEach(function(el) {
-                    var k = el.getAttribute('data-i18n');
-                    if (t[k] !== undefined) el.textContent = t[k];
-                });
-                if (lang === 'en') {
-                    document.documentElement.setAttribute('dir', 'ltr');
-                } else {
-                    document.documentElement.setAttribute('dir', 'rtl');
-                }
-                updateHeaderTitle(lang);
-            }
-
-            function applyTheme() {
-                var s = getSettings();
-                currentLang = s.language || 'fa';
-                var t = s.theme || 'light';
-                var st = s.specialTheme || 'none';
-                var f = s.font || 'Samim';
-                document.documentElement.setAttribute('data-theme', t);
-                document.documentElement.setAttribute('data-special-theme', st);
-                if (s.animation === false) {
-                    document.documentElement.setAttribute('data-animation', 'off');
-                } else {
-                    document.documentElement.removeAttribute('data-animation');
-                }
-                loadFont(f);
-                var fontFamily = fontMap[f] || fontMap['Samim'];
-                document.documentElement.style.setProperty('--font', fontFamily);
-                document.body.style.fontFamily = fontFamily;
-                applyLanguage(currentLang);
-            }
-
-            function triggerHaptic(style) {
-                var s = getSettings();
-                if (s.haptic === false) return;
-                if (webApp && webApp.HapticFeedback && webApp.HapticFeedback.impactOccurred) {
-                    try { webApp.HapticFeedback.impactOccurred(style || 'light'); } catch(e) {}
-                }
-            }
-
-            function getEitaaUser() {
-                return webApp && webApp.initDataUnsafe && webApp.initDataUnsafe.user ? webApp.initDataUnsafe.user : null;
-            }
-
-            function getUserId() {
-                var u = getEitaaUser();
-                if (!u || u.id === undefined || u.id === null) return '';
-                return String(u.id);
-            }
-
-            async function fetchData(action, params, retryCount) {
-                retryCount = retryCount || 0;
-                var payload = { action: action, username: getUserId() };
-                if (params && typeof params === 'object') {
-                    for (var k in params) {
-                        if (Object.prototype.hasOwnProperty.call(params, k)) {
-                            payload[k] = params[k];
-                        }
-                    }
-                }
-                try {
-                    var controller = new AbortController();
-                    var timeoutId = setTimeout(function() { controller.abort(); }, 10000);
-                    var r = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(payload),
-                        signal: controller.signal
-                    });
-                    clearTimeout(timeoutId);
-
-                    if (!r.ok) throw new Error('http_' + r.status);
-
-                    var ct = r.headers.get('content-type') || '';
-                    if (ct.indexOf('application/json') === -1) {
-                        throw new Error('invalid_content_type');
-                    }
-
-                    var data = await r.json();
-                    if (!data || typeof data !== 'object') throw new Error('invalid_payload');
-                    return data;
-                } catch(err) {
-                    var isRetryable = err && (
-                        err.name === 'AbortError' ||
-                        err.message === 'Failed to fetch' ||
-                        err.message === 'NetworkError when attempting to fetch resource.' ||
-                        err.message === 'invalid_content_type' ||
-                        /^http_5/.test(err.message || '')
-                    );
-                    if (retryCount < 2 && isRetryable) {
-                        await new Promise(function(res) { setTimeout(res, 1000 * (retryCount + 1)); });
-                        return fetchData(action, params, retryCount + 1);
-                    }
-                    return { ok: false, error: 'network' };
-                }
+            function isValidGameId(id) {
+                return typeof id === 'string' && VALID_GAME_ID.test(id);
             }
 
             function renderEmpty(text) {
-                return '<div class="empty-state"><i class="bi bi-inbox" aria-hidden="true"></i><p>' + escapeHtml(text) + '</p></div>';
+                return '<div class="empty-state"><i class="bi bi-inbox" aria-hidden="true"></i><p>' + App.escapeHtml(text) + '</p></div>';
             }
 
             function renderError() {
                 return '<div class="error-state">' +
                     '<i class="bi bi-wifi-off" aria-hidden="true"></i>' +
-                    '<div class="error-state-text">' + escapeHtml(getTranslation('error_network')) + '</div>' +
-                    '<button class="error-state-btn" data-retry="public">' + escapeHtml(getTranslation('retry')) + '</button>' +
+                    '<div class="error-state-text">' + App.escapeHtml(getTranslation('error_network')) + '</div>' +
+                    '<button class="error-state-btn" data-retry="public">' + App.escapeHtml(getTranslation('retry')) + '</button>' +
                     '</div>';
             }
 
@@ -2148,25 +734,21 @@
                     if (Array.isArray(parsed)) return parsed.length;
                     if (parsed && typeof parsed === 'object') return Object.keys(parsed).length;
                 } catch(e) {}
-                var matches = String(playersStr).match(/\[/g);
-                return matches ? matches.length : 0;
+                return 0;
             }
 
             function updateStartButtonState() {
                 var btn = document.getElementById('btnStartGame');
                 if (!btn) return;
-                if (isGamesLoading) {
-                    btn.classList.add('loading-games');
-                } else {
-                    btn.classList.remove('loading-games');
-                }
+                if (isGamesLoading) btn.classList.add('loading-games');
+                else btn.classList.remove('loading-games');
             }
 
             async function loadUserCurrency() {
                 var coinsEl = document.getElementById('coinsHeader');
                 var diamondsEl = document.getElementById('diamondsHeader');
                 try {
-                    var userData = await fetchData('getUser', {});
+                    var userData = await App.fetchData('getUser', {});
                     if (userData.ok && userData.data && typeof userData.data === 'object') {
                         var c = parseInt(userData.data.coins, 10);
                         var d = parseInt(userData.data.diamonds, 10);
@@ -2196,7 +778,7 @@
                 }
 
                 try {
-                    var result = await fetchData('getPublicGames', {});
+                    var result = await App.fetchData('getPublicGames', {});
 
                     if (result.ok && Array.isArray(result.data)) {
                         var validGames = [];
@@ -2238,10 +820,10 @@
                             for (var j = 0; j < validGames.length; j++) {
                                 var item = validGames[j];
                                 var g2 = item.raw;
-                                var safeId = escapeHtml(item.id);
+                                var safeId = App.escapeHtml(item.id);
                                 var playerCount = countPlayers(g2.players);
                                 var maxPlayers = parseInt(g2.maxPlayers, 10);
-                                var subText = playerCount + (isNaN(maxPlayers) ? '' : (' / ' + maxPlayers)) + ' ' + escapeHtml(getTranslation('players'));
+                                var subText = playerCount + (isNaN(maxPlayers) ? '' : (' / ' + maxPlayers)) + ' ' + App.escapeHtml(getTranslation('players'));
                                 var isNew = !isFirstPublicLoad && knownGameIds[item.id] === undefined;
                                 var cardClass = 'game-card' + (isNew ? ' new-game' : '');
                                 var animDelay = (j * 0.05) + 's';
@@ -2251,7 +833,7 @@
                                     '<div class="game-card-title">' + safeId + '</div>' +
                                     '<div class="game-card-subtitle">' + subText + '</div>' +
                                     '</div>' +
-                                    '<span class="game-card-badge waiting">' + escapeHtml(getTranslation('waiting')) + '</span>' +
+                                    '<span class="game-card-badge waiting">' + App.escapeHtml(getTranslation('waiting')) + '</span>' +
                                     '</div>';
                                 knownGameIds[item.id] = true;
                             }
@@ -2303,11 +885,9 @@
 
             async function checkActiveGame() {
                 try {
-                    var result = await fetchData('getGamesByPlayer', {});
-
+                    var result = await App.fetchData('getGamesByPlayer', {});
                     if (result.ok && Array.isArray(result.data)) {
                         var activeGame = null;
-
                         for (var i = 0; i < result.data.length; i++) {
                             var g = result.data[i];
                             if (!g || typeof g !== 'object') continue;
@@ -2319,7 +899,6 @@
                                 break;
                             }
                         }
-
                         if (activeGame) {
                             activeGameId = activeGame.id;
                             activeGameStatus = activeGame.status;
@@ -2336,11 +915,11 @@
                 var btn = document.getElementById('termsAcceptBtn');
                 cb.classList.toggle('checked');
                 btn.disabled = !cb.classList.contains('checked');
-                triggerHaptic('light');
+                App.triggerHaptic('light');
             }
 
             function isTermsAccepted() {
-                var raw = safeGetLocalStorage('mafiaTermsAccepted');
+                var raw = App.safeGetLocalStorage('mafiaTermsAccepted');
                 var ts = parseInt(raw, 10);
                 if (isNaN(ts) || ts <= 0) return false;
                 if (ts > Date.now()) return false;
@@ -2348,9 +927,9 @@
             }
 
             function guardGameEntry(callback) {
-                triggerHaptic('medium');
+                App.triggerHaptic('medium');
                 if (hasHalfFinishedGame) {
-                    showToast(getTranslation('toast_has_active_game'), 4000);
+                    App.showToast(getTranslation('toast_has_active_game'), 'error', 4000);
                     return;
                 }
                 showTermsModal(callback);
@@ -2375,60 +954,53 @@
             function scrollToTerms() {
                 document.getElementById('termsModalOverlay').classList.remove('show');
                 pendingAction = null;
-
                 var termsSection = document.getElementById('termsSection');
                 if (termsSection) {
                     setTimeout(function() {
                         termsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }, 100);
                 }
-                triggerHaptic('light');
+                App.triggerHaptic('light');
             }
 
             function acceptTerms() {
                 var cb = document.getElementById('termsCheckbox');
                 if (!cb.classList.contains('checked')) return;
-                safeSetLocalStorage('mafiaTermsAccepted', String(Date.now()));
+                App.safeSetLocalStorage('mafiaTermsAccepted', String(Date.now()));
                 document.getElementById('termsModalOverlay').classList.remove('show');
-                triggerHaptic('medium');
+                App.triggerHaptic('medium');
                 var action = pendingAction;
                 pendingAction = null;
                 if (action) setTimeout(function() { action(); }, 200);
             }
 
             function openChannelLink() {
-                if (webApp && webApp.openEitaaLink) {
-                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
-                } else {
-                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
-                }
+                App.openEitaaLink('https://eitaa.com/Amirmahdi_code');
             }
 
             function startNewGame() {
                 if (isGamesLoading) {
-                    triggerHaptic('heavy');
-                    showToast(getTranslation('toast_loading_games'), 4000);
+                    App.triggerHaptic('heavy');
+                    App.showToast(getTranslation('toast_loading_games'), 'error', 4000);
                     return;
                 }
                 guardGameEntry(function() {
-                    window.location.href = '../game/new/';
+                    window.location.href = 'game/new/';
                 });
             }
 
             function goToWheel() {
-                triggerHaptic('light');
-                window.location.href = '../wheel/';
+                App.triggerHaptic('light');
+                window.location.href = 'wheel/';
             }
 
             function joinGame(gameId) {
                 if (!isValidGameId(gameId)) return;
-
                 if (hasHalfFinishedGame) {
-                    triggerHaptic('heavy');
-                    showToast(getTranslation('toast_has_active_game'), 4000);
+                    App.triggerHaptic('heavy');
+                    App.showToast(getTranslation('toast_has_active_game'), 'error', 4000);
                     return;
                 }
-
                 guardGameEntry(function() {
                     pendingJoinGameId = gameId;
                     document.getElementById('joinConfirmGameId').textContent = gameId;
@@ -2444,20 +1016,17 @@
             async function confirmJoinGame() {
                 var gameId = pendingJoinGameId;
                 if (!gameId) return;
-
                 document.getElementById('joinConfirmOverlay').classList.remove('show');
                 pendingJoinGameId = null;
 
-                showLoading();
-
-                var result = await fetchData('joinGame', { gameId: gameId });
-
-                hideLoading();
+                App.showLoading();
+                var result = await App.fetchData('joinGame', { gameId: gameId });
+                App.hideLoading();
 
                 if (result && result.ok) {
-                    safeSetLocalStorage('mafiaRoomCode', gameId);
-                    triggerHaptic('medium');
-                    window.location.href = '../game/waiting/?room=' + encodeURIComponent(gameId);
+                    App.safeSetLocalStorage('mafiaRoomCode', gameId);
+                    App.triggerHaptic('medium');
+                    window.location.href = 'game/waiting/?room=' + encodeURIComponent(gameId);
                     return;
                 }
 
@@ -2470,126 +1039,101 @@
                 else if (err === 'You were kicked from this game') msg = getTranslation('err_kicked');
                 else if (err === 'network') msg = getTranslation('error_network');
 
-                triggerHaptic('heavy');
-                showToast(msg, 4500);
+                App.triggerHaptic('heavy');
+                App.showToast(msg, 'error', 4500);
             }
 
             function goToActiveGame() {
-                triggerHaptic('light');
+                App.triggerHaptic('light');
                 if (!activeGameId || !isValidGameId(activeGameId)) return;
-
-                safeSetLocalStorage('mafiaRoomCode', activeGameId);
-
+                App.safeSetLocalStorage('mafiaRoomCode', activeGameId);
                 var target;
-                if (activeGameStatus === 'waiting') {
-                    target = '../game/waiting/?room=';
-                } else {
-                    target = '../game/table/?room=';
-                }
+                if (activeGameStatus === 'waiting') target = 'game/waiting/?room=';
+                else target = 'game/table/?room=';
                 window.location.href = target + encodeURIComponent(activeGameId);
             }
 
-            function openSupportLink() {
-                var notif = document.getElementById('supportNotification');
-                if (notif) notif.style.display = 'none';
-                if (webApp && webApp.openEitaaLink) {
-                    webApp.openEitaaLink('https://eitaa.com/Amirmahdi_code');
-                } else {
-                    window.open('https://eitaa.com/Amirmahdi_code', '_blank', 'noopener,noreferrer');
-                }
-            }
+            function setupEventListeners() {
+                document.getElementById('btnStartGame').addEventListener('click', startNewGame);
+                document.getElementById('btnWheel').addEventListener('click', goToWheel);
 
-            document.getElementById('btnStartGame').addEventListener('click', startNewGame);
-            document.getElementById('btnWheel').addEventListener('click', goToWheel);
-
-            document.getElementById('btnScrollTerms').addEventListener('click', scrollToTerms);
-            document.getElementById('linkScrollTerms').addEventListener('click', function(e) {
-                e.preventDefault();
-                scrollToTerms();
-            });
-            document.getElementById('linkChannel1').addEventListener('click', function(e) {
-                e.preventDefault();
-                openChannelLink();
-            });
-
-            document.getElementById('termsCheckboxRow').addEventListener('click', toggleTermsCheckbox);
-            document.getElementById('btnTermsCancel').addEventListener('click', closeTermsModal);
-            document.getElementById('termsAcceptBtn').addEventListener('click', acceptTerms);
-
-            document.getElementById('activeGameFloat').addEventListener('click', goToActiveGame);
-            document.getElementById('supportNotification').addEventListener('click', openSupportLink);
-
-            document.getElementById('joinConfirmYes').addEventListener('click', confirmJoinGame);
-            document.getElementById('joinConfirmNo').addEventListener('click', closeJoinConfirm);
-
-            document.getElementById('joinConfirmOverlay').addEventListener('click', function(e) {
-                if (e.target === this) closeJoinConfirm();
-            });
-
-            document.getElementById('termsModalOverlay').addEventListener('click', function(e) {
-                if (e.target === this) closeTermsModal();
-            });
-
-            document.getElementById('publicError').addEventListener('click', function(e) {
-                if (e.target && e.target.classList.contains('error-state-btn')) {
-                    loadPublicGames(false);
-                }
-            });
-
-            document.getElementById('publicList').addEventListener('click', function(e) {
-                var card = e.target.closest('.game-card');
-                if (card && card.dataset.gameId) {
-                    joinGame(card.dataset.gameId);
-                }
-            });
-            document.getElementById('publicList').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    var card = e.target.closest('.game-card');
-                    if (card && card.dataset.gameId) {
-                        e.preventDefault();
-                        joinGame(card.dataset.gameId);
-                    }
-                }
-            });
-
-            document.querySelectorAll('.nav-item').forEach(function(el) {
-                el.addEventListener('click', function() {
-                    var href = el.getAttribute('data-href');
-                    if (href) window.location.href = href;
+                document.getElementById('btnScrollTerms').addEventListener('click', scrollToTerms);
+                document.getElementById('linkScrollTerms').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollToTerms();
                 });
-            });
+                document.getElementById('linkChannel1').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openChannelLink();
+                });
 
-            if (webApp) {
-                try {
-                    webApp.ready();
-                    webApp.expand();
-                    if (webApp.BackButton && webApp.BackButton.hide) webApp.BackButton.hide();
-                } catch(e) {}
+                document.getElementById('termsCheckboxRow').addEventListener('click', toggleTermsCheckbox);
+                document.getElementById('btnTermsCancel').addEventListener('click', closeTermsModal);
+                document.getElementById('termsAcceptBtn').addEventListener('click', acceptTerms);
+
+                document.getElementById('activeGameFloat').addEventListener('click', goToActiveGame);
+
+                document.getElementById('joinConfirmYes').addEventListener('click', confirmJoinGame);
+                document.getElementById('joinConfirmNo').addEventListener('click', closeJoinConfirm);
+
+                document.getElementById('joinConfirmOverlay').addEventListener('click', function(e) {
+                    if (e.target === this) closeJoinConfirm();
+                });
+
+                document.getElementById('termsModalOverlay').addEventListener('click', function(e) {
+                    if (e.target === this) closeTermsModal();
+                });
+
+                document.getElementById('publicError').addEventListener('click', function(e) {
+                    if (e.target && e.target.classList.contains('error-state-btn')) {
+                        loadPublicGames(false);
+                    }
+                });
+
+                document.getElementById('publicList').addEventListener('click', function(e) {
+                    var card = e.target.closest('.game-card');
+                    if (card && card.dataset.gameId) joinGame(card.dataset.gameId);
+                });
+                document.getElementById('publicList').addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        var card = e.target.closest('.game-card');
+                        if (card && card.dataset.gameId) {
+                            e.preventDefault();
+                            joinGame(card.dataset.gameId);
+                        }
+                    }
+                });
             }
 
-            applyTheme();
-            spawnParticles();
-            loadUserCurrency();
-            loadPublicGames(false);
-            checkActiveGame();
-            startPublicGamesPolling();
+            async function init() {
+                var s = App.applyTheme();
+                currentLang = s.language || 'fa';
+                App.applyI18n(translations, currentLang);
+                App.loadFont(s.font);
+                App.spawnParticles();
+                App.setupEitaa();
+                App.setupNavItems();
+                App.setupSupportNotification();
+                App.disableContextMenu();
 
-            document.addEventListener('visibilitychange', function() {
-                if (document.hidden) {
+                setupEventListeners();
+
+                loadUserCurrency();
+                loadPublicGames(false);
+                checkActiveGame();
+                startPublicGamesPolling();
+
+                document.addEventListener('visibilitychange', function() {
+                    if (document.hidden) stopPublicGamesPolling();
+                    else startPublicGamesPolling();
+                });
+
+                window.addEventListener('beforeunload', function() {
                     stopPublicGamesPolling();
-                } else {
-                    startPublicGamesPolling();
-                }
-            });
+                });
+            }
 
-            window.addEventListener('beforeunload', function() {
-                stopPublicGamesPolling();
-            });
-
-            setTimeout(function() {
-                var notif = document.getElementById('supportNotification');
-                if (notif) notif.style.display = 'none';
-            }, 5000);
+            init();
         })();
     </script>
 </body>
