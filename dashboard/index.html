@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/sahel-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/gandom-font@v1.0.0/dist/font-face.css" rel="stylesheet" media="print" onload="this.media='all'">
-    <link href="css.css" rel="stylesheet">
+    <link href="../css.css" rel="stylesheet">
     <style>
         .main-container { padding-bottom: 100px; gap: 0; }
         .page-enter { animation: pageEnter 0.5s ease; }
@@ -327,25 +327,25 @@
     </div>
 
     <nav class="bottom-nav">
-        <div class="nav-item active" data-href="dashboard/">
+        <div class="nav-item active" data-href="../dashboard/">
             <img src="https://uploadkon.ir/uploads/bdf329_26home-iconbase-1-.svg" alt="home" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="home">خانه</span>
         </div>
-        <div class="nav-item" data-href="ranking/">
+        <div class="nav-item" data-href="../ranking/">
             <img src="https://uploadkon.ir/uploads/8c9f29_26medal-1st-iconbase.svg" alt="rank" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="ranking">رتبه</span>
         </div>
-        <div class="nav-item" data-href="profile/">
+        <div class="nav-item" data-href="../profile/">
             <img src="https://uploadkon.ir/uploads/e78130_26profile-iconbase.svg" alt="profile" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="profile">پروفایل</span>
         </div>
-        <div class="nav-item" data-href="setting/">
+        <div class="nav-item" data-href="../setting/">
             <img src="https://uploadkon.ir/uploads/629f29_26setting-iconbase.svg" alt="settings" draggable="false" oncontextmenu="return false;" ondragstart="return false;">
             <span data-i18n="settings_nav">تنظیمات</span>
         </div>
     </nav>
 
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
     <script>
         (function() {
             'use strict';
@@ -985,13 +985,13 @@
                     return;
                 }
                 guardGameEntry(function() {
-                    window.location.href = 'game/new/';
+                    window.location.href = '../game/new/';
                 });
             }
 
             function goToWheel() {
                 App.triggerHaptic('light');
-                window.location.href = 'wheel/';
+                window.location.href = '../wheel/';
             }
 
             function joinGame(gameId) {
@@ -1026,7 +1026,7 @@
                 if (result && result.ok) {
                     App.safeSetLocalStorage('mafiaRoomCode', gameId);
                     App.triggerHaptic('medium');
-                    window.location.href = 'game/waiting/?room=' + encodeURIComponent(gameId);
+                    window.location.href = '../game/waiting/?room=' + encodeURIComponent(gameId);
                     return;
                 }
 
@@ -1048,8 +1048,8 @@
                 if (!activeGameId || !isValidGameId(activeGameId)) return;
                 App.safeSetLocalStorage('mafiaRoomCode', activeGameId);
                 var target;
-                if (activeGameStatus === 'waiting') target = 'game/waiting/?room=';
-                else target = 'game/table/?room=';
+                if (activeGameStatus === 'waiting') target = '../game/waiting/?room=';
+                else target = '../game/table/?room=';
                 window.location.href = target + encodeURIComponent(activeGameId);
             }
 
